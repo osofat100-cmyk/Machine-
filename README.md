@@ -38,6 +38,16 @@ implementation, agreeing to 2.6e-13 mm.
 
 *Only the six joint angles change between these. No geometry is rebuilt.*
 
+### `fusion360/` — run it in Fusion
+
+The same arm built **inside Fusion**, with a real editable timeline, 33
+User Parameters, and 5 revolute joints. Load it from *Scripts and
+Add-Ins* and hit Run.
+
+Tested off-Fusion against a fake `adsk` module: 20 tests covering the
+script's logic and confirming every dimension matches the verified
+`cad/` model. See its [README](fusion360/README.md).
+
 ### `solidworks_harness/` — needs your Windows machine
 
 A 20-tool agent surface that drives SolidWorks over COM to produce
