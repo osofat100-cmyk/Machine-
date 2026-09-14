@@ -1,0 +1,7 @@
+build/
+*.step
+*.stl
+*.bmp
+__pycache__/
+*.pyc
+.venv/
