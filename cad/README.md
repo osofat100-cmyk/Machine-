@@ -11,6 +11,7 @@ pip install build123d
 cd cad
 python3 build.py                      # verify, then export to build/
 python3 poses.py                      # the pose strip
+python3 simulate.py                   # the arm running a cycle, to video
 ```
 
 Options:
@@ -41,7 +42,10 @@ build/report.txt           checks + mass properties
 | `robot_arm/verify.py` | The checking pass — see below. |
 | `build.py` | CLI: verify, export, report. |
 | `poses.py` | Renders several poses side by side. |
-| `test_robot_arm.py` | Test suite. |
+| `simulate.py` | Runs a pick-and-place cycle and renders it to video. |
+| `sim/` | Kinematics, motion program and software renderer — [README](sim/README.md). |
+| `test_robot_arm.py` | Test suite for the model. |
+| `test_simulate.py` | Test suite for the simulation and renderer. |
 
 ## The checks are the point
 
@@ -67,6 +71,42 @@ These found three real defects during development: a wrist housing that
 was two disconnected solids, and two fillets failing silently. A fourth
 — a gripper whose jaws opened outward instead of inward — passed every
 one of these and was caught only by rendering the arm and looking at it.
+
+## Watching it move
+
+```bash
+python3 simulate.py                   # build/machine.mp4, about 6 minutes
+python3 simulate.py --check-only      # solve and check, render nothing
+```
+
+A pick-and-place cycle: approach, descend on a straight line, close on a
+32 mm part, transfer, place, retract, park. The arm on screen is this
+model — the same eleven solids, placed by `assembly.build_assembly`,
+driven by an inverse solve that runs once per frame on the straight-line
+moves. There is no GPU in the loop and no OpenGL; `sim/` rasterises it
+with numpy.
+
+Thirteen more checks run before a single frame is drawn, and the run
+refuses to render if any fails:
+
+```
+[PASS] every commanded pose is actually reached -- worst residual 0.020 mm / 0.012 deg over 139 solves
+[PASS] straight-line moves run straight -- worst deviation from the commanded line 0.019 mm
+[PASS] joint motion is continuous -- largest change in one frame 2.99 deg
+[PASS] no joint reaches a stop -- widest excursion 145.0 deg
+[PASS] the payload is rigidly held, not re-scripted, while gripped
+[PASS] the payload is actually picked up -- lifted to z = 261 mm
+[PASS] the payload ends up on the second fixture -- 0.001 mm from the commanded place point
+[PASS] the jaws close on the part, not through it -- jaw gap 32.0 mm against a 32 mm part
+[PASS] the tool never drives into the fixture
+[PASS] nothing but the recessed J1 drive goes below the mounting face
+[PASS] the arm never enters a fixture -- clear at every sampled frame
+[PASS] no self-collision at any commanded pose -- 7 distinct poses checked with robot_arm.verify
+```
+
+The last one is the model's own `verify.check_interference`, re-run at
+every pose the program commands. A pose that clashes is a pose the
+machine cannot hold, and animating it would be drawing a lie smoothly.
 
 ## Parametric means re-drivable
 

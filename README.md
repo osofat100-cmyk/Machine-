@@ -38,6 +38,25 @@ implementation, agreeing to 2.6e-13 mm.
 
 *Only the six joint angles change between these. No geometry is rebuilt.*
 
+#### And it moves
+
+![The arm mid-cycle](docs/img/machine_motion.png)
+
+```bash
+cd cad && python3 simulate.py          # build/machine.mp4
+```
+
+A 13.7-second pick-and-place cycle, rendered from the same eleven solids.
+The pose comes from an inverse solve that runs once per frame on the
+straight-line moves; the placements are read out of `build_assembly`
+itself, so the arm in the video and the arm in the STEP file cannot
+disagree about where a joint is. Thirteen checks run before a frame is
+drawn — including the model's own interference check, re-run at every
+pose the program commands — and the render is refused if any fails.
+
+Software-rasterised in numpy: no GPU, no OpenGL, no display. See
+[`cad/sim/`](cad/sim/README.md).
+
 ### `fusion360/` — run it in Fusion
 
 The same arm built **inside Fusion**, with a real editable timeline, 33
