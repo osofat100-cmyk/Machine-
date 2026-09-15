@@ -224,6 +224,43 @@ def test_document_verification_reports_counts():
     assert "joints" in text
 
 
+def test_split_body_is_reported():
+    """A body in disconnected pieces must be named, not passed over.
+
+    This is the defect that hit twice independently: a build123d wrist
+    housing whose spigot floated clear of its bore, and a Fusion forearm
+    whose two plates never touched. Both passed every step-level check.
+    Only counting connected regions catches it.
+    """
+    rec, b, mod = build_once()
+    # Break one component's body into two lumps, then re-verify.
+    target = None
+    for occ in b.components:
+        if occ.component.name == "06_forearm":
+            target = occ.component
+            break
+    assert target is not None, "forearm component not found"
+    target.split_a_body(lumps=2)
+
+    text = mod.verify_document(b)
+    assert "SPLIT BODIES" in text, text
+    assert "06_forearm" in text, text
+    assert "2 lumps" in text, text
+
+
+def test_clean_build_reports_no_split_bodies():
+    rec, b, mod = build_once()
+    text = mod.verify_document(b)
+    assert "SPLIT BODIES" not in text, text
+    assert "no split bodies" in text, text
+
+
+def test_solid_bodies_are_counted():
+    rec, b, mod = build_once()
+    text = mod.verify_document(b)
+    assert "solid bodies" in text, text
+
+
 def _main():
     tests = [v for k, v in sorted(globals().items()) if k.startswith("test_")]
     failed = 0

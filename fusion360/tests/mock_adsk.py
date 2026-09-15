@@ -358,6 +358,19 @@ class JointGeometry(object):
         return _Named("jointgeo")
 
 
+class _Lumps(object):
+    """A body's connected regions. >1 means the body is in pieces."""
+
+    def __init__(self, n):
+        self.count = n
+
+
+class _Body(object):
+    def __init__(self, name, lumps=1):
+        self.name = name
+        self.lumps = _Lumps(lumps)
+
+
 class _Component(object):
     def __init__(self, name=""):
         self.name = name
@@ -372,7 +385,14 @@ class _Component(object):
         self.zConstructionAxis = _Named("Zaxis")
         self.xConstructionAxis = _Named("Xaxis")
         self.originConstructionPoint = _Named("origin")
+        # One body per component by default. Tests can push a split body
+        # in here to exercise the lumps oracle.
+        self.bRepBodies = _Collection([_Body("Body1")])
         REC.components.append(self)
+
+    def split_a_body(self, lumps=2):
+        """Make this component's body disconnected, for testing."""
+        self.bRepBodies = _Collection([_Body("Body1", lumps=lumps)])
 
 
 class _Occurrence(object):

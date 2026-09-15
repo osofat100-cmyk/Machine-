@@ -519,6 +519,30 @@ def verify_document(b):
                 pass
         n_joints = b.root.joints.count
         n_params = b.design.userParameters.count
+
+        # A "lump" is one connected region of a body. A body with more
+        # than one lump is geometry that looks finished and is actually
+        # in pieces -- the join ran, but nothing was touching, so there
+        # was nothing to merge. Counting leftovers only infers this;
+        # lumps.count is the direct oracle.
+        #
+        # This exact failure has now been hit twice independently: the
+        # build123d wrist housing whose spigot floated 4 mm clear of its
+        # bore, and a Fusion forearm whose two plates never met. Both
+        # passed every step-level check. Only a solid count exposed
+        # either. It earns a permanent check.
+        split = []
+        for i in range(n_occ):
+            comp = occs.item(i).component
+            try:
+                for j in range(comp.bRepBodies.count):
+                    body = comp.bRepBodies.item(j)
+                    n_lumps = body.lumps.count
+                    if n_lumps > 1:
+                        split.append("%s/%s (%d lumps)"
+                                     % (comp.name, body.name, n_lumps))
+            except Exception:
+                pass
     except Exception as exc:
         return "verification unavailable: %s" % exc
 
@@ -531,8 +555,16 @@ def verify_document(b):
         "  joints              : %d   (expected 5)" % n_joints,
         "  user parameters     : %d   (expected %d)" % (n_params, len(PARAMS)),
     ]
+    if split:
+        lines.append("")
+        lines.append("  SPLIT BODIES -- these look solid but are in pieces:")
+        for entry in split:
+            lines.append("    %s" % entry)
+        lines.append("    (a join ran but the shapes were not touching)")
     if len(names) != 11 or n_joints != 5:
         lines.append("  -> counts differ from expected; see failures above")
+    if not split and len(names) == 11 and n_joints == 5:
+        lines.append("  all counts as expected, no split bodies")
     return "\n".join(lines)
 
 
@@ -581,9 +613,11 @@ def run(context):
         design = adsk.fusion.Design.cast(app.activeProduct)
         if design is None:
             ui.messageBox(
-                "No active Fusion design.\n\n"
-                "Open or create a design first (File > New Design), "
-                "then run this script again."
+                "No active Fusion PART design.\n\n"
+                "File > New... > Part Design, then run this script again.\n\n"
+                "Note: if your default new document is an Electronics "
+                "Design, this script cannot run in it -- Design.cast() "
+                "returns None there. It has to be a Part Design."
             )
             return
 
