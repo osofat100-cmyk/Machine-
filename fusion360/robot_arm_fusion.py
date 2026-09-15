@@ -88,6 +88,37 @@ class Builder(object):
         self.root = design.rootComponent
         self.log = []
         self.components = []
+        self.failures = []
+
+    def step(self, name, fn, *args):
+        """Run one build step, recording a failure instead of dying.
+
+        This script has never met the real Fusion API -- it was written
+        against the documentation and tested against a mock. On first
+        contact something will probably not match. Halting on the first
+        mismatch would tell you one thing; running the rest and
+        reporting every mismatch at once tells you all of them, and
+        still leaves whatever did work sitting in the document where you
+        can look at it.
+        """
+        try:
+            result = fn(*args)
+            self.log.append("  ok   %s" % name)
+            return result
+        except Exception as exc:
+            tb = traceback.format_exc().strip().splitlines()
+            where = ""
+            for line in reversed(tb):
+                if "robot_arm_fusion.py" in line:
+                    where = line.strip()
+                    break
+            self.failures.append({
+                "step": name,
+                "error": "%s: %s" % (type(exc).__name__, exc),
+                "where": where,
+            })
+            self.log.append("  FAIL %s -- %s: %s" % (name, type(exc).__name__, exc))
+            return None
 
     # -- parameters ---------------------------------------------------
     def add_user_parameters(self):
@@ -467,15 +498,54 @@ def add_joints(b, occurrences):
 # ---------------------------------------------------------------------
 # Entry point
 # ---------------------------------------------------------------------
+def verify_document(b):
+    """Count what actually landed in the document.
+
+    Asking Fusion what is there beats trusting that the calls we made
+    did what we meant. Numbers that disagree with the expected ones are
+    the useful signal.
+    """
+    try:
+        occs = b.root.occurrences
+        n_occ = occs.count
+        names = set()
+        bodies = 0
+        for i in range(n_occ):
+            comp = occs.item(i).component
+            names.add(comp.name)
+            try:
+                bodies += comp.bRepBodies.count
+            except Exception:
+                pass
+        n_joints = b.root.joints.count
+        n_params = b.design.userParameters.count
+    except Exception as exc:
+        return "verification unavailable: %s" % exc
+
+    lines = [
+        "",
+        "in the document now:",
+        "  distinct components : %d   (expected 11)" % len(names),
+        "  occurrences         : %d   (expected 15)" % n_occ,
+        "  solid bodies        : %d   (expected 11 or more)" % bodies,
+        "  joints              : %d   (expected 5)" % n_joints,
+        "  user parameters     : %d   (expected %d)" % (n_params, len(PARAMS)),
+    ]
+    if len(names) != 11 or n_joints != 5:
+        lines.append("  -> counts differ from expected; see failures above")
+    return "\n".join(lines)
+
+
 def build(design):
     """Everything, in order. Separated from run() so tests can call it."""
     design.designType = adsk.fusion.DesignTypes.ParametricDesignType
     b = Builder(design)
     b.add_user_parameters()
 
+    b.log.append("building parts:")
     for builder in BUILDERS:
-        builder(b)
-    b.log.append("components built: %d" % len(b.components))
+        b.step(builder.__name__.replace("build_", ""), builder, b)
+    b.log.append("components built: %d of %d" % (len(b.components), len(BUILDERS)))
 
     # The actuator can is one component shown at four joints.
     can = [o for o in b.components if o.component.name == "11_actuator_can"]
@@ -496,25 +566,72 @@ def build(design):
             )
         )
 
-    place_chain(b, b.components)
-    add_joints(b, b.components)
+    b.step("place_chain", place_chain, b, b.components)
+    b.step("add_joints", add_joints, b, b.components)
     b.log.append("occurrences total: %d" % len(b.components))
+    b.log.append(verify_document(b))
     return b
 
 
 def run(context):
     app = adsk.core.Application.get()
-    ui = app.userInterface
+    ui = None
     try:
+        ui = app.userInterface
         design = adsk.fusion.Design.cast(app.activeProduct)
         if design is None:
             ui.messageBox(
                 "No active Fusion design.\n\n"
-                "Open or create a design first, then run this script."
+                "Open or create a design first (File > New Design), "
+                "then run this script again."
             )
             return
+
         b = build(design)
-        ui.messageBox("Robot arm built.\n\n" + "\n".join(b.log))
+        report = _format_report(b)
+        path = _write_report(report)
+
+        head = "Robot arm built." if not b.failures else (
+            "Robot arm built with %d problem(s)." % len(b.failures)
+        )
+        tail = ""
+        if path:
+            tail = ("\n\nFull report written to:\n%s\n\n"
+                    "If anything failed, send that file back -- it says "
+                    "exactly which API call did not match." % path)
+        ui.messageBox(head + "\n\n" + report + tail)
+
     except Exception:
+        msg = "Script failed before it could report:\n\n" + traceback.format_exc()
+        _write_report(msg)
         if ui:
-            ui.messageBox("Script failed:\n\n" + traceback.format_exc())
+            ui.messageBox(msg)
+
+
+def _format_report(b):
+    lines = list(b.log)
+    if b.failures:
+        lines.append("")
+        lines.append("%d step(s) failed:" % len(b.failures))
+        for f in b.failures:
+            lines.append("  %s" % f["step"])
+            lines.append("    %s" % f["error"])
+            if f["where"]:
+                lines.append("    at %s" % f["where"])
+    else:
+        lines.append("")
+        lines.append("no failures.")
+    return "\n".join(lines)
+
+
+def _write_report(text):
+    """Drop the report next to this script, so it can be pasted back."""
+    try:
+        import os
+        here = os.path.dirname(os.path.abspath(__file__))
+        path = os.path.join(here, "fusion_run_report.txt")
+        with open(path, "w") as fh:
+            fh.write(text + "\n")
+        return path
+    except Exception:
+        return None

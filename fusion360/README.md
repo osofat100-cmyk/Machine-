@@ -11,7 +11,17 @@ timeline you can click back through and edit — not an imported lump.
    folder
 4. Select `robot_arm_fusion` → **Run**
 
-Takes a few seconds. A dialog reports what was built.
+Takes a few seconds. A dialog reports what was built, and a full report
+is written to `fusion360/fusion_run_report.txt`.
+
+**If something fails, the script does not stop.** It records which step
+broke and what the error was, builds everything else, then reports the
+lot — so one API mismatch tells you about all of them instead of just
+the first. It also counts what actually landed in the document
+(components, bodies, joints, parameters) rather than assuming.
+
+Send back `fusion_run_report.txt` if anything is marked FAIL; it names
+the exact call that didn't match.
 
 ## What you get
 
@@ -37,7 +47,7 @@ Every CAD API has this trap. SolidWorks' is set to metres.
 
 ```bash
 cd fusion360
-python3 tests/test_fusion_script.py       # 15 tests
+python3 tests/test_fusion_script.py       # 18 tests
 python3 tests/test_matches_cad_model.py   # 5 tests
 ```
 

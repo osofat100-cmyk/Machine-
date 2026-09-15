@@ -177,6 +177,53 @@ def test_run_reports_failure_instead_of_dying_silently():
     assert "No active" in app.userInterface.messages[-1]
 
 
+def test_a_failing_part_does_not_kill_the_run():
+    """One broken step must be recorded, not fatal.
+
+    This is the whole point of the step wrapper: the script has never
+    met the real Fusion API, so on first contact something will probably
+    not match. It should report every mismatch, not just the first.
+    """
+    rec, _, mod = build_once()
+
+    original = mod.build_forearm
+    def exploding(b):
+        raise RuntimeError("simulated API mismatch: setAngleExtent")
+    mod.BUILDERS[mod.BUILDERS.index(original)] = exploding
+    exploding.__name__ = "build_forearm"
+    try:
+        design = mock_adsk.new_design()
+        b = mod.build(design)
+        assert b is not None, "the run died instead of recording the failure"
+        assert len(b.failures) == 1, b.failures
+        assert "simulated API mismatch" in b.failures[0]["error"]
+        assert b.failures[0]["step"] == "forearm", b.failures[0]["step"]
+        # The other ten parts must still have been built.
+        built = [c.name for c in mock_adsk.REC.components
+                 if c.name.startswith(("0", "1"))]
+        assert len(built) >= 10, built
+        # And the report must mention it.
+        text = mod._format_report(b)
+        assert "1 step(s) failed" in text, text
+        assert "forearm" in text, text
+    finally:
+        mod.BUILDERS[mod.BUILDERS.index(exploding)] = original
+
+
+def test_clean_run_reports_no_failures():
+    rec, b, mod = build_once()
+    assert b.failures == [], b.failures
+    assert "no failures." in mod._format_report(b)
+
+
+def test_document_verification_reports_counts():
+    rec, b, mod = build_once()
+    text = "\n".join(b.log)
+    assert "in the document now:" in text, text
+    assert "occurrences" in text
+    assert "joints" in text
+
+
 def _main():
     tests = [v for k, v in sorted(globals().items()) if k.startswith("test_")]
     failed = 0
