@@ -261,6 +261,40 @@ def test_solid_bodies_are_counted():
     assert "solid bodies" in text, text
 
 
+def test_joints_use_assembly_context_proxies():
+    """Joint geometry must be bound to a placement, not to a definition.
+
+    The actuator can is placed four times and the finger twice, so a
+    joint pointing at the bare component origin is ambiguous about which
+    placement it means. Autodesk's documented answer is
+    createForAssemblyContext(occurrence); this asserts we call it.
+    """
+    rec, b, mod = build_once()
+    proxy_calls = [c for c in rec.calls if c[0] == "createForAssemblyContext"]
+    # Five joints, two geometries each.
+    assert len(proxy_calls) == 10, (
+        "expected 10 proxy creations for 5 joints, got %d" % len(proxy_calls))
+
+
+def test_joint_point_falls_back_when_proxy_unavailable():
+    """An older API without createForAssemblyContext must not break the run."""
+    rec, b, mod = build_once()
+
+    class NoProxy(object):
+        name = "origin"
+        def createForAssemblyContext(self, occ):
+            raise AttributeError("not available in this API version")
+
+    class FakeComp(object):
+        originConstructionPoint = NoProxy()
+
+    class FakeOcc(object):
+        component = FakeComp()
+
+    got = mod._joint_point(FakeOcc())
+    assert isinstance(got, NoProxy), "fallback did not return the bare point"
+
+
 def _main():
     tests = [v for k, v in sorted(globals().items()) if k.startswith("test_")]
     failed = 0

@@ -154,6 +154,18 @@ class _Named(object):
     def __init__(self, name=""):
         self.name = name
 
+    def createForAssemblyContext(self, occurrence):
+        """Real Fusion returns a proxy bound to one placement.
+
+        Modelled because the joint code must use it: a bare component
+        origin point refers to the component definition, not to a
+        particular occurrence of it.
+        """
+        proxy = _Named(self.name + "@proxy")
+        proxy.context = occurrence
+        REC.note("createForAssemblyContext", of=self.name)
+        return proxy
+
 
 class _Profile(_Named):
     pass

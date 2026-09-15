@@ -451,6 +451,27 @@ def place_chain(b, occurrences):
     return placed
 
 
+def _joint_point(occurrence):
+    """The origin point of one placed occurrence, in assembly context.
+
+    A component's `originConstructionPoint` belongs to the component
+    *definition*, not to any particular placement of it. Handing that
+    straight to `JointGeometry.createByPoint` is the documented way to
+    get a joint that refers to the wrong thing -- and with the actuator
+    can placed four times and the finger twice, "the wrong thing" is
+    ambiguous by construction here.
+
+    `createForAssemblyContext(occurrence)` returns a proxy bound to this
+    specific placement, which is what a joint needs. Older API versions
+    may not expose it, so fall back rather than fail outright.
+    """
+    point = occurrence.component.originConstructionPoint
+    try:
+        return point.createForAssemblyContext(occurrence)
+    except Exception:
+        return point
+
+
 def add_joints(b, occurrences):
     """Revolute joints, so the arm actually articulates in Fusion.
 
@@ -474,10 +495,10 @@ def add_joints(b, occurrences):
             continue
         try:
             g1 = adsk.fusion.JointGeometry.createByPoint(
-                by_name[child].component.originConstructionPoint
+                _joint_point(by_name[child])
             )
             g2 = adsk.fusion.JointGeometry.createByPoint(
-                by_name[parent].component.originConstructionPoint
+                _joint_point(by_name[parent])
             )
             jin = b.root.joints.createInput(g1, g2)
             direction = (
