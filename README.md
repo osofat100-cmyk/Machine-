@@ -14,8 +14,8 @@ claiming one prompt, 11 parts, 1 assembly, 35 minutes, in SolidWorks
 
 ![The generated arm](docs/img/arm_iso.png)
 
-Eleven parts, fifteen instances, one assembly. 7.19 kg in 6061-T6,
-573 mm reach, built and verified in **10.5 seconds**.
+Twelve parts, sixteen instances, one assembly. 6061-T6, 573 mm reach
+in the default build, verified in seconds.
 
 ## Two halves
 
@@ -30,7 +30,7 @@ cd cad && python3 build.py
 ```
 
 Exports STEP, STL and hidden-line drawings, and refuses to export
-anything that fails its eight verification checks — including a
+anything that fails its eleven verification checks — including a
 kinematic chain cross-checked against an independent 4×4-matrix
 implementation, agreeing to 2.6e-13 mm.
 
@@ -65,20 +65,26 @@ Software-rasterised in numpy: no GPU, no OpenGL, no display. See
 cd cad && python3 simulate_cell.py     # build/cell.mp4
 ```
 
-Five instances of the same arm beside a belt that never stops, sorting
-boxes by size into fifteen bins. Three on one side, two on the other,
-staggered so no two ever look at the same stretch of belt. Each pick is
-made on a moving box with the tool matched to belt speed at the instant
-the jaws close -- 0.04 mm/s relative, against a belt running at 115.
+Five instances of the same arm -- re-driven longer, 728 mm of reach --
+beside a belt that never stops, sorting boxes by size into fifteen bins.
+Three on one side, two on the other, staggered so no two ever look at
+the same stretch of belt. Every box is the same colour and the same
+shape; the only thing that decides where one goes is its measured edge,
+so the sorting is a measurement rather than a colour match.
 
-Territory is the whole design: an arm takes a box only if it is on that
-arm's half of the belt width, lands inside that arm's stretch of its
-length, and sits inside the annulus the arm can provably reach. A box
-its owner is too busy for goes to the next arm on that side; one nobody
-catches runs off the end and is counted. And because disjoint territory
-constrains the tool but not the elbow, the clearance between every pair
-of arms is measured from the placed triangles every frame: closest
-approach, over the whole run, 167 mm.
+Each arm can **extend right across** the belt -- that is why the links
+are longer -- and is never **sent** across it. Capability and policy are
+separate claims and both are checked: the solver is asked for a tool
+pose at ninety points spanning the full width, and the dispatcher is
+held to each arm's own half.
+
+Territory is the rest of the design: an arm takes a box only if it is on
+that arm's half, lands inside that arm's stretch of belt, and sits
+inside the annulus the arm can provably reach. A box its owner is too
+busy for goes to the next arm on that side; one nobody catches runs off
+the end and is counted. And because disjoint territory constrains the
+tool but not the elbow, the clearance between every pair of arms is
+measured from the placed triangles every frame.
 
 ### `fusion360/` — run it in Fusion
 

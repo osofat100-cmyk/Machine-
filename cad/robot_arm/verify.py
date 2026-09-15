@@ -10,6 +10,9 @@ disagree. Three independent checks:
    implementations agreeing is worth far more than one that runs.
 3. `check_interference` -- no two parts occupy the same space, beyond the
    press/clearance fits that are there on purpose.
+4. `check_gripper` -- the jaws are inside the slot they run in, at every
+   stroke the design allows. A gripper whose jaws leave their body is
+   still a valid pile of solids.
 
 An agent driving a CAD system needs exactly this: a way to be told it is
 wrong, in terms it can act on.
@@ -212,6 +215,47 @@ def check_interference(p: ArmParams, rep: Report, tol: float = 1.0) -> None:
     rep.add("no unintended interference between parts", not clashes, detail)
 
 
+def check_gripper(p: ArmParams, rep: Report) -> None:
+    """A jaw that is not in its slot is not a jaw.
+
+    The gripper used to be two fingers placed on the tool face and slid
+    apart, which meant `finger_stroke` could be any number at all: past
+    a certain opening the jaws were simply two solids floating near the
+    flange, attached to nothing, and every other check in this file
+    passed. Nothing about that is visible in a still render either --
+    it reads as a gripper that happens to be open.
+
+    So the body exists, and this is what makes it load-bearing: the slot
+    is long enough for both jaws at full travel, the commanded stroke is
+    inside that travel, and the jaws are still engaged in the body at
+    the extremes.
+    """
+    reach = p.grip_stroke_max + p.finger_thk / 2.0
+    rep.add("the slot is long enough for both jaws at full stroke",
+            reach <= p.grip_slot_len / 2.0 + 1e-9,
+            f"jaw outer face reaches {reach:.1f} mm, slot half-length "
+            f"{p.grip_slot_len / 2.0:.1f} mm")
+    rep.add("the commanded stroke is inside the travel the slot allows",
+            p.finger_stroke <= p.grip_stroke_max,
+            f"{p.finger_stroke:.1f} mm commanded of "
+            f"{p.grip_stroke_max:.1f} mm available")
+
+    from build123d import Pos
+    lib = P.build_all(p)
+    body = lib["12_gripper_body"].moved(Pos(0, 0, p.flange_face_z))
+    worst = 1e9
+    for stroke in (0.0, p.finger_stroke, p.grip_stroke_max):
+        for sign in (-1, 1):
+            jaw = lib["10_gripper_finger"].moved(
+                Pos(sign * stroke, 0, p.finger_mount_z))
+            a, b = body.bounding_box(), jaw.bounding_box()
+            worst = min(worst, min(a.max.Z, b.max.Z) - max(a.min.Z, b.min.Z))
+    rep.add("the jaws are still held by the body at every stroke",
+            worst >= p.grip_slot_depth - 1e-6,
+            f"least engagement {worst:.1f} mm of a {p.grip_slot_depth:.1f} mm "
+            f"slot")
+
+
 def check_reach(p: ArmParams, rep: Report) -> None:
     """Fully extended, the tool should sit at roughly the nominal reach."""
     straight = p.at_pose(0, 0, 0, 0, 0, 0)
@@ -229,6 +273,7 @@ def run(p: ArmParams | None = None) -> Report:
     check_solids(p, rep)
     check_kinematics(p, rep)
     check_axes(p, rep)
+    check_gripper(p, rep)
     check_reach(p, rep)
     check_interference(p, rep)
     return rep

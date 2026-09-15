@@ -29,6 +29,7 @@ from pathlib import Path
 
 import numpy as np
 
+from robot_arm import assembly as A
 from robot_arm.params import ArmParams
 from robot_arm.verify import Report
 from sim import cell as C, cellscene as CS, hud_cell, kinematics as K
@@ -54,10 +55,12 @@ def arm_meshes(p: ArmParams, fr: SO.Frame, protos) -> list[list]:
 
 def parcel_meshes(fr: SO.Frame) -> list:
     out = []
+    parcel = R.hex_to_linear(C.PARCEL_COLOUR)
     for sn in fr.parcels:
-        cls = C.BY_KEY[sn.key]
-        out.append(S.box_mesh((cls.size,) * 3, (0.0, 0.0, 0.0),
-                              R.hex_to_linear(cls.colour), m=sn.pose))
+        # Every box the same colour and the same shape: the only thing
+        # that tells the cell where one belongs is how big it is.
+        out.append(S.box_mesh((sn.size,) * 3, (0.0, 0.0, 0.0), parcel,
+                              m=sn.pose))
     return out
 
 
@@ -114,7 +117,7 @@ def check_clearance(p: ArmParams, frames, protos, rep: Report, stride=2):
     return worst
 
 
-def check_structure(rep: Report) -> None:
+def check_structure(p: ArmParams, rep: Report) -> None:
     """The layout's own promises, before anything moves."""
     lo_l, hi_l = K.LIMITS[0]
     tight = [(a.name, a.j1_range) for a in C.ARMS
@@ -140,6 +143,105 @@ def check_structure(rep: Report) -> None:
     rep.add("no two arms on a side own the same stretch of belt", not bad,
             f"closest windows {min(abs(b.x0 - a.x1) for a in C.ARMS for b in C.ARMS if b.x0 > a.x1):.0f} mm apart"
             if not bad else f"{bad}")
+
+    # Capability, checked separately from policy: the arm can cross the
+    # belt even though it is never sent across it.
+    worst, radii, fails = 0.0, [], []
+    for arm in C.ARMS:
+        for pt in C.full_width_set(arm):
+            lp = arm.to_local(pt)
+            radii.append(float(np.hypot(lp[0], lp[1])))
+            q, pe, ae = K.solve_ik(p, K.target_frame(lp), K.seed_for(lp, p))
+            worst = max(worst, pe, ae)
+            if pe > 0.2 or ae > 0.2:
+                fails.append((arm.name, np.round(pt, 0)))
+    rep.add("every arm can extend across the whole width of the belt",
+            not fails,
+            f"solved at {len(radii)} points spanning {min(radii):.0f}"
+            f"..{max(radii):.0f} mm of reach, worst residual {worst:.3f}"
+            if not fails else f"{fails[:3]}")
+
+    cross = [a.name for a in C.ARMS
+             if not a.owns_side(-a.side * (C.BELT_HALF_W * 0.5))]
+    rep.add("...and is still never sent across it",
+            len(cross) == len(C.ARMS),
+            "the far half of the belt fails every arm's own side test")
+
+
+def check_bands(rep: Report) -> None:
+    """The size bands must not touch, or a measurement near a boundary
+    could honestly belong to two bins."""
+    gaps = [C.CLASSES[i + 1].lo - C.CLASSES[i].hi
+            for i in range(len(C.CLASSES) - 1)]
+    rep.add("the size bands leave a gap, so no measurement is ambiguous",
+            min(gaps) > 0, f"narrowest gap between bands {min(gaps):.0f} mm, "
+            f"thresholds at {C.CUTS[0]:.0f} and {C.CUTS[1]:.0f} mm")
+    mis = [sz for cls in C.CLASSES
+           for sz in np.linspace(cls.lo, cls.hi, 25)
+           if C.classify(sz).key != cls.key]
+    rep.add("every size in a band classifies into that band", not mis,
+            f"{3 * 25} sizes swept" if not mis else f"{mis[:3]}")
+
+
+def check_designation(p: ArmParams, frames, diag, protos, rep: Report) -> None:
+    """Did each box end up in the box it was designated for?
+
+    Not 'in the bin the dispatcher aimed at' -- that would only prove the
+    dispatcher agrees with itself. This takes each box where it finally
+    came to rest, finds the nearest of all fifteen bins, and requires
+    that bin to be the one `cell.classify` designates for the box's
+    measured edge.
+    """
+    wrong, checked, worst = [], 0, 0.0
+    all_bins = [(a, key, pt) for a in C.ARMS for key, pt in a.bins.items()]
+    for sn in frames[-1].parcels:
+        if sn.state != "binned" or sn.claimed_by is None:
+            continue
+        here = sn.pose[:3, 3]
+        arm, key, pt = min(all_bins,
+                           key=lambda b: np.linalg.norm(here[:2] - b[2][:2]))
+        want = C.classify(sn.size).key
+        off = float(np.linalg.norm(here[:2] - pt[:2]))
+        worst = max(worst, off)
+        checked += 1
+        if key != want or off > C.BIN_INNER:
+            wrong.append((sn.pid, round(sn.size, 1), want, key, round(off)))
+    rep.add("every box came to rest in the bin its size designates",
+            not wrong and checked > 0,
+            f"{checked} boxes, worst {worst:.0f} mm from the bin's centre "
+            f"(bin half-width {C.BIN_INNER:.0f} mm)" if not wrong
+            else f"{wrong[:3]}")
+
+    # and the jaws closed on the width that was measured, not a nominal one
+    off = max((abs(gap - size) for _, _, gap, size, _ in diag["grasp_pose"]),
+              default=1e9)
+    rep.add("the jaws close on the width that was measured", off < 1e-6,
+            f"{len(diag['grasp_pose'])} grasps, worst gap error {off:.1e} mm "
+            f"across sizes "
+            f"{min(sz for *_, sz, _ in diag['grasp_pose']):.0f}"
+            f"..{max(sz for *_, sz, _ in diag['grasp_pose']):.0f} mm")
+
+    # measured off the placed triangles, not off the arithmetic
+    worst_geo, n = 0.0, 0
+    for idx, q, gap, size, key in diag["grasp_pose"][:12]:
+        arm = C.ARMS[idx]
+        pose = K.posed(p, q, gap)
+        inv = np.linalg.inv(S.loc_matrix(A.joint_frames(pose).j6))
+        band_lo = p.finger_mount_z + p.finger_len
+        tips = []
+        for label, mesh in S.arm_instances(pose, protos):
+            if not label.startswith("10_gripper_finger"):
+                continue
+            local = (inv[:3, :3] @ mesh.verts.T).T + inv[:3, 3]
+            band = local[(local[:, 2] > band_lo - 0.5)
+                         & (local[:, 2] < band_lo + p.finger_thk + 0.5)]
+            tips.append((band[:, 0].min(), band[:, 0].max()))
+        tips.sort()
+        worst_geo = max(worst_geo, abs(float(tips[1][0] - tips[0][1]) - size))
+        n += 1
+    rep.add("the jaw faces really are that far apart", worst_geo < 0.2,
+            f"{n} grasps measured from the placed triangles, worst "
+            f"disagreement with the box {worst_geo:.3f} mm")
 
 
 def check_program(p: ArmParams, frames, diag, rep: Report) -> None:
@@ -182,10 +284,39 @@ def check_program(p: ArmParams, frames, diag, rep: Report) -> None:
     rep.add("every box was grasped inside its own arm's territory",
             all(diag["zone_ok"]), f"{len(diag['zone_ok'])} grasps, all inside")
 
+    # Grasping inside your territory is not the same as staying out of
+    # everyone else's. The carry legitimately crosses the unowned gaps
+    # between windows on its way to the bins; what it must never do is
+    # cross into a stretch of belt that belongs to another arm.
+    out, near = [], 0
+    for fr in frames:
+        for i, arm in enumerate(C.ARMS):
+            pt = fr.tcp[i][:3, 3]
+            if abs(pt[1]) > C.BELT_HALF_W:
+                continue
+            near += 1
+            owner = C.owner_of(float(pt[0]), float(pt[1]))
+            if owner is not None and owner is not arm:
+                out.append((round(fr.t, 2), arm.name, owner.name,
+                            round(float(pt[0])), round(float(pt[1]))))
+    rep.add("no arm's tool is ever inside another arm's territory", not out,
+            f"{near} frames with a tool over the belt, none of them in "
+            f"someone else's stretch" if not out
+            else f"{len(out)} frames, first {out[0]}")
+
     sq = max(diag["jaw_square"]) if diag["jaw_square"] else 90.0
     rep.add("the jaws meet the box square to its faces, not on a corner",
             sq < 1.0,
             f"worst misalignment with the belt axis {sq:.3f} deg")
+
+    stroke = max((K.stroke_for_gap(p, g) for _, _, g, _, _
+                  in diag["grasp_pose"]), default=0.0)
+    open_stroke = max((K.stroke_for_gap(p, SO.open_gap(sz)) for _, _, _, sz, _
+                       in diag["grasp_pose"]), default=0.0)
+    rep.add("the jaws never open past the travel the slot allows",
+            open_stroke <= p.grip_stroke_max,
+            f"widest {open_stroke:.1f} mm of {p.grip_stroke_max:.1f} mm "
+            f"available (closed on {stroke:.1f} mm)")
 
     jaw = min(diag["jaw_floor"]) if diag["jaw_floor"] else -1.0
     rep.add("the jaws clear the belt surface", jaw > 4.0,
@@ -237,7 +368,7 @@ def main(argv=None) -> int:
 
     w = args.width
     h = int(round(w * 9 / 16))
-    p = ArmParams()
+    p = C.CELL_ARM
 
     print(f"cell: {len(C.ARMS)} arms, belt {C.BELT_X1 - C.BELT_X0:.0f} mm "
           f"at {C.BELT_SPEED:.0f} mm/s, cycle {SO.CYCLE_T:.2f} s")
@@ -257,8 +388,10 @@ def main(argv=None) -> int:
 
     print("checking")
     rep = Report()
-    check_structure(rep)
+    check_structure(p, rep)
+    check_bands(rep)
     check_program(p, frames, diag, rep)
+    check_designation(p, frames, diag, protos, rep)
     check_clearance(p, frames, protos, rep)
     print(rep.render())
     if not rep.ok:

@@ -121,9 +121,11 @@ def draw(img: np.ndarray, fr, meta: dict, cam: R.Camera,
                font=f_lab, fill=STATE_COLOUR.get(phase, DIM))
         tgt = fr.targets[i]
         if tgt is not None:
-            key = next((sn.key for sn in fr.parcels if sn.pid == tgt), "?")
-            d.text((x0 + int(84 * s), top + int(34 * s)),
-                   f"#{tgt:02d} {key}", font=f_lab, fill=INK)
+            hit = next((sn for sn in fr.parcels if sn.pid == tgt), None)
+            if hit is not None:
+                d.text((x0 + int(84 * s), top + int(34 * s)),
+                       f"#{tgt:02d}  {hit.size:.0f} mm  {hit.key}",
+                       font=f_lab, fill=INK)
         d.text((x0 + int(14 * s), top + int(52 * s)),
                f"x {arm.x0:+5.0f} .. {arm.x1:+5.0f}", font=f_tiny, fill=FAINT)
     return np.asarray(Image.alpha_composite(pic.convert("RGBA"), over)
@@ -131,38 +133,35 @@ def draw(img: np.ndarray, fr, meta: dict, cam: R.Camera,
 
 
 def _tags(d, fr, cam, w, h, s, meta):
-    """A label over every box still on the belt: what it is, whose it is.
+    """A size on every box still on the belt, and nothing else.
 
-    This is the 'look at the belt and find them' half of the job made
-    visible -- the size class each box was sorted into, and the arm that
-    has claimed it, straight out of the dispatcher's table.
+    These used to be filled panels carrying the size class *and* the arm
+    that had claimed it, which put an opaque card over every box in the
+    frame -- covering the one thing the shot is of. The claim already
+    shows on the arm's own card at the bottom. What cannot be read off
+    the picture is how big a box is, so that is all that is left here,
+    drawn as bare type with a thin shadow rather than a card.
     """
     pts, keep = [], []
     for sn in fr.parcels:
-        if sn.state not in ("belt",):
+        if sn.state != "belt":
             continue
-        pts.append(sn.pose[:3, 3] + (0.0, 0.0, 46.0))
+        pts.append(sn.pose[:3, 3] + (0.0, 0.0, sn.size / 2.0 + 26.0))
         keep.append(sn)
     if not pts:
         return
     sx, sy, zc = R.project(np.array(pts), cam, w, h)
-    f_tag = font(MONO_B, int(12 * s))
+    f_tag = font(MONO_B, int(13 * s))
     for sn, x, y, z in zip(keep, sx, sy, zc):
         if z <= cam.near or not (0 < x < w and 0 < y < h):
             continue
-        cls = C.BY_KEY[sn.key]
+        cls = C.classify(sn.size)
         col = tuple(int(cls.colour.lstrip("#")[j:j + 2], 16) for j in (0, 2, 4))
-        owner = sn.claimed_by
-        text = sn.key if owner is None else f"{sn.key}→{C.ARMS[owner].name}"
-        tw = d.textlength(text, font=f_tag) + int(10 * s)
-        th = int(16 * s)
-        bx, by = x - tw / 2, y - th
-        d.rounded_rectangle((bx, by, bx + tw, by + th), radius=int(3 * s),
-                            fill=(10, 14, 20, 190))
-        d.rectangle((bx, by, bx + int(3 * s), by + th), fill=col)
-        d.text((bx + int(7 * s), by + int(2 * s)), text, font=f_tag,
-               fill=INK if owner is None else meta["tint"][owner])
-        d.line((x, y, x, y + int(9 * s)), fill=(*col, 150), width=1)
+        text = f"{sn.size:.0f}"
+        tw = d.textlength(text, font=f_tag)
+        for ox, oy in ((1, 1), (-1, 1), (1, -1), (-1, -1)):
+            d.text((x - tw / 2 + ox, y + oy), text, font=f_tag, fill=(6, 9, 14))
+        d.text((x - tw / 2, y), text, font=f_tag, fill=col)
 
 
 def _arm_labels(d, fr, cam, w, h, s, meta):

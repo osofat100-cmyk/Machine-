@@ -37,8 +37,18 @@ from robot_arm.params import ArmParams
 
 from . import kinematics as K
 
+# The cell runs a longer-reach build of the same arm. Standing off the
+# belt far enough to keep its own near edge outside the arm's inner
+# limit, and reaching the *far* edge as well, needs more arm than the
+# 573 mm default has: the far edge of the belt is 687 mm from the base
+# and the default tops out around 550 at hover height. So the links get
+# longer. `params.py` is the whole model, so this is one line, and
+# `robot_arm.verify` passes on it unchanged -- which is the only reason
+# it is safe to do.
+CELL_ARM = ArmParams(upper_len=345.0, fore_len=285.0)
+
 # ---- the conveyor ---------------------------------------------------
-BELT_X0, BELT_X1 = -1550.0, 1550.0     # mm, boxes travel +X
+BELT_X0, BELT_X1 = -1720.0, 1720.0     # mm, boxes travel +X
 BELT_HALF_W = 230.0                    # belt is 460 mm wide
 BELT_TOP = 120.0                       # top surface above the floor
 BELT_SPEED = 115.0                     # mm/s, and it never stops
@@ -46,33 +56,72 @@ SLAB_H = 44.0                          # thickness of the belt slab
 RAIL_W = 26.0
 
 # ---- the parts on it ------------------------------------------------
+# Boxes are not three fixed sizes in three colours. They arrive at any
+# size inside their band, and they all look the same: one colour, one
+# shape. A cell that sorted a teal box into the teal bin would be
+# demonstrating nothing -- the whole job is to *measure* the thing on
+# the belt and work out which box it is designated for. The colour is
+# on the bins, which are the designations, not on the parts.
+PARCEL_COLOUR = "#b9a17c"
+
+
 @dataclass(frozen=True)
 class SizeClass:
     key: str
     name: str
-    size: float
-    colour: str
+    lo: float                          # band the measured edge must fall in
+    hi: float
+    colour: str                        # the designated bin's colour
+
+    @property
+    def nominal(self) -> float:
+        return (self.lo + self.hi) / 2.0
 
 
 CLASSES = (
-    SizeClass("S", "small", 26.0, "#48a9a6"),
-    SizeClass("M", "medium", 38.0, "#d98b39"),
-    SizeClass("L", "large", 54.0, "#c1554a"),
+    SizeClass("S", "small", 22.0, 30.0, "#48a9a6"),
+    SizeClass("M", "medium", 34.0, 42.0, "#d98b39"),
+    SizeClass("L", "large", 46.0, 54.0, "#c1554a"),
 )
 BY_KEY = {c.key: c for c in CLASSES}
 
+# Thresholds sit in the gaps between the bands, so a measurement can
+# never be ambiguous -- and `test_cell.py` checks the gaps are really
+# there rather than taking the constants' word for it.
+CUTS = ((CLASSES[0].hi + CLASSES[1].lo) / 2.0,
+        (CLASSES[1].hi + CLASSES[2].lo) / 2.0)
+
+
+def classify(size: float) -> SizeClass:
+    """Which bin a box is designated for, from its measured edge.
+
+    This is the whole job the arms are doing, so it takes a measurement
+    and nothing else. Nothing downstream is allowed to ask a box what it
+    "is" -- `sorter` routes on the answer to this function.
+    """
+    if size < CUTS[0]:
+        return CLASSES[0]
+    return CLASSES[1] if size < CUTS[1] else CLASSES[2]
+
 # ---- the arms -------------------------------------------------------
-ARM_OFFSET = 430.0                     # how far the bases stand off the belt
-ARM_XS = (-900.0, -450.0, 0.0, 450.0, 900.0)
+ARM_OFFSET = 445.0                     # how far the bases stand off the belt
+# Staggered at 520 mm, not 450. The arms got longer so that each could
+# cross the belt, and a longer arm sweeps a bigger volume: at the old
+# spacing two opposite-side arms reaching the centreline from either
+# side closed to 73 mm of each other. The gap between facing windows is
+# what that clearance is made of, so it is the gap that was widened.
+ARM_XS = (-1040.0, -520.0, 0.0, 520.0, 1040.0)
 ARM_SIDES = (-1, +1, -1, +1, -1)       # staggered: 3 near side, 2 far side
 WINDOW_HALF = 190.0                    # half the length of belt an arm owns
 
 # Verified annulus, in the horizontal plane, measured from the arm's own
 # base. Both numbers are inside what `measure_envelope` reports at every
 # height the program uses; the test re-measures and holds them to it.
-R_MIN, R_MAX = 185.0, 520.0
+# R_MAX covers the *far* edge of the belt, not just this arm's half --
+# see `full_width_set`.
+R_MIN, R_MAX = 195.0, 715.0
 
-HOVER = 150.0                          # approach height above a grasp
+HOVER = 120.0                          # approach height above a grasp
 BIN_R = 395.0                          # bins sit on an arc behind each arm
 BIN_ANGLES = (-128.0, -90.0, -52.0)    # small, medium, large
 BIN_TOP = 150.0
@@ -186,8 +235,8 @@ def _park_seed(side: int) -> np.ndarray:
 def _world_points(ax: float, side: int, bins: dict) -> list[np.ndarray]:
     """Every extreme point an arm at (ax, side) is ever asked to reach."""
     x0, x1 = ax - WINDOW_HALF, ax + WINDOW_HALF
-    zs = (BELT_TOP + CLASSES[0].size / 2, BELT_TOP + CLASSES[-1].size / 2,
-          BELT_TOP + CLASSES[-1].size / 2 + HOVER)
+    zs = (BELT_TOP + CLASSES[0].lo / 2, BELT_TOP + CLASSES[-1].hi / 2,
+          BELT_TOP + CLASSES[-1].hi / 2 + HOVER)
     pts = [np.array([x, y, z]) for z in zs
            for x in (x0, x1) for y in (side * BELT_HALF_W, 0.0)]
     pts += list(bins.values())
@@ -284,8 +333,8 @@ def downstream_of(arm: Arm) -> list[Arm]:
     return [a for a in ARMS if a.side == arm.side and a.x0 > arm.x1]
 
 
-def grasp_z(cls: SizeClass) -> float:
-    return BELT_TOP + cls.size / 2.0
+def grasp_z(size: float) -> float:
+    return BELT_TOP + size / 2.0
 
 
 def belt_x(x0: float, t0: float, t: float) -> float:
@@ -293,7 +342,7 @@ def belt_x(x0: float, t0: float, t: float) -> float:
 
 
 # ---- derivation, used by the tests ---------------------------------
-def measure_envelope(p: ArmParams, z: float, lo=100, hi=660, step=20,
+def measure_envelope(p: ArmParams, z: float, lo=90, hi=820, step=20,
                      tol=0.25) -> tuple[float, float]:
     """Solve outward along a ray and report where the tool can be put.
 
@@ -332,3 +381,19 @@ def window_corners(arm: Arm, z: float) -> list[np.ndarray]:
     """The four hardest points in a window, at a given height."""
     ys = (arm.side * BELT_HALF_W, 0.0)
     return [np.array([x, y, z]) for x in (arm.x0, arm.x1) for y in ys]
+
+
+def full_width_set(arm: Arm) -> list[np.ndarray]:
+    """Every point across the *whole* belt inside this arm's window.
+
+    Capability, not policy. The dispatcher will never send an arm past
+    the centreline -- that is what keeps two arms out of each other --
+    but an arm that physically could not get there would be a different
+    machine, reaching half a belt and calling it a rule. So the arm is
+    long enough to cross, and `simulate_cell.py` proves it by solving,
+    while the territory rules go on holding it to its own side.
+    """
+    zs = (BELT_TOP + CLASSES[0].lo / 2, BELT_TOP + CLASSES[-1].hi / 2,
+          BELT_TOP + CLASSES[-1].hi / 2 + HOVER)
+    return [np.array([x, y, z]) for z in zs for x in (arm.x0, arm.x1)
+            for y in (-BELT_HALF_W, 0.0, BELT_HALF_W)]

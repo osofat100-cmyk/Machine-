@@ -40,12 +40,14 @@ def _mat(loc) -> np.ndarray:
 def grasp_offset(p: ArmParams) -> float:
     """Distance from the J6 frame to the point between the jaw serrations.
 
-    The flange stands `tool_thk + tool_spigot_h` off J6; each finger is
-    authored as an L rising `finger_len` with a `finger_thk` tip folded
-    across the top. The middle of that tip is where a part is actually
-    held.
+    The jaws no longer sit on the tool face: they rise out of the
+    gripper body's slot, so the count starts at `finger_mount_z` -- the
+    flange face, plus the body, less the depth the jaw stays engaged by.
+    Each finger is then an L rising `finger_len` with a `finger_thk` tip
+    folded across the top, and the middle of that tip is where a part is
+    actually held.
     """
-    return p.tool_thk + p.tool_spigot_h + p.finger_len + p.finger_thk / 2
+    return p.finger_mount_z + p.finger_len + p.finger_thk / 2
 
 
 def _inboard(p: ArmParams) -> float:

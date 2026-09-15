@@ -1,4 +1,4 @@
-"""The main assembly: 11 parts, 15 instances, one kinematic chain.
+"""The main assembly: 12 parts, 16 instances, one kinematic chain.
 
 The chain is built as a running product of `Location`s, one per joint.
 `Pos(...) * Rot(...)` rotates about the *translated* origin, so each
@@ -55,7 +55,7 @@ def joint_frames(p: ArmParams) -> Frames:
     # J6: tool roll about the flange axis.
     f6 = f5 * Rot(0, 0, j6)
     # The tool mounting face itself.
-    tool = f6 * Pos(0, 0, p.tool_thk + p.tool_spigot_h)
+    tool = f6 * Pos(0, 0, p.flange_face_z)
     return Frames(base, f1, f2, f3, f4, f5, f6, tool)
 
 
@@ -71,6 +71,7 @@ _COLORS = {
     "09_tool_flange": "#718096",
     "10_gripper_finger": "#a0aec0",
     "11_actuator_can": "#1a202c",
+    "12_gripper_body": "#2d3748",
 }
 
 
@@ -113,7 +114,11 @@ def build_assembly(p: ArmParams | None = None) -> Compound:
 
     # --- tool -------------------------------------------------------
     add("09_tool_flange", "09_tool_flange", f.j6)
-    stand = p.tool_thk + p.tool_spigot_h
+    # The jaws run in the body's slot; they are not placed on the flange
+    # and slid apart. Without the body, `finger_stroke` had nothing to be
+    # a stroke *of*, and any opening wide enough to be useful left two
+    # jaws hanging in free space attached to nothing.
+    add("12_gripper_body", "12_gripper_body", f.j6 * Pos(0, 0, p.flange_face_z))
     for i, sign in enumerate((-1, 1)):
         # Each finger is authored with its tip folding toward local -X, so
         # the jaw on the -X side must be spun 180 degrees for the two tips
@@ -125,7 +130,8 @@ def build_assembly(p: ArmParams | None = None) -> Compound:
         add(
             "10_gripper_finger",
             f"10_gripper_finger.{i + 1}",
-            f.j6 * Pos(sign * p.finger_stroke, 0, stand) * Rot(0, 0, yaw),
+            f.j6 * Pos(sign * p.finger_stroke, 0, p.finger_mount_z)
+            * Rot(0, 0, yaw),
         )
 
     # --- actuators: one part, four placements ------------------------

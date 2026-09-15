@@ -92,9 +92,11 @@ def bins() -> list[Mesh]:
                 out.append(box_mesh((sx, sy, h - 50.0),
                                     (cx + dx, cy + dy, 50.0 + (h - 50.0) / 2),
                                     rim))
+            # The bin floor carries the class colour: the designation
+            # lives on the destination, not on the part.
             out.append(box_mesh((2 * w - 24, 2 * w - 24, 6.0),
                                 (cx, cy, 52.0),
-                                hex_to_linear(C.BY_KEY[key].colour) * 0.45))
+                                hex_to_linear(C.BY_KEY[key].colour) * 0.55))
     from .sorter import REJECT_PT
     rx, ry = REJECT_PT[0], REJECT_PT[1]
     out.append(box_mesh((300.0, 2 * C.BELT_HALF_W + 60, 40.0), (rx, ry, 20.0),

@@ -1,4 +1,4 @@
-"""The eleven parts.
+"""The twelve parts.
 
 Each builder takes an `ArmParams` and returns a build123d `Part`.
 
@@ -343,6 +343,47 @@ def gripper_finger(p: ArmParams) -> Part:
 # --------------------------------------------------------------------
 # 11 / 11  (instanced at J1, J2, J3, J5)
 # --------------------------------------------------------------------
+def gripper_body(p: ArmParams) -> Part:
+    """The housing the two jaws run in.
+
+    A parallel gripper is a body with a slot and two jaws that travel in
+    it. Leaving the body out and translating the jaws apart on their own
+    gives a gripper that opens to any width at all -- including widths
+    where the jaws are no longer touching anything, which is not an open
+    gripper but two objects near each other.
+
+    So the slot is the mechanism *and* the limit: it is exactly long
+    enough for both jaws at `grip_stroke_max`, the jaws stay engaged in
+    it by `grip_slot_depth` at every stroke, and `verify.py` checks both.
+    """
+    body = Box(p.grip_body_len, p.grip_body_w, p.grip_body_h, align=_UP)
+    # the slot the jaws travel in, open at the working face
+    slot = Pos(0, 0, p.grip_body_h - p.grip_slot_depth) * Box(
+        p.grip_slot_len, p.finger_w + 1.0, p.grip_slot_depth + 1.0, align=_UP
+    )
+    part = body - slot
+    # bolts down to the tool flange, on the flange's own bolt circle
+    part = part - _bolt_ring(
+        p.tool_bolt_circle / 2, p.tool_bolt_dia, p.tool_bolt_count,
+        p.grip_body_h * 2, z=-1,
+    )
+    # a lightening pocket in each end, where no jaw ever travels
+    for sign in (-1, 1):
+        x = sign * (p.grip_slot_len + p.grip_wall) / 2.0
+        part = part - Pos(x, 0, -1) * Box(
+            p.grip_wall * 0.5, p.grip_body_w * 0.45, p.grip_body_h * 0.7,
+            align=_UP,
+        )
+    # Only the four outside corners: `filter_by(Axis.Z)` also returns
+    # the slot's and the pockets' internal edges, and filleting those
+    # together with the corners is what OCCT refuses.
+    corners = [e for e in part.edges().filter_by(Axis.Z)
+               if abs(e.center().X) > p.grip_body_len / 2 - 1.0]
+    part = _safe_fillet(part, corners, 2.5)
+    part.label = "12_gripper_body"
+    return part
+
+
 def actuator_can(p: ArmParams) -> Part:
     """Servo-gearbox body. One part, reused at four joints."""
     part = Cylinder(p.act_dia / 2, p.act_len, align=_UP)
@@ -380,6 +421,7 @@ BUILDERS = (
     tool_flange,
     gripper_finger,
     actuator_can,
+    gripper_body,
 )
 
 

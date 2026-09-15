@@ -56,15 +56,15 @@ JAW_MARGIN = 20.0                      # how much wider than the box the jaws op
 MIN_GAP_X = 260.0                      # closest two boxes are ever spawned
 
 
-def open_gap(cls: C.SizeClass) -> float:
-    return cls.size + JAW_MARGIN
+def open_gap(size: float) -> float:
+    return size + JAW_MARGIN
 
 
 # ---------------------------------------------------------------------
 @dataclass
 class Parcel:
     pid: int
-    cls: C.SizeClass
+    size: float                        # the measured edge -- the only input
     y: float
     x_at_t0: float
     t0: float
@@ -77,15 +77,20 @@ class Parcel:
     fall_t0: float = 0.0
     seen_at: float = -1.0
 
+    @property
+    def cls(self) -> C.SizeClass:
+        """Which box this one is designated for -- derived, every time,
+        from the measurement. Nothing stores the answer."""
+        return C.classify(self.size)
+
     def belt_pose(self, t: float) -> np.ndarray:
         m = np.eye(4)
-        m[:3, 3] = (C.belt_x(self.x_at_t0, self.t0, t), self.y,
-                    C.grasp_z(self.cls))
+        m[:3, 3] = self.belt_point(t)
         return m
 
     def belt_point(self, t: float) -> np.ndarray:
         return np.array([C.belt_x(self.x_at_t0, self.t0, t), self.y,
-                         C.grasp_z(self.cls)])
+                         C.grasp_z(self.size)])
 
 
 def spawn_plan(seconds: float, seed: int = 11, mean_gap: float = 1.15,
@@ -103,11 +108,12 @@ def spawn_plan(seconds: float, seed: int = 11, mean_gap: float = 1.15,
     t = lead
     pid = 0
     while t < seconds:
-        cls = C.CLASSES[int(rng.integers(0, len(C.CLASSES)))]
-        margin = cls.size / 2.0 + 18.0
+        band = C.CLASSES[int(rng.integers(0, len(C.CLASSES)))]
+        size = float(rng.uniform(band.lo, band.hi))
+        margin = size / 2.0 + 18.0
         side = -1 if rng.random() < 0.5 else 1
         y = side * float(rng.uniform(margin, C.BELT_HALF_W - margin))
-        out.append(Parcel(pid, cls, y, C.BELT_X0, t))
+        out.append(Parcel(pid, size, y, C.BELT_X0, t))
         pid += 1
         t += max(MIN_GAP_X / C.BELT_SPEED, float(rng.exponential(mean_gap)))
     return out
@@ -124,6 +130,7 @@ class Task:
     """
     parcel: Parcel
     bin_pt: np.ndarray
+    meet: np.ndarray = None            # where the box will be at touchdown
     jaw_az: float = 0.0                # local azimuth of the belt axis
     phase_i: int = 0
     k: int = 0                         # frames elapsed in this phase
@@ -275,7 +282,7 @@ def target_pose(st: ArmState, s: float, t: float, p: ArmParams):
         return st.park_tcp, st.gap
 
     e = K.ease(s)
-    cls = task.parcel.cls
+    size = task.parcel.size
     # Where the box would be if it were still riding the belt. After the
     # grasp it is not, but it stays the right frame to peel away *from*:
     # leaving it at e = 0 means leaving at belt speed.
@@ -285,34 +292,46 @@ def target_pose(st: ArmState, s: float, t: float, p: ArmParams):
     ph = task.phase
 
     if ph == "TRACK":
-        pos = _swing(arm, task.anchor[:3, 3], belt_ref + hover, e)
-        gap = open_gap(cls)
+        # To the intercept, which is a *fixed* point inside this arm's
+        # own window -- not to wherever the box happens to be now. The
+        # box is still upstream at this moment, and an arm that flies
+        # out to meet it there is an arm reaching into the territory of
+        # the one before it. Which is exactly what it was doing: the
+        # closest two arms ever came was a gripper out past its own
+        # window boundary, chasing a box that had not arrived yet.
+        pos = _swing(arm, task.anchor[:3, 3], task.meet + hover, e)
+        gap = open_gap(size)
     elif ph == "DESCEND":
-        pos = belt_ref + hover * (1.0 - e)
-        gap = open_gap(cls)
+        # One blend from that fixed hover point onto the moving box. At
+        # s = 0 it is the hover point with zero velocity, continuous
+        # with the end of TRACK; at s = 1 it is the box itself, and
+        # because the ease has zero derivative there, moving at exactly
+        # belt speed.
+        pos = (1 - e) * (task.meet + hover) + e * belt_ref
+        gap = open_gap(size)
     elif ph == "CLOSE":
         pos = belt_ref
-        gap = float(K.blend([open_gap(cls)], [cls.size], s)[0])
+        gap = float(K.blend([open_gap(size)], [size], s)[0])
     elif ph == "LIFT":
         pos = _swing(arm, belt_ref, task.bin_pt + hover, e, bump)
-        gap = cls.size
+        gap = size
     elif ph == "DROP":
-        pos = (1 - e) * (task.bin_pt + hover) + e * _drop_pt(task, cls)
-        gap = cls.size
+        pos = (1 - e) * (task.bin_pt + hover) + e * _drop_pt(task, size)
+        gap = size
     elif ph == "OPEN":
-        pos = _drop_pt(task, cls)
-        gap = float(K.blend([cls.size], [open_gap(cls)], s)[0])
+        pos = _drop_pt(task, size)
+        gap = float(K.blend([size], [open_gap(size)], s)[0])
     else:                                            # RETURN
         pos = _swing(arm, task.anchor[:3, 3], st.park_tcp[:3, 3], e, bump)
-        gap = open_gap(cls)
+        gap = open_gap(size)
 
     lp = arm.to_local(pos)
     jaw = _jaw_local(arm, lp, _square_weight(ph, s), task.jaw_az)
     return arm.base @ K.target_frame(lp, jaw=jaw), gap
 
 
-def _drop_pt(task: Task, cls: C.SizeClass) -> np.ndarray:
-    return task.bin_pt + (0.0, 0.0, 26.0 + cls.size / 2.0)
+def _drop_pt(task: Task, size: float) -> np.ndarray:
+    return task.bin_pt + (0.0, 0.0, 26.0 + size / 2.0)
 
 
 # ---------------------------------------------------------------------
@@ -352,6 +371,7 @@ class Snap:
     pose: np.ndarray
     state: str
     claimed_by: int | None
+    size: float = 0.0
 
 
 @dataclass
@@ -373,7 +393,7 @@ def _slot(n: int) -> np.ndarray:
 
 def _rest_at(pt: np.ndarray, pc: Parcel, floor: float) -> np.ndarray:
     m = np.eye(4)
-    m[:3, 3] = (pt[0], pt[1], floor + pc.cls.size / 2.0)
+    m[:3, 3] = (pt[0], pt[1], floor + pc.size / 2.0)
     return m
 
 
@@ -402,7 +422,7 @@ def run(p: ArmParams, seconds: float = 26.0, fps: int = 30, seed: int = 11,
         if pe > 0.2 or ae > 0.2:
             raise RuntimeError(f"{a.name} cannot hold its park point "
                                f"({pe:.2f} mm, {ae:.2f} deg)")
-        states.append(ArmState(a, q.copy(), open_gap(C.CLASSES[-1]),
+        states.append(ArmState(a, q.copy(), open_gap(C.CLASSES[-1].hi),
                                q.copy(), a.base @ K.tcp(p, q)))
     for st in states:
         st.tcp = st.park_tcp.copy()
@@ -410,7 +430,7 @@ def run(p: ArmParams, seconds: float = 26.0, fps: int = 30, seed: int = 11,
     fill: dict = {}
     diag = {"ik_pos": [], "ik_ang": [], "grasp_rel": [], "track_err": [],
             "tcp_step": [], "claims": [], "zone_ok": [], "jaw_floor": [],
-            "grasps": [], "jaw_square": []}
+            "grasps": [], "jaw_square": [], "grasp_pose": []}
     counts = {"seen": 0, "picked": 0, "missed": 0,
               **{c.key: 0 for c in C.CLASSES}}
     frames: list[Frame] = []
@@ -437,8 +457,9 @@ def run(p: ArmParams, seconds: float = 26.0, fps: int = 30, seed: int = 11,
             pc = max(live, key=lambda q: q.belt_point(t)[0])
             pc.claimed_by = st.arm.index
             meet = pc.belt_point(t + INTERCEPT_T)
-            st.task = Task(pc, st.arm.bins[pc.cls.key],
-                           jaw_az=_jaw_az(st.arm, meet),
+            # Routed on the measurement, not on anything the spawner knew.
+            st.task = Task(pc, st.arm.bins[C.classify(pc.size).key],
+                           meet=meet, jaw_az=_jaw_az(st.arm, meet),
                            anchor=st.tcp.copy())
             diag["claims"].append((round(t, 2), st.arm.name, pc.pid, pc.cls.key))
 
@@ -503,8 +524,11 @@ def run(p: ArmParams, seconds: float = 26.0, fps: int = 30, seed: int = 11,
                 off = np.degrees(np.arctan2(ax[1], ax[0]))
                 diag["jaw_square"].append(
                     abs((off + 90.0) % 180.0 - 90.0))
+                diag["grasp_pose"].append(
+                    (st.arm.index, st.joints.copy(), st.gap, pc.size,
+                     C.classify(pc.size).key))
             elif task.phase == "OPEN":
-                key = (st.arm.index, pc.cls.key)
+                key = (st.arm.index, C.classify(pc.size).key)
                 slot = fill.get(key, 0)
                 fill[key] = slot + 1
                 pc.state = "falling"
@@ -539,7 +563,7 @@ def run(p: ArmParams, seconds: float = 26.0, fps: int = 30, seed: int = 11,
             else:
                 pose = pc.rest
             snaps.append(Snap(pc.pid, pc.cls.key, pose.copy(), pc.state,
-                              pc.claimed_by))
+                              pc.claimed_by, pc.size))
 
         frames.append(Frame(
             t, [s.joints.copy() for s in states], [s.gap for s in states],

@@ -43,12 +43,12 @@ def protos():
 def test_placements_are_the_assemblys_own():
     """The animation swaps the solids out to read placements cheaply. If
     that ever stops matching the real assembly, the video stops being of
-    the model, so compare all fifteen transforms exactly."""
+    the model, so compare all sixteen transforms exactly."""
     for pose in [(0, 0, 0, 0, 0, 0), DEFAULT.joints, (90, -35, 125, 0, -15, 0)]:
         p = DEFAULT.at_pose(*pose)
         real = A.build_assembly(p)
         stub = S.placements(p)
-        assert len(stub) == len(real.children) == 15
+        assert len(stub) == len(real.children) == 16
         for (key, label, m), child in zip(stub, real.children):
             assert label == child.label
             assert np.array_equal(m, S.loc_matrix(child.location)), label
@@ -82,7 +82,7 @@ def test_forward_kinematics_is_not_reimplemented():
         p = DEFAULT.at_pose(*pose)
         want = verify.fk_reference(p)          # the tool mounting face
         got = K.tcp(p, pose).copy()            # the point between the jaws
-        got[:3, 3] -= got[:3, 2] * (p.finger_len + p.finger_thk / 2)
+        got[:3, 3] -= got[:3, 2] * (K.grasp_offset(p) - p.flange_face_z)
         assert np.allclose(got, want, atol=1e-6), pose
 
 
@@ -128,7 +128,7 @@ def test_the_jaws_actually_face_each_other():
         if not label.startswith("10_gripper_finger"):
             continue
         local = (j6[:3, :3] @ mesh.verts.T).T + j6[:3, 3]
-        lo = p.tool_thk + p.tool_spigot_h + p.finger_len
+        lo = p.finger_mount_z + p.finger_len
         band = local[(local[:, 2] > lo - 0.5) & (local[:, 2] < lo + p.finger_thk + 0.5)]
         assert len(band), label
         tips.append((band[:, 0].min(), band[:, 0].max()))

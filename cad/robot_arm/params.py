@@ -81,6 +81,19 @@ class ArmParams:
     finger_thk: float = 8.0
     finger_stroke: float = 22.0       # half-opening at the mounted pose
 
+    # ---- part 12: gripper body (the rail the jaws run on) -----------
+    # Without this the jaws were placed straight onto the tool face and
+    # simply translated apart, so at any real opening they hung in free
+    # space attached to nothing, and `finger_stroke` had no limit at all
+    # because there was no mechanism for it to be a limit of. The body
+    # is that mechanism: a housing with a slot, and the jaws travel in
+    # the slot.
+    grip_body_h: float = 24.0
+    grip_body_w: float = 28.0         # across the jaw axis
+    grip_slot_depth: float = 13.0     # how far a jaw stays engaged
+    grip_wall: float = 10.0           # material beyond the slot ends
+    grip_stroke_max: float = 50.0     # the travel the slot actually allows
+
     # ---- part 11: actuator can (shared, instanced at 4 joints) ------
     act_dia: float = 58.0
     act_len: float = 52.0
@@ -93,6 +106,37 @@ class ArmParams:
     )
 
     # ---- derived ----------------------------------------------------
+    @property
+    def grip_slot_len(self) -> float:
+        """Length of the slot the two jaws run in.
+
+        Derived from the travel, not chosen next to it: the slot has to
+        be exactly long enough for both jaws at full stroke, so that
+        `grip_stroke_max` is a statement about the hardware rather than
+        a number that happens to sit nearby.
+        """
+        return 2.0 * self.grip_stroke_max + self.finger_thk + 2.0
+
+    @property
+    def grip_body_len(self) -> float:
+        return self.grip_slot_len + 2.0 * self.grip_wall
+
+    @property
+    def flange_face_z(self) -> float:
+        """Tool mounting face, measured from the J6 frame."""
+        return self.tool_thk + self.tool_spigot_h
+
+    @property
+    def finger_mount_z(self) -> float:
+        """Where a jaw's own origin sits, measured from the J6 frame.
+
+        The jaw rises into the slot rather than sitting on the face, so
+        its first `grip_slot_depth` of shank is inside the body at every
+        stroke. Everything downstream -- the tool centre point, the
+        checks, the animation -- reads this rather than re-deriving it.
+        """
+        return self.flange_face_z + self.grip_body_h - self.grip_slot_depth
+
     @property
     def shoulder_z(self) -> float:
         """Height of the J2 axis above the mounting face."""

@@ -224,7 +224,7 @@ def check_grip(p: ArmParams, states, protos, rep: Report) -> None:
         return
     pose = K.posed(p, grip.joints, grip.gap)
     inv = np.linalg.inv(S.loc_matrix(A.joint_frames(pose).j6))
-    band_lo = p.tool_thk + p.tool_spigot_h + p.finger_len
+    band_lo = p.finger_mount_z + p.finger_len
     tips = []
     for label, mesh in S.arm_instances(pose, protos):
         if not label.startswith("10_gripper_finger"):
@@ -295,7 +295,7 @@ def main(argv=None) -> int:
     print("tessellating the eleven parts")
     protos = S.tessellate_parts(p, deflection=args.deflection)
     n_proto = sum(len(m.tris) for m in protos.values())
-    print(f"  {n_proto} triangles across 11 prototypes")
+    print(f"  {n_proto} triangles across {len(protos)} prototypes")
 
     print("checking")
     rep = check(p, states, diag, track)

@@ -20,7 +20,7 @@ from robot_arm.params import ArmParams
 from sim import cell as C, kinematics as K, sorter as SO
 import simulate_cell as SIM
 
-DEFAULT = ArmParams()
+DEFAULT = C.CELL_ARM
 _RUN = None
 _PROTOS = None
 
@@ -63,9 +63,9 @@ def test_a_box_belongs_to_at_most_one_arm():
 def test_the_reach_annulus_is_inside_what_the_model_can_do():
     """R_MIN/R_MAX are constants; the model decides whether they are
     honest ones. Re-measure and hold them to it."""
-    for z in (C.BELT_TOP + C.CLASSES[0].size / 2,
-              C.BELT_TOP + C.CLASSES[-1].size / 2,
-              C.BELT_TOP + C.CLASSES[-1].size / 2 + C.HOVER):
+    for z in (C.BELT_TOP + C.CLASSES[0].lo / 2,
+              C.BELT_TOP + C.CLASSES[-1].hi / 2,
+              C.BELT_TOP + C.CLASSES[-1].hi / 2 + C.HOVER):
         lo, hi = C.measure_envelope(DEFAULT, z)
         assert lo <= C.R_MIN, (z, lo, C.R_MIN)
         assert hi >= C.R_MAX, (z, hi, C.R_MAX)
@@ -120,6 +120,44 @@ def test_cover_arc_handles_a_straddling_set():
     assert len(C.cover_arcs([0.0, 90.0, 180.0, 270.0])) == 4
 
 
+def test_boxes_are_classified_by_what_is_measured():
+    """The bands must partition their range, and nothing may route on a
+    class that was decided anywhere but here."""
+    for cls in C.CLASSES:
+        for sz in np.linspace(cls.lo, cls.hi, 40):
+            assert C.classify(sz).key == cls.key, (sz, cls.key)
+    for a, b in zip(C.CLASSES, C.CLASSES[1:]):
+        assert b.lo > a.hi, (a.key, b.key)
+    pc = SO.Parcel(0, C.CLASSES[2].nominal, 0.0, 0.0, 0.0)
+    assert pc.cls.key == "L"
+
+
+def test_the_jaws_stay_in_their_slot():
+    """The gripper used to be two fingers on the tool face, slid apart,
+    with no body and so no limit: past a certain opening they were two
+    solids floating near the flange. `verify.check_gripper` is what
+    makes that impossible; this is that it runs."""
+    from robot_arm.verify import Report, check_gripper
+    rep = Report()
+    check_gripper(DEFAULT, rep)
+    assert rep.ok, rep.render()
+    assert DEFAULT.finger_mount_z > DEFAULT.flange_face_z
+
+
+def test_an_arm_can_cross_the_belt_but_is_never_sent_across():
+    """Capability and policy are separate claims, and both matter."""
+    for arm in C.ARMS:
+        far = np.array([(arm.x0 + arm.x1) / 2.0,
+                        -arm.side * C.BELT_HALF_W, C.BELT_TOP + 20.0])
+        lp = arm.to_local(far)
+        q, pe, ae = K.solve_ik(DEFAULT, K.target_frame(lp),
+                               K.seed_for(lp, DEFAULT))
+        assert pe < 0.2 and ae < 0.2, (arm.name, pe, ae)   # it can
+        assert not arm.owns_side(far[1])                   # it may not
+        pc = SO.Parcel(0, 30.0, far[1], C.BELT_X0, 0.0)
+        assert not any(SO.can_claim(arm, pc, t) for t in np.arange(0, 30, 0.5))
+
+
 def test_a_jaw_axis_is_an_axis():
     """Half a turn swaps the jaws and grips the same box, so the wrap
     that matters is 180, not 360."""
@@ -134,7 +172,7 @@ def test_an_arm_only_claims_from_its_own_half_and_window():
     for arm in C.ARMS:
         for y in (-140.0, 140.0):
             for x0 in np.linspace(C.BELT_X0, C.BELT_X1 - 400.0, 40):
-                pc = SO.Parcel(0, C.BY_KEY["M"], y, x0, 0.0)
+                pc = SO.Parcel(0, C.CLASSES[1].nominal, y, x0, 0.0)
                 if not SO.can_claim(arm, pc, 0.0):
                     continue
                 assert arm.owns_side(y), (arm.name, y)
