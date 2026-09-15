@@ -1,0 +1,3 @@
+# Windows only -- SolidWorks is COM software with no Linux or headless build.
+anthropic>=0.75.0
+pywin32>=306

@@ -1,0 +1,8 @@
+build/
+*.step
+*.stl
+*.bmp
+__pycache__/
+*.pyc
+.venv/
+fusion360/fusion_run_report.txt
