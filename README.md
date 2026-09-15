@@ -57,6 +57,29 @@ pose the program commands — and the render is refused if any fails.
 Software-rasterised in numpy: no GPU, no OpenGL, no display. See
 [`cad/sim/`](cad/sim/README.md).
 
+#### And five of them run a line
+
+![Five arms sorting off a conveyor](docs/img/cell_motion.png)
+
+```bash
+cd cad && python3 simulate_cell.py     # build/cell.mp4
+```
+
+Five instances of the same arm beside a belt that never stops, sorting
+boxes by size into fifteen bins. Three on one side, two on the other,
+staggered so no two ever look at the same stretch of belt. Each pick is
+made on a moving box with the tool matched to belt speed at the instant
+the jaws close -- 0.04 mm/s relative, against a belt running at 115.
+
+Territory is the whole design: an arm takes a box only if it is on that
+arm's half of the belt width, lands inside that arm's stretch of its
+length, and sits inside the annulus the arm can provably reach. A box
+its owner is too busy for goes to the next arm on that side; one nobody
+catches runs off the end and is counted. And because disjoint territory
+constrains the tool but not the elbow, the clearance between every pair
+of arms is measured from the placed triangles every frame: closest
+approach, over the whole run, 167 mm.
+
 ### `fusion360/` — run it in Fusion
 
 The same arm built **inside Fusion**, with a real editable timeline, 33

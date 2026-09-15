@@ -84,16 +84,36 @@ def fit(points: np.ndarray, direction, w: int, h: int, fov=29.0,
         return bool(sx.min() > ml * w and sx.max() < (1 - mr) * w
                     and sy.min() > mt * h and sy.max() < (1 - mb) * h)
 
-    lo_d, hi_d = span * 0.6, span * 12.0
-    while not inside(hi_d) and hi_d < span * 400:
-        hi_d *= 1.6
-    for _ in range(48):
-        mid = (lo_d + hi_d) / 2.0
-        if inside(mid):
-            hi_d = mid
-        else:
-            lo_d = mid
-    return Camera(target + d * hi_d, target, np.asarray(up, float), fov)
+    def bisect() -> float:
+        lo_d, hi_d = span * 0.6, span * 12.0
+        while not inside(hi_d) and hi_d < span * 400:
+            hi_d *= 1.6
+        for _ in range(48):
+            mid = (lo_d + hi_d) / 2.0
+            if inside(mid):
+                hi_d = mid
+            else:
+                lo_d = mid
+        return hi_d
+
+    # Bisecting alone fits the content but does not centre it: the
+    # camera aims at the middle of the *scene*, which is not where the
+    # scene lands once the margins are asymmetric. So aim, measure where
+    # it actually fell, slide the aim to correct, and repeat -- each pass
+    # lets the next one close in.
+    f = (h * 0.5) / np.tan(np.radians(fov) * 0.5)
+    dist = bisect()
+    for _ in range(4):
+        cam = Camera(target + d * dist, target, np.asarray(up, float), fov)
+        right, upv, _ = cam.basis
+        sx, sy, _ = project(pts, cam, w, h)
+        cx, cy = (sx.min() + sx.max()) / 2.0, (sy.min() + sy.max()) / 2.0
+        want_x = w * (ml + 1.0 - mr) / 2.0
+        want_y = h * (mt + 1.0 - mb) / 2.0
+        target = target + right * (-(want_x - cx) * dist / f) \
+            + upv * ((want_y - cy) * dist / f)
+        dist = bisect()
+    return Camera(target + d * dist, target, np.asarray(up, float), fov)
 
 
 def project(verts: np.ndarray, cam: Camera, w: int, h: int):

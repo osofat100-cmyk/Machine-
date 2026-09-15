@@ -11,7 +11,8 @@ pip install build123d
 cd cad
 python3 build.py                      # verify, then export to build/
 python3 poses.py                      # the pose strip
-python3 simulate.py                   # the arm running a cycle, to video
+python3 simulate.py                   # one arm running a cycle, to video
+python3 simulate_cell.py              # five arms sorting off a conveyor
 ```
 
 Options:
@@ -43,9 +44,11 @@ build/report.txt           checks + mass properties
 | `build.py` | CLI: verify, export, report. |
 | `poses.py` | Renders several poses side by side. |
 | `simulate.py` | Runs a pick-and-place cycle and renders it to video. |
+| `simulate_cell.py` | Five arms beside a moving conveyor, sorting by size. |
 | `sim/` | Kinematics, motion program and software renderer — [README](sim/README.md). |
 | `test_robot_arm.py` | Test suite for the model. |
 | `test_simulate.py` | Test suite for the simulation and renderer. |
+| `test_cell.py` | Test suite for the five-arm cell. |
 
 ## The checks are the point
 
@@ -115,6 +118,49 @@ can be wrong while the geometry is right — this one was, by 2 mm, and the
 jaws stood a millimetre clear of a part they were reported as gripping.
 Nothing in the render looked wrong. So the check that matters measures
 the placed triangles.
+
+## Five of them on a conveyor
+
+```bash
+python3 simulate_cell.py              # build/cell.mp4, about 40 minutes
+python3 simulate_cell.py --check-only
+```
+
+Five arms beside a belt that never stops: three on one side, two on the
+other, staggered. Boxes of three sizes arrive at random times and random
+positions across the belt width. Each arm may only take boxes from its
+own half of the belt width and its own stretch of its length; a box its
+owner is too busy for stays on the belt for the next arm on that side,
+and one nobody catches runs off the end into the reject chute and is
+counted. Every pick is made on a moving box, with the tool matched to
+belt speed at the instant the jaws close.
+
+Fifteen checks run before a frame is drawn:
+
+```
+[PASS] every arm's turret travel fits inside J1 -- worst margin 54 deg
+[PASS] everything an arm must reach is inside its own annulus -- radii 276..470 mm inside 185..520
+[PASS] no two arms on a side own the same stretch of belt -- closest windows 70 mm apart
+[PASS] every commanded pose is actually reached -- worst residual 0.020 mm / 0.020 deg
+[PASS] the tool matches belt speed at the grasp -- worst relative speed 0.038 mm/s against a belt running at 115 mm/s
+[PASS] the tool is on the box, not near it -- worst tracking error through the grasp 0.020 mm
+[PASS] no joint on any arm reaches a stop -- tightest margin 20 deg
+[PASS] no joint moves faster than the machine could -- peak 356 deg/s
+[PASS] tool speed stays in range for an arm this size -- peak 2193 mm/s
+[PASS] every box was grasped inside its own arm's territory
+[PASS] the jaws meet the box square to its faces, not on a corner -- worst misalignment 0.010 deg
+[PASS] the jaws clear the belt surface -- lowest jaw 9.0 mm above the belt
+[PASS] the cell actually sorts
+[PASS] boxes the first arm was too busy for went downstream
+[PASS] no two arms ever come within reach of each other -- closest approach 167 mm
+```
+
+The last one is the point of the layout. Disjoint territory constrains
+where each arm puts its *tool*; it says nothing about where the elbow
+is. So the clearance is measured from the placed triangles, every frame,
+between every pair of arms -- and between bounding boxes rather than
+surfaces, which understates the gap, so a pass is a guarantee rather
+than an estimate.
 
 ## Parametric means re-drivable
 
