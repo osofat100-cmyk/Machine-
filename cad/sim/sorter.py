@@ -141,15 +141,28 @@ def panel_dish(p: ArmParams, size: float) -> float:
 RECOVER_TAU = 0.35                     # seconds
 
 
+# The phases in which the jaws are actually around the box. An arm
+# keeps `task.parcel` pointing at its box until the task ends, which is
+# long after it let go of it -- through RETURN, where the jaws shut to
+# PARK_GAP. Asking "is an arm assigned to this box" instead of "are its
+# jaws on it" had a claw parked across the cell crushing a box by
+# (size - PARK_GAP)/2, which for a 109 mm box is 43.6 mm: five times
+# the deepest fold the board has in it, on a box still riding the belt.
+ON_THE_BOX = ("CLOSE", "LIFT", "DROP", "OPEN")
+
+
 def jaw_demand(pc, states) -> float:
     """How far the jaws have closed past this box's faces, in mm.
 
     What the claw is *asking* of the board, which is not the same as
-    what the board is doing -- see `relax`. Zero if nothing is holding
-    it.
+    what the board is doing -- see `relax`. Zero unless a claw is
+    really around it: `pc.body` means it has been let go, and a box
+    that has been let go is not being squeezed by anything.
     """
+    if pc.body is not None:
+        return 0.0
     for st in states:
-        if st.busy and st.task.parcel is pc:
+        if st.busy and st.task.parcel is pc and st.task.phase in ON_THE_BOX:
             return max(0.0, (pc.size - st.gap) / 2.0)
     return 0.0
 
