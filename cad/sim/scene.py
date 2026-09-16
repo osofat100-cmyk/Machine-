@@ -220,6 +220,13 @@ def measure_jaw_gap(pose, protos) -> float:
     back into the J6 frame, takes the band of them level with the grip
     ridges, and reports twice the closest the mesh comes to the tool
     axis -- which is the widest box the claw is actually closed on.
+
+    Measured *in each jaw's own plane*, not as a three-dimensional
+    radius. A ridge is a cylinder lying across its finger, and its
+    closest line to the tool axis runs along the middle of it, where a
+    mesh has no vertices at all -- only at the ends, 9 mm out to either
+    side. Taking `hypot(x, y)` there answers a question nobody asked and
+    reports a 32 mm grip as 36.7 mm, which is how this was found.
     """
     from .kinematics import jaw_ridge
     inv = np.linalg.inv(loc_matrix(A.joint_frames(pose).j6))
@@ -228,8 +235,11 @@ def measure_jaw_gap(pose, protos) -> float:
     for label, mesh in arm_instances(pose, protos):
         if not label.startswith("10_grabber_jaw"):
             continue
+        i = int(label.rsplit(".", 1)[1]) - 1
+        a = 2.0 * np.pi * i / pose.grab_jaws
+        radial = np.array([np.cos(a), np.sin(a), 0.0])
         local = (inv[:3, :3] @ mesh.verts.T).T + inv[:3, 3]
         band = local[np.abs(local[:, 2] - ridge_z) < 0.6]
         if band.size:
-            near = min(near, float(np.hypot(band[:, 0], band[:, 1]).min()))
+            near = min(near, float((band @ radial).min()))
     return 2.0 * near

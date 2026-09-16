@@ -57,15 +57,16 @@ build/report.txt           checks + mass properties
 checks run first:
 
 ```
-[PASS] every part is a single solid -- 12 parts
+[PASS] every part is a single solid -- 14 parts
 [PASS] no degenerate (near-zero volume) parts
 [PASS] no fillets silently dropped -- 0 dropped
 [PASS] joint chain matches independent FK (5 poses) -- max deviation 2.58e-13 mm
 [PASS] each joint rotates about its intended axis -- J1/J4/J6 roll about Z, J2/J3/J5 pitch about X
 [PASS] all 6 joints are live at a general pose -- 6 DOF
-[PASS] the slot is long enough for both jaws at full stroke -- jaw outer face reaches 54.0 mm, slot half-length 55.0 mm
-[PASS] the commanded stroke is inside the travel the slot allows -- 22.0 mm commanded of 50.0 mm available
-[PASS] the jaws are still held by the body at every stroke -- least engagement 13.0 mm of a 13.0 mm slot
+[PASS] the commanded jaw opening is inside the travel -- 52.0 deg commanded, travel 17.0..101.0 deg
+[PASS] the jaws are still held by the head across the whole travel -- least overlap with the head 18.7 mm, at 80 deg of a 17..101 deg travel
+[PASS] shut is shut, and not through itself -- the claw closes to 7.0 mm and opens to 167.8 mm
+[PASS] the claw closes to the width the arithmetic says -- ridge surface measured 45.01 mm from the tool axis over 24 points, arithmetic says 45.01 mm -- a 90.0 mm opening
 [PASS] extended reach is self-consistent -- tool at Z=793.4 mm
 [PASS] no unintended interference between parts -- no clashes
 ```
@@ -127,7 +128,12 @@ python3 simulate.py --check-only      # solve and check, render nothing
 ```
 
 A pick-and-place cycle: approach, descend on a straight line, close on a
-32 mm part, transfer, place, retract, park. The arm on screen is this
+70 mm part, transfer, place, retract, park. A 70 mm part and not a 32 mm
+one because a claw wraps what it grips: its fingertips reach about 18 mm
+below the grip, and a 32 mm cube on a flat bench has only 16 mm of
+height under its middle, so four tips would close into the bench to get
+to it. `check_clearance` said so -- eighty intrusions, the first of them
+a jaw inside a pedestal. The arm on screen is this
 model — the same fourteen solids, placed by `assembly.build_assembly`,
 driven by an inverse solve that runs once per frame on the straight-line
 moves. There is no GPU in the loop and no OpenGL; `sim/` rasterises it
@@ -144,11 +150,11 @@ refuses to render if any fails:
 [PASS] the payload is rigidly held, not re-scripted, while gripped -- tool-to-part transform varies by 1.2e-13 mm over 161 frames, caught 17 um off axis
 [PASS] the payload is actually picked up -- lifted to z = 261 mm
 [PASS] the payload ends up on the second fixture -- 0.001 mm from the commanded place point
-[PASS] the jaws are commanded onto the part exactly -- commanded gap 32.0 mm against a 32 mm part
+[PASS] the jaws are commanded onto the part exactly -- commanded gap 70.0 mm against a 70 mm part
 [PASS] the tool never drives into the fixture -- lowest tool centre point z = 136.0 mm
 [PASS] nothing but the recessed J1 drive goes below the mounting face -- lowest moving vertex z = 0.00 mm
 [PASS] the arm never enters a fixture -- clear at every sampled frame
-[PASS] the jaws close on the part, not through it -- jaw faces measured 32.00 mm apart on a 32 mm part, at stroke 26.0 mm
+[PASS] the jaws close on the part, not through it -- jaw faces measured 70.01 mm apart on a 70 mm part, with the jaws 43.3 deg open
 [PASS] no self-collision at any commanded pose -- 7 distinct poses checked with robot_arm.verify
 ```
 
@@ -178,9 +184,11 @@ and the same shape, at any size inside its band, so where one goes is
 decided by measuring it and nothing else.
 
 **Each arm works the whole width of its own stretch of belt** -- near
-edge to far edge. That is why the cell runs a 783 mm build of the arm
-rather than the 573 mm default: the far edge is 701 mm from a base, and
-reach falls off with height. Territory used to be a stretch *and* the
+edge to far edge. That is why the cell runs an 888 mm build of the arm
+rather than the 573 mm default: the far edge is 701 mm from a base,
+reach falls off with height, and the reacher grabber spends 313 mm of
+the arm's own reach holding the wrist above the box rather than out
+towards it. Territory used to be a stretch *and* the
 near half of it, which made the arms look like they could only get
 halfway across, and made the extra reach pointless.
 

@@ -45,7 +45,12 @@ PICK_AZ, PLACE_AZ = -55.0, 55.0      # degrees about the turret axis
 # geometry instead.
 REACH = 395.0                        # mm from the turret axis
 PEDESTAL_H = 45.0
-BLOCK = 32.0                         # cube edge; the jaws close on this
+# A parcel, not a die. A claw wraps what it grips, so its fingertips
+# reach below the grip by about 18 mm -- and a 32 mm cube standing on a
+# flat bench has only 16 mm of height under its middle, so four tips
+# would close into the bench to get to it. `check_clearance` said so:
+# eighty intrusions, the first of them a jaw inside a pedestal.
+BLOCK = 70.0                         # cube edge; the jaws close on this
 CLEAR = 85.0                         # approach/retract height above the grip
 
 

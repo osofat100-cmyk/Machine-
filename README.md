@@ -14,8 +14,9 @@ claiming one prompt, 11 parts, 1 assembly, 35 minutes, in SolidWorks
 
 ![The generated arm](docs/img/arm_iso.png)
 
-Twelve parts, sixteen instances, one assembly. 6061-T6, 573 mm reach
-in the default build, verified in seconds.
+Fourteen parts, twenty instances, one assembly. 6061-T6, 573 mm of arm
+in the default build, plus a 330 mm reacher grabber on the end of it,
+verified in seconds.
 
 ## Two halves
 
@@ -30,7 +31,7 @@ cd cad && python3 build.py
 ```
 
 Exports STEP, STL and hidden-line drawings, and refuses to export
-anything that fails its eleven verification checks — including a
+anything that fails its twelve verification checks — including a
 kinematic chain cross-checked against an independent 4×4-matrix
 implementation, agreeing to 2.6e-13 mm.
 
@@ -46,7 +47,7 @@ implementation, agreeing to 2.6e-13 mm.
 cd cad && python3 simulate.py          # build/machine.mp4
 ```
 
-A 13.7-second pick-and-place cycle, rendered from the same eleven solids.
+A 13.7-second pick-and-place cycle, rendered from the same fourteen solids.
 The pose comes from an inverse solve that runs once per frame on the
 straight-line moves; the placements are read out of `build_assembly`
 itself, so the arm in the video and the arm in the STEP file cannot
@@ -65,7 +66,7 @@ Software-rasterised in numpy: no GPU, no OpenGL, no display. See
 cd cad && python3 simulate_cell.py     # build/cell.mp4
 ```
 
-Five instances of the same arm -- re-driven longer, 783 mm of reach --
+Five instances of the same arm -- re-driven longer, 888 mm of reach --
 beside a belt that never stops, sorting boxes by size into fifteen bins.
 Every box is the same colour and the same shape, at any size inside its
 band, so the sorting is a measurement rather than a colour match.
@@ -107,4 +108,8 @@ The gap between "generates plausible CAD" and "generates CAD an engineer
 accepts" is almost entirely the verification loop, not the generation.
 Writing checks found three real defects in eleven parts. Rendering the
 arm and looking at it found a fourth that every automated check had
-passed: a gripper whose jaws opened outward.
+passed: a gripper whose jaws opened outward. A fifth was a gripper with
+no mechanism at all — two fingers slid apart on nothing, so the stroke
+had nothing to be a stroke *of*. The tool is a reacher grabber now, and
+its travel is an arc slot cut from the same two numbers that command
+it.

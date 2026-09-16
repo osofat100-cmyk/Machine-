@@ -428,10 +428,10 @@ def neighbours(arm: Arm) -> list[Arm]:
     Once an arm works the *whole* width of its stretch, it swings out
     over the far edge of the belt -- which is the near edge for the arm
     on the other side, one stretch along. Their reaches genuinely
-    overlap; the 140 mm between their windows is a gap between the
-    points their tools visit, not between the machines. Measured, the
-    arms either side of a given one come within tens of millimetres of
-    it, and everything further away stays a clear 235 mm off.
+    overlap; the gap between their windows is a gap between the points
+    their tools visit, not between the machines. Measured, the arms
+    either side of a given one come within tens of millimetres of it,
+    and everything further away stays a clear margin off.
 
     So adjacency here is a physical fact about the layout, and
     `sorter.run` interlocks on it: two arms that can reach the same air
