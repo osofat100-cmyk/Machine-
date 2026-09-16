@@ -76,10 +76,13 @@ what the longer links are for: the far edge is 701 mm from a base, and
 reach falls off with height. Reaching across is also what makes two arms
 able to touch, so the cell interlocks on adjacency -- and three of the
 five still work at once. Measured from the placed triangles every other
-frame, the closest any two arms came over the whole run was 188 mm.
+frame, the closest any two arms came over the whole run was 234 mm.
 
 A box its owner is too busy for goes to the next arm along; one nobody
-catches runs off the end and is counted. Boxes dropped into a bin fall
+catches runs off the end and is counted. And the arms share the work:
+an interlock that two arms satisfy by doing nothing at all is not a
+schedule, and two of them once stood still through a whole render with
+nothing wrong with either. Boxes dropped into a bin fall
 and land on what is already there. And because territory constrains the
 tool but not the elbow, the clearance between every pair of arms is
 measured from the placed triangles every frame.

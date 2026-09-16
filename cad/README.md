@@ -204,10 +204,41 @@ interlocks on adjacency: two arms that can reach the same air are never
 both in a pick, which still lets three of the five work at once. What
 that buys is measured rather than argued, from the placed triangles
 every other frame -- over the whole run the closest any two arms came
-was 188 mm.
+was 234 mm.
 
 A box its owner is too busy for stays on the belt for the next arm along;
 one nobody catches rides to the end and falls off it.
+
+### An interlock is not a schedule
+
+Two arms stood still through an entire render and every check passed,
+because "no two adjacent arms work at once" is satisfied perfectly by
+two arms doing nothing at all.
+
+Adjacency is a path, `A1-A2-A3-A4-A5`, so the largest set that can work
+at once is either `{A1, A3, A5}` or `{A2, A4}` -- and the claim loop
+scanned arms in index order, which picks the same one of those every
+frame forever. A1 claims and interlocks A2; A3 is then free, claims, and
+interlocks A4; A5 claims; the instant A1 finishes it is first in the
+scan again. Measured over 26 s: `A1:4 A2:0 A3:4 A4:0 A5:4`, and the two
+zeros had moved 0.00 degrees.
+
+Fixing the ordering alone only half worked, because there are two
+mechanisms. So the dispatcher is a queue with two rules:
+
+- **Longest idle first**, and an arm that has just worked yields to a
+  neighbour that has been waiting longer *and has a box it can take*.
+  Without the yield the parity never breaks; without the second
+  condition an arm stands down for a neighbour with nothing to stand
+  down for, which costs throughput and fixes nothing.
+- **An arm ahead on the count lets a box run to a quieter arm
+  downstream.** The first arm sees every box first, so by the time one
+  had travelled far enough for A2 to claim it, A1 was mid-pick and A2
+  was interlocked. A box A1 can reach now, every arm downstream can
+  reach later -- which is the same fact the hand-off above rests on.
+
+Now: `A1:2 A2:1 A3:2 A4:2 A5:2`. The check that would have caught it is
+**"every arm does a share of the work"**, and it reports the split.
 
 ### The drop is solved, not drawn
 
