@@ -119,11 +119,23 @@ class ArmParams:
 
     # part 10: one jaw, instanced `grab_jaws` times round the axis
     grab_jaws: int = 4
-    grab_jaw_len: float = 92.0        # along the curl, from the pivot
+    # Long fingers, and a lot of curl, because that is what decides the
+    # biggest thing the claw can pick up. A finger has to stand off the
+    # box's face along the whole of the box's height: anywhere it comes
+    # inside that face it is not gripping the box, it is inside it.
+    #
+    # Both ends of the usable size range scale with the claw, so what a
+    # bigger claw buys is not reach but *ratio* -- widest box it can
+    # wrap over shortest it can still lift off a belt. At 92 mm and 52
+    # degrees that ratio was 2.81, and the boxes here span 2.92, so
+    # some box was always going to be speared however the sizes were
+    # scaled. At 125 mm and 70 degrees it is 3.82, which fits with
+    # room either side.
+    grab_jaw_len: float = 125.0       # along the curl, from the pivot
     grab_jaw_w: float = 22.0
     grab_jaw_thk: float = 9.0
-    grab_jaw_curl: float = 52.0       # degrees the finger curls inward
-    grab_jaw_segs: int = 3            # straight segments approximating it
+    grab_jaw_curl: float = 70.0       # degrees the finger curls inward
+    grab_jaw_segs: int = 4            # straight segments approximating it
     grab_heel: float = 14.0           # heel behind the pivot, carrying
                                       # the pin that runs in the head
     grab_pad_len: float = 36.0
@@ -146,8 +158,13 @@ class ArmParams:
     # `grip_slot_len` was exactly the stroke on the gripper this
     # replaced. Widen the range and the slot widens with it; there is
     # no way to command an angle the head does not physically allow.
-    grab_open_min: float = 17.0
-    grab_open_max: float = 101.0
+    # Shut is where the pads meet, and a longer finger meets sooner:
+    # at the 17 degrees the 92 mm finger shut at, a 125 mm finger has
+    # closed through 25 mm of its opposite number. `check_grabber`
+    # caught that, which is the entire reason the travel is a pair of
+    # numbers the head is cut from rather than a comment.
+    grab_open_min: float = 27.0
+    grab_open_max: float = 72.0
     grab_slot_w: float = 7.4          # the arc slot, across the arc
 
     # The opening the tool centre point is defined at. A claw's grip

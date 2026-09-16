@@ -82,10 +82,18 @@ class SizeClass:
         return (self.lo + self.hi) / 2.0
 
 
+# Every band scaled by 0.80 from what it was, the same factor for all
+# three, so the sizes stay as different from each other as they were.
+# The claw decides the numbers: its usable window is 33..126 mm -- a box
+# under the floor cannot be gripped on its side without the fingertips
+# reaching the belt first, and a box over the ceiling cannot be wrapped
+# at all, only speared. 38..112 sits inside that with margin at both
+# ends.
+SIZE_SCALE = 0.80
 CLASSES = (
-    SizeClass("S", "small", 48.0, 64.0, "#48a9a6"),
-    SizeClass("M", "medium", 80.0, 100.0, "#d98b39"),
-    SizeClass("L", "large", 118.0, 140.0, "#c1554a"),
+    SizeClass("S", "small", 48.0 * SIZE_SCALE, 64.0 * SIZE_SCALE, "#48a9a6"),
+    SizeClass("M", "medium", 80.0 * SIZE_SCALE, 100.0 * SIZE_SCALE, "#d98b39"),
+    SizeClass("L", "large", 118.0 * SIZE_SCALE, 140.0 * SIZE_SCALE, "#c1554a"),
 )
 BY_KEY = {c.key: c for c in CLASSES}
 
