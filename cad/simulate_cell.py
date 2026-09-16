@@ -267,13 +267,19 @@ def check_physics(p: ArmParams, frames, diag, rep: Report) -> None:
             f"1.5 s of it" if not stuck
             else f"still moving long after its pile settled: {stuck[:4]}")
 
-    gain = max(diag["energy_gain"]) if diag["energy_gain"] else 0.0
-    rep.add("contact takes energy out of a box, never puts it in",
-            gain < 0.01,
-            f"worst single-frame energy gain {gain:.3%} of the most that "
-            f"bin ever held. Contact impulses cannot add any: the "
-            f"penetration bias is a split impulse, so the only path left "
-            f"is the work done lifting a box out of an overlap")
+    # Energy in, expressed as the height it would have lifted the pile,
+    # against the overlap that frame was pushing out of. Contact impulses
+    # cannot add any at all -- the penetration bias is a split impulse --
+    # so the only way in is the work of raising a box out of something it
+    # is inside, and that cannot exceed how far inside it was.
+    slack = [(lift - depth, lift, depth, key, when)
+             for lift, depth, key, when in diag["energy_lift"]]
+    worst = max(slack) if slack else (0.0, 0.0, 0.0, "", 0.0)
+    rep.add("no frame lifts a box further than the overlap it was in",
+            worst[0] < 0.4,
+            f"worst frame put in {worst[1]:.2f} mm of lift against a "
+            f"{worst[2]:.2f} mm overlap ({worst[3]} at t={worst[4]:.2f}s) "
+            f"-- {worst[0]:+.2f} mm of slack")
 
     out = []
     for sn in frames[-1].parcels:

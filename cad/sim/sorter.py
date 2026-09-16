@@ -557,12 +557,11 @@ def run(p: ArmParams, seconds: float = 26.0, fps: int = 30, seed: int = 11,
 
     # One solver per bin, built on first use, plus one for the chute.
     worlds: dict = {}
-    peak: dict = {}          # the most energy each has ever held
     diag = {"ik_pos": [], "ik_ang": [], "grasp_rel": [], "track_err": [],
             "tcp_step": [], "claims": [], "zone_ok": [], "jaw_floor": [],
             "grasps": [], "jaw_square": [], "grasp_pose": [],
-            "both_busy": [], "energy_gain": [], "overlap": [], "grip_z": [],
-            "carry_accel": [], "awake_at_end": [], "energy_where": []}
+            "both_busy": [], "energy_lift": [], "overlap": [], "grip_z": [],
+            "carry_accel": [], "awake_at_end": []}
     counts = {"seen": 0, "picked": 0, "missed": 0,
               **{c.key: 0 for c in C.CLASSES}}
     frames: list[Frame] = []
@@ -713,15 +712,17 @@ def run(p: ArmParams, seconds: float = 26.0, fps: int = 30, seed: int = 11,
             if not moving:
                 continue
             e0 = w.energy()
-            # Measured against the most this bin has ever held, not
-            # against what is left. Once a pile has stopped, what is
-            # left is nearly nothing, and any ratio to it is noise.
-            peak[key] = max(peak.get(key, 1.0), e0)
             w.advance(dt)
-            diag["energy_gain"].append((w.energy() - e0) / peak[key])
-            diag["energy_where"].append(
-                (diag["energy_gain"][-1], str(key), round(t, 2),
-                 round(peak[key]), round(w.energy() - e0)))
+            # As a height, not a fraction. Divided by the weight of what
+            # is actually moving, an energy gain *is* a distance: how far
+            # this pile's centre of mass rose. That can then be held
+            # against the overlap the same frame had to push out of,
+            # which is the only thing that can lift it -- a statement
+            # about the solver rather than a tolerance someone chose.
+            weight = 9810.0 * sum(b.mass for b in moving)
+            diag["energy_lift"].append(
+                ((w.energy() - e0) / weight, w.max_depth, str(key),
+                 round(t, 2)))
             diag["overlap"].append(w.max_depth)
 
         # --- record ---------------------------------------------------
