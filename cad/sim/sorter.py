@@ -133,33 +133,53 @@ def panel_dish(p: ArmParams, size: float) -> float:
     return 0.0116 * (p.grip_force / p.grab_jaws) * size ** 2 / C.BOARD_BEND
 
 
-# How long a box takes to come back after the jaws let go. Board is
-# viscoelastic: the panel springs most of the way back quickly and then
-# creeps, so this is a time constant, not a duration -- at 0.22 s a box
-# is most of the way out by the time it has fallen far enough to matter.
-RECOVER_TAU = 0.22                     # seconds
-# ...and it never comes all the way back. Some of the fold is a crease
-# now. A box in a bin with a dent in it was gripped, and that is worth
-# being able to see.
-BOARD_SET = 0.35                       # fraction of the fold kept for good
+# How long the panel takes to come back once the load is off it. Board
+# is viscoelastic, so recovery is a rate and not an event: it springs
+# most of the way back and then creeps. This is what makes the dent
+# outlive the grip -- the jaws come off in a fifth of a second and the
+# box is still coming back after they have gone.
+RECOVER_TAU = 0.35                     # seconds
 
 
-def squeeze_now(pc, states) -> float | None:
-    """How far each gripped face is pushed in, right now, in mm.
+def jaw_demand(pc, states) -> float:
+    """How far the jaws have closed past this box's faces, in mm.
 
-    Taken from where the jaws actually are rather than from a state
-    flag: the box is squeezed by exactly how far the claw has closed
-    past its faces, so it deforms *through* the close and comes back
-    *through* the open, and it cannot disagree with the claw about
-    which it is doing. Nothing to blend, and no frame where a box is
-    suddenly crushed.
-
-    None means nothing is holding it.
+    What the claw is *asking* of the board, which is not the same as
+    what the board is doing -- see `relax`. Zero if nothing is holding
+    it.
     """
     for st in states:
         if st.busy and st.task.parcel is pc:
             return max(0.0, (pc.size - st.gap) / 2.0)
-    return None
+    return 0.0
+
+
+def relax(p: ArmParams, pc, demand: float, dt: float) -> None:
+    """Advance one box's fold by one frame.
+
+    The two directions are not symmetric, because the two materials
+    are not. Going in, the claw is steel and the board is not: it
+    yields exactly as far as the jaws have gone, this frame, because
+    there is nothing else it can do. Coming out, nothing is pushing
+    any more and the panel is on its own clock -- so it lags the jaws
+    rather than tracking them, and the dent is still there after the
+    claw has let go and moved away.
+
+    What it cannot spring back past is the crush. The dish is a plate
+    bent inside its elastic range and it gives the energy back; the
+    crush is flutes collapsed under a 4 mm ridge, and board does not
+    un-crush. So the permanent set is not a number anyone picked: it
+    is `crush_depth`, scaled by how far into the fold this box
+    actually got.
+    """
+    if demand > pc.squeeze:
+        pc.squeeze = demand
+        pc.peak = max(pc.peak, demand)
+        return
+    full = panel_dish(p, pc.size) + crush_depth(p)
+    kept = crush_depth(p) * min(1.0, pc.peak / full) if full > 0.0 else 0.0
+    goal = max(demand, kept)
+    pc.squeeze = goal + (pc.squeeze - goal) * np.exp(-dt / RECOVER_TAU)
 
 
 def grip_gap(p: ArmParams, size: float) -> float:
@@ -193,8 +213,7 @@ class Parcel:
     prev2: np.ndarray | None = None
     seen_at: float = -1.0
     squeeze: float = 0.0               # mm off each gripped face, now
-    let_go_at: float = -1.0            # when the jaws last came off it
-    let_go_squeeze: float = 0.0        # how folded it was at that moment
+    peak: float = 0.0                  # the deepest it has ever been folded
 
     @property
     def mass(self) -> float:
@@ -628,7 +647,6 @@ def release(world: R.World, pc: Parcel, pose: np.ndarray,
     world.add(body)
     pc.body = body
     pc.state = "falling"
-    pc.let_go_at, pc.let_go_squeeze = t, pc.squeeze
     return body
 
 
@@ -863,16 +881,7 @@ def run(p: ArmParams, seconds: float = 26.0, fps: int = 30, seed: int = 11,
             # A held box is squeezed by what the board gives; a box that
             # has been let go springs back, because nothing is pressing
             # on it any more.
-            # The fold, this frame. Held, it is wherever the jaws are.
-            # Let go, it relaxes -- most of the way back quickly, the
-            # rest a crease it keeps.
-            held = squeeze_now(pc, states)
-            if held is not None:
-                pc.squeeze = held
-            elif pc.let_go_at >= 0.0:
-                ease = np.exp(-(t - pc.let_go_at) / RECOVER_TAU)
-                pc.squeeze = pc.let_go_squeeze * (BOARD_SET
-                                                  + (1.0 - BOARD_SET) * ease)
+            relax(p, pc, jaw_demand(pc, states), dt)
             snaps.append(Snap(pc.pid, pc.cls.key, pose.copy(), pc.state,
                               pc.claimed_by, pc.size, pc.squeeze))
 
