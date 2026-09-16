@@ -590,6 +590,13 @@ def run(p: ArmParams, seconds: float = 26.0, fps: int = 30, seed: int = 11,
         # interlocks A4; A5 claims. The moment A1 finishes it is first
         # in the scan again. A2 and A4 never moved for a whole clip,
         # and nothing was wrong with either of them.
+        # Who could take something *this* frame, asked once, before any
+        # claim has changed the answer. It is only used to decide who
+        # yields to whom, and "my neighbour is waiting on a box it can
+        # actually reach" is a fact about the top of the frame.
+        hungry = {st.arm.index: any(pc.t0 <= t and can_claim(st.arm, pc, t)
+                                    for pc in parcels)
+                  for st in states if not st.busy}
         for st in sorted(states, key=lambda s: (s.idle_since, s.arm.index)):
             if st.busy:
                 continue
@@ -602,13 +609,19 @@ def run(p: ArmParams, seconds: float = 26.0, fps: int = 30, seed: int = 11,
             if any(n.index in busy for n in C.neighbours(st.arm)):
                 continue
             # ...and an arm that has just worked yields to a neighbour
-            # that has been waiting longer. Ordering alone does not
-            # break the deadlock above: A3 finishing is enough to make
-            # A3 the freshest arm, but A2 is still interlocked by A1,
-            # so A3 would simply take the next box and relock the
-            # parity. Deferring here is what lets the other set in.
+            # that has been waiting longer *and has a box it can take*.
+            # Ordering alone does not break the deadlock above: A3
+            # finishing is enough to make A3 the freshest arm, but A2 is
+            # still interlocked by A1, so A3 would simply take the next
+            # box and relock the parity. Deferring here is what lets the
+            # other set in.
+            #
+            # Both halves of the condition matter. Without the yield the
+            # parity never breaks; without `hungry` an arm stands down
+            # for a neighbour that has nothing to stand down *for*,
+            # which is not fairness, it is an idle machine either way.
             if any(states[n.index].idle_since < st.idle_since
-                   and not states[n.index].busy
+                   and not states[n.index].busy and hungry.get(n.index)
                    for n in C.neighbours(st.arm)):
                 continue
             live = [pc for pc in parcels
