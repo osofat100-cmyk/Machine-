@@ -100,6 +100,13 @@ class ArmParams:
     act_boss_dia: float = 26.0
     act_boss_h: float = 6.0
 
+    # ---- ratings: what the hardware can do, not what shape it is ---
+    # Not geometry, but no less a property of the machine than the
+    # finger length -- and the only numbers that decide whether a box
+    # that fits in the jaws can actually be carried by them.
+    grip_force: float = 260.0         # N of clamping force at the jaws
+    jaw_mu: float = 0.6               # friction pad against cardboard
+
     # ---- pose: the six joint angles, degrees ------------------------
     joints: tuple[float, float, float, float, float, float] = (
         0.0, -35.0, 65.0, 0.0, -30.0, 0.0

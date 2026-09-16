@@ -81,7 +81,7 @@ def draw(img: np.ndarray, fr, meta: dict, cam: R.Camera,
 
     # ---- counters, top right ----------------------------------------
     c = fr.counts
-    bx = w - px - int(340 * s)
+    bx = w - px - int(440 * s)
     _panel(d, (bx - int(14 * s), int(20 * s), w - px + int(14 * s),
                int(112 * s)))
     d.text((bx, int(28 * s)), f"{fr.t:05.2f} s", font=f_num, fill=INK)
@@ -101,6 +101,16 @@ def draw(img: np.ndarray, fr, meta: dict, cam: R.Camera,
     d.text((bx + int(208 * s), row), "MISSED", font=f_lab, fill=DIM)
     d.text((bx + int(266 * s), row - int(2 * s)), f"{c['missed']:3d}",
            font=f_sm, fill=WARN if c["missed"] else DIM)
+    # What the rigid-body solver is doing right now. On screen because
+    # the difference between a solved drop and an interpolated one is
+    # otherwise something you have to take on trust.
+    ph = fr.physics
+    if ph:
+        d.text((bx + int(300 * s), int(30 * s)), "RIGID BODIES", font=f_lab,
+               fill=DIM)
+        d.text((bx + int(300 * s), int(48 * s)),
+               f"{ph['live']} FALL {ph['rest']:3d} REST",
+               font=f_lab, fill=INK if ph["live"] else DIM)
     row = int(90 * s)
     for i, cls in enumerate(C.CLASSES):
         x = bx + i * int(112 * s)

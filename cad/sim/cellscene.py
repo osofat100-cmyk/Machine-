@@ -74,33 +74,38 @@ def conveyor() -> list[Mesh]:
     return out
 
 
+def _slab(half, centre, colour) -> Mesh:
+    return box_mesh(tuple(2.0 * np.asarray(half)), tuple(centre), colour)
+
+
 def bins() -> list[Mesh]:
-    """Three open trays behind every arm, plus the reject chute."""
+    """Three open trays behind every arm, plus the reject chute.
+
+    Every slab here comes from `cell`, which is also what the solver
+    collides boxes against. Drawn walls and collided walls that are
+    written out separately drift, and a box then comes to rest a
+    centimetre inside a wall with nothing reporting it.
+    """
     body, rim = hex_to_linear(BIN_BODY), hex_to_linear(BIN_RIM)
-    w, h = C.BIN_INNER, C.BIN_TOP
+    w = C.BIN_INNER
     out = []
     for arm in C.ARMS:
         for key, pt in arm.bins.items():
             cx, cy = pt[0], pt[1]
-            out.append(box_mesh((2 * w, 2 * w, 50.0), (cx, cy, 25.0), body))
-            for dx, dy, sx, sy in ((w, 0, 12.0, 2 * w), (-w, 0, 12.0, 2 * w),
-                                   (0, w, 2 * w, 12.0), (0, -w, 2 * w, 12.0)):
-                out.append(box_mesh((sx, sy, h - 50.0),
-                                    (cx + dx, cy + dy, 50.0 + (h - 50.0) / 2),
-                                    rim))
+            out.append(box_mesh((2 * w, 2 * w, C.BIN_BASE_H),
+                                (cx, cy, C.BIN_BASE_H / 2), body))
+            for half, centre in C.bin_walls(cx, cy):
+                out.append(_slab(half, centre, rim))
             # The bin floor carries the class colour: the designation
             # lives on the destination, not on the part.
             out.append(box_mesh((2 * w - 24, 2 * w - 24, 6.0),
-                                (cx, cy, 52.0),
+                                (cx, cy, C.BIN_FLOOR_Z - 3.0),
                                 hex_to_linear(C.BY_KEY[key].colour) * 0.55))
-    from .sorter import REJECT_PT
-    rx, ry = REJECT_PT[0], REJECT_PT[1]
-    out.append(box_mesh((300.0, 2 * C.BELT_HALF_W + 60, 40.0), (rx, ry, 20.0),
-                        hex_to_linear(CHUTE)))
-    for dx, dy, sx, sy in ((150, 0, 14.0, 2 * C.BELT_HALF_W + 60),
-                           (0, C.BELT_HALF_W + 30, 300.0, 14.0),
-                           (0, -C.BELT_HALF_W - 30, 300.0, 14.0)):
-        out.append(box_mesh((sx, sy, 80.0), (rx + dx, ry + dy, 80.0), rim))
+    out.append(_slab(C.CHUTE_HALF,
+                     C.CHUTE_PT + (0.0, 0.0, C.CHUTE_FLOOR_Z / 2.0),
+                     hex_to_linear(CHUTE)))
+    for half, centre in C.chute_walls():
+        out.append(_slab(half, centre, rim))
     return out
 
 

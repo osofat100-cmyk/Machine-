@@ -34,6 +34,7 @@ from robot_arm.params import ArmParams
 
 from . import cell as C
 from . import kinematics as K
+from . import rigid as R
 
 # ---- how long each part of a pick takes -----------------------------
 TRACK_T = 1.30
@@ -62,8 +63,17 @@ SWEEP_FROM = 0.40
 # against 40 mm of travel meant a box could be claimed legitimately and
 # gripped outside the window.
 EDGE = CLOSE_T * C.BELT_SPEED + 15.0
-GRAVITY = 9810.0                       # mm/s^2, for the drop into the bin
+# A filled cardboard parcel: about 250 kg/m^3, so a 100 mm box is a
+# quarter of a kilo. Mass is what makes the solver's answers mean
+# anything -- it sets how hard a box lands and how much friction the
+# jaws need to hold it.
+DENSITY = 2.5e-7                       # kg/mm^3
 JAW_MARGIN = 24.0                      # how much wider than the box the jaws open
+# What an idle arm holds its jaws at. Parked wide open, each jaw stands
+# 105 mm out from the tool axis of its own accord, and that is what two
+# arms came closest with: a neighbour's carry passed 38 mm from a jaw
+# that was open only because nothing had ever told it to shut.
+PARK_GAP = 30.0
 # Closest two boxes are ever spawned. The jaws open to about 190 mm
 # around a 140 mm box, so a box needs that much clear belt behind it or
 # the gripper would be closing on its neighbour.
@@ -84,15 +94,18 @@ class Parcel:
     t0: float
     drop_dx: float = 0.0               # where in the bin it gets let go
     drop_dy: float = 0.0
-    yaw: float = 0.0                   # how it happens to be turned
-    state: str = "belt"                # belt | held | falling | binned | rejected
+    state: str = "belt"                # belt | held | falling | binned
     claimed_by: int | None = None
     picked_by: int | None = None
     hold_offset: np.ndarray | None = None
-    rest: np.ndarray | None = None     # 4x4, where it finished
-    fall_from: np.ndarray | None = None
-    fall_t0: float = 0.0
+    body: object = None                # rigid.Body, once it has been let go
+    prev_pose: np.ndarray | None = None
+    prev2: np.ndarray | None = None
     seen_at: float = -1.0
+
+    @property
+    def mass(self) -> float:
+        return DENSITY * self.size ** 3
 
     @property
     def cls(self) -> C.SizeClass:
@@ -129,11 +142,14 @@ def spawn_plan(seconds: float, seed: int = 11, mean_gap: float = 1.15,
         margin = size / 2.0 + 18.0
         y = float(rng.uniform(-(C.BELT_HALF_W - margin),
                               C.BELT_HALF_W - margin))
-        reach = C.BIN_INNER - size / 2.0 - 12.0
+        # Release points that clear the walls *however the box is
+        # turned*. The wrist carries whatever yaw the turret swing left
+        # it with, so the footprint to fit between the walls is the
+        # diagonal, not the edge.
+        reach = max(0.0, C.BIN_CLEAR - 0.75 * size - 8.0)
         out.append(Parcel(pid, size, y, C.BELT_X0, t,
                           drop_dx=float(rng.uniform(-reach, reach)),
-                          drop_dy=float(rng.uniform(-reach, reach)),
-                          yaw=float(rng.uniform(-np.pi, np.pi))))
+                          drop_dy=float(rng.uniform(-reach, reach))))
         pid += 1
         t += max(MIN_GAP_X / C.BELT_SPEED, float(rng.exponential(mean_gap)))
     return out
@@ -155,6 +171,7 @@ class Task:
     phase_i: int = 0
     k: int = 0                         # frames elapsed in this phase
     anchor: np.ndarray | None = None   # world tool pose when it began
+    gap0: float = PARK_GAP             # jaw opening it started from
 
     @property
     def phase(self) -> str:
@@ -320,7 +337,9 @@ def target_pose(st: ArmState, s: float, t: float, p: ArmParams):
         # closest two arms ever came was a gripper out past its own
         # window boundary, chasing a box that had not arrived yet.
         pos = _swing(arm, task.anchor[:3, 3], task.meet + hover, e)
-        gap = open_gap(size)
+        # The jaws open on the way out, from wherever the arm was
+        # holding them, and are open by the time it is over the box.
+        gap = float(K.blend([task.gap0], [open_gap(size)], s)[0])
     elif ph == "DESCEND":
         # One blend from that fixed hover point onto the moving box. At
         # s = 0 it is the hover point with zero velocity, continuous
@@ -342,8 +361,9 @@ def target_pose(st: ArmState, s: float, t: float, p: ArmParams):
         pos = _drop_pt(task, size)
         gap = float(K.blend([size], [open_gap(size)], s)[0])
     else:                                            # RETURN
+        # ...and shut on the way home, so the arm parks closed.
         pos = _swing(arm, task.anchor[:3, 3], st.park_tcp[:3, 3], e, bump)
-        gap = open_gap(size)
+        gap = float(K.blend([open_gap(size)], [PARK_GAP], s)[0])
 
     lp = arm.to_local(pos)
     jaw = _jaw_local(arm, lp, _square_weight(ph, s), task.jaw_az)
@@ -358,7 +378,8 @@ def _drop_pt(task: Task, size: float) -> np.ndarray:
     the approach happened to leave it -- drawn once, with the box.
     """
     pc = task.parcel
-    return task.bin_pt + (pc.drop_dx, pc.drop_dy, 40.0 + size / 2.0)
+    return task.bin_pt + (pc.drop_dx, pc.drop_dy,
+                          C.BIN_DROP_CLEAR + size / 2.0)
 
 
 # ---------------------------------------------------------------------
@@ -384,11 +405,10 @@ def can_claim(arm: C.Arm, parcel: Parcel, t: float) -> bool:
 # ---------------------------------------------------------------------
 # the run
 # ---------------------------------------------------------------------
-BIN_FLOOR = 55.0
 SENSOR_X = C.BELT_X0 + 260.0           # where a box is first seen and sized
-REJECT_AT = C.BELT_X1 - 70.0
-REJECT_PT = np.array([C.BELT_X1 + 140.0, 0.0, 0.0])
-CHUTE_FLOOR = 40.0                     # top of the reject chute's own slab
+# A box on a belt end starts to fall when its centre of mass passes the
+# edge, not before and not after. That instant is the whole rule.
+REJECT_AT = C.BELT_X1
 
 
 @dataclass
@@ -411,60 +431,77 @@ class Frame:
     tcp: list
     parcels: list
     counts: dict
+    physics: dict = field(default_factory=dict)
 
 
-def _yaw_matrix(a: float) -> np.ndarray:
-    m = np.eye(4)
-    c, sn = np.cos(a), np.sin(a)
-    m[:3, :3] = ((c, -sn, 0.0), (sn, c, 0.0), (0.0, 0.0, 1.0))
-    return m
+def _static(half, centre) -> R.Body:
+    """Scenery for the solver: infinite mass, never moves, never sleeps."""
+    return R.Body(half=np.asarray(half, float), mass=1.0,
+                  pos=np.asarray(centre, float),
+                  quat=np.array([1.0, 0.0, 0.0, 0.0]), static=True)
 
 
-def _support(settled: list, x: float, y: float, size: float,
-             floor: float) -> float:
-    """The height a box dropped at (x, y) will come to rest on.
+def bin_world(centre) -> R.World:
+    """One solver per bin: its plinth, its four walls, the shop floor.
 
-    The floor of the bin, or the top of whatever is already lying there
-    under it. Footprints are compared as squares, which is close enough
-    for boxes turned a few degrees and a great deal simpler than asking
-    a physics engine -- what this has to get right is that a box lands
-    *on* the pile rather than inside it, and that it lands where it was
-    dropped rather than where a tidy arrangement wanted it.
+    Per bin rather than one world for the cell, because the cost of the
+    broad phase is quadratic and boxes three metres apart have nothing
+    to say to each other. Walls are finite slabs, so a box that the
+    physics throws over a rim lands on the floor outside instead of
+    being held in by an infinite plane -- which is the only way "it
+    stayed in its bin" can be a measurement rather than a definition.
     """
-    top = floor
-    for ox, oy, osize, otop in settled:
-        if (abs(x - ox) < (size + osize) / 2.0
-                and abs(y - oy) < (size + osize) / 2.0):
-            top = max(top, otop)
-    return top
+    w = R.World()
+    w.planes.append(R.Plane(np.array([0.0, 0.0, 1.0]), 0.0))
+    cx, cy = float(centre[0]), float(centre[1])
+    w.add(_static((C.BIN_INNER, C.BIN_INNER, C.BIN_FLOOR_Z / 2.0),
+                  (cx, cy, C.BIN_FLOOR_Z / 2.0)))
+    for half, c in C.bin_walls(cx, cy):
+        w.add(_static(half, c))
+    return w
 
 
-def _land(pc: Parcel, at: np.ndarray, settled: list, floor: float):
-    """Register where this box will come to rest, and what it rests on."""
-    x, y = float(at[0]), float(at[1])
-    base = _support(settled, x, y, pc.size, floor)
-    settled.append((x, y, pc.size, base + pc.size))
-    m = _yaw_matrix(pc.yaw)
-    m[:3, 3] = (x, y, base + pc.size / 2.0)
-    return m
+def chute_world() -> R.World:
+    """The reject chute, plus the end of the belt to tip off."""
+    w = R.World()
+    w.planes.append(R.Plane(np.array([0.0, 0.0, 1.0]), 0.0))
+    w.add(_static(C.CHUTE_HALF,
+                  C.CHUTE_PT + (0.0, 0.0, C.CHUTE_FLOOR_Z / 2.0)))
+    for half, c in C.chute_walls():
+        w.add(_static(half, c))
+    w.add(_static(*C.belt_end()))
+    return w
 
 
-def _fall(pc: Parcel, t: float):
-    """Free fall from where it was let go to where it lands."""
-    z0, z1 = pc.fall_from[2, 3], pc.rest[2, 3]
-    drop = max(z0 - z1, 0.0)
-    tf = float(np.sqrt(2.0 * drop / GRAVITY)) if drop > 0 else 0.0
-    s = 1.0 if tf <= 0 else min(1.0, (t - pc.fall_t0) / tf)
-    # Orientation swings from however the gripper held it to however it
-    # ends up lying, over the same fall.
-    m = pc.rest.copy()
-    m[:3, 3] = pc.fall_from[:3, 3] * (1 - s) + pc.rest[:3, 3] * s
-    m[2, 3] = z0 - drop * s * s
-    if s < 1.0:
-        blend = s * s
-        m[:3, :3] = (pc.fall_from[:3, :3] * (1 - blend)
-                     + pc.rest[:3, :3] * blend)
-    return m, s >= 1.0
+def _twist(prev: np.ndarray, cur: np.ndarray, dt: float):
+    """Linear and angular velocity between two poses one frame apart.
+
+    What the gripper was doing at the instant it opened. A box let go
+    from a moving tool keeps moving; one let go from a turning tool
+    keeps turning. Neither is animated afterwards.
+    """
+    vel = (cur[:3, 3] - prev[:3, 3]) / dt
+    dr = cur[:3, :3] @ prev[:3, :3].T
+    axis = 0.5 * np.array([dr[2, 1] - dr[1, 2], dr[0, 2] - dr[2, 0],
+                           dr[1, 0] - dr[0, 1]])
+    ang = float(np.arccos(np.clip((np.trace(dr) - 1.0) / 2.0, -1.0, 1.0)))
+    n = float(np.linalg.norm(axis))
+    if n < 1e-9 or ang < 1e-9:
+        return vel, np.zeros(3)
+    return vel, axis / n * (ang / dt)
+
+
+def release(world: R.World, pc: Parcel, pose: np.ndarray,
+            vel: np.ndarray, omega: np.ndarray, t: float = 0.0) -> R.Body:
+    """Hand a box to the solver. After this nothing scripts it."""
+    body = R.Body(half=np.full(3, pc.size / 2.0), mass=pc.mass,
+                  pos=pose[:3, 3].copy(), quat=R.mat_to_quat(pose[:3, :3]),
+                  vel=np.asarray(vel, float).copy(),
+                  omega=np.asarray(omega, float).copy(), tag=(pc.pid, t))
+    world.add(body)
+    pc.body = body
+    pc.state = "falling"
+    return body
 
 
 def run(p: ArmParams, seconds: float = 26.0, fps: int = 30, seed: int = 11,
@@ -486,16 +523,19 @@ def run(p: ArmParams, seconds: float = 26.0, fps: int = 30, seed: int = 11,
         if pe > 0.2 or ae > 0.2:
             raise RuntimeError(f"{a.name} cannot hold its park point "
                                f"({pe:.2f} mm, {ae:.2f} deg)")
-        states.append(ArmState(a, q.copy(), open_gap(C.CLASSES[-1].hi),
+        states.append(ArmState(a, q.copy(), PARK_GAP,
                                q.copy(), a.base @ K.tcp(p, q)))
     for st in states:
         st.tcp = st.park_tcp.copy()
 
-    fill: dict = {}          # bin -> boxes already lying in it
+    # One solver per bin, built on first use, plus one for the chute.
+    worlds: dict = {}
+    peak: dict = {}          # the most energy each has ever held
     diag = {"ik_pos": [], "ik_ang": [], "grasp_rel": [], "track_err": [],
             "tcp_step": [], "claims": [], "zone_ok": [], "jaw_floor": [],
             "grasps": [], "jaw_square": [], "grasp_pose": [],
-            "both_busy": []}
+            "both_busy": [], "energy_gain": [], "overlap": [],
+            "carry_accel": [], "awake_at_end": []}
     counts = {"seen": 0, "picked": 0, "missed": 0,
               **{c.key: 0 for c in C.CLASSES}}
     frames: list[Frame] = []
@@ -536,7 +576,7 @@ def run(p: ArmParams, seconds: float = 26.0, fps: int = 30, seed: int = 11,
             # Routed on the measurement, not on anything the spawner knew.
             st.task = Task(pc, st.arm.bins[C.classify(pc.size).key],
                            meet=meet, jaw_az=_jaw_az(st.arm, meet),
-                           anchor=st.tcp.copy())
+                           anchor=st.tcp.copy(), gap0=st.gap)
             diag["claims"].append((round(t, 2), st.arm.name, pc.pid, pc.cls.key))
 
         # --- drive every arm ------------------------------------------
@@ -574,11 +614,9 @@ def run(p: ArmParams, seconds: float = 26.0, fps: int = 30, seed: int = 11,
         for pc in parcels:
             if (pc.state == "belt" and pc.t0 <= t and pc.claimed_by is None
                     and pc.belt_point(t)[0] >= REJECT_AT):
-                pc.state = "falling"
-                pc.fall_from = pc.belt_pose(t)
-                pc.fall_t0 = t
-                pc.rest = _land(pc, REJECT_PT + (pc.drop_dx, pc.drop_dy, 0.0),
-                                fill.setdefault("R", []), CHUTE_FLOOR)
+                w = worlds.setdefault("R", chute_world())
+                release(w, pc, pc.belt_pose(t),
+                        (C.BELT_SPEED, 0.0, 0.0), np.zeros(3), t)
                 counts["missed"] += 1
 
         # --- phase advance --------------------------------------------
@@ -603,11 +641,12 @@ def run(p: ArmParams, seconds: float = 26.0, fps: int = 30, seed: int = 11,
                      C.classify(pc.size).key))
             elif task.phase == "OPEN":
                 key = (st.arm.index, C.classify(pc.size).key)
-                pc.state = "falling"
-                pc.fall_from = st.tcp @ pc.hold_offset
-                pc.fall_t0 = t
-                pc.rest = _land(pc, pc.fall_from[:3, 3],
-                                fill.setdefault(key, []), BIN_FLOOR)
+                here = st.tcp @ pc.hold_offset
+                w = worlds.get(key)
+                if w is None:
+                    w = worlds[key] = bin_world(st.arm.bins[key[1]])
+                prev_pose = pc.prev_pose if pc.prev_pose is not None else here
+                release(w, pc, here, *_twist(prev_pose, here, dt), t=t)
                 pc.picked_by = st.arm.index
                 st.picks += 1
                 counts["picked"] += 1
@@ -623,6 +662,26 @@ def run(p: ArmParams, seconds: float = 26.0, fps: int = 30, seed: int = 11,
                 if st.busy and states[n.index].busy:
                     diag["both_busy"].append((round(t, 2), st.arm.name, n.name))
 
+        # --- physics ---------------------------------------------------
+        # Every released box is integrated here. A world with nothing
+        # awake in it costs nothing, so a bin that filled up twenty
+        # seconds ago is not re-solved for the rest of the clip.
+        live = rest = 0
+        for key, w in worlds.items():
+            moving = [b for b in w.bodies if not b.static and not b.asleep]
+            rest += sum(1 for b in w.bodies if not b.static and b.asleep)
+            live += len(moving)
+            if not moving:
+                continue
+            e0 = w.energy()
+            # Measured against the most this bin has ever held, not
+            # against what is left. Once a pile has stopped, what is
+            # left is nearly nothing, and any ratio to it is noise.
+            peak[key] = max(peak.get(key, 1.0), e0)
+            w.advance(dt)
+            diag["energy_gain"].append((w.energy() - e0) / peak[key])
+            diag["overlap"].append(w.max_depth)
+
         # --- record ---------------------------------------------------
         snaps = []
         for pc in parcels:
@@ -634,12 +693,19 @@ def run(p: ArmParams, seconds: float = 26.0, fps: int = 30, seed: int = 11,
                 holder = next(s for s in states
                               if s.busy and s.task.parcel is pc)
                 pose = holder.tcp @ pc.hold_offset
-            elif pc.state == "falling":
-                pose, landed = _fall(pc, t)
-                if landed:
-                    pc.state = "binned"
+                # Second difference of the carried box's own path: what
+                # the jaws have to hold on to, over and above its weight.
+                if pc.prev2 is not None:
+                    a = (pose[:3, 3] - 2.0 * pc.prev_pose[:3, 3]
+                         + pc.prev2[:3, 3]) / (dt * dt)
+                    diag["carry_accel"].append(
+                        (float(np.linalg.norm(a)), pc.mass, pc.pid,
+                         holder.task.phase, round(t, 2)))
+                pc.prev2 = pc.prev_pose
             else:
-                pose = pc.rest
+                pose = pc.body.pose()
+                pc.state = "binned" if pc.body.asleep else "falling"
+            pc.prev_pose = pose.copy()
             snaps.append(Snap(pc.pid, pc.cls.key, pose.copy(), pc.state,
                               pc.claimed_by, pc.size))
 
@@ -647,10 +713,23 @@ def run(p: ArmParams, seconds: float = 26.0, fps: int = 30, seed: int = 11,
             t, [s.joints.copy() for s in states], [s.gap for s in states],
             [s.phase for s in states],
             [s.task.parcel.pid if s.busy else None for s in states],
-            [s.tcp.copy() for s in states], snaps, dict(counts)))
+            [s.tcp.copy() for s in states], snaps, dict(counts),
+            {"live": live, "rest": rest}))
 
         if report and i and i % (fps * 5) == 0:
             report(f"  t={t:5.1f}s  seen {counts['seen']:3d}  "
                    f"picked {counts['picked']:3d}  missed {counts['missed']:3d}")
 
+    # Paired with when its *pile* was last disturbed, not when the box
+    # itself was let go: a box that settled ten seconds ago and has just
+    # had another one land on it is legitimately moving again.
+    diag["awake_at_end"] = []
+    for w in worlds.values():
+        last = max((b.tag[1] for b in w.bodies if not b.static), default=0.0)
+        diag["awake_at_end"] += [
+            (b.tag[0], last, R.point_speed(b)) for b in w.bodies
+            if not b.static and not b.asleep]
+    diag["rest_overlap"] = max((w.deepest_overlap() for w in worlds.values()),
+                               default=0.0)
+    diag["worlds"] = worlds
     return frames, diag

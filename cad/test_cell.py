@@ -203,39 +203,72 @@ def test_every_grasp_happens_inside_its_own_territory():
         assert arm.owns(x, y), (name, x, y)
 
 
-def test_boxes_land_on_what_is_already_in_the_bin():
-    """They fall and pile. They used to be placed on a 3x3 grid, which
-    looked exactly like what it was."""
+def test_boxes_are_not_arranged_when_they_land():
+    """They fall and pile. They used to be placed on a 3x3 grid at a
+    drawn-in-advance angle, which looked exactly like what it was.
+
+    The giveaway of a scripted landing is agreement: every box square
+    to the bin, every resting height a whole number of box heights.
+    Both are checked here, and neither is something the solver can
+    produce by accident.
+    """
     frames, _ = run()
+    rest = [sn for sn in frames[-1].parcels
+            if sn.state == "binned" and sn.claimed_by is not None]
+    assert rest, "nothing was binned"
+    yaws = [float(np.arctan2(sn.pose[1, 0], sn.pose[0, 0])) for sn in rest]
+    assert np.std(yaws) > 0.1, "every box landed at the same angle"
+    # How far each box sits off the bin floor, as a fraction of its own
+    # height.
+    lifts = {sn.pid: (sn.pose[2, 3] - C.BIN_FLOOR_Z - sn.size / 2.0) / sn.size
+             for sn in rest}
+    assert min(lifts.values()) > -0.05, \
+        f"a box sank into the bin floor: {min(lifts.values())}"
+    # Where two boxes share a bin, the second one is somewhere on top of
+    # the first rather than beside it on a grid slot -- and at a height
+    # that is not a whole number of box heights, because it landed on a
+    # corner or an edge and settled from there. Only asserted when the
+    # run was long enough to put two in one bin; a single box per bin is
+    # not evidence either way.
     per_bin = {}
-    for sn in frames[-1].parcels:
-        if sn.state != "binned" or sn.claimed_by is None:
-            continue
+    for sn in rest:
         per_bin.setdefault((sn.claimed_by, sn.key), []).append(sn)
-    assert per_bin, "nothing was binned"
-    for boxes in per_bin.values():
-        for i, a in enumerate(boxes):
-            for b in boxes[i + 1:]:
-                da = a.pose[:3, 3] - b.pose[:3, 3]
-                span = (a.size + b.size) / 2.0
-                if abs(da[0]) < span and abs(da[1]) < span:
-                    assert abs(da[2]) >= span - 1e-6, (a.pid, b.pid, da)
-    yaws = [float(np.arctan2(sn.pose[1, 0], sn.pose[0, 0]))
-            for boxes in per_bin.values() for sn in boxes]
-    if len(yaws) > 2:
-        assert np.std(yaws) > 0.1, "every box landed at the same angle"
+    piles = [v for v in per_bin.values() if len(v) > 1]
+    if piles:
+        stacked = [lifts[sn.pid] for pile in piles for sn in pile]
+        assert max(stacked) > 0.5, f"nothing landed on anything: {stacked}"
+        assert any(abs(x - round(x)) > 0.02 for x in stacked), \
+            "every box came to rest at an exact multiple of its own height"
+
+
+def test_nothing_comes_to_rest_inside_anything_else():
+    """The one thing a pile must never do, and the one the old drop
+    could not get wrong because it never let two boxes share a
+    footprint in the first place."""
+    _, diag = run()
+    assert diag["rest_overlap"] <= 0.65, diag["rest_overlap"]
+
+
+def test_every_box_that_was_let_go_stops_moving():
+    frames, diag = run()
+    end = frames[-1].t
+    late = [pid for pid, rel, _ in diag["awake_at_end"] if end - rel > 1.5]
+    assert not late, late
 
 
 def test_each_box_ends_up_in_the_bin_for_its_size():
+    """Inside the walls, not merely near the bin. The bound is the
+    geometry -- what is clear between the walls, less the box -- rather
+    than a round number, so a bigger box is held to a tighter one."""
     frames, _ = run()
     for sn in frames[-1].parcels:
         if sn.state != "binned" or sn.claimed_by is None:
             continue
         arm = C.ARMS[sn.claimed_by]
         want = arm.bins[sn.key]
-        if np.linalg.norm(sn.pose[:2, 3] - want[:2]) > 200.0:
-            continue                       # ran off the end, not binned here
-        assert np.linalg.norm(sn.pose[:2, 3] - want[:2]) < 120.0, sn.pid
+        off = float(np.abs(sn.pose[:2, 3] - want[:2]).max())
+        assert off <= C.BIN_CLEAR, (sn.pid, off, C.BIN_CLEAR)
+        assert sn.pose[2, 3] >= C.BIN_FLOOR_Z, (sn.pid, sn.pose[2, 3])
 
 
 # ---------------------------------------------------------------------

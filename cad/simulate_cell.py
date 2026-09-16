@@ -33,9 +33,12 @@ from robot_arm import assembly as A
 from robot_arm.params import ArmParams
 from robot_arm.verify import Report
 from sim import cell as C, cellscene as CS, hud_cell, kinematics as K
-from sim import raster as R, render as RD, scene as S, sorter as SO
+from sim import raster as R, render as RD, rigid as RIG, scene as S, sorter as SO
 
-VIEW_DIR = (0.62, -1.0, 0.46)
+VIEW_DIR = (0.62, -1.0, 0.70)   # a steeper look-down than the
+                                # single-arm shot, so the camera
+                                # sees into the bins rather than
+                                # at the outside of their walls
 FOV = 29.0
 MARGINS = (0.03, 0.03, 0.125, 0.155)
 CLEARANCE_FLOOR = 50.0                 # mm: how close two arms may ever come
@@ -245,6 +248,72 @@ def check_designation(p: ArmParams, frames, diag, protos, rep: Report) -> None:
             f"disagreement with the box {worst_geo:.3f} mm")
 
 
+def check_physics(p: ArmParams, frames, diag, rep: Report) -> None:
+    """The invariants the rigid-body solver has to satisfy.
+
+    These are the checks that make "it is a physics simulation" a
+    testable claim rather than a description. The old drop chose where
+    a box would end up and eased it there, and every one of these would
+    have passed trivially -- boxes cannot interpenetrate if their
+    resting places were laid out on a grid, and energy cannot grow if
+    nothing is integrated. They are only worth running because the
+    landing pose is now an output.
+    """
+    over = diag.get("rest_overlap", 0.0)
+    live = max(diag["overlap"]) if diag["overlap"] else 0.0
+    rep.add("no box comes to rest inside another box",
+            over <= RIG.SLOP + 0.3,
+            f"deepest box-into-box overlap at rest {over:.2f} mm "
+            f"(solver leaves {RIG.SLOP:.2f} mm of slop alone); "
+            f"worst during impact {live:.2f} mm")
+
+    end_t = frames[-1].t
+    # A box let go in the last second and a half is *meant* to still be
+    # moving; anything older has had time to settle and has to have.
+    stuck = [(pid, round(v, 1)) for pid, last, v in diag["awake_at_end"]
+             if end_t - last > 1.5]
+    rep.add("every box that was let go comes to rest", not stuck,
+            f"{len(diag['awake_at_end'])} still moving at the last frame, "
+            f"every one of them in a pile something landed on within "
+            f"1.5 s of it" if not stuck
+            else f"still moving long after its pile settled: {stuck[:4]}")
+
+    gain = max(diag["energy_gain"]) if diag["energy_gain"] else 0.0
+    rep.add("contact takes energy out of a box, never puts it in",
+            gain < 0.01,
+            f"worst single-frame energy gain {gain:.3%} of the most that "
+            f"bin ever held. Contact impulses cannot add any: the "
+            f"penetration bias is a split impulse, so the only path left "
+            f"is the work done lifting a box out of an overlap")
+
+    out = []
+    for sn in frames[-1].parcels:
+        if sn.state != "binned" or sn.claimed_by is None:
+            continue
+        pt = C.ARMS[sn.claimed_by].bins[sn.key]
+        d = np.abs(sn.pose[:2, 3] - pt[:2])
+        if d.max() > C.BIN_CLEAR or sn.pose[2, 3] < C.BIN_FLOOR_Z:
+            out.append((sn.pid, round(float(d.max())), round(sn.pose[2, 3])))
+    rep.add("no box ends up on a rim, or on the floor beside a bin",
+            not out,
+            f"every box at rest is between its bin's walls "
+            f"(clear half-width {C.BIN_CLEAR:.0f} mm, walls are finite "
+            f"slabs so leaving is possible)" if not out
+            else f"outside: {out[:4]}")
+
+    # What the jaws have to hold on to. Two faces, each able to resist
+    # mu * F of shear, against the box's weight plus whatever the carry
+    # is doing to it.
+    need = [(m * (9810.0 + a) / (2.0 * p.jaw_mu) / 1000.0, a, m, pid, ph)
+            for a, m, pid, ph, _ in diag["carry_accel"]]
+    worst = max(need) if need else (0.0, 0.0, 0.0, -1, "")
+    rep.add("the jaws can hold the box through the carry",
+            worst[0] < p.grip_force,
+            f"worst case needs {worst[0]:.1f} N of clamp against "
+            f"{p.grip_force:.0f} N available -- a {worst[2] * 1000:.0f} g box "
+            f"at {worst[1] / 9810.0:.2f} g during {worst[4]}, mu {p.jaw_mu}")
+
+
 def check_program(p: ArmParams, frames, diag, rep: Report) -> None:
     pos = max(diag["ik_pos"]) if diag["ik_pos"] else 0.0
     ang = max(diag["ik_ang"]) if diag["ik_ang"] else 0.0
@@ -391,6 +460,7 @@ def main(argv=None) -> int:
     check_bands(rep)
     check_program(p, frames, diag, rep)
     check_designation(p, frames, diag, protos, rep)
+    check_physics(p, frames, diag, rep)
     check_clearance(p, frames, protos, rep)
     print(rep.render())
     if not rep.ok:

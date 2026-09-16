@@ -129,8 +129,79 @@ R_MIN, R_MAX = 200.0, 735.0
 HOVER = 120.0                          # approach height above a grasp
 BIN_R = 380.0                          # bins sit on an arc behind each arm
 BIN_ANGLES = (-140.0, -90.0, -40.0)    # small, medium, large
-BIN_TOP = 170.0
+# Tall enough that a box sliding off the one already in the bin lands
+# back inside it. It was 170, which put the rim *below* the top of a
+# large box lying on the bin floor, and the physics found that out: a
+# box slid off the one under it and came to rest balanced on the rim.
+# Nothing about that is a solver bug -- it is what a shallow tray does
+# -- so the tray got taller rather than the drop getting a nudge back
+# toward the middle. 200 and not more because a wall is also something
+# to see over: at 230 a box lying in a bin is hidden by the near wall,
+# which defeats the point of solving the drop at all.
+BIN_TOP = 200.0
 BIN_INNER = 150.0                      # half-width of a bin's opening
+BIN_WALL_T = 12.0                      # how thick a wall is
+BIN_BASE_H = 50.0                      # the solid plinth under the tray
+BIN_FLOOR_Z = 55.0                     # the surface a box actually lands on
+BIN_DROP_CLEAR = 30.0                  # how far above the rim the jaws open
+# What is clear between the walls: the inner faces, not the centrelines.
+BIN_CLEAR = BIN_INNER - BIN_WALL_T / 2.0
+
+
+def bin_walls(cx: float, cy: float) -> list[tuple[np.ndarray, np.ndarray]]:
+    """A bin's four walls as (half-extents, centre), in world mm.
+
+    One source for two consumers that must not disagree: `cellscene`
+    draws these slabs and the rigid-body solver collides boxes against
+    them. When they were written out twice, a box could come to rest
+    visibly through a wall and every number still looked right.
+    """
+    h = (BIN_TOP - BIN_BASE_H) / 2.0
+    zc = BIN_BASE_H + h
+    w, t = BIN_INNER, BIN_WALL_T
+    out = []
+    for dx, dy, sx, sy in ((w, 0, t, 2 * w), (-w, 0, t, 2 * w),
+                           (0, w, 2 * w, t), (0, -w, 2 * w, t)):
+        out.append((np.array([sx / 2.0, sy / 2.0, h]),
+                    np.array([cx + dx, cy + dy, zc])))
+    return out
+
+
+# ---- the reject chute, off the end of the belt -----------------------
+# Layout, so it lives with the layout. The boxes nobody claimed do not
+# get teleported here: they ride to the end of the belt and fall off it.
+CHUTE_PT = np.array([BELT_X1 + 140.0, 0.0, 0.0])
+CHUTE_FLOOR_Z = 40.0
+CHUTE_HALF = np.array([150.0, BELT_HALF_W + 30.0, CHUTE_FLOOR_Z / 2.0])
+CHUTE_WALL_T = 14.0
+CHUTE_WALL_H = 80.0
+BELT_END_LEN = 400.0                   # how much of the belt the solver sees
+
+
+def chute_walls() -> list[tuple[np.ndarray, np.ndarray]]:
+    """The chute's far wall and its two sides. The belt end closes the
+    fourth side, so there is no slab there -- see `belt_end`."""
+    rx, ry = float(CHUTE_PT[0]), float(CHUTE_PT[1])
+    hx, hy = float(CHUTE_HALF[0]), float(CHUTE_HALF[1])
+    t, h = CHUTE_WALL_T, CHUTE_WALL_H
+    zc = CHUTE_FLOOR_Z + h / 2.0
+    out = []
+    for dx, dy, sx, sy in ((hx, 0, t, 2 * hy), (0, hy, 2 * hx, t),
+                           (0, -hy, 2 * hx, t)):
+        out.append((np.array([sx / 2.0, sy / 2.0, h / 2.0]),
+                    np.array([rx + dx, ry + dy, zc])))
+    return out
+
+
+def belt_end() -> tuple[np.ndarray, np.ndarray]:
+    """The last stretch of belt, as a solid the solver can collide with.
+
+    A box that runs off the end is not dropped from mid-air: it is let
+    go at the instant its centre of mass passes this slab's edge, which
+    is exactly when a box on a belt end starts to tip, and it pivots on
+    the edge on the way down."""
+    return (np.array([BELT_END_LEN / 2.0, BELT_HALF_W, BELT_TOP / 2.0]),
+            np.array([BELT_X1 - BELT_END_LEN / 2.0, 0.0, BELT_TOP / 2.0]))
 
 
 @dataclass(frozen=True)

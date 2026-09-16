@@ -30,6 +30,7 @@ CAD.
 | `program.py` | the single-arm motion program, one solved state per frame |
 | `cell.py` | the five-arm conveyor layout: territory, reach, turret travel |
 | `sorter.py` | boxes on the belt, the dispatcher, conveyor tracking |
+| `rigid.py` | the rigid-body solver: contact, friction, sleeping |
 | `cellscene.py` | belt, bins, chute, zone markings -- scenery, not CAD |
 | `scene.py` | tessellates the eleven prototypes once; re-places them per frame |
 | `raster.py` | z-buffered software rasteriser, and camera fitting |
@@ -100,6 +101,61 @@ the first third of the carry, because nothing is being gripped in
 between.
 
 None of those are visible in a still. All three were found by checks.
+
+## The drop is solved, not drawn
+
+Everything up to the moment the jaws open is a motion program. After it,
+nothing is. A released box becomes a rigid body with the position,
+orientation, velocity and angular velocity the gripper had at that
+instant, and `rigid.py` integrates it: gravity, contact against the bin
+walls and against whatever is already lying in the bin, Coulomb
+friction, and sleep when it stops.
+
+This replaced a function that worked out where a box would end up and
+then eased it there. It read as physics and was not: the landing pose
+was an input, boxes settled onto a grid, and no box ever knocked another
+one. The tell was that every box came to rest square to the bin.
+
+The parts that are easy to get wrong, and what pins them down:
+
+* **Position integration is trapezoidal.** `pos += vel * dt` after the
+  gravity kick overshoots by half a step of gravity every step — 20 mm
+  over a second at 240 Hz, which looks fine and is wrong.
+  `test_free_fall_matches_the_closed_form` holds it to 1 µm.
+* **Contact is SAT with face clipping**, not corner-in-box. Two boxes
+  resting face to face have every penetrating corner sitting *on* the
+  other's side face rather than inside it, so a corner test reports no
+  contact and a stack sinks through itself.
+* **Contacts are speculative**, generated up to 20 mm before the
+  surfaces touch and allowed to slow a box to exactly the gap it has
+  left. A contact that waits for overlap arrives too late: the box
+  lands, the step ends with it 7 mm inside the floor, and pushing it
+  back out is work against gravity — which was the one route by which
+  energy ever entered the solver.
+* **The penetration bias is a split impulse**, on pseudo-velocities that
+  move the bodies for one step and are then thrown away, so separating
+  two overlapping boxes cannot leave either of them faster than it was.
+* **Friction clamps the accumulated tangential impulse**, not each
+  iteration's contribution. Clamping per iteration gives twelve
+  iterations twelve times the friction the surface has, and a box then
+  sits at 35° with µ = 0.5. The test sweeps the slope and requires the
+  box to let go on the right side of `atan(µ)`.
+* **Bin walls are finite slabs, not half-spaces**, so "the box stayed in
+  its bin" is a measurement. With a plane per wall there is nowhere else
+  a box could go.
+
+It found two things, too, neither of them in the solver.
+
+**The bins were shorter than the boxes.** 170 mm deep, and a box that
+landed on the edge of the one already in the bin slid off it and came to
+rest balanced on the rim. That is what a shallow tray does; the tray is
+230 mm deep now, and the jaws open 30 mm above the rim.
+
+**An idle arm sat with its jaws wide open.** Each jaw stands 105 mm out
+from the tool axis at full stroke, and that is what two arms came
+closest with — a neighbour's carry passing 38 mm from a jaw that was
+open only because nothing had ever told it to shut. The jaws now open
+on the way out and close on the way home. Closest approach: 95 mm.
 
 ## Tracking a belt that never stops
 

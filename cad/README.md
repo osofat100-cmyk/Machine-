@@ -49,6 +49,7 @@ build/report.txt           checks + mass properties
 | `test_robot_arm.py` | Test suite for the model. |
 | `test_simulate.py` | Test suite for the simulation and renderer. |
 | `test_cell.py` | Test suite for the five-arm cell. |
+| `test_rigid.py` | Test suite for the rigid-body solver, against closed forms. |
 
 ## The checks are the point
 
@@ -159,8 +160,31 @@ interlocks on adjacency -- two arms that can reach the same air are
 never both in a pick -- which still lets three of the five work at once.
 
 A box its owner is too busy for stays on the belt for the next arm along;
-one nobody catches runs off the end into the reject chute and is counted.
-Boxes dropped into a bin fall and land on whatever is already in it.
+one nobody catches rides to the end and falls off it.
+
+### The drop is solved, not drawn
+
+Everything up to the moment the jaws open is a motion program. After it,
+nothing is. A released box becomes a rigid body carrying the position,
+orientation, velocity and angular velocity the gripper had at that
+instant, and `sim/rigid.py` integrates it: gravity, contact against the
+bin walls and against whatever is already lying in the bin, Coulomb
+friction, and sleep once it stops. A box nobody claimed is let go at the
+instant its centre of mass crosses the end of the belt, which is exactly
+when a box on a belt end starts to tip, and it pivots on the edge on the
+way into the chute.
+
+This replaced a function that worked out where a box would end up and
+then eased it there. It read as physics and was not: the landing pose
+was an input, boxes settled onto a grid, and no box ever knocked
+another. The tell was that every box came to rest square to the bin.
+
+`test_rigid.py` checks the solver against arithmetic that was true
+before it existed -- where a body is after a second of free fall, how
+high a box rests on a floor, and the exact slope angle at which Coulomb
+friction gives up -- because a solver is easy to be wrong about
+convincingly. Boxes fall, boxes stop, boxes pile up, and it looks right
+whether or not any of the numbers are.
 
 Twenty-four checks run before a frame is drawn. The ones worth reading:
 
