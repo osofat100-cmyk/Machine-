@@ -34,10 +34,18 @@ STATE_COLOUR = {
 }
 
 
+def _parts() -> int:
+    """Asked, not asserted. This line said "11-part arm" for a whole
+    render after the arm became a twelve-part arm."""
+    from robot_arm import parts as P
+    return len(P.BUILDERS)
+
+
 def build_meta(frames, fps: int) -> dict:
     return {
         "title": "Five-arm sort cell — picking off a moving belt",
-        "subtitle": "11-part arm from robot_arm.assembly, five instances "
+        "subtitle": f"{_parts()}-part arm from robot_arm.assembly, "
+                    f"{len(C.ARMS)} instances "
                     "— github.com/osofat100-cmyk/Machine-",
         "duration": len(frames) / fps,
         "tint": [tuple(int(ARM_TINT[i].lstrip("#")[j:j + 2], 16)

@@ -320,6 +320,8 @@ def main(argv=None) -> int:
                     casters=(static.verts, static.tris))
     print(f"  {time.time() - t0:.1f} s")
 
+    from robot_arm.assembly import instance_count
+    _distinct, _instances = instance_count(p)
     segs, t = [], 0.0
     for mv in moves:
         n = max(1, int(round(mv.seconds * args.fps)))
