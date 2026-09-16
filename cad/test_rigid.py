@@ -103,6 +103,40 @@ def test_a_box_landing_on_another_box_edge_settles():
     assert w.deepest_overlap() <= R.SLOP + 0.35, w.deepest_overlap()
 
 
+def test_boxes_touching_each_other_all_go_to_sleep():
+    """Three boxes side by side, all of them stopped, must all sleep.
+
+    One box on its own always did. Boxes *touching* each other did not,
+    and took turns not doing it: each would sleep, be woken by a
+    neighbour, and start counting from nothing again, round and round,
+    for as long as the clip ran. Nothing moved a millimetre the whole
+    time.
+
+    The cause was the order of two things inside a step. The wake test
+    asked "is anything touching me moving?" *after* gravity had been
+    applied and before the contacts had cancelled it -- and one step of
+    gravity at 240 Hz is 41 mm/s, three times the speed this calls
+    moving. So every resting box looked fast for the instant the
+    question was asked, and woke every sleeping box it was against.
+
+    Dropped a few frames apart, on purpose: boxes that settle on the
+    same step all fall asleep together, and with nobody awake there is
+    nobody to do the waking. It needs them out of phase, which is what
+    arriving one at a time gives you.
+    """
+    w = floor_world()
+    boxes = []
+    for i in range(3):
+        boxes.append(w.add(box(40.0, (i * 79.0, 0.0, 44.0), mass=0.4)))
+        for _ in range(17):                    # out of step with each other
+            w.advance(1 / 60)
+    for _ in range(300):
+        w.advance(1 / 60)
+    for b in boxes:
+        assert R.point_speed(b) < 1e-6, R.point_speed(b)
+    assert all(b.asleep for b in boxes), [b.still for b in boxes]
+
+
 def test_friction_lets_go_at_exactly_the_coulomb_angle():
     """A box on a slope slides iff tan(theta) > mu, and nowhere else.
 

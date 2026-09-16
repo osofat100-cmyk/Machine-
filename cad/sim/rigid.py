@@ -532,10 +532,6 @@ class World:
         # below can wake a sleeper mid-step, and it then arrives at the
         # integrator wanting a velocity it never recorded.
         before = {id(b): b.vel.copy() for b in self.bodies}
-        for body in self.bodies:
-            if body.asleep:
-                continue
-            body.vel = body.vel + GRAVITY * dt
 
         contacts: list[Contact] = []
         self._plane_contacts(contacts)
@@ -543,6 +539,15 @@ class World:
         # Wake a sleeping body only when something moving lands on it.
         # Resetting the counter on every contact means a box resting on
         # the floor is woken by the floor, every step, for ever.
+        #
+        # Asked *before* gravity is applied, and that is the whole of
+        # it. One step of gravity is 41 mm/s at 240 Hz, three times the
+        # speed this calls moving, so after the kick every awake body
+        # resting quietly on the floor looks fast -- and wakes every
+        # sleeping box it happens to be touching. Four boxes in a chute
+        # then take turns: each sleeps, is woken by a neighbour that has
+        # merely been dropped on by gravity, and starts counting again.
+        # Nothing moves a millimetre and nothing ever settles.
         for c in contacts:
             if c.b is None:
                 continue
@@ -550,6 +555,13 @@ class World:
                 c.a.still = 0
             if c.b.asleep and not c.b.static and not c.a.asleep and _fast(c.a):
                 c.b.still = 0
+
+        # Gravity after the wake test, so a body woken by it still gets
+        # its kick this step rather than next.
+        for body in self.bodies:
+            if body.asleep:
+                continue
+            body.vel = body.vel + GRAVITY * dt
         self.max_depth = max(
             [self.max_depth]
             + [c.depth for c in contacts
