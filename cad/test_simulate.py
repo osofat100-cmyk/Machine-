@@ -43,12 +43,16 @@ def protos():
 def test_placements_are_the_assemblys_own():
     """The animation swaps the solids out to read placements cheaply. If
     that ever stops matching the real assembly, the video stops being of
-    the model, so compare all sixteen transforms exactly."""
+    the model, so compare every transform exactly. The count comes from
+    `parts.BUILDERS` and the assembly itself rather than being written
+    down: this test said sixteen for a whole render after the arm
+    stopped having sixteen instances."""
     for pose in [(0, 0, 0, 0, 0, 0), DEFAULT.joints, (90, -35, 125, 0, -15, 0)]:
         p = DEFAULT.at_pose(*pose)
         real = A.build_assembly(p)
         stub = S.placements(p)
-        assert len(stub) == len(real.children) == 16
+        want = len(P.BUILDERS) + (p.grab_jaws - 1) + 3   # jaws x4, cans x4
+        assert len(stub) == len(real.children) == want
         for (key, label, m), child in zip(stub, real.children):
             assert label == child.label
             assert np.array_equal(m, S.loc_matrix(child.location)), label
