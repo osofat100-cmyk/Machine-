@@ -178,9 +178,14 @@ def bin_walls(cx: float, cy: float) -> list[tuple[np.ndarray, np.ndarray]]:
 # ---- the reject chute, off the end of the belt -----------------------
 # Layout, so it lives with the layout. The boxes nobody claimed do not
 # get teleported here: they ride to the end of the belt and fall off it.
-CHUTE_PT = np.array([BELT_X1 + 140.0, 0.0, 0.0])
 CHUTE_FLOOR_Z = 40.0
 CHUTE_HALF = np.array([150.0, BELT_HALF_W + 30.0, CHUTE_FLOOR_Z / 2.0])
+# Butted up against the end of the belt rather than overlapping it. The
+# chute's floor used to run 10 mm under the belt-end slab, which left a
+# strip of belt where a box was at once resting on the chute at z = 40
+# and inside the belt at z = 120 -- and a box that landed in it teetered
+# on the lip instead of falling in.
+CHUTE_PT = np.array([BELT_X1 + CHUTE_HALF[0], 0.0, 0.0])
 CHUTE_WALL_T = 14.0
 CHUTE_WALL_H = 80.0
 BELT_END_LEN = 400.0                   # how much of the belt the solver sees
