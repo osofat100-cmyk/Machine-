@@ -135,13 +135,20 @@ def test_boxes_are_classified_by_what_is_measured():
 def test_the_jaws_stay_in_their_slot():
     """The gripper used to be two fingers on the tool face, slid apart,
     with no body and so no limit: past a certain opening they were two
-    solids floating near the flange. `verify.check_gripper` is what
-    makes that impossible; this is that it runs."""
-    from robot_arm.verify import Report, check_gripper
+    solids floating near the flange. The claw that replaced it can fail
+    the same way and more quietly, because a jaw hinged on nothing still
+    looks hinged. `verify.check_grabber` is what makes that impossible;
+    this is that it runs, and that the cell's own openings are inside
+    the travel the head physically allows."""
+    from robot_arm.verify import Report, check_grabber
     rep = Report()
-    check_gripper(DEFAULT, rep)
+    check_grabber(DEFAULT, rep)
     assert rep.ok, rep.render()
-    assert DEFAULT.finger_mount_z > DEFAULT.flange_face_z
+    widest = SO.open_gap(C.CLASSES[-1].hi)
+    tightest = C.CLASSES[0].lo
+    for gap in (tightest, widest):
+        o = K.opening_for_gap(DEFAULT, gap)
+        assert DEFAULT.grab_open_min <= o <= DEFAULT.grab_open_max, (gap, o)
 
 
 def test_an_arm_works_the_full_width_of_its_own_stretch():

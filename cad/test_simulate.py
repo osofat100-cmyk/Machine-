@@ -101,9 +101,23 @@ def test_ik_round_trip():
     """
     from sim import cell as C
     rng = np.random.default_rng(7)
-    heights = (140.0, 240.0, 330.0, 410.0)
-    env = {z: C.measure_envelope(DEFAULT, z, lo=100, hi=700, step=10)
-           for z in heights}
+    # Which heights the tool can work at is itself a fact about the
+    # model, so those are measured too rather than written down. The
+    # reacher grabber moved them: 330 mm was comfortable with the old
+    # 153 mm gripper and is out of reach with a 313 mm claw, which
+    # spends the difference holding the wrist above the target instead
+    # of out towards it. A test that hardcodes the answer to that goes
+    # red for the wrong reason.
+    env = {}
+    for z in (100.0, 140.0, 180.0, 220.0, 260.0, 300.0):
+        try:
+            lo, hi = C.measure_envelope(DEFAULT, z, lo=80, hi=700, step=10)
+        except RuntimeError:
+            continue
+        if hi - lo > 100.0:
+            env[z] = (lo, hi)
+    assert len(env) >= 3, f"barely anything is reachable: {env}"
+    heights = tuple(sorted(env))
     for _ in range(12):
         z = float(rng.choice(heights))
         lo, hi = env[z]
