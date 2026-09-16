@@ -69,13 +69,20 @@ def parcel_meshes(p: ArmParams, fr: SO.Frame) -> list:
         # height does not, and the claw's ridges end up resting on the
         # squeezed face rather than buried in the original one. Let go
         # and it springs back, because nothing is pressing on it.
-        if sn.squeeze <= 0.0:
+        if sn.squeeze <= 0.01:
             out.append(S.box_mesh((sn.size,) * 3, (0.0, 0.0, 0.0), parcel,
                                   m=sn.pose))
         else:
+            # `squeeze` is how far the jaws have closed past the face,
+            # so the two shapes that make up a fold are scaled by how
+            # far through the fold this frame is. At the moment of
+            # contact it is nothing; by the end of the close it is the
+            # whole of it; through the open it comes back the same way.
+            full = SO.panel_dish(p, sn.size) + SO.crush_depth(p)
+            k = sn.squeeze / full if full > 0 else 0.0
             out.append(S.gripped_box_mesh(
-                sn.size, parcel, dish=SO.panel_dish(p, sn.size),
-                crush=SO.crush_depth(p), m=sn.pose))
+                sn.size, parcel, dish=k * SO.panel_dish(p, sn.size),
+                crush=k * SO.crush_depth(p), m=sn.pose))
     return out
 
 
