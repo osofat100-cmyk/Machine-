@@ -89,6 +89,62 @@ def open_gap(size: float) -> float:
     return size + JAW_MARGIN
 
 
+def crush_depth(p: ArmParams) -> float:
+    """How far a grip ridge sinks into the box, in mm.
+
+    This is the only distance by which any part of a claw is ever
+    allowed to be inside a box, and the box is what yields, not the
+    claw. A grip ridge is a cylinder of radius `grab_pad_r` lying
+    across a flat face, so an indentation d makes a contact strip of
+    half-width sqrt(2*R*d); the board carries the load at its crush
+    strength over that strip:
+
+        F = sigma_c * 2*sqrt(2*R*d) * L
+
+    Solved for d. At 260 N over four jaws -- 65 N each -- on a 4 mm
+    ridge 22 mm long, double-wall board gives about 1.1 mm. That is
+    what "the box gives way to the claw" is worth in millimetres, and
+    it is why the claw closing on a box 60 mm wider than it can wrap
+    was never going to be explained by the box yielding.
+    """
+    from math import sqrt
+    force = p.grip_force / p.grab_jaws
+    strip = force / (C.BOARD_CRUSH * 2.0 * p.grab_jaw_w)
+    return strip ** 2 / (2.0 * p.grab_pad_r)
+
+
+def panel_dish(p: ArmParams, size: float) -> float:
+    """How far the whole side panel bows in under a jaw, in mm.
+
+    The other way a box gives way, and the one with something to see.
+    A box's side is a plate held at its four folded edges, and a pad
+    pressing in the middle of it bends the plate. For a square plate,
+    simply supported, with a load in the middle:
+
+        w = 0.0116 * P * a^2 / D
+
+    which goes as the *square* of the panel, so a big box folds and a
+    small one barely notices -- 2.0 mm across a 112 mm face against
+    0.2 mm across a 38 mm one. Exactly what you see doing it by hand.
+
+    The corners take none of it. That is why this is a fold and not a
+    box getting smaller.
+    """
+    return 0.0116 * (p.grip_force / p.grab_jaws) * size ** 2 / C.BOARD_BEND
+
+
+def grip_gap(p: ArmParams, size: float) -> float:
+    """The gap the jaws actually close to on a box of this size.
+
+    Tighter than the box by everything the box gives -- the panel
+    bending plus the board crushing under the ridge -- because that is
+    what makes the grip a grip. Closing to exactly `size` puts the
+    ridges tangent to the faces with no contact force at all, which is
+    a claw resting against a box, not holding one.
+    """
+    return size - 2.0 * (panel_dish(p, size) + crush_depth(p))
+
+
 # ---------------------------------------------------------------------
 @dataclass
 class Parcel:
@@ -359,16 +415,16 @@ def target_pose(st: ArmState, s: float, t: float, p: ArmParams):
         gap = open_gap(size)
     elif ph == "CLOSE":
         pos = belt_ref
-        gap = float(K.blend([open_gap(size)], [size], s)[0])
+        gap = float(K.blend([open_gap(size)], [grip_gap(p, size)], s)[0])
     elif ph == "LIFT":
         pos = _swing(arm, belt_ref, task.bin_pt + hover, e, bump)
-        gap = size
+        gap = grip_gap(p, size)
     elif ph == "DROP":
         pos = (1 - e) * (task.bin_pt + hover) + e * _drop_pt(p, task, size)
-        gap = size
+        gap = grip_gap(p, size)
     elif ph == "OPEN":
         pos = _drop_pt(p, task, size)
-        gap = float(K.blend([size], [open_gap(size)], s)[0])
+        gap = float(K.blend([grip_gap(p, size)], [open_gap(size)], s)[0])
     else:                                            # RETURN
         # ...and shut on the way home, so the arm parks closed.
         pos = _swing(arm, task.anchor[:3, 3], st.park_tcp[:3, 3], e, bump)
@@ -457,6 +513,7 @@ class Snap:
     state: str
     claimed_by: int | None
     size: float = 0.0
+    squeeze: float = 0.0               # mm off each gripped face, while held
 
 
 @dataclass
@@ -770,8 +827,12 @@ def run(p: ArmParams, seconds: float = 26.0, fps: int = 30, seed: int = 11,
                 pose = pc.body.pose()
                 pc.state = "binned" if pc.body.asleep else "falling"
             pc.prev_pose = pose.copy()
+            # A held box is squeezed by what the board gives; a box that
+            # has been let go springs back, because nothing is pressing
+            # on it any more.
             snaps.append(Snap(pc.pid, pc.cls.key, pose.copy(), pc.state,
-                              pc.claimed_by, pc.size))
+                              pc.claimed_by, pc.size,
+                              crush_depth(p) if pc.state == "held" else 0.0))
 
         frames.append(Frame(
             t, [s.joints.copy() for s in states], [s.gap for s in states],

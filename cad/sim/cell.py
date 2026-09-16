@@ -89,6 +89,23 @@ class SizeClass:
 # reaching the belt first, and a box over the ceiling cannot be wrapped
 # at all, only speared. 38..112 sits inside that with margin at both
 # ends.
+# What the boxes are made of. Two numbers, because a gripped box gives
+# way in two quite different ways and they are worth different amounts
+# of millimetre.
+#
+# BOARD_CRUSH is the board collapsing under the ridge itself -- local,
+# a few millimetres across, 0.5 N/mm^2 for a double-wall grade.
+#
+# BOARD_BEND is the panel bending as a plate, which is the one you can
+# actually see: the whole face dishes in and the corners do not move,
+# because the folded edges are the stiff part of a box. Corrugated gets
+# its stiffness from holding two thin liners apart, so
+# D ~ E*t*h^2/2 -- about 3000 N/mm^2 of liner, 0.2 mm of it, held 4 mm
+# apart, is 4800 N*mm. Drop it and the boxes are flimsier; that single
+# number is the difference between a parcel and a shoebox.
+BOARD_CRUSH = 0.5                      # N/mm^2, local crush strength
+BOARD_BEND = 4800.0                    # N*mm, panel flexural rigidity
+
 SIZE_SCALE = 0.80
 CLASSES = (
     SizeClass("S", "small", 48.0 * SIZE_SCALE, 64.0 * SIZE_SCALE, "#48a9a6"),

@@ -188,6 +188,81 @@ def box_mesh(size, center, color, material=MAT_MATTE, m=None) -> Mesh:
     return transform(mesh, m) if m is not None else mesh
 
 
+def gripped_box_mesh(size, color, dish=0.0, crush=0.0, grip_v=0.0,
+                     m=None, n=10, material=MAT_MATTE) -> Mesh:
+    """A box whose side panels are pushed in where the claw is holding it.
+
+    A cardboard box does not get smaller when you squeeze it. It keeps
+    its corners -- the folded edges are the stiff part -- and its
+    *panels* go in, most where the pad is and nothing at all at the
+    creases. So the faces are grids rather than quads, and each vertex
+    moves in by two superposed shapes:
+
+    `dish`   the panel bending as a plate, broad and smooth, vanishing
+             at all four edges.
+    `crush`  the board collapsing locally under the ridge itself,
+             narrow, inside the dish.
+
+    Both vanish at the edges by construction -- `cos(pi*u)` is zero at
+    u = +-1/2 -- so the top and bottom faces still meet the sides
+    exactly and the silhouette keeps its corners. `grip_v` is where up
+    the panel the pad is bearing, as a fraction of the height from the
+    middle, because the claw does not always take a box across its
+    waist.
+
+    With dish and crush both zero this is the same eight-corner box as
+    `box_mesh`, just with more triangles, so it is only worth calling
+    for a box something is actually holding.
+    """
+    h = size / 2.0
+    g = np.linspace(-0.5, 0.5, n + 1)
+    u, v = np.meshgrid(g, g, indexing="ij")
+
+    def profile(u, v):
+        """Inward displacement over one panel, in mm."""
+        edge = np.cos(np.pi * u) * np.cos(np.pi * v)      # zero at every edge
+        broad = edge * np.exp(-((v - grip_v) / 0.42) ** 2)
+        tight = edge * np.exp(-((u / 0.16) ** 2 + ((v - grip_v) / 0.16) ** 2))
+        return dish * broad + crush * tight
+
+    verts, tris = [], []
+    # the four sides: +x, -x, +y, -y. `a` runs around the box, `b` up it.
+    for axis, sign in ((0, 1), (0, -1), (1, 1), (1, -1)):
+        d = profile(u, v)
+        other = 1 - axis
+        p = np.empty(u.shape + (3,))
+        p[..., axis] = sign * (h - d)                      # the panel goes in
+        p[..., other] = u * size * (1 if (axis == 0) == (sign > 0) else -1)
+        p[..., 2] = v * size
+        base = len(verts)
+        verts.extend(p.reshape(-1, 3))
+        idx = np.arange((n + 1) ** 2).reshape(n + 1, n + 1) + base
+        for i in range(n):
+            for j in range(n):
+                a, b_, c_, dd = (idx[i, j], idx[i + 1, j],
+                                 idx[i + 1, j + 1], idx[i, j + 1])
+                tris.extend([(a, b_, c_), (a, c_, dd)])
+    # lid and floor, flat, meeting sides that did not move at their edges
+    for sign in (1, -1):
+        p = np.empty(u.shape + (3,))
+        p[..., 0] = u * size
+        p[..., 1] = v * size * sign
+        p[..., 2] = sign * h
+        base = len(verts)
+        verts.extend(p.reshape(-1, 3))
+        idx = np.arange((n + 1) ** 2).reshape(n + 1, n + 1) + base
+        for i in range(n):
+            for j in range(n):
+                tris.extend([(idx[i, j], idx[i + 1, j], idx[i + 1, j + 1]),
+                             (idx[i, j], idx[i + 1, j + 1], idx[i, j + 1])])
+
+    verts = np.asarray(verts, float)
+    tris = np.asarray(tris, np.int64)
+    mesh = Mesh(verts, _vertex_normals(verts, tris), tris,
+                np.asarray(color, np.float32), material)
+    return transform(mesh, m) if m is not None else mesh
+
+
 def floor_mesh(half=1500.0, n=26, color=None) -> Mesh:
     """A finite ground plane, subdivided so no single triangle covers the
     whole frame (the rasteriser buckets by bounding box; one giant

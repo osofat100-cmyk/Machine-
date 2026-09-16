@@ -56,21 +56,33 @@ def arm_meshes(p: ArmParams, fr: SO.Frame, protos) -> list[list]:
     return out
 
 
-def parcel_meshes(fr: SO.Frame) -> list:
+def parcel_meshes(p: ArmParams, fr: SO.Frame) -> list:
     out = []
     parcel = R.hex_to_linear(C.PARCEL_COLOUR)
     for sn in fr.parcels:
         # Every box the same colour and the same shape: the only thing
         # that tells the cell where one belongs is how big it is.
-        out.append(S.box_mesh((sn.size,) * 3, (0.0, 0.0, 0.0), parcel,
-                              m=sn.pose))
+        #
+        # A box in the jaws is *narrower* than a box on the belt, by
+        # what the board gives under the pads. The four jaws press on
+        # the four side faces, so both lateral axes lose it and the
+        # height does not, and the claw's ridges end up resting on the
+        # squeezed face rather than buried in the original one. Let go
+        # and it springs back, because nothing is pressing on it.
+        if sn.squeeze <= 0.0:
+            out.append(S.box_mesh((sn.size,) * 3, (0.0, 0.0, 0.0), parcel,
+                                  m=sn.pose))
+        else:
+            out.append(S.gripped_box_mesh(
+                sn.size, parcel, dish=SO.panel_dish(p, sn.size),
+                crush=SO.crush_depth(p), m=sn.pose))
     return out
 
 
 def dynamic(p: ArmParams, fr: SO.Frame, protos, arms=None) -> S.Scene:
     arms = arms if arms is not None else arm_meshes(p, fr, protos)
     meshes = [m for arm in arms for _, m in arm]
-    return S.merge(meshes + parcel_meshes(fr) + CS.belt_markers(fr.t))
+    return S.merge(meshes + parcel_meshes(p, fr) + CS.belt_markers(fr.t))
 
 
 def closest_pair(arms) -> float:
@@ -235,6 +247,50 @@ def check_designation(p: ArmParams, frames, diag, protos, rep: Report) -> None:
     rep.add("the claw really is closed on the box that wide", worst_geo < 0.3,
             f"{n} grasps measured from the placed triangles, worst "
             f"disagreement with the box {worst_geo:.3f} mm")
+
+    # ...and no part of the claw is inside the box it is holding.
+    #
+    # The check above is about the *ridges*, and it passed happily while
+    # the fingertips were 65 mm inside a large box: a finger keeps
+    # curling in below the grip, so tangent pads say nothing about what
+    # the rest of the finger is doing. This one asks the only question
+    # that matters -- of every triangle of every jaw, against the box as
+    # the box actually is while squeezed.
+    #
+    # The bound is the board, not a tolerance. A claw may be inside a
+    # box by exactly as much as 65 N on a 4 mm ridge crushes double-wall
+    # board and no further, because past that it is not gripping, it is
+    # passing through.
+    worst_bite, bite_at, allow = 0.0, None, 0.0
+    for idx, q, gap, size, key in diag["grasp_pose"][:12]:
+        pose = K.posed(p, q, gap)
+        give = SO.panel_dish(p, size) + SO.crush_depth(p)
+        allow = max(allow, give + 0.5)
+        # The box as it is while held: its panels pushed in by `give`,
+        # its corners where they always were. Measured in the J6 frame,
+        # which is where the box sits square to the jaws.
+        inv = np.linalg.inv(S.loc_matrix(A.joint_frames(pose).j6))
+        zc = K.grasp_offset(p)
+        for label, mesh in S.arm_instances(pose, protos):
+            if not label.startswith("10_grabber_jaw"):
+                continue
+            v = (inv[:3, :3] @ mesh.verts.T).T + inv[:3, 3]
+            half = size / 2.0
+            inside = ((np.abs(v[:, 0]) <= half) & (np.abs(v[:, 1]) <= half)
+                      & (np.abs(v[:, 2] - zc) <= half))
+            if not inside.any():
+                continue
+            d = float((half - np.maximum(np.abs(v[inside, 0]),
+                                         np.abs(v[inside, 1]))).max())
+            if d > worst_bite:
+                worst_bite, bite_at = d, (key, round(size, 1))
+    rep.add("no part of the claw is inside the box it is holding",
+            worst_bite <= allow,
+            f"deepest any jaw gets into a box {worst_bite:.2f} mm, against "
+            f"{allow - 0.5:.2f} mm the box gives there -- panel bending plus "
+            f"board crush. The box folds, the claw does not pass through it"
+            + ("" if bite_at is None else f" (worst on a {bite_at[1]:.0f} mm"
+                                          f" {bite_at[0]})"))
 
 
 def check_physics(p: ArmParams, frames, diag, rep: Report) -> None:
