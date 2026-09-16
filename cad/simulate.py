@@ -5,7 +5,7 @@
     python3 simulate.py --width 640 --ss 1       # a quick low-res look
     python3 simulate.py --check-only             # solve + check, no render
 
-What this is, precisely: the eleven solids from `robot_arm/parts.py`,
+What this is, precisely: the fourteen solids from `robot_arm/parts.py`,
 placed by `robot_arm/assembly.py`'s own kinematic chain, at a pose the
 inverse solver produces once per frame, rasterised by `sim/`. The video
 is therefore a view of the CAD model, not a drawing of one -- if the STEP
@@ -26,6 +26,7 @@ from pathlib import Path
 import numpy as np
 
 from robot_arm import assembly as A
+from robot_arm import parts as PARTS
 from robot_arm.params import ArmParams
 from robot_arm.verify import Report
 from sim import hud, kinematics as K, program as PG, raster as R, render as RD
@@ -213,7 +214,7 @@ def check_grip(p: ArmParams, states, protos, rep: Report) -> None:
     the grasp, and hold it against the part.
 
     The arithmetic in `kinematics.jaw_gap` is a summary of geometry that
-    lives in `parts.gripper_finger`; a summary can be wrong. This one was,
+    lives in `parts.grabber_jaw`; a summary can be wrong. This one was,
     by 2 mm, and the jaws stood a millimetre clear of a part the program
     reported as gripped. So the check that matters measures the triangles.
     """
@@ -223,22 +224,11 @@ def check_grip(p: ArmParams, states, protos, rep: Report) -> None:
                 "the program never grips anything")
         return
     pose = K.posed(p, grip.joints, grip.gap)
-    inv = np.linalg.inv(S.loc_matrix(A.joint_frames(pose).j6))
-    band_lo = p.finger_mount_z + p.finger_len
-    tips = []
-    for label, mesh in S.arm_instances(pose, protos):
-        if not label.startswith("10_gripper_finger"):
-            continue
-        local = (inv[:3, :3] @ mesh.verts.T).T + inv[:3, 3]
-        band = local[(local[:, 2] > band_lo - 0.5)
-                     & (local[:, 2] < band_lo + p.finger_thk + 0.5)]
-        tips.append((band[:, 0].min(), band[:, 0].max()))
-    tips.sort()
-    measured = float(tips[1][0] - tips[0][1])
+    measured = S.measure_jaw_gap(pose, protos)
     rep.add("the jaws close on the part, not through it",
             abs(measured - PG.BLOCK) < 0.05,
             f"jaw faces measured {measured:.2f} mm apart on a "
-            f"{PG.BLOCK:.0f} mm part, at stroke {pose.finger_stroke:.1f} mm")
+            f"{PG.BLOCK:.0f} mm part, with the jaws {pose.grab_open:.1f} deg open")
 
 
 def check_self_collision(p: ArmParams, states, moves, rep: Report,
@@ -292,7 +282,7 @@ def main(argv=None) -> int:
     duration = len(states) / args.fps
     print(f"  {len(states)} frames, {duration:.2f} s at {args.fps} fps")
 
-    print("tessellating the eleven parts")
+    print(f"tessellating the {len(PARTS.BUILDERS)} parts")
     protos = S.tessellate_parts(p, deflection=args.deflection)
     n_proto = sum(len(m.tris) for m in protos.values())
     print(f"  {n_proto} triangles across {len(protos)} prototypes")

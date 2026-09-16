@@ -38,7 +38,7 @@ build/report.txt           checks + mass properties
 | File | What it is |
 |---|---|
 | `robot_arm/params.py` | **Every dimension.** One dataclass; nothing downstream hard-codes a number. |
-| `robot_arm/parts.py` | The twelve part builders. |
+| `robot_arm/parts.py` | The fourteen part builders. |
 | `robot_arm/assembly.py` | Kinematic chain and placement. |
 | `robot_arm/verify.py` | The checking pass — see below. |
 | `build.py` | CLI: verify, export, report. |
@@ -79,14 +79,45 @@ was two disconnected solids, and two fillets failing silently. A fourth
 — a gripper whose jaws opened outward instead of inward — passed every
 one of these and was caught only by rendering the arm and looking at it.
 
-The three gripper checks are newer, and they exist because of a fifth.
-The gripper was two fingers placed on the tool face and slid apart:
-`finger_stroke` had no mechanism to be the stroke *of*, so past a
-certain opening the jaws were simply two solids floating near the
-flange, attached to nothing, and every other check here passed. It does
-not look wrong in a still either — it reads as a gripper that happens to
-be open. So part 12 is the body they run in, and the slot is both the
-mechanism and the limit.
+The tool checks are newer, and they exist because of a fifth. The
+gripper was two fingers placed on the tool face and slid apart: the
+stroke had no mechanism to be the stroke *of*, so past a certain
+opening the jaws were simply two solids floating near the flange,
+attached to nothing, and every other check here passed. It does not
+look wrong in a still either — it reads as a gripper that happens to be
+open.
+
+## The tool is a reacher grabber
+
+Parts 10 and 12–14 are the tool people actually pick things up with at
+arm's length: a **reacher grabber**, the litter-picker's tool, also sold
+as a reach extender. A pistol grip, a tube, and a claw — squeeze the
+trigger, a rod runs down the tube, four jaws curl shut.
+
+Bolted to a robot flange the grip becomes an actuator housing (part 12)
+and the trigger becomes a linear drive, but the rest of it is the tool
+as sold: the tube (13) that is the reach extender, the head (14), and
+four jaws (10) on pivots in it.
+
+The mechanism is the same lesson one level on. Each jaw carries a pin on
+its heel, and that pin runs in an **arc slot** cut in the head. The slot
+is swept from `grab_open_min` to `grab_open_max` — the same two numbers
+everything else asks for the travel — so the head cannot allow an angle
+the model forbids, nor forbid one the model allows.
+
+Two things a claw needs that a parallel gripper does not:
+
+- **The grip does not sit still as it closes.** Parallel jaws
+  translate, so the grasp point is a fixed distance down the tool at any
+  opening. A claw's jaws rotate, so the grip swings along the tool as
+  well as in. The tool centre point is pinned to one stated opening and
+  everything else is measured against it (`kinematics.pad_offset`).
+- **Each pad is a half-round ridge, not a flat.** The pad sits on a
+  finger that is still curling, so a flat would meet a box's flat side
+  at an angle and touch it on one edge — and which edge, and how far in
+  it is, would change with the opening. A cylinder touches a plane on a
+  line at exactly its own radius, whatever angle it is presented at,
+  which is what makes the opening a number at all.
 
 ## Watching it move
 
@@ -97,7 +128,7 @@ python3 simulate.py --check-only      # solve and check, render nothing
 
 A pick-and-place cycle: approach, descend on a straight line, close on a
 32 mm part, transfer, place, retract, park. The arm on screen is this
-model — the same eleven solids, placed by `assembly.build_assembly`,
+model — the same fourteen solids, placed by `assembly.build_assembly`,
 driven by an inverse solve that runs once per frame on the straight-line
 moves. There is no GPU in the loop and no OpenGL; `sim/` rasterises it
 with numpy.
@@ -125,12 +156,13 @@ The last one is the model's own `verify.check_interference`, re-run at
 every pose the program commands. A pose that clashes is a pose the
 machine cannot hold, and animating it would be drawing a lie smoothly.
 
-The twelfth is there because the eleventh is not enough. `jaw_gap` is
-arithmetic *about* `parts.gripper_finger`, and arithmetic about geometry
+One of them is there because the others are not enough. `jaw_gap` is
+arithmetic *about* `parts.grabber_jaw`, and arithmetic about geometry
 can be wrong while the geometry is right — this one was, by 2 mm, and the
 jaws stood a millimetre clear of a part they were reported as gripping.
 Nothing in the render looked wrong. So the check that matters measures
-the placed triangles.
+the placed triangles, and `scene.measure_jaw_gap` is the one place that
+does it for everything that asks.
 
 ## Five of them on a conveyor
 

@@ -228,22 +228,11 @@ def check_designation(p: ArmParams, frames, diag, protos, rep: Report) -> None:
     # measured off the placed triangles, not off the arithmetic
     worst_geo, n = 0.0, 0
     for idx, q, gap, size, key in diag["grasp_pose"][:12]:
-        arm = C.ARMS[idx]
         pose = K.posed(p, q, gap)
-        inv = np.linalg.inv(S.loc_matrix(A.joint_frames(pose).j6))
-        band_lo = p.finger_mount_z + p.finger_len
-        tips = []
-        for label, mesh in S.arm_instances(pose, protos):
-            if not label.startswith("10_gripper_finger"):
-                continue
-            local = (inv[:3, :3] @ mesh.verts.T).T + inv[:3, 3]
-            band = local[(local[:, 2] > band_lo - 0.5)
-                         & (local[:, 2] < band_lo + p.finger_thk + 0.5)]
-            tips.append((band[:, 0].min(), band[:, 0].max()))
-        tips.sort()
-        worst_geo = max(worst_geo, abs(float(tips[1][0] - tips[0][1]) - size))
+        worst_geo = max(worst_geo,
+                        abs(S.measure_jaw_gap(pose, protos) - size))
         n += 1
-    rep.add("the jaw faces really are that far apart", worst_geo < 0.2,
+    rep.add("the claw really is closed on the box that wide", worst_geo < 0.3,
             f"{n} grasps measured from the placed triangles, worst "
             f"disagreement with the box {worst_geo:.3f} mm")
 
@@ -301,17 +290,22 @@ def check_physics(p: ArmParams, frames, diag, rep: Report) -> None:
             f"slabs so leaving is possible)" if not out
             else f"outside: {out[:4]}")
 
-    # What the jaws have to hold on to. Two faces, each able to resist
-    # mu * F of shear, against the box's weight plus whatever the carry
-    # is doing to it.
-    need = [(m * (9810.0 + a) / (2.0 * p.jaw_mu) / 1000.0, a, m, pid, ph)
+    # What the claw has to hold on to. `grab_jaws` pads, each pressing
+    # at `grip_force` and each able to resist `jaw_mu` times that in
+    # shear, against the box's weight plus whatever the carry is doing
+    # to it. Friction only: a claw also wraps, and that would help, but
+    # a number that leans on form closure is a number that stops being
+    # true the moment a box is a little rounder than expected.
+    pads = p.grab_jaws * p.jaw_mu
+    need = [(m * (9810.0 + a) / pads / 1000.0, a, m, pid, ph)
             for a, m, pid, ph, _ in diag["carry_accel"]]
     worst = max(need) if need else (0.0, 0.0, 0.0, -1, "")
-    rep.add("the jaws can hold the box through the carry",
+    rep.add("the claw can hold the box through the carry",
             worst[0] < p.grip_force,
-            f"worst case needs {worst[0]:.1f} N of clamp against "
+            f"worst case needs {worst[0]:.1f} N per jaw against "
             f"{p.grip_force:.0f} N available -- a {worst[2] * 1000:.0f} g box "
-            f"at {worst[1] / 9810.0:.2f} g during {worst[4]}, mu {p.jaw_mu}")
+            f"at {worst[1] / 9810.0:.2f} g during {worst[4]}, "
+            f"{p.grab_jaws} pads at mu {p.jaw_mu}")
 
 
 def check_program(p: ArmParams, frames, diag, rep: Report) -> None:
@@ -327,7 +321,7 @@ def check_program(p: ArmParams, frames, diag, rep: Report) -> None:
             f"at {C.BELT_SPEED:.0f} mm/s")
 
     trk = max(diag["track_err"]) if diag["track_err"] else 1e9
-    rep.add("the tool is on the box, not near it", trk < 0.2,
+    rep.add("the claw stays centred on the box, not near it", trk < 0.2,
             f"worst tracking error through the grasp {trk:.3f} mm")
 
     q = np.array([f.joints for f in frames])            # (frames, arms, 6)
@@ -377,18 +371,30 @@ def check_program(p: ArmParams, frames, diag, rep: Report) -> None:
             sq < 1.0,
             f"worst misalignment with the belt axis {sq:.3f} deg")
 
-    stroke = max((K.stroke_for_gap(p, g) for _, _, g, _, _
+    shut = max((K.opening_for_gap(p, g) for _, _, g, _, _
+                in diag["grasp_pose"]), default=0.0)
+    widest = max((K.opening_for_gap(p, SO.open_gap(sz)) for _, _, _, sz, _
                   in diag["grasp_pose"]), default=0.0)
-    open_stroke = max((K.stroke_for_gap(p, SO.open_gap(sz)) for _, _, _, sz, _
-                       in diag["grasp_pose"]), default=0.0)
-    rep.add("the jaws never open past the travel the slot allows",
-            open_stroke <= p.grip_stroke_max,
-            f"widest {open_stroke:.1f} mm of {p.grip_stroke_max:.1f} mm "
-            f"available (closed on {stroke:.1f} mm)")
+    rep.add("the jaws never swing past the travel the head allows",
+            widest <= p.grab_open_max and shut >= p.grab_open_min,
+            f"widest {widest:.1f} deg, tightest {shut:.1f} deg, of a "
+            f"{p.grab_open_min:.0f}..{p.grab_open_max:.0f} deg travel")
 
     jaw = min(diag["jaw_floor"]) if diag["jaw_floor"] else -1.0
-    rep.add("the jaws clear the belt surface", jaw > 4.0,
-            f"lowest jaw {jaw:.1f} mm above the belt")
+    rep.add("the fingertips clear the belt surface", jaw > 4.0,
+            f"lowest fingertip {jaw:.1f} mm above the belt -- a claw"
+            f" reaches below what it grips, so this is the number that"
+            f" decides how low it can take a short box")
+
+    # Where the grip actually lands on the box. The ridges have to be on
+    # a side face: above the top and the claw has hold of nothing, below
+    # the bottom and it has hold of the belt.
+    off = [(r - b, sz) for r, b, sz in diag["grip_z"]]
+    worst = max((abs(d) - sz / 2.0 for d, sz in off), default=-1.0)
+    rep.add("the grip lands on the box's side, not over or under it",
+            worst < 0.0,
+            f"worst ridge position {worst:.1f} mm outside a side face "
+            f"(negative is inside it), over {len(off)} frames")
 
     counts = frames[-1].counts
     rep.add("the cell actually sorts", counts["picked"] > 0

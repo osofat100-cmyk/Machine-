@@ -13,7 +13,7 @@ python3 simulate.py --check-only     # solve and check, render nothing
 ## What is actually on screen
 
 The arm is the CAD model. Not a stand-in, not a re-model: the same
-eleven solids `robot_arm/parts.py` exports to STEP, placed by
+fourteen solids `robot_arm/parts.py` exports to STEP, placed by
 `robot_arm/assembly.py`'s own `build_assembly`, at poses
 `robot_arm/assembly.py`'s own `joint_frames` resolves. If the STEP file
 is wrong, the video is wrong in the same way and at the same joint.
@@ -32,7 +32,7 @@ CAD.
 | `sorter.py` | boxes on the belt, the dispatcher, conveyor tracking |
 | `rigid.py` | the rigid-body solver: contact, friction, sleeping |
 | `cellscene.py` | belt, bins, chute, zone markings -- scenery, not CAD |
-| `scene.py` | tessellates the eleven prototypes once; re-places them per frame |
+| `scene.py` | tessellates the fourteen prototypes once; re-places them per frame |
 | `raster.py` | z-buffered software rasteriser, and camera fitting |
 | `render.py` | shading, ground shadow, static/dynamic compositing |
 | `hud.py`, `hud_cell.py` | the telemetry overlays |
@@ -42,7 +42,7 @@ CAD.
 **The placements are read out of the assembly, not copied.** `assembly.py`
 says driving the pose "is a matter of changing `ArmParams.joints` — no
 geometry is rebuilt, only re-placed", so that is what happens.
-`scene.placements` calls the real `build_assembly` with the eleven solids
+`scene.placements` calls the real `build_assembly` with the fourteen solids
 swapped for unit cubes, purely to read back each instance's `Location`,
 then moves cached triangles by those transforms. Rebuilding the solids
  per frame would cost 1.3 s each; more to the point, a re-implementation of
@@ -101,6 +101,42 @@ the first third of the carry, because nothing is being gripped in
 between.
 
 None of those are visible in a still. All three were found by checks.
+
+## The tool is a reacher grabber
+
+Parts 10 and 12-14 are the tool people pick things up with at arm's
+length: a pistol grip, a tube, and a claw. Bolted to a robot flange the
+grip becomes an actuator housing and the trigger becomes a linear drive;
+the tube and the claw are the tool as sold.
+
+Two things a claw needs that a parallel gripper does not, and both of
+them are why `kinematics` grew rather than shrank:
+
+* **The grip does not sit still as it closes.** Parallel jaws
+  translate, so the grasp point is a fixed distance down the tool at
+  every opening. A claw's jaws rotate, so the grip swings *along* the
+  tool as well as in -- 20 mm of it across the size range here. The tool
+  centre point is pinned to one stated opening (`grab_ref_gap`) and
+  `pad_offset` is how far the grip is from it at any other, which is
+  what the sorter raises its targets by.
+* **Each pad is a half-round ridge.** The pad sits on a finger that is
+  still curling, so a flat face meets a box's flat side at an angle and
+  touches it on one edge -- and which edge, and how far in it is,
+  changes with the opening. A cylinder touches a plane on a line at
+  exactly its own radius whatever angle it is presented at, so the
+  opening is a number again and `opening_for_gap` inverts in closed
+  form.
+
+And one thing the cell had to pay for: pointing a 330 mm tool straight
+down costs horizontal reach, because the length is spent on standoff
+rather than on stretch. `CELL_ARM` is re-driven longer to buy it back,
+which is one line in `cell.py` and the whole point of the model being
+parametric.
+
+A claw also reaches *below* what it grips -- the fingers curl past the
+pads -- so `sorter.grasp_at` lifts the whole grasp until the fingertips
+clear the belt, taking a short box a few millimetres above its middle
+rather than dragging four tips along the belt to get to it.
 
 ## The drop is solved, not drawn
 

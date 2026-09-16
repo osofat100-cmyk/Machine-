@@ -69,14 +69,19 @@ EDGE = CLOSE_T * C.BELT_SPEED + 15.0
 # jaws need to hold it.
 DENSITY = 2.5e-7                       # kg/mm^3
 JAW_MARGIN = 24.0                      # how much wider than the box the jaws open
-# What an idle arm holds its jaws at. Parked wide open, each jaw stands
-# 105 mm out from the tool axis of its own accord, and that is what two
-# arms came closest with: a neighbour's carry passed 38 mm from a jaw
-# that was open only because nothing had ever told it to shut.
-PARK_GAP = 30.0
-# Closest two boxes are ever spawned. The jaws open to about 190 mm
-# around a 140 mm box, so a box needs that much clear belt behind it or
-# the gripper would be closing on its neighbour.
+# How much daylight the jaw tips keep under them at the grasp. A claw
+# reaches *below* what it grips -- the fingers curl past the pads -- so
+# a short box gripped exactly across its middle would drag four tips
+# along the belt to get there.
+JAW_CLEAR = 10.0
+# What an idle arm holds its jaws at. Parked wide open the claw is
+# 200 mm across, and that is what two arms came closest with: a
+# neighbour's carry passed 38 mm from a jaw that was open only because
+# nothing had ever told it to shut.
+PARK_GAP = 22.0
+# Closest two boxes are ever spawned. The claw opens to about 200 mm
+# across around a 140 mm box, so a box needs that much clear belt behind
+# it or the claw would come down around its neighbour too.
 MIN_GAP_X = 300.0
 
 
@@ -323,11 +328,12 @@ def target_pose(st: ArmState, s: float, t: float, p: ArmParams):
     # Where the box would be if it were still riding the belt. After the
     # grasp it is not, but it stays the right frame to peel away *from*:
     # leaving it at e = 0 means leaving at belt speed.
-    belt_ref = task.parcel.belt_point(t)
+    belt_ref = grasp_at(p, task.parcel.belt_point(t), size)
     hover = np.array([0.0, 0.0, C.HOVER])
     bump = ARC * np.sin(np.pi * s) ** 2
     ph = task.phase
 
+    meet = grasp_at(p, task.meet, size)
     if ph == "TRACK":
         # To the intercept, which is a *fixed* point inside this arm's
         # own window -- not to wherever the box happens to be now. The
@@ -336,7 +342,7 @@ def target_pose(st: ArmState, s: float, t: float, p: ArmParams):
         # the one before it. Which is exactly what it was doing: the
         # closest two arms ever came was a gripper out past its own
         # window boundary, chasing a box that had not arrived yet.
-        pos = _swing(arm, task.anchor[:3, 3], task.meet + hover, e)
+        pos = _swing(arm, task.anchor[:3, 3], meet + hover, e)
         # The jaws open on the way out, from wherever the arm was
         # holding them, and are open by the time it is over the box.
         gap = float(K.blend([task.gap0], [open_gap(size)], s)[0])
@@ -346,7 +352,7 @@ def target_pose(st: ArmState, s: float, t: float, p: ArmParams):
         # with the end of TRACK; at s = 1 it is the box itself, and
         # because the ease has zero derivative there, moving at exactly
         # belt speed.
-        pos = (1 - e) * (task.meet + hover) + e * belt_ref
+        pos = (1 - e) * (meet + hover) + e * belt_ref
         gap = open_gap(size)
     elif ph == "CLOSE":
         pos = belt_ref
@@ -355,10 +361,10 @@ def target_pose(st: ArmState, s: float, t: float, p: ArmParams):
         pos = _swing(arm, belt_ref, task.bin_pt + hover, e, bump)
         gap = size
     elif ph == "DROP":
-        pos = (1 - e) * (task.bin_pt + hover) + e * _drop_pt(task, size)
+        pos = (1 - e) * (task.bin_pt + hover) + e * _drop_pt(p, task, size)
         gap = size
     elif ph == "OPEN":
-        pos = _drop_pt(task, size)
+        pos = _drop_pt(p, task, size)
         gap = float(K.blend([size], [open_gap(size)], s)[0])
     else:                                            # RETURN
         # ...and shut on the way home, so the arm parks closed.
@@ -370,7 +376,27 @@ def target_pose(st: ArmState, s: float, t: float, p: ArmParams):
     return arm.base @ K.target_frame(lp, jaw=jaw), gap
 
 
-def _drop_pt(task: Task, size: float) -> np.ndarray:
+def grasp_at(p: ArmParams, pt, size: float) -> np.ndarray:
+    """Where the tool centre point goes to put the grip ridges on a box.
+
+    Two corrections, both properties of a claw rather than of the cell.
+
+    The ridges are only at the tool centre point at one stated opening,
+    because closing a claw swings its grip along the tool as well as
+    in; `pad_offset` is that swing, and the target is raised by it.
+
+    And a claw reaches below what it grips. Gripping a 48 mm box
+    exactly across its middle would put four fingertips 5 mm off the
+    belt, so the whole grasp lifts until they clear it -- taking the
+    box a little above its middle instead, which its 48 mm of side has
+    room for.
+    """
+    z = max(C.BELT_TOP + size / 2.0,
+            C.BELT_TOP + K.jaw_tip_drop(p, size) + JAW_CLEAR)
+    return np.array([pt[0], pt[1], z + K.pad_offset(p, size)])
+
+
+def _drop_pt(p: ArmParams, task: Task, size: float) -> np.ndarray:
     """Where the jaws let go: somewhere over the bin, not its dead centre.
 
     A gripper that always releases over the same point drops a tidy
@@ -379,7 +405,8 @@ def _drop_pt(task: Task, size: float) -> np.ndarray:
     """
     pc = task.parcel
     return task.bin_pt + (pc.drop_dx, pc.drop_dy,
-                          C.BIN_DROP_CLEAR + size / 2.0)
+                          C.BIN_DROP_CLEAR + size / 2.0
+                          + K.pad_offset(p, size))
 
 
 # ---------------------------------------------------------------------
@@ -534,7 +561,7 @@ def run(p: ArmParams, seconds: float = 26.0, fps: int = 30, seed: int = 11,
     diag = {"ik_pos": [], "ik_ang": [], "grasp_rel": [], "track_err": [],
             "tcp_step": [], "claims": [], "zone_ok": [], "jaw_floor": [],
             "grasps": [], "jaw_square": [], "grasp_pose": [],
-            "both_busy": [], "energy_gain": [], "overlap": [],
+            "both_busy": [], "energy_gain": [], "overlap": [], "grip_z": [],
             "carry_accel": [], "awake_at_end": []}
     counts = {"seen": 0, "picked": 0, "missed": 0,
               **{c.key: 0 for c in C.CLASSES}}
@@ -602,12 +629,24 @@ def run(p: ArmParams, seconds: float = 26.0, fps: int = 30, seed: int = 11,
             v = (st.tcp[:3, 3] - prev[k]) / dt
             diag["tcp_step"].append(float(np.linalg.norm(st.tcp[:3, 3] - prev[k])))
             if st.busy and st.task.phase == "CLOSE":
+                pc = st.task.parcel
+                here = pc.belt_point(t)
                 diag["grasp_rel"].append(
                     float(np.linalg.norm(v - (C.BELT_SPEED, 0.0, 0.0))))
+                # The claw's axis over the box's centre. Vertically the
+                # tool is deliberately *not* on the box -- see
+                # `grasp_at` -- so tracking is the horizontal question,
+                # and where the grip lands is asked separately.
                 diag["track_err"].append(float(np.linalg.norm(
-                    st.tcp[:3, 3] - st.task.parcel.belt_point(t))))
+                    st.tcp[:2, 3] - here[:2])))
+                # The ridges are `pad_offset` further down the tool than
+                # the tool centre point, and the fingertips curl
+                # `jaw_tip_drop` past the ridges.
+                ridge = st.tcp[2, 3] - K.pad_offset(p, st.gap)
+                diag["grip_z"].append(
+                    (float(ridge), float(here[2]), float(pc.size)))
                 diag["jaw_floor"].append(
-                    float(st.tcp[2, 3] - p.finger_thk / 2.0 - C.BELT_TOP))
+                    float(ridge - K.jaw_tip_drop(p, st.gap) - C.BELT_TOP))
             prev[k] = st.tcp[:3, 3].copy()
 
         # --- boxes nobody took run off the end ------------------------

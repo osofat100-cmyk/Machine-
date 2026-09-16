@@ -15,6 +15,7 @@ configuration halfway through a move.
 from __future__ import annotations
 
 import numpy as np
+from math import acos, atan2, cos, degrees, hypot, radians, sin
 
 from dataclasses import replace
 
@@ -37,41 +38,88 @@ def _mat(loc) -> np.ndarray:
     return loc_matrix(loc)
 
 
+def jaw_ridge(p: ArmParams, opening: float) -> tuple[float, float]:
+    """Where a jaw's grip ridge is, at an opening of `opening` degrees.
+
+    Returns (radius from the tool axis, distance from the J6 frame) of
+    the ridge's *axis*. The jaw is authored at its pivot and the whole
+    of it turns about that pivot, so this is one rotation applied to
+    `ArmParams.grab_grip_point` -- the same point `parts.grabber_jaw`
+    puts the ridge on.
+
+    A claw is not a parallel gripper: closing it moves the grip both in
+    and *along*. That second motion is real and it is why `pad_offset`
+    exists rather than the tool centre point simply being where the
+    jaws are.
+    """
+    phi = radians(opening)
+    gx, gz = p.grab_grip_point
+    return (p.grab_pivot_r + gx * cos(phi) + gz * sin(phi),
+            p.grab_pivot_z - gx * sin(phi) + gz * cos(phi))
+
+
+def jaw_gap(p: ArmParams, opening: float | None = None) -> float:
+    """Clear opening across the claw: what width of box it closes on.
+
+    Twice the ridge radius less the ridge itself, because a cylinder
+    touches a flat side at exactly its own radius from its axis.
+    """
+    o = p.grab_open if opening is None else opening
+    return 2.0 * (jaw_ridge(p, o)[0] - p.grab_pad_r)
+
+
+def opening_for_gap(p: ArmParams, gap: float) -> float:
+    """The jaw angle that closes the claw onto a box `gap` wide.
+
+    Closed form, not a search: `gx cos phi + gz sin phi` is
+    `A cos(phi - psi)`, so inverting it is one arccos. The lower branch
+    is the one that runs from shut to open across the travel; the upper
+    one is the same opening reached by swinging the jaws right over,
+    which the head's arc slot does not permit.
+    """
+    gx, gz = p.grab_grip_point
+    want = gap / 2.0 + p.grab_pad_r - p.grab_pivot_r
+    amp = hypot(gx, gz)
+    psi = atan2(gz, gx)
+    return degrees(psi - acos(max(-1.0, min(1.0, want / amp))))
+
+
 def grasp_offset(p: ArmParams) -> float:
-    """Distance from the J6 frame to the point between the jaw serrations.
+    """Distance from the J6 frame to the tool centre point.
 
-    The jaws no longer sit on the tool face: they rise out of the
-    gripper body's slot, so the count starts at `finger_mount_z` -- the
-    flange face, plus the body, less the depth the jaw stays engaged by.
-    Each finger is then an L rising `finger_len` with a `finger_thk` tip
-    folded across the top, and the middle of that tip is where a part is
-    actually held.
+    Pinned to one stated opening -- `grab_ref_gap` -- because a claw's
+    grip does not sit still as it closes. A parallel gripper's jaws
+    translate, so its grasp point is a fixed distance down the tool
+    whatever the opening; a claw's jaws rotate, so its grip point
+    swings through an arc. Something has to be the datum, and a datum
+    that moved with the commanded opening would make every tracking
+    claim in `sorter.py` untestable.
     """
-    return p.finger_mount_z + p.finger_len + p.finger_thk / 2
+    return jaw_ridge(p, opening_for_gap(p, p.grab_ref_gap))[1]
 
 
-def _inboard(p: ArmParams) -> float:
-    """How far a jaw tip reaches past its own shank centreline.
+def pad_offset(p: ArmParams, gap: float) -> float:
+    """How far past the tool centre point the ridges sit, at this gap.
 
-    `parts.gripper_finger` puts the tip block at
-    `-finger_w/2 + finger_thk/2` and makes it `finger_w` wide, so the
-    gripping face lands `finger_w - finger_thk/2` inboard -- 10 mm, not
-    the 11 mm you get by adding the two half-widths. That was the answer
-    this function gave until `test_the_jaws_actually_face_each_other`
-    measured the placed triangles and disagreed by exactly 2 mm of
-    opening; the jaws were standing 1 mm clear of a part they were
-    reported as gripping.
+    Positive means further from the flange, so a target that wants the
+    ridges *on* something has to be raised by this much. Over the size
+    range the cell handles it runs to a few tens of millimetres, which
+    is the difference between gripping a box across its middle and
+    gripping it across its top corner.
     """
-    return p.finger_w - p.finger_thk / 2
+    return jaw_ridge(p, opening_for_gap(p, gap))[1] - grasp_offset(p)
 
 
-def jaw_gap(p: ArmParams) -> float:
-    """Clear opening between the two jaw tips at the current stroke."""
-    return 2.0 * (p.finger_stroke - _inboard(p))
+def jaw_tip_drop(p: ArmParams, gap: float) -> float:
+    """How far the jaw tips hang below the ridges at this gap.
 
-
-def stroke_for_gap(p: ArmParams, gap: float) -> float:
-    return gap / 2.0 + _inboard(p)
+    What decides whether the claw can close on a short box standing on
+    a belt without the tips touching the belt first.
+    """
+    phi = radians(opening_for_gap(p, gap))
+    ex, ez = p.grab_curl[-1][2]
+    tip_z = p.grab_pivot_z - ex * sin(phi) + ez * cos(phi)
+    return tip_z - jaw_ridge(p, degrees(phi))[1]
 
 
 def posed(p: ArmParams, joints, gap: float | None = None) -> ArmParams:
@@ -80,11 +128,11 @@ def posed(p: ArmParams, joints, gap: float | None = None) -> ArmParams:
     `ArmParams` is frozen on purpose, so this goes through
     `dataclasses.replace` rather than reaching past the freeze. The jaw
     opening is a *placement* parameter -- `assembly.build_assembly` reads
-    `finger_stroke` to position the two jaws -- so changing it moves the
-    fingers without rebuilding them, exactly like a joint angle.
+    `grab_open` to swing the four jaws on their pivots -- so changing it
+    moves them without rebuilding them, exactly like a joint angle.
     """
     q = p.at_pose(*joints)
-    return q if gap is None else replace(q, finger_stroke=stroke_for_gap(p, gap))
+    return q if gap is None else replace(q, grab_open=opening_for_gap(p, gap))
 
 
 def tcp(p: ArmParams, joints) -> np.ndarray:

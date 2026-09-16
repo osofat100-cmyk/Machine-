@@ -1,13 +1,13 @@
 """Turn the repo's CAD assembly into triangles, once, and re-place them.
 
-`assembly.build_assembly` rebuilds all eleven solids every time it is
+`assembly.build_assembly` rebuilds all fourteen solids every time it is
 called -- about 1.3 s. Four hundred frames of that is nine minutes of
 rebuilding geometry that never changes, which is also the wrong thing to
 do on principle: the assembly docstring is explicit that driving the pose
 "is a matter of changing `ArmParams.joints` -- no geometry is rebuilt,
 only re-placed".
 
-So this module does what the docstring describes. The eleven prototypes
+So this module does what the docstring describes. The fourteen prototypes
 are tessellated once. Per frame, the *placement* half of `build_assembly`
 is re-run -- the real function, with the real chain -- against stand-in
 solids, purely to read back the `Location` of each of the fifteen
@@ -100,7 +100,7 @@ def _vertex_normals(verts: np.ndarray, tris: np.ndarray) -> np.ndarray:
 
 
 def tessellate_parts(p: ArmParams, deflection=0.3, angular=0.22) -> dict[str, Mesh]:
-    """Tessellate the eleven prototypes once, in their own frames."""
+    """Tessellate the fourteen prototypes once, in their own frames."""
     lib = P.build_all(p)
     out: dict[str, Mesh] = {}
     for key, part in lib.items():
@@ -205,3 +205,31 @@ def floor_mesh(half=1500.0, n=26, color=None) -> Mesh:
         color = hex_to_linear("#2b3038")
     return Mesh(verts, normals, tris, np.asarray(color, np.float32),
                 MAT_FLOOR)
+
+
+def measure_jaw_gap(pose, protos) -> float:
+    """The claw's opening, measured off the placed triangles.
+
+    `kinematics.jaw_gap` is arithmetic *about* geometry that lives in
+    `parts.grabber_jaw`, and a summary can be wrong. This model's was,
+    once, by 2 mm: the jaws stood a millimetre clear of a part the
+    program reported as gripped, and every check that asked the
+    arithmetic agreed with it.
+
+    So this asks the triangles instead. It transforms the placed jaws
+    back into the J6 frame, takes the band of them level with the grip
+    ridges, and reports twice the closest the mesh comes to the tool
+    axis -- which is the widest box the claw is actually closed on.
+    """
+    from .kinematics import jaw_ridge
+    inv = np.linalg.inv(loc_matrix(A.joint_frames(pose).j6))
+    _, ridge_z = jaw_ridge(pose, pose.grab_open)
+    near = np.inf
+    for label, mesh in arm_instances(pose, protos):
+        if not label.startswith("10_grabber_jaw"):
+            continue
+        local = (inv[:3, :3] @ mesh.verts.T).T + inv[:3, 3]
+        band = local[np.abs(local[:, 2] - ridge_z) < 0.6]
+        if band.size:
+            near = min(near, float(np.hypot(band[:, 0], band[:, 1]).min()))
+    return 2.0 * near

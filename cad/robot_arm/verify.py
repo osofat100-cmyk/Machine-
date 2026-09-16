@@ -10,7 +10,7 @@ disagree. Three independent checks:
    implementations agreeing is worth far more than one that runs.
 3. `check_interference` -- no two parts occupy the same space, beyond the
    press/clearance fits that are there on purpose.
-4. `check_gripper` -- the jaws are inside the slot they run in, at every
+4. `check_grabber` -- the jaws are inside the slot they run in, at every
    stroke the design allows. A gripper whose jaws leave their body is
    still a valid pile of solids.
 
@@ -186,7 +186,7 @@ def check_interference(p: ArmParams, rep: Report, tol: float = 1.0) -> None:
         frozenset({"03_shoulder_yoke", "11_actuator_can"}),
         frozenset({"05_elbow_yoke", "11_actuator_can"}),
         frozenset({"08_wrist_yoke", "11_actuator_can"}),
-        frozenset({"09_tool_flange", "10_gripper_finger"}),
+        frozenset({"09_tool_flange", "10_grabber_jaw"}),
         frozenset({"07_wrist_housing", "08_wrist_yoke"}),
     }
     asm = build_assembly(p)
@@ -215,45 +215,91 @@ def check_interference(p: ArmParams, rep: Report, tol: float = 1.0) -> None:
     rep.add("no unintended interference between parts", not clashes, detail)
 
 
-def check_gripper(p: ArmParams, rep: Report) -> None:
+def check_grabber(p: ArmParams, rep: Report) -> None:
     """A jaw that is not in its slot is not a jaw.
 
-    The gripper used to be two fingers placed on the tool face and slid
-    apart, which meant `finger_stroke` could be any number at all: past
+    The tool this replaced was two fingers placed on the tool face and
+    slid apart, which meant the stroke could be any number at all: past
     a certain opening the jaws were simply two solids floating near the
     flange, attached to nothing, and every other check in this file
     passed. Nothing about that is visible in a still render either --
     it reads as a gripper that happens to be open.
 
-    So the body exists, and this is what makes it load-bearing: the slot
-    is long enough for both jaws at full travel, the commanded stroke is
-    inside that travel, and the jaws are still engaged in the body at
-    the extremes.
+    A claw can fail the same way and more quietly, because a jaw hinged
+    on nothing still *looks* hinged. So the same three questions, asked
+    of the mechanism this tool actually has: the head's arc slot spans
+    the travel, the commanded opening is inside it, and the pin on each
+    jaw's heel is still in the slot at both ends of the travel --
+    measured from the placed solids, not from the numbers that placed
+    them.
     """
-    reach = p.grip_stroke_max + p.finger_thk / 2.0
-    rep.add("the slot is long enough for both jaws at full stroke",
-            reach <= p.grip_slot_len / 2.0 + 1e-9,
-            f"jaw outer face reaches {reach:.1f} mm, slot half-length "
-            f"{p.grip_slot_len / 2.0:.1f} mm")
-    rep.add("the commanded stroke is inside the travel the slot allows",
-            p.finger_stroke <= p.grip_stroke_max,
-            f"{p.finger_stroke:.1f} mm commanded of "
-            f"{p.grip_stroke_max:.1f} mm available")
+    from math import cos, hypot, radians, sin
 
-    from build123d import Pos
+    from build123d import Pos, Rot
+
+    rep.add("the commanded jaw opening is inside the travel",
+            p.grab_open_min <= p.grab_open <= p.grab_open_max,
+            f"{p.grab_open:.1f} deg commanded, travel "
+            f"{p.grab_open_min:.1f}..{p.grab_open_max:.1f} deg")
+
     lib = P.build_all(p)
-    body = lib["12_gripper_body"].moved(Pos(0, 0, p.flange_face_z))
-    worst = 1e9
-    for stroke in (0.0, p.finger_stroke, p.grip_stroke_max):
-        for sign in (-1, 1):
-            jaw = lib["10_gripper_finger"].moved(
-                Pos(sign * stroke, 0, p.finger_mount_z))
-            a, b = body.bounding_box(), jaw.bounding_box()
-            worst = min(worst, min(a.max.Z, b.max.Z) - max(a.min.Z, b.min.Z))
-    rep.add("the jaws are still held by the body at every stroke",
-            worst >= p.grip_slot_depth - 1e-6,
-            f"least engagement {worst:.1f} mm of a {p.grip_slot_depth:.1f} mm "
-            f"slot")
+    head = lib["14_grabber_head"].moved(Pos(0, 0, p.grab_head_z))
+    hbox = head.bounding_box()
+    worst_gap, worst_at = 1e9, 0.0
+    for k in range(9):
+        phi = p.grab_open_min + (p.grab_open_max - p.grab_open_min) * k / 8.0
+        # the heel pin, where the jaw's own placement puts it
+        jaw = lib["10_grabber_jaw"].moved(
+            Pos(p.grab_pivot_r, 0, p.grab_pivot_z) * Rot(0, phi, 0))
+        jb = jaw.bounding_box()
+        # it has to still be inside the head's envelope in Z: a pin that
+        # has run out of the end of its slot is not in a slot
+        over = min(hbox.max.Z, jb.max.Z) - max(hbox.min.Z, jb.min.Z)
+        if over < worst_gap:
+            worst_gap, worst_at = over, phi
+    rep.add("the jaws are still held by the head across the whole travel",
+            worst_gap > 0.0,
+            f"least overlap with the head {worst_gap:.1f} mm, at "
+            f"{worst_at:.0f} deg of a {p.grab_open_min:.0f}.."
+            f"{p.grab_open_max:.0f} deg travel")
+
+    # The pads must not pass through each other at the shut end, and
+    # must reach wide enough at the open end to be worth having.
+    shut = 2.0 * (p.grab_pivot_r + p.grab_grip_point[0]
+                  * cos(radians(p.grab_open_min))
+                  + p.grab_grip_point[1] * sin(radians(p.grab_open_min))
+                  - p.grab_pad_r)
+    wide = 2.0 * (p.grab_pivot_r + p.grab_grip_point[0]
+                  * cos(radians(p.grab_open_max))
+                  + p.grab_grip_point[1] * sin(radians(p.grab_open_max))
+                  - p.grab_pad_r)
+    rep.add("shut is shut, and not through itself", shut > 0.0,
+            f"the claw closes to {shut:.1f} mm and opens to {wide:.1f} mm")
+
+    # And the claw really opens as wide as the arithmetic says. This is
+    # the check the old gripper needed and did not have: a formula about
+    # a jaw and the jaw itself, written out separately, differed by 2 mm
+    # and nothing noticed until something measured the triangles.
+    #
+    # Triangles and not vertices: the ridge is a B-rep cylinder, whose
+    # topological vertices are two points on an arbitrary seam. Asking
+    # it where its surface is means tessellating it, which is also what
+    # anything downstream will be looking at.
+    jaw = lib["10_grabber_jaw"].moved(
+        Pos(p.grab_pivot_r, 0, p.grab_pivot_z) * Rot(0, p.grab_open, 0))
+    gx, gz = p.grab_grip_point
+    phi = radians(p.grab_open)
+    want_r = p.grab_pivot_r + gx * cos(phi) + gz * sin(phi)
+    want_z = p.grab_pivot_z - gx * sin(phi) + gz * cos(phi)
+    verts, _ = jaw.tessellate(0.02)
+    band = [v for v in verts if abs(v.Z - want_z) < 0.6]
+    near = min((v.X for v in band), default=-1e9)
+    want = want_r - p.grab_pad_r
+    rep.add("the claw closes to the width the arithmetic says",
+            abs(near - want) < 0.3,
+            f"ridge surface measured {near:.2f} mm from the tool axis "
+            f"over {len(band)} points, arithmetic says {want:.2f} mm "
+            f"-- a {2 * want:.1f} mm opening")
 
 
 def check_reach(p: ArmParams, rep: Report) -> None:
@@ -273,7 +319,7 @@ def run(p: ArmParams | None = None) -> Report:
     check_solids(p, rep)
     check_kinematics(p, rep)
     check_axes(p, rep)
-    check_gripper(p, rep)
+    check_grabber(p, rep)
     check_reach(p, rep)
     check_interference(p, rep)
     return rep

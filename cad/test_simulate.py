@@ -123,34 +123,50 @@ def test_natural_wrist_leaves_the_rolls_alone():
     assert abs(q[3]) < 1.0 and abs(q[5]) < 1.0, q
 
 
-def test_jaw_gap_round_trips_through_the_stroke():
-    for gap in (18.0, 24.0, 32.0, 54.0):
-        p = DEFAULT
-        q = K.posed(p, p.joints, gap)
-        assert abs(K.jaw_gap(q) - gap) < 1e-9
+def test_jaw_gap_round_trips_through_the_opening():
+    """gap -> jaw angle -> gap, in closed form and exactly.
+
+    The claw's opening is an angle and the cell thinks in millimetres,
+    so every grip goes through this conversion and back. An inverse
+    that is nearly right is a gripper that nearly closes."""
+    for gap in (18.0, 32.0, 54.0, 90.0, 140.0, 164.0):
+        q = K.posed(DEFAULT, DEFAULT.joints, gap)
+        assert abs(K.jaw_gap(q) - gap) < 1e-9, (gap, K.jaw_gap(q))
+        assert DEFAULT.grab_open_min <= q.grab_open <= DEFAULT.grab_open_max
 
 
 def test_the_jaws_actually_face_each_other():
     """The one defect in this repo's history that passed every solid
     check and was caught only by looking at a render: a gripper whose
     jaws fold outward. Measure the opening off the placed triangles and
-    make it agree with the arithmetic the program grips by."""
-    gap = 32.0
-    p = K.posed(DEFAULT, (35, 21, 80, 0, 79, 0), gap)
+    make it agree with the arithmetic the program grips by.
+
+    A claw can fail the same way -- four fingers curling outward are
+    still four fingers -- so this still measures rather than asks."""
+    for gap in (32.0, 90.0, 150.0):
+        p = K.posed(DEFAULT, (35, 21, 80, 0, 79, 0), gap)
+        measured = S.measure_jaw_gap(p, protos())
+        assert measured > 0, "the jaws overlap -- that is not a claw"
+        assert abs(measured - K.jaw_gap(p)) < 0.3, (gap, measured,
+                                                    K.jaw_gap(p))
+
+
+def test_every_jaw_is_the_same_distance_from_the_axis():
+    """Four jaws on one collar: if one is placed wrong the claw grips
+    on three, which no single-number check would notice."""
+    p = K.posed(DEFAULT, DEFAULT.joints, 90.0)
     j6 = np.linalg.inv(S.loc_matrix(A.joint_frames(p).j6))
-    tips = []
+    _, ridge_z = K.jaw_ridge(p, p.grab_open)
+    radii = []
     for label, mesh in S.arm_instances(p, protos()):
-        if not label.startswith("10_gripper_finger"):
+        if not label.startswith("10_grabber_jaw"):
             continue
         local = (j6[:3, :3] @ mesh.verts.T).T + j6[:3, 3]
-        lo = p.finger_mount_z + p.finger_len
-        band = local[(local[:, 2] > lo - 0.5) & (local[:, 2] < lo + p.finger_thk + 0.5)]
+        band = local[np.abs(local[:, 2] - ridge_z) < 0.6]
         assert len(band), label
-        tips.append((band[:, 0].min(), band[:, 0].max()))
-    tips.sort()
-    measured = tips[1][0] - tips[0][1]
-    assert measured > 0, "the jaws overlap -- they are not a gripper"
-    assert abs(measured - K.jaw_gap(p)) < 0.02, (measured, K.jaw_gap(p))
+        radii.append(float(np.hypot(band[:, 0], band[:, 1]).min()))
+    assert len(radii) == DEFAULT.grab_jaws, radii
+    assert max(radii) - min(radii) < 0.05, radii
 
 
 # ---------------------------------------------------------------------

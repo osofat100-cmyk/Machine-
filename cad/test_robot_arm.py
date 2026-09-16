@@ -21,15 +21,15 @@ from robot_arm import verify
 DEFAULT = ArmParams()
 
 
-def test_twelve_parts():
-    assert len(P.BUILDERS) == 12
-    assert len(P.build_all(DEFAULT)) == 12
+def test_fourteen_parts():
+    assert len(P.BUILDERS) == 14
+    assert len(P.build_all(DEFAULT)) == 14
 
 
 def test_assembly_shape():
     distinct, instances = instance_count(DEFAULT)
-    assert distinct == 12
-    assert instances == 16  # gripper jaws x2, actuator x4
+    assert distinct == 14
+    assert instances == 20  # claw jaws x4, actuator x4
 
 
 def test_every_part_is_one_watertight_solid():
