@@ -624,6 +624,24 @@ def run(p: ArmParams, seconds: float = 26.0, fps: int = 30, seed: int = 11,
                    and not states[n.index].busy and hungry.get(n.index)
                    for n in C.neighbours(st.arm)):
                 continue
+            # And the other half of the same problem, which the parity
+            # fix alone does not touch: the arm at the head of the line
+            # sees every box first. A1 took four of twelve and its only
+            # downstream neighbour took none, because by the time a box
+            # had travelled far enough for A2 to claim it, A1 was
+            # mid-pick and A2 was interlocked.
+            #
+            # A box A1 can reach now, every arm downstream of A1 can
+            # reach later -- that is what `downstream_of` means, and it
+            # is the same fact `a box its owner is too busy for goes to
+            # the next arm along` already rests on. So an arm that is
+            # ahead on the count lets the box run to a quieter one.
+            # Nobody defers forever: the moment the counts level the
+            # test stops firing, and A5 has nothing downstream to defer
+            # to at all.
+            if any(states[a.index].picks < st.picks
+                   for a in C.downstream_of(st.arm)):
+                continue
             live = [pc for pc in parcels
                     if pc.t0 <= t and can_claim(st.arm, pc, t)]
             if not live:
