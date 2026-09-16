@@ -372,6 +372,26 @@ def check_program(p: ArmParams, frames, diag, rep: Report) -> None:
             f"working at once at the busiest" if not diag["both_busy"]
             else f"{len(diag['both_busy'])} frames, first {diag['both_busy'][0]}")
 
+    # And the other half of that, which the interlock alone does not
+    # give you: an interlock that is never violated is also satisfied
+    # by two arms doing nothing for the whole clip. Adjacency here is a
+    # path, so the largest set that can work at once is {A1, A3, A5} or
+    # {A2, A4} -- and a dispatcher that scans arms in a fixed order
+    # picks the same one of those every frame forever. It did: A2 and
+    # A4 stood still through an entire render with nothing wrong with
+    # either of them, and every check above this one passed.
+    worked = {a.name: 0 for a in C.ARMS}
+    for _, name, _, _ in diag["claims"]:
+        worked[name] += 1
+    quiet = min(worked.values(), default=0)
+    busiest = max(worked.values(), default=0)
+    rep.add("every arm does a share of the work",
+            quiet > 0,
+            f"picks per arm " + " ".join(f"{n}:{c}" for n, c in worked.items())
+            + (f"; busiest/quietest {busiest}/{quiet}" if quiet
+               else " -- an arm that never moved is not an idle arm, it is"
+                    " a starved one"))
+
     sq = max(diag["jaw_square"]) if diag["jaw_square"] else 90.0
     rep.add("the jaws meet the box square to its faces, not on a corner",
             sq < 1.0,

@@ -193,6 +193,9 @@ class ArmState:
     task: Task | None = None
     tcp: np.ndarray = None             # world 4x4
     picks: int = 0
+    # When this arm last had nothing to do. The dispatcher is a queue,
+    # not a scan, and this is its key -- see `run`.
+    idle_since: float = 0.0
 
     @property
     def phase(self) -> str:
@@ -578,10 +581,16 @@ def run(p: ArmParams, seconds: float = 26.0, fps: int = 30, seed: int = 11,
                 counts["seen"] += 1
 
         # --- claiming: only an idle arm, only its own territory -------
-        # Recomputed inside the loop, not snapshotted before it: two
-        # neighbours claiming in the same frame would both have seen an
-        # idle neighbour and both gone.
-        for st in states:
+        # Longest idle first, and ties by index. Scanning in index order
+        # instead is what starved two of the five arms: adjacency is a
+        # path A1-A2-A3-A4-A5, so the largest set that can work at once
+        # is either {A1, A3, A5} or {A2, A4}, and a fixed scan order
+        # picks the same one of those every frame forever. A1 claims,
+        # which interlocks A2; A3 is then free and claims, which
+        # interlocks A4; A5 claims. The moment A1 finishes it is first
+        # in the scan again. A2 and A4 never moved for a whole clip,
+        # and nothing was wrong with either of them.
+        for st in sorted(states, key=lambda s: (s.idle_since, s.arm.index)):
             if st.busy:
                 continue
             busy = {s2.arm.index for s2 in states if s2.busy}
@@ -591,6 +600,16 @@ def run(p: ArmParams, seconds: float = 26.0, fps: int = 30, seed: int = 11,
             # *time* -- this does. Non-adjacent arms are unaffected, so
             # three of the five can still be working at once.
             if any(n.index in busy for n in C.neighbours(st.arm)):
+                continue
+            # ...and an arm that has just worked yields to a neighbour
+            # that has been waiting longer. Ordering alone does not
+            # break the deadlock above: A3 finishing is enough to make
+            # A3 the freshest arm, but A2 is still interlocked by A1,
+            # so A3 would simply take the next box and relock the
+            # parity. Deferring here is what lets the other set in.
+            if any(states[n.index].idle_since < st.idle_since
+                   and not states[n.index].busy
+                   for n in C.neighbours(st.arm)):
                 continue
             live = [pc for pc in parcels
                     if pc.t0 <= t and can_claim(st.arm, pc, t)]
@@ -694,6 +713,7 @@ def run(p: ArmParams, seconds: float = 26.0, fps: int = 30, seed: int = 11,
             task.anchor = st.tcp.copy()
             if task.phase_i >= len(PHASES):
                 st.task = None
+                st.idle_since = t
 
         for st in states:
             for n in C.neighbours(st.arm):
