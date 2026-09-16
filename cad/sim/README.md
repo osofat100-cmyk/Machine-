@@ -102,6 +102,26 @@ between.
 
 None of those are visible in a still. All three were found by checks.
 
+## The boxes fold
+
+`scene.gripped_box_mesh` deforms a box vertex by vertex while a claw is
+on it: panels in, corners fixed, because the folded edges are the stiff
+part of a box. Two superposed shapes, both vanishing at the creases so
+the lid and floor still meet the sides exactly — `sorter.panel_dish`
+(the side bending as a plate, going as the square of the panel) and
+`sorter.crush_depth` (flutes collapsing under the ridge).
+
+`sorter.relax` advances it a frame at a time and is deliberately
+asymmetric: closing, the board yields to wherever the jaws are, because
+the claw is steel and it has no choice; opening, it relaxes on its own
+time constant and lags them. It can never spring back past the crush,
+which is plastic, so a box keeps the pad print.
+
+Two bugs the frame-by-frame trace caught that no aggregate check could:
+a box that went from square to fully crushed in one frame, and — worse —
+a claw parked across the cell crushing a box by 43 mm because
+`task.parcel` still pointed at a box it had dropped a second earlier.
+
 ## The tool is a reacher grabber's claw
 
 Parts 10, 12 and 13 are the working end of the tool people pick things

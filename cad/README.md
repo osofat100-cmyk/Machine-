@@ -250,6 +250,49 @@ time"**, and `check_clearance`, which is now the *only* thing promising
 two arms never touch — measured between placed triangles every other
 frame rather than asserted by a rule.
 
+### The boxes fold
+
+A claw cannot be inside the box it is holding, so either the box gives
+way or the claw does. Boxes are cardboard, so the box gives way — and it
+gives way the way a cardboard box does, which is not by getting smaller.
+The folded edges are the stiff part, so the corners do not move at all
+and the **panels** go in. Each face is a grid of vertices, displaced by
+two shapes that both vanish at the creases:
+
+| | | |
+|---|---|---|
+| **dish** | the side bending as a plate held at its four edges | `0.0116·P·a²/D` |
+| **crush** | the flutes collapsing under the 4 mm ridge itself | `F = σc·2√(2Rd)·L` |
+
+Dish goes as the *square* of the panel, so a 112 mm box gives 7.88 mm
+and a 38 mm box gives 0.93 — big boxes crunch and small ones barely
+notice, which is what you feel doing it by hand. `grip_gap` is therefore
+`size − 2(dish + crush)`: the jaws close past the nominal face by
+everything the box gives and nothing more. Closing to exactly `size`,
+as this once did, puts the ridges tangent to the faces with no contact
+force at all — a claw resting against a box rather than holding one.
+
+**Going in and coming out are not symmetric, because the materials are
+not.** Closing, the claw is steel and the board is not, so it yields as
+far as the jaws have gone, that frame. Opening, nothing is pushing any
+more and the panel is on its own clock — a relaxation at
+`RECOVER_TAU = 0.35 s` — so it *lags* the jaws rather than tracking
+them, and the dent is still there after the claw has let go and swung
+away. Traced on a 109 mm box: four frames to crush, 8.59 mm held through
+the carry, released still 5 mm folded, and creeping back for a second
+and a half while it falls.
+
+What it never comes back past is the crush. The dish is elastic and
+gives its energy back; the flutes do not un-collapse. So the permanent
+set is not a number anyone chose — it is `crush_depth`, and every box in
+a bin carries the pad print of the claw that put it there.
+
+The check is **"no part of the claw is inside the box it is holding"**,
+measured from every triangle of every jaw against the box as it is while
+folded, and bounded by what the board gives rather than by a tolerance.
+The check it replaced watched only the ridges, and the ridges were
+tangent the whole time the fingertips were 65 mm deep in a large box.
+
 ### The drop is solved, not drawn
 
 Everything up to the moment the jaws open is a motion program. After it,
