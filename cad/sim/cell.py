@@ -52,7 +52,7 @@ from . import kinematics as K
 CELL_ARM = ArmParams(upper_len=375.0, fore_len=310.0)
 
 # ---- the conveyor ---------------------------------------------------
-BELT_X0, BELT_X1 = -1800.0, 1800.0     # mm, boxes travel +X
+BELT_X0, BELT_X1 = -2100.0, 2100.0     # mm, boxes travel +X
 BELT_HALF_W = 230.0                    # belt is 460 mm wide
 BELT_TOP = 120.0                       # top surface above the floor
 BELT_SPEED = 115.0                     # mm/s, and it never stops
@@ -108,14 +108,24 @@ def classify(size: float) -> SizeClass:
     return CLASSES[1] if size < CUTS[1] else CLASSES[2]
 
 # ---- the arms -------------------------------------------------------
-ARM_OFFSET = 445.0                     # how far the bases stand off the belt
-# Staggered at 650 mm. The interlock keeps two *working* neighbours
-# apart, but it says nothing about a working arm and a parked one --
-# and a carry swinging out to its far bin once passed a parked
-# neighbour with 50 mm between their tools. Spacing is what that
-# clearance is made of, so this is where it comes from. The belt is
-# long enough to absorb it either way.
-ARM_XS = (-1300.0, -650.0, 0.0, 650.0, 1300.0)
+# How far the bases stand off the belt. It is also half of what keeps
+# two arms apart, because adjacent arms sit on opposite sides: standing
+# them back separates them across the belt as well as along it, and
+# every arm now works at the same time as every other. 480 + 230 = 710
+# to the far edge, inside the 735 the envelope is verified to.
+ARM_OFFSET = 480.0
+# Staggered at 800 mm, and this is the whole of what keeps the arms out
+# of each other. There is no interlock: all five work at once, always,
+# so the layout has to be one in which that is safe rather than one
+# made safe by taking arms out of service. At 650 mm two arms passed
+# within 18 mm of each other with everyone working; at 800 mm, with the
+# bases 480 mm off the belt, the closest they ever come is 144 mm.
+#
+# The belt grew with it, and not only to fit the windows: the last
+# thing upstream of the first arm's window has to be the sensor that
+# sizes the boxes, or an arm would be claiming a box the cell has not
+# measured yet. Sensor at -1840, first window starts at -1790.
+ARM_XS = (-1600.0, -800.0, 0.0, 800.0, 1600.0)
 # Which side of the belt each base stands on. This is where the machine
 # is bolted, and nothing else: an arm works the *whole width* of its own
 # stretch of belt, near edge to far edge. Standing them alternately just
@@ -430,24 +440,6 @@ def owner_of(x: float, y: float) -> Arm | None:
         if arm.owns(x, y):
             return arm
     return None
-
-
-def neighbours(arm: Arm) -> list[Arm]:
-    """The arms whose working volume overlaps this one's.
-
-    Once an arm works the *whole* width of its stretch, it swings out
-    over the far edge of the belt -- which is the near edge for the arm
-    on the other side, one stretch along. Their reaches genuinely
-    overlap; the gap between their windows is a gap between the points
-    their tools visit, not between the machines. Measured, the arms
-    either side of a given one come within tens of millimetres of it,
-    and everything further away stays a clear margin off.
-
-    So adjacency here is a physical fact about the layout, and
-    `sorter.run` interlocks on it: two arms that can reach the same air
-    are never both in a pick.
-    """
-    return [a for a in ARMS if abs(a.index - arm.index) == 1]
 
 
 def downstream_of(arm: Arm) -> list[Arm]:

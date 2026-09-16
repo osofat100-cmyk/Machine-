@@ -357,20 +357,23 @@ def check_program(p: ArmParams, frames, diag, rep: Report) -> None:
             f"{len(diag['zone_ok'])} grasps, all inside" if not bad_zone
             else f"{bad_zone} of {len(diag['zone_ok'])} grasps outside")
 
-    # Once every arm works the full width of its own stretch, two
-    # adjacent arms can reach the same air -- the 140 mm between their
-    # windows is a gap between the points their *tools* visit, not
-    # between the machines. Measured, neighbours came within 3 mm of
-    # each other; everything further apart stayed a clear 235 mm off.
-    # So the cell interlocks on adjacency, and this is the invariant
-    # that replaces the territory rule the half-belt version relied on.
+    # Every arm works at the same time as every other. There is no
+    # mutual exclusion in the dispatcher and there is not meant to be:
+    # two machines that cannot both run are two machines you are paying
+    # for and using as one. The cell used to interlock on adjacency,
+    # and the price was a third of the line standing idle to keep the
+    # rest safe.
+    #
+    # What replaces it is layout -- 800 mm of stagger, 480 mm of
+    # standoff -- and `check_clearance` above, which measures the gap
+    # between the placed triangles every other frame and is the only
+    # thing here that can actually promise two arms never touch.
     concurrent = max((sum(1 for p_ in fr.phases if p_ != "IDLE")
                       for fr in frames), default=0)
-    rep.add("two arms that can reach the same air are never both working",
-            not diag["both_busy"],
-            f"never a neighbouring pair; {concurrent} of {len(C.ARMS)} arms "
-            f"working at once at the busiest" if not diag["both_busy"]
-            else f"{len(diag['both_busy'])} frames, first {diag['both_busy'][0]}")
+    rep.add("every arm can be working at the same time",
+            concurrent == len(C.ARMS),
+            f"{concurrent} of {len(C.ARMS)} arms working at once at the "
+            f"busiest -- no arm is ever stood down to make room for another")
 
     # And the other half of that, which the interlock alone does not
     # give you: an interlock that is never violated is also satisfied

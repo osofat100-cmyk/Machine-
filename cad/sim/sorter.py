@@ -424,6 +424,14 @@ def can_claim(arm: C.Arm, parcel: Parcel, t: float) -> bool:
     """
     if parcel.state != "belt" or parcel.claimed_by is not None:
         return False
+    # Nothing is claimed before it has been measured. The cell sorts on
+    # what the sensor reads, so an arm that claims a box upstream of the
+    # sensor is sorting on what the spawner knew -- which is not the
+    # same machine at all. It also pins the layout: the first arm's
+    # window has to start downstream of SENSOR_X, and this is what
+    # notices when it does not.
+    if parcel.seen_at < 0:
+        return False
     meet = parcel.belt_point(t + INTERCEPT_T)
     if not (arm.x0 + EDGE <= meet[0] <= arm.x1 - EDGE):
         return False
@@ -535,13 +543,15 @@ def release(world: R.World, pc: Parcel, pose: np.ndarray,
 
 
 def run(p: ArmParams, seconds: float = 26.0, fps: int = 30, seed: int = 11,
-        mean_gap: float = 1.4, lead: float = 30.0, report=print):
+        mean_gap: float = 1.4, lead: float = 40.0, report=print):
     """Simulate the whole cell, frame by frame.
 
     `lead` seeds the belt with boxes that notionally arrived before the
     clip starts -- a whole transit time of them, so the line opens
     already running rather than waiting half a minute for the first box
-    to travel down from the infeed.
+    to travel down from the infeed. A 4200 mm belt at 115 mm/s takes
+    36.5 s end to end, so the lead has to be at least that or the far
+    arms open on empty belt through no fault of their own.
     """
     parcels = spawn_plan(seconds, seed, mean_gap, lead=-lead)
     steps = {name: max(1, int(round(d * fps))) for name, d in PHASES}
@@ -563,7 +573,7 @@ def run(p: ArmParams, seconds: float = 26.0, fps: int = 30, seed: int = 11,
     diag = {"ik_pos": [], "ik_ang": [], "grasp_rel": [], "track_err": [],
             "tcp_step": [], "claims": [], "zone_ok": [], "jaw_floor": [],
             "grasps": [], "jaw_square": [], "grasp_pose": [],
-            "both_busy": [], "energy_lift": [], "overlap": [], "grip_z": [],
+            "energy_lift": [], "overlap": [], "grip_z": [],
             "carry_accel": [], "awake_at_end": []}
     counts = {"seen": 0, "picked": 0, "missed": 0,
               **{c.key: 0 for c in C.CLASSES}}
@@ -580,65 +590,29 @@ def run(p: ArmParams, seconds: float = 26.0, fps: int = 30, seed: int = 11,
                 pc.seen_at = t
                 counts["seen"] += 1
 
-        # --- claiming: only an idle arm, only its own territory -------
-        # Longest idle first, and ties by index. Scanning in index order
-        # instead is what starved two of the five arms: adjacency is a
-        # path A1-A2-A3-A4-A5, so the largest set that can work at once
-        # is either {A1, A3, A5} or {A2, A4}, and a fixed scan order
-        # picks the same one of those every frame forever. A1 claims,
-        # which interlocks A2; A3 is then free and claims, which
-        # interlocks A4; A5 claims. The moment A1 finishes it is first
-        # in the scan again. A2 and A4 never moved for a whole clip,
-        # and nothing was wrong with either of them.
-        # Who could take something *this* frame, asked once, before any
-        # claim has changed the answer. It is only used to decide who
-        # yields to whom, and "my neighbour is waiting on a box it can
-        # actually reach" is a fact about the top of the frame.
-        hungry = {st.arm.index: any(pc.t0 <= t and can_claim(st.arm, pc, t)
-                                    for pc in parcels)
-                  for st in states if not st.busy}
+        # --- claiming: any idle arm, its own territory ----------------
+        # Every arm may work at the same time as every other. There is
+        # no mutual exclusion here and there is not meant to be: two
+        # machines that cannot both run are two machines you are paying
+        # for and using as one. What keeps them out of each other is the
+        # layout -- 800 mm of stagger and 480 mm of standoff, measured
+        # at 144 mm of clearance with all five working -- and
+        # `check_clearance` is what holds that to it, frame by frame,
+        # from the placed triangles rather than from a rule.
+        #
+        # The order is still longest-idle-first so the machine is
+        # deterministic and does not favour a low index.
         for st in sorted(states, key=lambda s: (s.idle_since, s.arm.index)):
             if st.busy:
                 continue
-            busy = {s2.arm.index for s2 in states if s2.busy}
-            # Interlock: an arm whose neighbour is mid-pick stays put.
-            # Their reaches overlap now that each works the full width,
-            # so nothing about the territory rules keeps them apart in
-            # *time* -- this does. Non-adjacent arms are unaffected, so
-            # three of the five can still be working at once.
-            if any(n.index in busy for n in C.neighbours(st.arm)):
-                continue
-            # ...and an arm that has just worked yields to a neighbour
-            # that has been waiting longer *and has a box it can take*.
-            # Ordering alone does not break the deadlock above: A3
-            # finishing is enough to make A3 the freshest arm, but A2 is
-            # still interlocked by A1, so A3 would simply take the next
-            # box and relock the parity. Deferring here is what lets the
-            # other set in.
-            #
-            # Both halves of the condition matter. Without the yield the
-            # parity never breaks; without `hungry` an arm stands down
-            # for a neighbour that has nothing to stand down *for*,
-            # which is not fairness, it is an idle machine either way.
-            if any(states[n.index].idle_since < st.idle_since
-                   and not states[n.index].busy and hungry.get(n.index)
-                   for n in C.neighbours(st.arm)):
-                continue
-            # And the other half of the same problem, which the parity
-            # fix alone does not touch: the arm at the head of the line
-            # sees every box first. A1 took four of twelve and its only
-            # downstream neighbour took none, because by the time a box
-            # had travelled far enough for A2 to claim it, A1 was
-            # mid-pick and A2 was interlocked.
-            #
-            # A box A1 can reach now, every arm downstream of A1 can
-            # reach later -- that is what `downstream_of` means, and it
-            # is the same fact `a box its owner is too busy for goes to
-            # the next arm along` already rests on. So an arm that is
-            # ahead on the count lets the box run to a quieter one.
-            # Nobody defers forever: the moment the counts level the
-            # test stops firing, and A5 has nothing downstream to defer
-            # to at all.
+            # An arm ahead on the count lets the box run to a quieter
+            # one downstream. A box this arm can reach now, every arm
+            # downstream of it can reach later -- the same fact the
+            # hand-off rests on -- so the line levels itself out
+            # instead of the first arm taking everything it sees.
+            # Nobody defers forever: the test stops firing the moment
+            # the counts level, and the last arm has nothing downstream
+            # to defer to at all.
             if any(states[a.index].picks < st.picks
                    for a in C.downstream_of(st.arm)):
                 continue
@@ -746,10 +720,6 @@ def run(p: ArmParams, seconds: float = 26.0, fps: int = 30, seed: int = 11,
                 st.task = None
                 st.idle_since = t
 
-        for st in states:
-            for n in C.neighbours(st.arm):
-                if st.busy and states[n.index].busy:
-                    diag["both_busy"].append((round(t, 2), st.arm.name, n.name))
 
         # --- physics ---------------------------------------------------
         # Every released box is integrated here. A world with nothing
