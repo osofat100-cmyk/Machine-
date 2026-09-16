@@ -562,7 +562,7 @@ def run(p: ArmParams, seconds: float = 26.0, fps: int = 30, seed: int = 11,
             "tcp_step": [], "claims": [], "zone_ok": [], "jaw_floor": [],
             "grasps": [], "jaw_square": [], "grasp_pose": [],
             "both_busy": [], "energy_gain": [], "overlap": [], "grip_z": [],
-            "carry_accel": [], "awake_at_end": []}
+            "carry_accel": [], "awake_at_end": [], "energy_where": []}
     counts = {"seen": 0, "picked": 0, "missed": 0,
               **{c.key: 0 for c in C.CLASSES}}
     frames: list[Frame] = []
@@ -719,6 +719,9 @@ def run(p: ArmParams, seconds: float = 26.0, fps: int = 30, seed: int = 11,
             peak[key] = max(peak.get(key, 1.0), e0)
             w.advance(dt)
             diag["energy_gain"].append((w.energy() - e0) / peak[key])
+            diag["energy_where"].append(
+                (diag["energy_gain"][-1], str(key), round(t, 2),
+                 round(peak[key]), round(w.energy() - e0)))
             diag["overlap"].append(w.max_depth)
 
         # --- record ---------------------------------------------------
