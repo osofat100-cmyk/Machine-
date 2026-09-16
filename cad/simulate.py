@@ -317,9 +317,17 @@ def main(argv=None) -> int:
         n = max(1, int(round(mv.seconds * args.fps)))
         segs.append((t, t + n / args.fps, mv.name))
         t += n / args.fps
+    # Asked, not asserted -- for the third time in this repo's history.
+    # This line read "11 parts / 15 instances" through a whole render of
+    # a fourteen-part arm in twenty. The cell's overlay was taught to ask
+    # `parts.BUILDERS` after it said "11-part arm" once too often; this
+    # one was left writing the number down.
+    n_parts = len(PARTS.BUILDERS)
+    n_inst = len(S.placements(p))   # the cheap read-back, not a rebuild
     meta = {
         "title": "6-DOF arm — pick and place",
-        "subtitle": "11 parts / 15 instances, posed by robot_arm.assembly "
+        "subtitle": f"{n_parts} parts / {n_inst} instances, posed by "
+                    "robot_arm.assembly "
                     "— github.com/osofat100-cmyk/Machine-",
         "limits": K.LIMITS,
         "duration": duration,
