@@ -393,9 +393,20 @@ class World:
         Carrying the impulse over is not a nudge toward the answer, it
         *is* the previous answer, and a resting stack's answer barely
         changes. It costs one dictionary lookup per contact.
+
+        Only for contacts that are touching, though -- see below.
         """
         fresh = {}
         for c in contacts:
+            # Only contacts that are actually touching. A speculative
+            # contact is a prediction about a gap, and warm-starting a
+            # prediction hands two bodies that are no longer in contact
+            # the impulse they needed when they were -- a push out of
+            # nothing. That was the last way energy was getting in: one
+            # frame put 2.2 mm of lift into a chute whose deepest
+            # overlap that frame was 0.07 mm.
+            if c.depth <= -SLOP:
+                continue
             prev = self.cache.get(c.key())
             if prev is not None:
                 c.jn, c.jt = prev[0], prev[1].copy()
