@@ -14,9 +14,9 @@ claiming one prompt, 11 parts, 1 assembly, 35 minutes, in SolidWorks
 
 ![The generated arm](docs/img/arm_iso.png)
 
-Fourteen parts, twenty instances, one assembly. 6061-T6, 573 mm of arm
-in the default build, plus a 330 mm reacher grabber on the end of it,
-verified in seconds.
+Thirteen parts, nineteen instances, one assembly. 6061-T6, 573 mm of
+arm in the default build, plus a reacher grabber's claw on the end of
+it, verified in seconds.
 
 ## Two halves
 
@@ -47,7 +47,7 @@ implementation, agreeing to 2.6e-13 mm.
 cd cad && python3 simulate.py          # build/machine.mp4
 ```
 
-A 13.7-second pick-and-place cycle, rendered from the same fourteen solids.
+A 13.7-second pick-and-place cycle, rendered from the same thirteen solids.
 The pose comes from an inverse solve that runs once per frame on the
 straight-line moves; the placements are read out of `build_assembly`
 itself, so the arm in the video and the arm in the STEP file cannot
@@ -66,7 +66,7 @@ Software-rasterised in numpy: no GPU, no OpenGL, no display. See
 cd cad && python3 simulate_cell.py     # build/cell.mp4
 ```
 
-Five instances of the same arm -- re-driven longer, 888 mm of reach --
+Five instances of the same arm -- re-driven longer, 783 mm of reach --
 beside a belt that never stops, sorting boxes by size into fifteen bins.
 Every box is the same colour and the same shape, at any size inside its
 band, so the sorting is a measurement rather than a colour match.
@@ -74,9 +74,9 @@ band, so the sorting is a measurement rather than a colour match.
 **Each arm works the whole width of its own stretch of belt.** That is
 what the longer links are for: the far edge is 701 mm from a base, and
 reach falls off with height. Reaching across is also what makes two arms
-able to touch -- measured, neighbours came within 3 mm of each other
-while every non-adjacent pair stayed 235 mm clear -- so the cell
-interlocks on adjacency, and three of the five still work at once.
+able to touch, so the cell interlocks on adjacency -- and three of the
+five still work at once. Measured from the placed triangles every other
+frame, the closest any two arms came over the whole run was 188 mm.
 
 A box its owner is too busy for goes to the next arm along; one nobody
 catches runs off the end and is counted. Boxes dropped into a bin fall

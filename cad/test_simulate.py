@@ -106,12 +106,11 @@ def test_ik_round_trip():
     from sim import cell as C
     rng = np.random.default_rng(7)
     # Which heights the tool can work at is itself a fact about the
-    # model, so those are measured too rather than written down. The
-    # reacher grabber moved them: 330 mm was comfortable with the old
-    # 153 mm gripper and is out of reach with a 313 mm claw, which
-    # spends the difference holding the wrist above the target instead
-    # of out towards it. A test that hardcodes the answer to that goes
-    # red for the wrong reason.
+    # model, so those are measured too rather than written down. Every
+    # change to the tool moves them, because a tool pointing straight
+    # down spends its length holding the wrist above the target rather
+    # than out towards it. A test that hardcodes the answer to that
+    # goes red for the wrong reason.
     env = {}
     for z in (100.0, 140.0, 180.0, 220.0, 260.0, 300.0):
         try:

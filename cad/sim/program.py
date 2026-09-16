@@ -35,23 +35,15 @@ PARK = np.array([90.0, -35.0, 125.0, 0.0, -15.0, 0.0])
 
 # ---- the cell -------------------------------------------------------
 PICK_AZ, PLACE_AZ = -55.0, 55.0      # degrees about the turret axis
-# A shorter radius and a lower bench than this cell used to have, and
-# the reacher grabber is the reason. The tool is 330 mm long and the
-# program points it straight down, so its length is spent on standoff
-# rather than on stretch: the J6 frame has to sit 313 mm above whatever
-# the claw is closing on, and the arm has that much less of itself left
-# to reach out with. The cell in `cell.py` buys the reach back by being
-# re-driven longer; this one is the *default* build, so it pays in
-# geometry instead.
-REACH = 395.0                        # mm from the turret axis
-PEDESTAL_H = 45.0
+REACH = 440.0                        # mm from the turret axis
+PEDESTAL_H = 120.0
 # A parcel, not a die. A claw wraps what it grips, so its fingertips
 # reach below the grip by about 18 mm -- and a 32 mm cube standing on a
 # flat bench has only 16 mm of height under its middle, so four tips
 # would close into the bench to get to it. `check_clearance` said so:
 # eighty intrusions, the first of them a jaw inside a pedestal.
 BLOCK = 70.0                         # cube edge; the jaws close on this
-CLEAR = 85.0                         # approach/retract height above the grip
+CLEAR = 125.0                        # approach/retract height above the grip
 
 
 def _at(az_deg: float, r: float, z: float) -> np.ndarray:

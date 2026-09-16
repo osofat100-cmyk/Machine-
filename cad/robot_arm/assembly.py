@@ -72,8 +72,7 @@ _COLORS = {
     "10_grabber_jaw": "#a0aec0",
     "11_actuator_can": "#1a202c",
     "12_grabber_housing": "#2d3748",
-    "13_grabber_shaft": "#8d99ae",
-    "14_grabber_head": "#39414f",
+    "13_grabber_head": "#39414f",
 }
 
 
@@ -116,14 +115,12 @@ def build_assembly(p: ArmParams | None = None) -> Compound:
 
     # --- tool -------------------------------------------------------
     add("09_tool_flange", "09_tool_flange", f.j6)
-    # The tool is a reacher grabber: the housing that replaces its
-    # pistol grip, the tube that is the reach extender, the head, and
-    # `grab_jaws` jaws swinging in it.
+    # The tool is a reacher grabber's claw: the housing that replaces
+    # its pistol grip, the head bolted straight onto it, and
+    # `grab_jaws` jaws swinging in that.
     add("12_grabber_housing", "12_grabber_housing",
         f.j6 * Pos(0, 0, p.flange_face_z))
-    add("13_grabber_shaft", "13_grabber_shaft",
-        f.j6 * Pos(0, 0, p.grab_shaft_z))
-    add("14_grabber_head", "14_grabber_head",
+    add("13_grabber_head", "13_grabber_head",
         f.j6 * Pos(0, 0, p.grab_head_z))
     for i in range(p.grab_jaws):
         # Each jaw is authored at its own pivot, pointing along +Z with

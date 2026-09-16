@@ -21,15 +21,47 @@ from robot_arm import verify
 DEFAULT = ArmParams()
 
 
-def test_fourteen_parts():
-    assert len(P.BUILDERS) == 14
-    assert len(P.build_all(DEFAULT)) == 14
+def test_every_builder_makes_a_distinctly_labelled_part():
+    """No two builders may claim the same label.
+
+    `build_all` keys the library by label, so a collision does not
+    raise -- it silently drops a part from every export, every render
+    and every check that iterates the library. Comparing the two
+    lengths is the whole test.
+
+    The count itself is deliberately not written down. Three times in
+    this repo a hardcoded part count went stale the moment the model
+    changed, and a test that has to be edited to stay green is a test
+    that will eventually be edited without being read.
+    """
+    assert len(P.build_all(DEFAULT)) == len(P.BUILDERS)
 
 
 def test_assembly_shape():
+    """Everything built is placed, and only the parts meant to repeat do.
+
+    Both halves matter and neither is a total. A part built but never
+    placed is in the STEP file and not in the machine; a part placed
+    twice by accident is in the machine twice. The jaw count comes from
+    `grab_jaws` rather than from a number here, so re-driving the claw
+    to three fingers or six moves the test with it.
+    """
+    lib = P.build_all(DEFAULT)
+    asm = build_assembly(DEFAULT)
+    seen: dict[str, int] = {}
+    for child in asm.children:
+        seen[child.label.split(".")[0]] = seen.get(
+            child.label.split(".")[0], 0) + 1
+
+    assert set(seen) == set(lib), "a part is built but never placed"
+
+    want = dict.fromkeys(lib, 1)
+    want["10_grabber_jaw"] = DEFAULT.grab_jaws
+    want["11_actuator_can"] = 4          # one per driven joint: J1/2/3/5
+    assert seen == want
+
     distinct, instances = instance_count(DEFAULT)
-    assert distinct == 14
-    assert instances == 20  # claw jaws x4, actuator x4
+    assert (distinct, instances) == (len(lib), sum(want.values()))
 
 
 def test_every_part_is_one_watertight_solid():

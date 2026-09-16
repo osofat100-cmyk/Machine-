@@ -186,7 +186,6 @@ def check_interference(p: ArmParams, rep: Report, tol: float = 1.0) -> None:
         frozenset({"03_shoulder_yoke", "11_actuator_can"}),
         frozenset({"05_elbow_yoke", "11_actuator_can"}),
         frozenset({"08_wrist_yoke", "11_actuator_can"}),
-        frozenset({"09_tool_flange", "10_grabber_jaw"}),
         frozenset({"07_wrist_housing", "08_wrist_yoke"}),
     }
     asm = build_assembly(p)
@@ -243,7 +242,7 @@ def check_grabber(p: ArmParams, rep: Report) -> None:
             f"{p.grab_open_min:.1f}..{p.grab_open_max:.1f} deg")
 
     lib = P.build_all(p)
-    head = lib["14_grabber_head"].moved(Pos(0, 0, p.grab_head_z))
+    head = lib["13_grabber_head"].moved(Pos(0, 0, p.grab_head_z))
     hbox = head.bounding_box()
     worst_gap, worst_at = 1e9, 0.0
     for k in range(9):

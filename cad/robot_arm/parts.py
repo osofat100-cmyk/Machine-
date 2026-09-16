@@ -445,9 +445,17 @@ def grabber_housing(p: ArmParams) -> Part:
         p.tool_bolt_circle / 2, p.tool_bolt_dia, p.tool_bolt_count,
         p.grab_housing_len * 2, z=-1,
     )
-    # the socket the tube is clamped into
-    part = part - Pos(0, 0, p.grab_housing_len - 16.0) * Cylinder(
-        p.grab_shaft_dia / 2 + p.clearance, 24.0, align=_UP
+    # The register the head goes on, and the bore the drive runs up.
+    # It stands proud rather than being a socket because the bolts that
+    # hold the housing on are already on a 31.5 mm circle: a 24 mm bore
+    # down the middle would leave about a millimetre of material
+    # between the two, and you would have a part that builds, looks
+    # right, and could not be assembled.
+    part = part + Pos(0, 0, p.grab_housing_len) * Cylinder(
+        p.grab_spigot_dia / 2, p.grab_spigot_h, align=_UP
+    )
+    part = part - Pos(0, 0, p.grab_housing_len - 10.0) * Cylinder(
+        p.grab_spigot_dia / 2 - 6.0, p.grab_spigot_h + 10.0, align=_UP
     )
     # Only the whole circles: the flat leaves the outer rim as an arc
     # that runs into a sharp corner, and OCCT will not round that.
@@ -459,31 +467,6 @@ def grabber_housing(p: ArmParams) -> Part:
         2.0,
     )
     part.label = "12_grabber_housing"
-    return part
-
-
-def grabber_shaft(p: ArmParams) -> Part:
-    """The reach extender itself: the tube between the grip and the claw.
-
-    It is a tube and not a rod because the drive runs inside it, which
-    is the whole trick of the tool -- and because `grab_shaft_len` is
-    the one number that says how much reach the tool adds, it is worth
-    being able to change on its own.
-    """
-    part = Cylinder(p.grab_shaft_dia / 2, p.grab_shaft_len, align=_UP)
-    part = part - Cylinder(
-        p.grab_shaft_dia / 2 - p.grab_shaft_wall, p.grab_shaft_len * 3,
-        align=_UP,
-    )
-    for f in (0.26, 0.60):
-        part = part + Pos(0, 0, p.grab_shaft_len * f) * Cylinder(
-            p.grab_shaft_dia / 2 + 2.0, 9.0, align=_UP
-        )
-    part = part - Cylinder(
-        p.grab_shaft_dia / 2 - p.grab_shaft_wall, p.grab_shaft_len * 3,
-        align=_UP,
-    )
-    part.label = "13_grabber_shaft"
     return part
 
 
@@ -504,7 +487,7 @@ def grabber_head(p: ArmParams) -> Part:
 
     part = Cylinder(p.grab_head_dia / 2, p.grab_head_len, align=_UP)
     part = part - Cylinder(
-        p.grab_shaft_dia / 2 + p.clearance, p.grab_head_len * 0.62,
+        p.grab_spigot_dia / 2 + p.clearance, p.grab_head_len * 0.62,
         align=_UP,
     )
     pz = p.grab_head_len - p.grab_pin_inset
@@ -540,7 +523,7 @@ def grabber_head(p: ArmParams) -> Part:
         part.edges().filter_by(GeomType.CIRCLE).group_by(Axis.Z)[0],
         1.5,
     )
-    part.label = "14_grabber_head"
+    part.label = "13_grabber_head"
     return part
 
 
@@ -582,7 +565,6 @@ BUILDERS = (
     grabber_jaw,
     actuator_can,
     grabber_housing,
-    grabber_shaft,
     grabber_head,
 )
 

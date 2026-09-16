@@ -60,8 +60,8 @@ python3 build.py          # verify, then export (~10 s)
 python3 test_robot_arm.py # 9 tests
 ```
 
-14 parts, 8.04 kg in 6061-T6, 573 mm of arm plus a 330 mm reacher
-grabber. Exports STEP, STL and hidden-line drawings. **Refuses to export
+13 parts, 7.97 kg in 6061-T6, 573 mm of arm plus a reacher grabber's
+claw. Exports STEP, STL and hidden-line drawings. **Refuses to export
 anything failing its 12 checks.** The kinematic chain is computed twice — once by placing
 solids, once from scratch with 4×4 matrices — and the two must agree to
 2.6e-13 mm.

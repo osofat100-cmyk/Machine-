@@ -68,25 +68,30 @@ class ArmParams:
     wyoke_pin_dia: float = 10.0
 
     # ---- part 9: tool flange (ISO 9409-1-50-4-M6) -------------------
-    # The plate grew with the tool it carries. A 24 mm tube socketed
-    # into the housing needs its bolts outboard of the socket wall, and
-    # on a 31.5 mm circle it left 0.85 mm of material between the two.
-    tool_dia: float = 58.0
+    # The standard's numbers, and the designation is in the name: a
+    # 50 mm plate on a 31.5 mm circle, four M6. A tool that cannot be
+    # bolted to those is the tool's problem to solve, not the flange's.
+    tool_dia: float = 50.0
     tool_thk: float = 8.0
-    tool_bolt_circle: float = 42.0
+    tool_bolt_circle: float = 31.5
     tool_bolt_dia: float = 5.0        # tapped M6
     tool_bolt_count: int = 4
     tool_spigot_dia: float = 31.5
     tool_spigot_h: float = 6.0
 
-    # ---- the tool: a reacher grabber (parts 10, 12, 13, 14, 15) -----
-    # The hand tool this is: a pistol grip, a tube, and a claw. Squeeze
-    # the trigger and a rod runs down the tube; four jaws curl shut; let
-    # go and a spring opens them. Bolted to a robot flange the grip
-    # becomes an actuator housing and the trigger becomes a linear
-    # drive, but everything past the flange is the tool as sold -- and
-    # the tube is the point of it, which is why the catalogue calls
-    # these reach extenders.
+    # ---- the tool: a reacher grabber's claw (parts 10, 12, 13) ------
+    # The working end of a reacher grabber, and only that: four jaws
+    # that curl shut on whatever is between them, the head they pivot
+    # in, and a housing that drives them. Squeeze the trigger on the
+    # hand tool and a rod pulls the jaws closed; let go and a spring
+    # opens them. Here the pistol grip becomes an actuator housing and
+    # the trigger becomes a linear drive.
+    #
+    # The pole the tool is sold with is not modelled, because it is
+    # there to save a person bending down. A robot arm is already the
+    # reach; a pole bolted to J6 would be 160 mm of dead length for the
+    # wrist to carry and swing, and every clearance in the cell would
+    # be paying for it.
     #
     # `grab_open` is the pose, in the same sense `joints` is: how far
     # the jaws are swung open from shut. Nothing is rebuilt when it
@@ -97,16 +102,14 @@ class ArmParams:
     grab_housing_dia: float = 62.0
     grab_housing_len: float = 46.0
 
-    # part 13: the reach extender
-    # Slim enough to clear the flange's own bolt circle: a socket wide
-    # enough for a 34 mm tube swallows the bolt holes that hold the
-    # housing on, and you get a part that builds, looks right, and
-    # could not be assembled.
-    grab_shaft_dia: float = 24.0
-    grab_shaft_wall: float = 2.5
-    grab_shaft_len: float = 160.0
+    # The register between the two: a spigot on the housing, a
+    # counterbore in the head, so the claw can only go on square and
+    # the drive has somewhere to run. On the hand tool this is the
+    # socket the pole clamps into.
+    grab_spigot_dia: float = 24.0
+    grab_spigot_h: float = 12.0
 
-    # part 14: the head the jaws pivot in
+    # part 13: the head the jaws pivot in
     grab_head_dia: float = 64.0
     grab_head_len: float = 40.0
     grab_pivot_r: float = 22.0        # pivot pins, from the tool axis
@@ -177,13 +180,13 @@ class ArmParams:
         return self.tool_thk + self.tool_spigot_h
 
     @property
-    def grab_shaft_z(self) -> float:
-        """Where the tube starts, measured from the J6 frame."""
-        return self.flange_face_z + self.grab_housing_len
-
-    @property
     def grab_head_z(self) -> float:
-        return self.grab_shaft_z + self.grab_shaft_len
+        """The claw head's base, measured from the J6 frame.
+
+        The head sits straight on the housing. Nothing between them
+        but the register spigot, which is buried in both.
+        """
+        return self.flange_face_z + self.grab_housing_len
 
     @property
     def grab_pivot_z(self) -> float:

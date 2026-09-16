@@ -45,15 +45,11 @@ from . import kinematics as K
 # `params.py` is the whole model, so this is one line, and
 # `robot_arm.verify` passes on it unchanged -- which is the only reason
 # it is safe to do.
-# Re-driven again, and the reacher grabber is why. The tool is 330 mm
-# long and every pick points it straight down, so its length is spent
-# holding the J6 frame 313 mm above the box rather than reaching out to
-# it -- the arm has that much less of itself left over for the far edge
-# of the belt. The hover above the far corner of a window is the
-# binding case, and it wants 826 mm from shoulder to wrist where the
-# 783 mm build had 775. One line, and `robot_arm.verify` passes on the
-# result unchanged, which is the only reason it is safe to do.
-CELL_ARM = ArmParams(upper_len=430.0, fore_len=360.0)
+# The claw is 153 mm from the flange to its grip and every pick points
+# it straight down, so that length is spent holding the J6 frame above
+# the box rather than reaching out to it. That is about what the tool
+# this replaced cost, so these two numbers are unchanged by the swap.
+CELL_ARM = ArmParams(upper_len=375.0, fore_len=310.0)
 
 # ---- the conveyor ---------------------------------------------------
 BELT_X0, BELT_X1 = -1800.0, 1800.0     # mm, boxes travel +X
@@ -113,13 +109,13 @@ def classify(size: float) -> SizeClass:
 
 # ---- the arms -------------------------------------------------------
 ARM_OFFSET = 445.0                     # how far the bases stand off the belt
-# The interlock keeps two *working* neighbours apart, but it says
-# nothing about a working arm and a parked one -- and a carry swinging
-# out to its far bin once passed a parked neighbour with 38 mm between
-# their claws. Spacing is what that clearance is made of, so this is
-# where it comes from, and it widened again when the reacher grabber
-# made the arms longer. The belt is long enough to absorb it either way.
-ARM_XS = (-1400.0, -700.0, 0.0, 700.0, 1400.0)
+# Staggered at 650 mm. The interlock keeps two *working* neighbours
+# apart, but it says nothing about a working arm and a parked one --
+# and a carry swinging out to its far bin once passed a parked
+# neighbour with 50 mm between their tools. Spacing is what that
+# clearance is made of, so this is where it comes from. The belt is
+# long enough to absorb it either way.
+ARM_XS = (-1300.0, -650.0, 0.0, 650.0, 1300.0)
 # Which side of the belt each base stands on. This is where the machine
 # is bolted, and nothing else: an arm works the *whole width* of its own
 # stretch of belt, near edge to far edge. Standing them alternately just
@@ -134,7 +130,7 @@ WINDOW_HALF = 190.0                    # half the length of belt an arm owns
 # see `full_width_set`.
 R_MIN, R_MAX = 200.0, 735.0
 
-HOVER = 100.0                          # approach height above a grasp
+HOVER = 120.0                          # approach height above a grasp
 BIN_R = 380.0                          # bins sit on an arc behind each arm
 BIN_ANGLES = (-140.0, -90.0, -40.0)    # small, medium, large
 # Tall enough that a box sliding off the one already in the bin lands

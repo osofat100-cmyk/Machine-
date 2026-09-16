@@ -38,7 +38,7 @@ build/report.txt           checks + mass properties
 | File | What it is |
 |---|---|
 | `robot_arm/params.py` | **Every dimension.** One dataclass; nothing downstream hard-codes a number. |
-| `robot_arm/parts.py` | The fourteen part builders. |
+| `robot_arm/parts.py` | The thirteen part builders. |
 | `robot_arm/assembly.py` | Kinematic chain and placement. |
 | `robot_arm/verify.py` | The checking pass — see below. |
 | `build.py` | CLI: verify, export, report. |
@@ -57,7 +57,7 @@ build/report.txt           checks + mass properties
 checks run first:
 
 ```
-[PASS] every part is a single solid -- 14 parts
+[PASS] every part is a single solid -- 13 parts
 [PASS] no degenerate (near-zero volume) parts
 [PASS] no fillets silently dropped -- 0 dropped
 [PASS] joint chain matches independent FK (5 poses) -- max deviation 2.58e-13 mm
@@ -88,17 +88,22 @@ attached to nothing, and every other check here passed. It does not
 look wrong in a still either — it reads as a gripper that happens to be
 open.
 
-## The tool is a reacher grabber
+## The tool is a reacher grabber's claw
 
-Parts 10 and 12–14 are the tool people actually pick things up with at
-arm's length: a **reacher grabber**, the litter-picker's tool, also sold
-as a reach extender. A pistol grip, a tube, and a claw — squeeze the
-trigger, a rod runs down the tube, four jaws curl shut.
+Parts 10, 12 and 13 are the working end of the tool people actually pick
+things up with at arm's length: a **reacher grabber**, the
+litter-picker's tool. Squeeze the trigger and a rod pulls four jaws
+closed on whatever is between them; let go and a spring opens them.
 
-Bolted to a robot flange the grip becomes an actuator housing (part 12)
-and the trigger becomes a linear drive, but the rest of it is the tool
-as sold: the tube (13) that is the reach extender, the head (14), and
-four jaws (10) on pivots in it.
+Bolted to a robot flange the pistol grip becomes an actuator housing
+(part 12) and the trigger becomes a linear drive. The head (13) bolts
+straight onto it, and four jaws (10) pivot in that.
+
+**The pole is not modelled, on purpose.** It is there to save a person
+bending down, and a robot arm is already the reach. Bolted to J6 it
+would be dead length for the wrist to carry and swing, spent holding
+the frame above the box rather than reaching out to it — and every
+clearance in the cell would be paying for it.
 
 The mechanism is the same lesson one level on. Each jaw carries a pin on
 its heel, and that pin runs in an **arc slot** cut in the head. The slot
@@ -134,7 +139,7 @@ below the grip, and a 32 mm cube on a flat bench has only 16 mm of
 height under its middle, so four tips would close into the bench to get
 to it. `check_clearance` said so -- eighty intrusions, the first of them
 a jaw inside a pedestal. The arm on screen is this
-model — the same fourteen solids, placed by `assembly.build_assembly`,
+model — the same thirteen solids, placed by `assembly.build_assembly`,
 driven by an inverse solve that runs once per frame on the straight-line
 moves. There is no GPU in the loop and no OpenGL; `sim/` rasterises it
 with numpy.
@@ -184,20 +189,22 @@ and the same shape, at any size inside its band, so where one goes is
 decided by measuring it and nothing else.
 
 **Each arm works the whole width of its own stretch of belt** -- near
-edge to far edge. That is why the cell runs an 888 mm build of the arm
+edge to far edge. That is why the cell runs a 783 mm build of the arm
 rather than the 573 mm default: the far edge is 701 mm from a base,
-reach falls off with height, and the reacher grabber spends 313 mm of
-the arm's own reach holding the wrist above the box rather than out
-towards it. Territory used to be a stretch *and* the
-near half of it, which made the arms look like they could only get
-halfway across, and made the extra reach pointless.
+reach falls off with height, and the claw spends 153 mm of the arm's
+own reach holding the wrist above the box rather than out towards it.
+Territory used to be a stretch *and* the near half of it, which made
+the arms look like they could only get halfway across, and made the
+extra reach pointless.
 
 Reaching across is what makes two arms able to touch. The 270 mm between
 windows is a gap between the points their *tools* visit, not between the
-machines: measured, neighbours came within 3 mm of each other, while
-every non-adjacent pair stayed a clear 235 mm off. So the cell
-interlocks on adjacency -- two arms that can reach the same air are
-never both in a pick -- which still lets three of the five work at once.
+machines -- the machines' reaches genuinely overlap. So the cell
+interlocks on adjacency: two arms that can reach the same air are never
+both in a pick, which still lets three of the five work at once. What
+that buys is measured rather than argued, from the placed triangles
+every other frame -- over the whole run the closest any two arms came
+was 188 mm.
 
 A box its owner is too busy for stays on the belt for the next arm along;
 one nobody catches rides to the end and falls off it.

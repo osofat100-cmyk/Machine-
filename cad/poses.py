@@ -3,7 +3,7 @@
 
 Evidence for the claim that the joints turn about the axes they are
 supposed to: only `ArmParams.joints` changes between these frames. No
-geometry is rebuilt -- the same fourteen solids are re-placed by the
+geometry is rebuilt -- the same thirteen solids are re-placed by the
 kinematic chain.
 
     python3 poses.py --out build/poses.svg
