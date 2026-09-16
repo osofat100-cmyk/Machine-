@@ -45,11 +45,17 @@ from . import kinematics as K
 # `params.py` is the whole model, so this is one line, and
 # `robot_arm.verify` passes on it unchanged -- which is the only reason
 # it is safe to do.
-# The claw is 153 mm from the flange to its grip and every pick points
+# The claw is 183 mm from the flange to its grip and every pick points
 # it straight down, so that length is spent holding the J6 frame above
-# the box rather than reaching out to it. That is about what the tool
-# this replaced cost, so these two numbers are unchanged by the swap.
-CELL_ARM = ArmParams(upper_len=375.0, fore_len=310.0)
+# the box rather than reaching out to it, and the arm has that much
+# less of itself left for the far edge of the belt.
+#
+# Re-driven when the fingers grew to 125 mm: at 375/310 the arm reached
+# 730 mm at the height it hovers over a large box, against the 735 this
+# layout asks for. `check_structure` did *not* notice, because it holds
+# the working points against R_MAX and R_MAX is a constant; the test
+# that re-measures the envelope did. 385/320 reaches 760 mm there.
+CELL_ARM = ArmParams(upper_len=385.0, fore_len=320.0)
 
 # ---- the conveyor ---------------------------------------------------
 BELT_X0, BELT_X1 = -2100.0, 2100.0     # mm, boxes travel +X
