@@ -36,28 +36,24 @@ def _quad(x0, x1, y0, y1, z, colour, material=MAT_MATTE) -> Mesh:
 
 
 def belt_top() -> list[Mesh]:
-    """The belt surface, painted with whose territory is whose."""
-    edges = sorted({C.BELT_X0, C.BELT_X1}
-                   | {a.x0 for a in C.ARMS} | {a.x1 for a in C.ARMS})
+    """The belt surface, with each arm's stretch marked off.
+
+    Marked, not painted. This used to fill every window with that arm's
+    colour, which put five saturated panels down the middle of the shot
+    and made the whole thing look colour-coded -- the one thing the cell
+    is not, since it sorts on measured size. The boundaries are drawn as
+    thin lines instead, in one neutral grey, and the colour lives on the
+    bins where the designations are.
+    """
     base = hex_to_linear(BELT)
-    out = []
-    for x0, x1 in zip(edges[:-1], edges[1:]):
-        xm = (x0 + x1) / 2.0
-        for side, y0, y1 in ((-1, -C.BELT_HALF_W, 0.0), (1, 0.0, C.BELT_HALF_W)):
-            owner = next((a for a in C.ARMS
-                          if a.side == side and a.in_window(xm)), None)
-            col = base if owner is None else (
-                base * 0.85 + hex_to_linear(ARM_TINT[owner.index]) * 0.16)
-            out.append(_quad(x0, x1, y0, y1, C.BELT_TOP, col))
-    # boundary lines, a hair proud of the surface so they always win
-    line = hex_to_linear("#8c97a8")
+    out = [_quad(C.BELT_X0, C.BELT_X1, -C.BELT_HALF_W, C.BELT_HALF_W,
+                 C.BELT_TOP, base)]
+    line = hex_to_linear("#798496")
     z = C.BELT_TOP + 0.6
-    out.append(_quad(C.BELT_X0, C.BELT_X1, -2.0, 2.0, z, line * 0.55))
-    for a in C.ARMS:
-        y0, y1 = (-C.BELT_HALF_W, 0.0) if a.side < 0 else (0.0, C.BELT_HALF_W)
-        for x in (a.x0, a.x1):
-            out.append(_quad(x - 3.0, x + 3.0, y0, y1, z,
-                             hex_to_linear(ARM_TINT[a.index]) * 0.9))
+    for arm in C.ARMS:
+        for x in (arm.x0, arm.x1):
+            out.append(_quad(x - 3.0, x + 3.0, -C.BELT_HALF_W,
+                             C.BELT_HALF_W, z, line * 0.7))
     return out
 
 

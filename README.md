@@ -65,24 +65,21 @@ Software-rasterised in numpy: no GPU, no OpenGL, no display. See
 cd cad && python3 simulate_cell.py     # build/cell.mp4
 ```
 
-Five instances of the same arm -- re-driven longer, 728 mm of reach --
+Five instances of the same arm -- re-driven longer, 783 mm of reach --
 beside a belt that never stops, sorting boxes by size into fifteen bins.
-Three on one side, two on the other, staggered so no two ever look at
-the same stretch of belt. Every box is the same colour and the same
-shape; the only thing that decides where one goes is its measured edge,
-so the sorting is a measurement rather than a colour match.
+Every box is the same colour and the same shape, at any size inside its
+band, so the sorting is a measurement rather than a colour match.
 
-Each arm can **extend right across** the belt -- that is why the links
-are longer -- and is never **sent** across it. Capability and policy are
-separate claims and both are checked: the solver is asked for a tool
-pose at ninety points spanning the full width, and the dispatcher is
-held to each arm's own half.
+**Each arm works the whole width of its own stretch of belt.** That is
+what the longer links are for: the far edge is 701 mm from a base, and
+reach falls off with height. Reaching across is also what makes two arms
+able to touch -- measured, neighbours came within 3 mm of each other
+while every non-adjacent pair stayed 235 mm clear -- so the cell
+interlocks on adjacency, and three of the five still work at once.
 
-Territory is the rest of the design: an arm takes a box only if it is on
-that arm's half, lands inside that arm's stretch of belt, and sits
-inside the annulus the arm can provably reach. A box its owner is too
-busy for goes to the next arm on that side; one nobody catches runs off
-the end and is counted. And because disjoint territory constrains the
+A box its owner is too busy for goes to the next arm along; one nobody
+catches runs off the end and is counted. Boxes dropped into a bin fall
+and land on what is already there. And because territory constrains the
 tool but not the elbow, the clearance between every pair of arms is
 measured from the placed triangles every frame.
 

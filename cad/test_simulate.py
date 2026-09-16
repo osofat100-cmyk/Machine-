@@ -90,11 +90,26 @@ def test_forward_kinematics_is_not_reimplemented():
 # the solver reaches what it is asked for
 # ---------------------------------------------------------------------
 def test_ik_round_trip():
+    """Sample inside the envelope the model actually has.
+
+    This used to sample a fixed box of radii and heights, which was fine
+    until the gripper grew a body and the tool got 73 mm longer. Pointing
+    straight down, a longer tool puts the wrist that much higher, and
+    reach falls off with height -- so the far edge came in and the fixed
+    box ran past it by a quarter of a millimetre. Measuring the envelope
+    and sampling inside it tests the solver rather than the constant.
+    """
+    from sim import cell as C
     rng = np.random.default_rng(7)
+    heights = (140.0, 240.0, 330.0, 410.0)
+    env = {z: C.measure_envelope(DEFAULT, z, lo=100, hi=700, step=10)
+           for z in heights}
     for _ in range(12):
+        z = float(rng.choice(heights))
+        lo, hi = env[z]
+        assert hi - lo > 100.0, (z, lo, hi)
         az = rng.uniform(-70, 70)
-        r = rng.uniform(340, 500)
-        z = rng.uniform(130, 420)
+        r = rng.uniform(lo + 25.0, hi - 25.0)
         goal = K.target_frame(PG._at(az, r, z))
         q, pe, ae = K.solve_ik(DEFAULT, goal, K.seed_for(goal[:3, 3], DEFAULT))
         assert pe < 0.2 and ae < 0.2, (az, r, z, pe, ae)

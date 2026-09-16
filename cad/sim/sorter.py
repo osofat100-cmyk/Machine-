@@ -39,21 +39,35 @@ from . import kinematics as K
 TRACK_T = 1.30
 DESCEND_T = 0.75
 CLOSE_T = 0.35
-LIFT_T = 1.25
+LIFT_T = 1.60
 DROP_T = 0.65
 OPEN_T = 0.30
-RETURN_T = 1.35
+RETURN_T = 1.70
 PHASES = (("TRACK", TRACK_T), ("DESCEND", DESCEND_T), ("CLOSE", CLOSE_T),
           ("LIFT", LIFT_T), ("DROP", DROP_T), ("OPEN", OPEN_T),
           ("RETURN", RETURN_T))
 CYCLE_T = sum(d for _, d in PHASES)
 INTERCEPT_T = TRACK_T + DESCEND_T      # from claim to touchdown
 
-ARC = 65.0                             # how high a carry move bows
-EDGE = 12.0                            # keep intercepts off the window edge
+ARC = 120.0                             # how high a carry move bows
+# The carry pulls its radius in over the first part of the move and does
+# its turret travel over the rest, so the tool is off the belt before it
+# starts tracking along it. The return does the same in reverse.
+RETREAT = 0.55
+SWEEP_FROM = 0.40
+# Keep intercepts this far off a window edge. Derived, because a fixed
+# margin was wrong: the jaws go on tracking the box for the whole of
+# CLOSE, so the box is `CLOSE_T` worth of belt further downstream when
+# it is actually gripped than it was at touchdown. A 12 mm margin
+# against 40 mm of travel meant a box could be claimed legitimately and
+# gripped outside the window.
+EDGE = CLOSE_T * C.BELT_SPEED + 15.0
 GRAVITY = 9810.0                       # mm/s^2, for the drop into the bin
-JAW_MARGIN = 20.0                      # how much wider than the box the jaws open
-MIN_GAP_X = 260.0                      # closest two boxes are ever spawned
+JAW_MARGIN = 24.0                      # how much wider than the box the jaws open
+# Closest two boxes are ever spawned. The jaws open to about 190 mm
+# around a 140 mm box, so a box needs that much clear belt behind it or
+# the gripper would be closing on its neighbour.
+MIN_GAP_X = 300.0
 
 
 def open_gap(size: float) -> float:
@@ -68,6 +82,9 @@ class Parcel:
     y: float
     x_at_t0: float
     t0: float
+    drop_dx: float = 0.0               # where in the bin it gets let go
+    drop_dy: float = 0.0
+    yaw: float = 0.0                   # how it happens to be turned
     state: str = "belt"                # belt | held | falling | binned | rejected
     claimed_by: int | None = None
     picked_by: int | None = None
@@ -97,11 +114,10 @@ def spawn_plan(seconds: float, seed: int = 11, mean_gap: float = 1.15,
                lead: float = 0.0) -> list[Parcel]:
     """Boxes arriving at random times, sizes and lateral positions.
 
-    Two constraints keep it a sorting problem rather than a pile-up: no
-    two boxes are ever closer together along the belt than `MIN_GAP_X`,
-    and a box's centre never sits so close to the centreline that it
-    straddles both halves -- a box belongs to one side or it belongs to
-    nobody.
+    One constraint keeps it a sorting problem rather than a pile-up: no
+    two boxes are ever closer together along the belt than `MIN_GAP_X`.
+    Laterally a box may sit anywhere it fits on the belt, because every
+    arm works the full width of its own stretch.
     """
     rng = np.random.default_rng(seed)
     out: list[Parcel] = []
@@ -111,9 +127,13 @@ def spawn_plan(seconds: float, seed: int = 11, mean_gap: float = 1.15,
         band = C.CLASSES[int(rng.integers(0, len(C.CLASSES)))]
         size = float(rng.uniform(band.lo, band.hi))
         margin = size / 2.0 + 18.0
-        side = -1 if rng.random() < 0.5 else 1
-        y = side * float(rng.uniform(margin, C.BELT_HALF_W - margin))
-        out.append(Parcel(pid, size, y, C.BELT_X0, t))
+        y = float(rng.uniform(-(C.BELT_HALF_W - margin),
+                              C.BELT_HALF_W - margin))
+        reach = C.BIN_INNER - size / 2.0 - 12.0
+        out.append(Parcel(pid, size, y, C.BELT_X0, t,
+                          drop_dx=float(rng.uniform(-reach, reach)),
+                          drop_dy=float(rng.uniform(-reach, reach)),
+                          yaw=float(rng.uniform(-np.pi, np.pi))))
         pid += 1
         t += max(MIN_GAP_X / C.BELT_SPEED, float(rng.exponential(mean_gap)))
     return out
@@ -331,25 +351,32 @@ def target_pose(st: ArmState, s: float, t: float, p: ArmParams):
 
 
 def _drop_pt(task: Task, size: float) -> np.ndarray:
-    return task.bin_pt + (0.0, 0.0, 26.0 + size / 2.0)
+    """Where the jaws let go: somewhere over the bin, not its dead centre.
+
+    A gripper that always releases over the same point drops a tidy
+    column. It releases over the bin, and where in the bin is whatever
+    the approach happened to leave it -- drawn once, with the box.
+    """
+    pc = task.parcel
+    return task.bin_pt + (pc.drop_dx, pc.drop_dy, 40.0 + size / 2.0)
 
 
 # ---------------------------------------------------------------------
 def can_claim(arm: C.Arm, parcel: Parcel, t: float) -> bool:
     """Would this arm meet this box inside its own territory?
 
-    Three independent conditions, and a box has to satisfy all of them:
-    it is on this arm's half of the belt width, the point where the tool
-    would touch down lands inside this arm's window along the belt, and
-    that point -- and the hover above it -- are inside the annulus the
-    arm can actually reach. Nothing is claimed on optimism.
+    Two conditions, and a box has to satisfy both: the point where the
+    tool would touch down lands inside this arm's stretch of belt, at
+    any point across its width, and that point -- and the hover above
+    it -- are inside the annulus the arm can actually reach. Nothing is
+    claimed on optimism.
     """
     if parcel.state != "belt" or parcel.claimed_by is not None:
         return False
-    if not arm.owns_side(parcel.y):
-        return False
     meet = parcel.belt_point(t + INTERCEPT_T)
     if not (arm.x0 + EDGE <= meet[0] <= arm.x1 - EDGE):
+        return False
+    if abs(meet[1]) > C.BELT_HALF_W:
         return False
     return arm.can_reach(meet) and arm.can_reach(meet + (0, 0, C.HOVER))
 
@@ -386,14 +413,39 @@ class Frame:
     counts: dict
 
 
-def _slot(n: int) -> np.ndarray:
-    """Where the n-th box to land in a bin comes to rest."""
-    return np.array([(n % 3 - 1) * 52.0, ((n // 3) % 3 - 1) * 52.0, 0.0])
-
-
-def _rest_at(pt: np.ndarray, pc: Parcel, floor: float) -> np.ndarray:
+def _yaw_matrix(a: float) -> np.ndarray:
     m = np.eye(4)
-    m[:3, 3] = (pt[0], pt[1], floor + pc.size / 2.0)
+    c, sn = np.cos(a), np.sin(a)
+    m[:3, :3] = ((c, -sn, 0.0), (sn, c, 0.0), (0.0, 0.0, 1.0))
+    return m
+
+
+def _support(settled: list, x: float, y: float, size: float,
+             floor: float) -> float:
+    """The height a box dropped at (x, y) will come to rest on.
+
+    The floor of the bin, or the top of whatever is already lying there
+    under it. Footprints are compared as squares, which is close enough
+    for boxes turned a few degrees and a great deal simpler than asking
+    a physics engine -- what this has to get right is that a box lands
+    *on* the pile rather than inside it, and that it lands where it was
+    dropped rather than where a tidy arrangement wanted it.
+    """
+    top = floor
+    for ox, oy, osize, otop in settled:
+        if (abs(x - ox) < (size + osize) / 2.0
+                and abs(y - oy) < (size + osize) / 2.0):
+            top = max(top, otop)
+    return top
+
+
+def _land(pc: Parcel, at: np.ndarray, settled: list, floor: float):
+    """Register where this box will come to rest, and what it rests on."""
+    x, y = float(at[0]), float(at[1])
+    base = _support(settled, x, y, pc.size, floor)
+    settled.append((x, y, pc.size, base + pc.size))
+    m = _yaw_matrix(pc.yaw)
+    m[:3, 3] = (x, y, base + pc.size / 2.0)
     return m
 
 
@@ -403,15 +455,27 @@ def _fall(pc: Parcel, t: float):
     drop = max(z0 - z1, 0.0)
     tf = float(np.sqrt(2.0 * drop / GRAVITY)) if drop > 0 else 0.0
     s = 1.0 if tf <= 0 else min(1.0, (t - pc.fall_t0) / tf)
-    m = pc.fall_from.copy()
+    # Orientation swings from however the gripper held it to however it
+    # ends up lying, over the same fall.
+    m = pc.rest.copy()
     m[:3, 3] = pc.fall_from[:3, 3] * (1 - s) + pc.rest[:3, 3] * s
     m[2, 3] = z0 - drop * s * s
+    if s < 1.0:
+        blend = s * s
+        m[:3, :3] = (pc.fall_from[:3, :3] * (1 - blend)
+                     + pc.rest[:3, :3] * blend)
     return m, s >= 1.0
 
 
 def run(p: ArmParams, seconds: float = 26.0, fps: int = 30, seed: int = 11,
-        mean_gap: float = 1.15, lead: float = 14.0, report=print):
-    """Simulate the whole cell, frame by frame. Returns (frames, diag)."""
+        mean_gap: float = 1.4, lead: float = 30.0, report=print):
+    """Simulate the whole cell, frame by frame.
+
+    `lead` seeds the belt with boxes that notionally arrived before the
+    clip starts -- a whole transit time of them, so the line opens
+    already running rather than waiting half a minute for the first box
+    to travel down from the infeed.
+    """
     parcels = spawn_plan(seconds, seed, mean_gap, lead=-lead)
     steps = {name: max(1, int(round(d * fps))) for name, d in PHASES}
     states = []
@@ -427,10 +491,11 @@ def run(p: ArmParams, seconds: float = 26.0, fps: int = 30, seed: int = 11,
     for st in states:
         st.tcp = st.park_tcp.copy()
 
-    fill: dict = {}
+    fill: dict = {}          # bin -> boxes already lying in it
     diag = {"ik_pos": [], "ik_ang": [], "grasp_rel": [], "track_err": [],
             "tcp_step": [], "claims": [], "zone_ok": [], "jaw_floor": [],
-            "grasps": [], "jaw_square": [], "grasp_pose": []}
+            "grasps": [], "jaw_square": [], "grasp_pose": [],
+            "both_busy": []}
     counts = {"seen": 0, "picked": 0, "missed": 0,
               **{c.key: 0 for c in C.CLASSES}}
     frames: list[Frame] = []
@@ -447,8 +512,19 @@ def run(p: ArmParams, seconds: float = 26.0, fps: int = 30, seed: int = 11,
                 counts["seen"] += 1
 
         # --- claiming: only an idle arm, only its own territory -------
+        # Recomputed inside the loop, not snapshotted before it: two
+        # neighbours claiming in the same frame would both have seen an
+        # idle neighbour and both gone.
         for st in states:
             if st.busy:
+                continue
+            busy = {s2.arm.index for s2 in states if s2.busy}
+            # Interlock: an arm whose neighbour is mid-pick stays put.
+            # Their reaches overlap now that each works the full width,
+            # so nothing about the territory rules keeps them apart in
+            # *time* -- this does. Non-adjacent arms are unaffected, so
+            # three of the five can still be working at once.
+            if any(n.index in busy for n in C.neighbours(st.arm)):
                 continue
             live = [pc for pc in parcels
                     if pc.t0 <= t and can_claim(st.arm, pc, t)]
@@ -498,12 +574,11 @@ def run(p: ArmParams, seconds: float = 26.0, fps: int = 30, seed: int = 11,
         for pc in parcels:
             if (pc.state == "belt" and pc.t0 <= t and pc.claimed_by is None
                     and pc.belt_point(t)[0] >= REJECT_AT):
-                slot = fill.get("R", 0)
-                fill["R"] = slot + 1
                 pc.state = "falling"
                 pc.fall_from = pc.belt_pose(t)
                 pc.fall_t0 = t
-                pc.rest = _rest_at(REJECT_PT + _slot(slot), pc, CHUTE_FLOOR)
+                pc.rest = _land(pc, REJECT_PT + (pc.drop_dx, pc.drop_dy, 0.0),
+                                fill.setdefault("R", []), CHUTE_FLOOR)
                 counts["missed"] += 1
 
         # --- phase advance --------------------------------------------
@@ -515,8 +590,7 @@ def run(p: ArmParams, seconds: float = 26.0, fps: int = 30, seed: int = 11,
                 pc.state = "held"
                 pc.hold_offset = np.linalg.inv(st.tcp) @ pc.belt_pose(t)
                 here = pc.belt_point(t)
-                diag["zone_ok"].append(bool(
-                    st.arm.owns_side(pc.y) and st.arm.in_window(here[0])))
+                diag["zone_ok"].append(bool(st.arm.owns(here[0], pc.y)))
                 diag["grasps"].append((st.arm.name, pc.pid, pc.cls.key,
                                        float(here[0]), float(here[1])))
                 # how square did the jaws actually end up to the belt?
@@ -529,12 +603,11 @@ def run(p: ArmParams, seconds: float = 26.0, fps: int = 30, seed: int = 11,
                      C.classify(pc.size).key))
             elif task.phase == "OPEN":
                 key = (st.arm.index, C.classify(pc.size).key)
-                slot = fill.get(key, 0)
-                fill[key] = slot + 1
                 pc.state = "falling"
                 pc.fall_from = st.tcp @ pc.hold_offset
                 pc.fall_t0 = t
-                pc.rest = _rest_at(task.bin_pt + _slot(slot), pc, BIN_FLOOR)
+                pc.rest = _land(pc, pc.fall_from[:3, 3],
+                                fill.setdefault(key, []), BIN_FLOOR)
                 pc.picked_by = st.arm.index
                 st.picks += 1
                 counts["picked"] += 1
@@ -544,6 +617,11 @@ def run(p: ArmParams, seconds: float = 26.0, fps: int = 30, seed: int = 11,
             task.anchor = st.tcp.copy()
             if task.phase_i >= len(PHASES):
                 st.task = None
+
+        for st in states:
+            for n in C.neighbours(st.arm):
+                if st.busy and states[n.index].busy:
+                    diag["both_busy"].append((round(t, 2), st.arm.name, n.name))
 
         # --- record ---------------------------------------------------
         snaps = []

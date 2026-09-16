@@ -56,7 +56,7 @@ def test_a_box_belongs_to_at_most_one_arm():
     """Side and window between them must partition the belt."""
     for x in np.linspace(C.BELT_X0, C.BELT_X1, 220):
         for y in np.linspace(-C.BELT_HALF_W, C.BELT_HALF_W, 25):
-            owners = [a for a in C.ARMS if a.owns_side(y) and a.in_window(x)]
+            owners = [a for a in C.ARMS if a.owns(x, y)]
             assert len(owners) <= 1, (x, y, [o.name for o in owners])
 
 
@@ -144,18 +144,18 @@ def test_the_jaws_stay_in_their_slot():
     assert DEFAULT.finger_mount_z > DEFAULT.flange_face_z
 
 
-def test_an_arm_can_cross_the_belt_but_is_never_sent_across():
-    """Capability and policy are separate claims, and both matter."""
+def test_an_arm_works_the_full_width_of_its_own_stretch():
+    """Both edges, not just the near one -- and it can actually solve
+    for a tool pose at each."""
     for arm in C.ARMS:
-        far = np.array([(arm.x0 + arm.x1) / 2.0,
-                        -arm.side * C.BELT_HALF_W, C.BELT_TOP + 20.0])
-        lp = arm.to_local(far)
-        q, pe, ae = K.solve_ik(DEFAULT, K.target_frame(lp),
-                               K.seed_for(lp, DEFAULT))
-        assert pe < 0.2 and ae < 0.2, (arm.name, pe, ae)   # it can
-        assert not arm.owns_side(far[1])                   # it may not
-        pc = SO.Parcel(0, 30.0, far[1], C.BELT_X0, 0.0)
-        assert not any(SO.can_claim(arm, pc, t) for t in np.arange(0, 30, 0.5))
+        for sgn in (-1, 1):
+            far = np.array([(arm.x0 + arm.x1) / 2.0,
+                            sgn * C.BELT_HALF_W, C.BELT_TOP + 20.0])
+            lp = arm.to_local(far)
+            q, pe, ae = K.solve_ik(DEFAULT, K.target_frame(lp),
+                                   K.seed_for(lp, DEFAULT))
+            assert pe < 0.2 and ae < 0.2, (arm.name, sgn, pe, ae)
+            assert arm.owns(far[0], far[1]), (arm.name, sgn)
 
 
 def test_a_jaw_axis_is_an_axis():
@@ -175,9 +175,9 @@ def test_an_arm_only_claims_from_its_own_half_and_window():
                 pc = SO.Parcel(0, C.CLASSES[1].nominal, y, x0, 0.0)
                 if not SO.can_claim(arm, pc, 0.0):
                     continue
-                assert arm.owns_side(y), (arm.name, y)
                 meet = pc.belt_point(SO.INTERCEPT_T)
                 assert arm.in_window(meet[0]), (arm.name, meet[0])
+                assert arm.owns(meet[0], y), (arm.name, meet[0], y)
                 assert arm.can_reach(meet)
 
 
@@ -200,7 +200,30 @@ def test_every_grasp_happens_inside_its_own_territory():
     assert diag["zone_ok"] and all(diag["zone_ok"])
     for name, pid, key, x, y in diag["grasps"]:
         arm = next(a for a in C.ARMS if a.name == name)
-        assert arm.in_window(x) and arm.owns_side(y), (name, x, y)
+        assert arm.owns(x, y), (name, x, y)
+
+
+def test_boxes_land_on_what_is_already_in_the_bin():
+    """They fall and pile. They used to be placed on a 3x3 grid, which
+    looked exactly like what it was."""
+    frames, _ = run()
+    per_bin = {}
+    for sn in frames[-1].parcels:
+        if sn.state != "binned" or sn.claimed_by is None:
+            continue
+        per_bin.setdefault((sn.claimed_by, sn.key), []).append(sn)
+    assert per_bin, "nothing was binned"
+    for boxes in per_bin.values():
+        for i, a in enumerate(boxes):
+            for b in boxes[i + 1:]:
+                da = a.pose[:3, 3] - b.pose[:3, 3]
+                span = (a.size + b.size) / 2.0
+                if abs(da[0]) < span and abs(da[1]) < span:
+                    assert abs(da[2]) >= span - 1e-6, (a.pid, b.pid, da)
+    yaws = [float(np.arctan2(sn.pose[1, 0], sn.pose[0, 0]))
+            for boxes in per_bin.values() for sn in boxes]
+    if len(yaws) > 2:
+        assert np.std(yaws) > 0.1, "every box landed at the same angle"
 
 
 def test_each_box_ends_up_in_the_bin_for_its_size():

@@ -76,10 +76,10 @@ class ArmParams:
     tool_spigot_h: float = 6.0
 
     # ---- part 10: gripper finger ------------------------------------
-    finger_len: float = 62.0
-    finger_w: float = 14.0
-    finger_thk: float = 8.0
-    finger_stroke: float = 22.0       # half-opening at the mounted pose
+    finger_len: float = 120.0
+    finger_w: float = 30.0
+    finger_thk: float = 14.0
+    finger_stroke: float = 40.0       # half-opening at the mounted pose
 
     # ---- part 12: gripper body (the rail the jaws run on) -----------
     # Without this the jaws were placed straight onto the tool face and
@@ -88,11 +88,11 @@ class ArmParams:
     # because there was no mechanism for it to be a limit of. The body
     # is that mechanism: a housing with a slot, and the jaws travel in
     # the slot.
-    grip_body_h: float = 24.0
-    grip_body_w: float = 28.0         # across the jaw axis
-    grip_slot_depth: float = 13.0     # how far a jaw stays engaged
-    grip_wall: float = 10.0           # material beyond the slot ends
-    grip_stroke_max: float = 50.0     # the travel the slot actually allows
+    grip_body_h: float = 34.0
+    grip_body_w: float = 46.0         # across the jaw axis
+    grip_slot_depth: float = 22.0     # how far a jaw stays engaged
+    grip_wall: float = 14.0           # material beyond the slot ends
+    grip_stroke_max: float = 110.0    # the travel the slot actually allows
 
     # ---- part 11: actuator can (shared, instanced at 4 joints) ------
     act_dia: float = 58.0

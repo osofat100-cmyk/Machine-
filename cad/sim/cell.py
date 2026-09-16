@@ -37,18 +37,18 @@ from robot_arm.params import ArmParams
 
 from . import kinematics as K
 
-# The cell runs a longer-reach build of the same arm. Standing off the
-# belt far enough to keep its own near edge outside the arm's inner
-# limit, and reaching the *far* edge as well, needs more arm than the
-# 573 mm default has: the far edge of the belt is 687 mm from the base
-# and the default tops out around 550 at hover height. So the links get
-# longer. `params.py` is the whole model, so this is one line, and
+# The cell runs a longer-reach build of the same arm. It has to stand
+# off the belt far enough to keep the near edge outside its own inner
+# limit, and still reach the *far* edge, 701 mm away, while hovering
+# over a 140 mm box -- and reach falls off with height. The 573 mm
+# default manages about 550 at that height. So the links get longer.
+# `params.py` is the whole model, so this is one line, and
 # `robot_arm.verify` passes on it unchanged -- which is the only reason
 # it is safe to do.
-CELL_ARM = ArmParams(upper_len=345.0, fore_len=285.0)
+CELL_ARM = ArmParams(upper_len=375.0, fore_len=310.0)
 
 # ---- the conveyor ---------------------------------------------------
-BELT_X0, BELT_X1 = -1720.0, 1720.0     # mm, boxes travel +X
+BELT_X0, BELT_X1 = -1800.0, 1800.0     # mm, boxes travel +X
 BELT_HALF_W = 230.0                    # belt is 460 mm wide
 BELT_TOP = 120.0                       # top surface above the floor
 BELT_SPEED = 115.0                     # mm/s, and it never stops
@@ -79,9 +79,9 @@ class SizeClass:
 
 
 CLASSES = (
-    SizeClass("S", "small", 22.0, 30.0, "#48a9a6"),
-    SizeClass("M", "medium", 34.0, 42.0, "#d98b39"),
-    SizeClass("L", "large", 46.0, 54.0, "#c1554a"),
+    SizeClass("S", "small", 48.0, 64.0, "#48a9a6"),
+    SizeClass("M", "medium", 80.0, 100.0, "#d98b39"),
+    SizeClass("L", "large", 118.0, 140.0, "#c1554a"),
 )
 BY_KEY = {c.key: c for c in CLASSES}
 
@@ -105,13 +105,18 @@ def classify(size: float) -> SizeClass:
 
 # ---- the arms -------------------------------------------------------
 ARM_OFFSET = 445.0                     # how far the bases stand off the belt
-# Staggered at 520 mm, not 450. The arms got longer so that each could
-# cross the belt, and a longer arm sweeps a bigger volume: at the old
-# spacing two opposite-side arms reaching the centreline from either
-# side closed to 73 mm of each other. The gap between facing windows is
-# what that clearance is made of, so it is the gap that was widened.
-ARM_XS = (-1040.0, -520.0, 0.0, 520.0, 1040.0)
-ARM_SIDES = (-1, +1, -1, +1, -1)       # staggered: 3 near side, 2 far side
+# Staggered at 650 mm. The interlock keeps two *working* neighbours
+# apart, but it says nothing about a working arm and a parked one --
+# and a carry swinging out to its far bin passed a parked neighbour
+# with 50 mm between their gripper bodies, which are 264 mm long each.
+# Spacing is what that clearance is made of, so this is where it comes
+# from. The belt is long enough to absorb it either way.
+ARM_XS = (-1300.0, -650.0, 0.0, 650.0, 1300.0)
+# Which side of the belt each base stands on. This is where the machine
+# is bolted, and nothing else: an arm works the *whole width* of its own
+# stretch of belt, near edge to far edge. Standing them alternately just
+# spreads the bases out and keeps the bins from fighting for floor.
+ARM_SIDES = (-1, +1, -1, +1, -1)
 WINDOW_HALF = 190.0                    # half the length of belt an arm owns
 
 # Verified annulus, in the horizontal plane, measured from the arm's own
@@ -119,13 +124,13 @@ WINDOW_HALF = 190.0                    # half the length of belt an arm owns
 # height the program uses; the test re-measures and holds them to it.
 # R_MAX covers the *far* edge of the belt, not just this arm's half --
 # see `full_width_set`.
-R_MIN, R_MAX = 195.0, 715.0
+R_MIN, R_MAX = 200.0, 735.0
 
 HOVER = 120.0                          # approach height above a grasp
-BIN_R = 395.0                          # bins sit on an arc behind each arm
-BIN_ANGLES = (-128.0, -90.0, -52.0)    # small, medium, large
-BIN_TOP = 150.0
-BIN_INNER = 105.0                      # half-width of a bin's opening
+BIN_R = 380.0                          # bins sit on an arc behind each arm
+BIN_ANGLES = (-140.0, -90.0, -40.0)    # small, medium, large
+BIN_TOP = 170.0
+BIN_INNER = 150.0                      # half-width of a bin's opening
 
 
 @dataclass(frozen=True)
@@ -191,11 +196,21 @@ class Arm:
                          self.side * BELT_HALF_W * 0.55,
                          BELT_TOP + 265.0])
 
-    def owns_side(self, y: float) -> bool:
-        return (y < 0.0) if self.side < 0 else (y >= 0.0)
-
     def in_window(self, x: float) -> bool:
         return self.x0 <= x <= self.x1
+
+    def owns(self, x: float, y: float) -> bool:
+        """Whether this arm may take a box whose centre is here.
+
+        A stretch of belt, across its whole width. Territory used to be
+        a stretch *and* the near half of it, which made the arms look
+        like they could only reach halfway across -- and, since they
+        were never sent further, made the extra reach pointless. The
+        windows are disjoint along the belt with 140 mm between them, so
+        no two arms are ever over the same stretch whatever they do
+        laterally; that, not the half rule, is what keeps them apart.
+        """
+        return self.in_window(x) and abs(y) <= BELT_HALF_W
 
     def can_reach(self, world_pt) -> bool:
         d = self.to_local(world_pt)
@@ -238,7 +253,7 @@ def _world_points(ax: float, side: int, bins: dict) -> list[np.ndarray]:
     zs = (BELT_TOP + CLASSES[0].lo / 2, BELT_TOP + CLASSES[-1].hi / 2,
           BELT_TOP + CLASSES[-1].hi / 2 + HOVER)
     pts = [np.array([x, y, z]) for z in zs
-           for x in (x0, x1) for y in (side * BELT_HALF_W, 0.0)]
+           for x in (x0, x1) for y in (-BELT_HALF_W, 0.0, BELT_HALF_W)]
     pts += list(bins.values())
     pts += [b + (0.0, 0.0, HOVER) for b in bins.values()]
     pts.append(park_point_for(ax, side))
@@ -323,14 +338,33 @@ ARMS = build_arms()
 def owner_of(x: float, y: float) -> Arm | None:
     """Which arm, if any, may take a box whose centre is here."""
     for arm in ARMS:
-        if arm.owns_side(y) and arm.in_window(x):
+        if arm.owns(x, y):
             return arm
     return None
 
 
+def neighbours(arm: Arm) -> list[Arm]:
+    """The arms whose working volume overlaps this one's.
+
+    Once an arm works the *whole* width of its stretch, it swings out
+    over the far edge of the belt -- which is the near edge for the arm
+    on the other side, one stretch along. Their reaches genuinely
+    overlap; the 140 mm between their windows is a gap between the
+    points their tools visit, not between the machines. Measured, the
+    arms either side of a given one come within tens of millimetres of
+    it, and everything further away stays a clear 235 mm off.
+
+    So adjacency here is a physical fact about the layout, and
+    `sorter.run` interlocks on it: two arms that can reach the same air
+    are never both in a pick.
+    """
+    return [a for a in ARMS if abs(a.index - arm.index) == 1]
+
+
 def downstream_of(arm: Arm) -> list[Arm]:
-    """Arms on the same side that get a later look at the same box."""
-    return [a for a in ARMS if a.side == arm.side and a.x0 > arm.x1]
+    """Arms that get a later look at the same box -- now all of them,
+    since every arm works the full width of its own stretch."""
+    return [a for a in ARMS if a.x0 > arm.x1]
 
 
 def grasp_z(size: float) -> float:
@@ -384,16 +418,10 @@ def window_corners(arm: Arm, z: float) -> list[np.ndarray]:
 
 
 def full_width_set(arm: Arm) -> list[np.ndarray]:
-    """Every point across the *whole* belt inside this arm's window.
+    """Every point across the whole belt inside this arm's window.
 
-    Capability, not policy. The dispatcher will never send an arm past
-    the centreline -- that is what keeps two arms out of each other --
-    but an arm that physically could not get there would be a different
-    machine, reaching half a belt and calling it a rule. So the arm is
-    long enough to cross, and `simulate_cell.py` proves it by solving,
-    while the territory rules go on holding it to its own side.
+    Which is now the same thing as `working_set`: the arm is sent right
+    across, so its capability and its job are one claim. Kept as its own
+    name because the check that reads it is about crossing the belt.
     """
-    zs = (BELT_TOP + CLASSES[0].lo / 2, BELT_TOP + CLASSES[-1].hi / 2,
-          BELT_TOP + CLASSES[-1].hi / 2 + HOVER)
-    return [np.array([x, y, z]) for z in zs for x in (arm.x0, arm.x1)
-            for y in (-BELT_HALF_W, 0.0, BELT_HALF_W)]
+    return working_set(arm)

@@ -139,26 +139,41 @@ python3 simulate_cell.py --check-only
 ```
 
 Five arms beside a belt that never stops: three on one side, two on the
-other, staggered. Boxes of three sizes arrive at random times and random
-positions across the belt width. Each arm may only take boxes from its
-own half of the belt width and its own stretch of its length; a box its
-owner is too busy for stays on the belt for the next arm on that side,
-and one nobody catches runs off the end into the reject chute and is
-counted. Every pick is made on a moving box, with the tool matched to
-belt speed at the instant the jaws close.
+other, staggered 650 mm apart. Boxes of three sizes arrive at random
+times and random positions across the belt. Every box is the same colour
+and the same shape, at any size inside its band, so where one goes is
+decided by measuring it and nothing else.
+
+**Each arm works the whole width of its own stretch of belt** -- near
+edge to far edge. That is why the cell runs a 783 mm build of the arm
+rather than the 573 mm default: the far edge is 701 mm from a base, and
+reach falls off with height. Territory used to be a stretch *and* the
+near half of it, which made the arms look like they could only get
+halfway across, and made the extra reach pointless.
+
+Reaching across is what makes two arms able to touch. The 270 mm between
+windows is a gap between the points their *tools* visit, not between the
+machines: measured, neighbours came within 3 mm of each other, while
+every non-adjacent pair stayed a clear 235 mm off. So the cell
+interlocks on adjacency -- two arms that can reach the same air are
+never both in a pick -- which still lets three of the five work at once.
+
+A box its owner is too busy for stays on the belt for the next arm along;
+one nobody catches runs off the end into the reject chute and is counted.
+Boxes dropped into a bin fall and land on whatever is already in it.
 
 Twenty-four checks run before a frame is drawn. The ones worth reading:
 
 ```
-[PASS] every arm can extend across the whole width of the belt -- solved at 90 points spanning 287..701 mm of reach, worst residual 0.020
-[PASS] ...and is still never sent across it -- the far half of the belt fails every arm's own side test
-[PASS] the size bands leave a gap, so no measurement is ambiguous -- narrowest gap between bands 4 mm, thresholds at 32 and 44 mm
-[PASS] the tool matches belt speed at the grasp -- worst relative speed 0.020 mm/s against a belt running at 115 mm/s
-[PASS] no arm's tool is ever inside another arm's territory -- 1219 frames with a tool over the belt, none of them in someone else's stretch
-[PASS] the jaws never open past the travel the slot allows -- widest 46.9 mm of 50.0 mm available
-[PASS] every box came to rest in the bin its size designates -- worst 74 mm from the bin's centre (bin half-width 105 mm)
+[PASS] every arm can reach every point of its own stretch of belt -- solved at 125 points spanning 287..701 mm of reach, worst residual 0.020
+[PASS] ...and is sent across it: territory is the full width -- every arm owns both edges of its own stretch
+[PASS] the size bands leave a gap, so no measurement is ambiguous -- narrowest gap between bands 16 mm, thresholds at 72 and 109 mm
+[PASS] the tool matches belt speed at the grasp -- worst relative speed 0.032 mm/s against a belt running at 115 mm/s
+[PASS] two arms that can reach the same air are never both working -- never a neighbouring pair; 3 of 5 arms working at once at the busiest
+[PASS] the jaws never open past the travel the slot allows -- widest 95.5 mm of 110.0 mm available
+[PASS] every box came to rest in the bin its size designates
 [PASS] the jaw faces really are that far apart -- measured from the placed triangles, worst disagreement with the box 0.000 mm
-[PASS] no two arms ever come within reach of each other -- closest approach 120 mm (floor 50 mm)
+[PASS] no two arms ever come within reach of each other -- closest approach 100 mm (floor 50 mm)
 ```
 
 The last one is the point of the layout. Disjoint territory constrains
@@ -168,14 +183,13 @@ between every pair of arms -- and between bounding boxes rather than
 surfaces, which understates the gap, so a pass is a guarantee rather
 than an estimate.
 
-It is also what caught the one policy hole in the dispatcher. Claiming
-is checked at the *grasp*, and every grasp was inside its own window --
-but the approach used to fly out to wherever the box was *now*, which is
-upstream, in the previous arm's stretch of belt. Two arms closed to
-68 mm. The approach now goes to the intercept point, which is a fixed
-point inside the arm's own window, and the check that says so ("no arm's
-tool is ever inside another arm's territory") exists because "every
-grasp is inside its territory" was not the same claim.
+It is also what caught two holes in the dispatcher. The approach used to
+fly out to wherever the box was *now*, which is upstream, in the
+previous arm's stretch of belt; it now goes to the intercept, a fixed
+point inside the arm's own window. And the claim margin was a fixed
+12 mm against 40 mm of belt travel during the close, so a box could be
+claimed legitimately and gripped outside the window -- the margin is now
+derived from `CLOSE_T` and the belt speed.
 
 ## Parametric means re-drivable
 
