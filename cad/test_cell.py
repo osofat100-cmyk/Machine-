@@ -326,6 +326,30 @@ def test_no_two_arms_ever_come_near_each_other():
     assert worst >= SIM.CLEARANCE_FLOOR, worst
 
 
+def test_no_arm_is_starved_by_the_dispatcher():
+    """Two arms stood still through a whole render, and every check passed.
+
+    Adjacency is a path, so the largest set of arms that can work at
+    once is either {A1, A3, A5} or {A2, A4}. The claim loop used to scan
+    arms in index order, which picks the same one of those every frame
+    forever: A1 claims and interlocks A2, A3 is then free and claims and
+    interlocks A4, A5 claims, and the instant A1 finishes it is first in
+    the scan again.
+
+    The interlock check cannot see this -- "no two adjacent arms work at
+    once" is satisfied perfectly by two arms doing nothing at all. So
+    the thing to assert is that the arms that work are not all drawn
+    from one side of the parity.
+    """
+    _, diag = run()
+    claimed = {name for _, name, _, _ in diag["claims"]}
+    assert claimed, "nothing was claimed at all"
+    odd = {a.name for a in C.ARMS if a.index % 2 == 0}   # A1, A3, A5
+    even = {a.name for a in C.ARMS if a.index % 2 == 1}  # A2, A4
+    assert claimed & odd and claimed & even, (
+        f"only one parity class ever worked: {sorted(claimed)}")
+
+
 def main() -> int:
     fails = 0
     for name, fn in sorted(globals().items()):
