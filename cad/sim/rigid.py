@@ -21,7 +21,10 @@ Impulse-based, in the usual sequential form:
   it, so no contact is ever reported and a stack falls straight through
   itself.
 * **Sequential impulses**, with the accumulated normal impulse clamped
-  non-negative.
+  non-negative, and **warm-started** from the previous step. Solving
+  from zero every step leaves twelve iterations of Gauss-Seidel short
+  of the answer, which a box resting flat hides and a box resting on
+  another's edge does not: it rocks, slowly, for ever.
 * **Coulomb friction clamped on the accumulated tangential impulse**,
   not on each iteration's contribution. Clamping per iteration lets
   twelve iterations apply twelve times the friction the surface has,
@@ -298,6 +301,20 @@ class Contact:
     jt: np.ndarray = field(default_factory=lambda: np.zeros(3))
     pn: float = 0.0                       # the positional pass's own impulse
 
+    def key(self) -> tuple:
+        """Identity of this contact, stable from one step to the next.
+
+        The contact point in `a`'s own frame, quantised -- so a contact
+        that is still the same corner on the same pair of bodies is
+        recognised as such even though both have moved. That is what
+        lets the accumulated impulse be carried over; see
+        `World._warm_start`.
+        """
+        local = self.a.rot().T @ (self.point - self.a.pos)
+        return (id(self.a), id(self.b),
+                int(round(local[0] / 3.0)), int(round(local[1] / 3.0)),
+                int(round(local[2] / 3.0)))
+
 
 class World:
     def __init__(self, restitution=0.05, friction=0.55, iterations=12,
@@ -314,6 +331,8 @@ class World:
         # phase over every body in the world, sleeping ones included --
         # which is more work than the step itself.
         self.max_depth = 0.0
+        # Last step's accumulated impulses, keyed by `Contact.key`.
+        self.cache: dict = {}
 
     def add(self, body: Body) -> Body:
         self.bodies.append(body)
@@ -349,6 +368,41 @@ class World:
                     out.append(Contact(a, b, normal, point, depth))
 
     # -- solving -----------------------------------------------------
+    def _apply(self, c: "Contact", imp: np.ndarray) -> None:
+        a, b = c.a, c.b
+        a.vel = a.vel + imp * a.inv_mass
+        a.omega = a.omega + a.inv_inertia_world() @ np.cross(c.point - a.pos,
+                                                             imp)
+        if b is not None:
+            b.vel = b.vel - imp * b.inv_mass
+            b.omega = b.omega - b.inv_inertia_world() @ np.cross(
+                c.point - b.pos, imp)
+
+    def _warm_start(self, contacts: list) -> None:
+        """Start each contact from the impulse it needed last step.
+
+        Without this every step solves from zero, and twelve iterations
+        of Gauss-Seidel do not get all the way there. A box resting flat
+        hides it -- the answer is nearly the same every step, so the
+        error is a constant sag. A box resting on the *edge* of another
+        does not: the manifold that supports it changes as it tilts, the
+        under-solved answer tilts it back, and it rocks. One did, in a
+        bin, for fourteen seconds, at ten millimetres a second, which is
+        slow enough to look like settling and never was.
+
+        Carrying the impulse over is not a nudge toward the answer, it
+        *is* the previous answer, and a resting stack's answer barely
+        changes. It costs one dictionary lookup per contact.
+        """
+        fresh = {}
+        for c in contacts:
+            prev = self.cache.get(c.key())
+            if prev is not None:
+                c.jn, c.jt = prev[0], prev[1].copy()
+                self._apply(c, c.jn * c.normal + c.jt)
+            fresh[c.key()] = c
+        self._fresh = fresh
+
     def _solve(self, contacts: list, dt: float) -> None:
         for _ in range(self.iterations):
             for c in contacts:
@@ -506,8 +560,10 @@ class World:
             c.a.pen = max(c.a.pen, c.depth)
             if c.b is not None:
                 c.b.pen = max(c.b.pen, c.depth)
+        self._warm_start(contacts)
         self._solve(contacts, dt)
         self._push(contacts, dt)
+        self.cache = {k: (c.jn, c.jt) for k, c in self._fresh.items()}
 
         for body in self.bodies:
             if body.asleep:

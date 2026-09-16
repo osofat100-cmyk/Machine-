@@ -83,6 +83,26 @@ def test_a_stack_does_not_fall_through_itself():
     assert w.deepest_overlap() <= R.SLOP + 0.25, w.deepest_overlap()
 
 
+def test_a_box_landing_on_another_box_edge_settles():
+    """A box left overhanging the one below it has to stop, not creep.
+
+    The hard case for a stack: the manifold holding it up is asymmetric
+    and changes as it tilts, so an under-solved contact tilts it back
+    and it rocks. Slowly enough to look like settling, which is the
+    problem -- ten millimetres a second reads as "nearly stopped" and is
+    not stopping at all.
+    """
+    w = floor_world()
+    low = w.add(box(60.0, (0, 0, 60.0), mass=0.5))
+    high = w.add(box(62.0, (100.0, 15.0, 265.0), mass=0.55))
+    for _ in range(360):                       # six seconds
+        w.advance(1 / 60)
+    assert low.asleep and high.asleep, (
+        round(R.point_speed(low), 2), round(R.point_speed(high), 2),
+        np.round(low.pos, 1), np.round(high.pos, 1))
+    assert w.deepest_overlap() <= R.SLOP + 0.35, w.deepest_overlap()
+
+
 def test_friction_lets_go_at_exactly_the_coulomb_angle():
     """A box on a slope slides iff tan(theta) > mu, and nowhere else.
 
