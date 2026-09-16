@@ -62,6 +62,12 @@ BELT_X0, BELT_X1 = -2100.0, 2100.0     # mm, boxes travel +X
 BELT_HALF_W = 230.0                    # belt is 460 mm wide
 BELT_TOP = 120.0                       # top surface above the floor
 BELT_SPEED = 115.0                     # mm/s, and it never stops
+# How much clear belt a box keeps between its own edge and the edge of
+# the belt. It bounds where a box can be spawned *and* where the belt's
+# own furniture may sit, because those two were written down separately
+# and drifted: the speed markers reached 3 mm inside the line and stood
+# 7 mm above the surface, so a box could ride through one.
+BELT_EDGE_MARGIN = 18.0
 SLAB_H = 44.0                          # thickness of the belt slab
 RAIL_W = 26.0
 

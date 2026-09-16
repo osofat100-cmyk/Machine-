@@ -62,9 +62,18 @@ def conveyor() -> list[Mesh]:
     ln = C.BELT_X1 - C.BELT_X0
     body, frame = hex_to_linear(BELT), hex_to_linear(FRAME)
     out = [box_mesh((ln, 2 * hw, C.SLAB_H), (cx, 0.0, C.BELT_TOP - C.SLAB_H / 2), body)]
+    # Side frames, and their tops are flush with the running surface --
+    # not proud of it. They used to stand 17 mm above it, which is
+    # nothing on the machine and everything on screen: the near rail is
+    # between the camera and every box on the belt, so each box looked
+    # sunk into the belt by 17 mm. On a 42 mm box that is 40 per cent of
+    # it. Nothing was ever in the wrong place; the frame was just taller
+    # than the thing it carries.
+    rail_h = 74.0
     for sgn in (-1, 1):
-        out.append(box_mesh((ln, C.RAIL_W, 74.0),
-                            (cx, sgn * (hw + C.RAIL_W / 2), C.BELT_TOP - 20.0),
+        out.append(box_mesh((ln, C.RAIL_W, rail_h),
+                            (cx, sgn * (hw + C.RAIL_W / 2),
+                             C.BELT_TOP - rail_h / 2.0),
                             frame, MAT_METAL))
     for x in np.arange(C.BELT_X0 + 180.0, C.BELT_X1, 620.0):
         for sgn in (-1, 1):
@@ -127,16 +136,21 @@ def static_scene():
 def belt_markers(t: float) -> list[Mesh]:
     """Small tabs riding the belt edges, so the speed is visible.
 
-    They sit outboard of where a box can ever be, so they can never be
-    the thing a gripper closes on.
+    They stand 7 mm proud of the belt, so where they sit is not a
+    decorating decision: a box must never be able to ride through one.
+    They used to be placed at `BELT_HALF_W - 13`, which put their inner
+    edge 3 mm inside the furthest a box edge reaches -- while the
+    docstring said they were outboard of it. Both numbers come off
+    `BELT_EDGE_MARGIN` now, so they cannot drift apart again.
     """
     col = hex_to_linear(MARKER)
     span = C.BELT_X1 - C.BELT_X0
+    half_w, clear = 8.0, 2.0
+    y = C.BELT_HALF_W - C.BELT_EDGE_MARGIN + clear + half_w
     out = []
     for i in range(int(span // 300.0) + 1):
         x = C.BELT_X0 + (i * 300.0 + C.BELT_SPEED * t) % span
         for sgn in (-1, 1):
-            out.append(box_mesh((46.0, 16.0, 7.0),
-                                (x, sgn * (C.BELT_HALF_W - 13.0),
-                                 C.BELT_TOP + 3.5), col))
+            out.append(box_mesh((46.0, 2 * half_w, 7.0),
+                                (x, sgn * y, C.BELT_TOP + 3.5), col))
     return out

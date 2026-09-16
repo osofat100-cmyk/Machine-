@@ -264,7 +264,7 @@ def spawn_plan(seconds: float, seed: int = 11, mean_gap: float = 1.15,
     while t < seconds:
         band = C.CLASSES[int(rng.integers(0, len(C.CLASSES)))]
         size = float(rng.uniform(band.lo, band.hi))
-        margin = size / 2.0 + 18.0
+        margin = size / 2.0 + C.BELT_EDGE_MARGIN
         y = float(rng.uniform(-(C.BELT_HALF_W - margin),
                               C.BELT_HALF_W - margin))
         # Release points that clear the walls *however the box is

@@ -302,6 +302,54 @@ def check_designation(p: ArmParams, frames, diag, protos, rep: Report) -> None:
                                           f" {bite_at[0]})"))
 
 
+def check_belt(frames, rep: Report) -> None:
+    """A box rides *on* the belt, and through nothing that belongs to it.
+
+    Two separate things, and the second is the one that bit. Every box
+    was always at exactly the right height -- bottom on the surface, to
+    the micron -- and they still looked half sunk into the belt, because
+    the side frames stood 17 mm proud of the surface they carry and the
+    near one is between the camera and every box. Geometry that is
+    correct and reads as wrong is still wrong.
+
+    So this asks both: that a box on the belt sits on it, and that
+    nothing belonging to the belt rises above the surface or reaches
+    into the lane a box can occupy. Measured off the scenery meshes,
+    not off the constants that place them.
+    """
+    worst_sink, worst_pid = 0.0, None
+    for fr in frames:
+        for sn in fr.parcels:
+            if sn.state != "belt":
+                continue
+            sink = C.BELT_TOP - (sn.pose[2, 3] - sn.size / 2.0)
+            if abs(sink) > abs(worst_sink):
+                worst_sink, worst_pid = sink, sn.pid
+    rep.add("a box on the belt sits on the belt",
+            abs(worst_sink) < 1e-6,
+            f"worst departure from the surface {worst_sink:+.2e} mm"
+            if abs(worst_sink) < 1e-6 else
+            f"box {worst_pid} sits {worst_sink:+.2f} mm into the belt")
+
+    reach = C.BELT_HALF_W - C.BELT_EDGE_MARGIN
+    proud, intruding = [], []
+    for name, meshes in (("frame", CS.conveyor()),
+                         ("markers", CS.belt_markers(0.0)),
+                         ("surface", CS.belt_top())):
+        for m in meshes:
+            hi = float(m.verts[:, 2].max())
+            y0, y1 = float(m.verts[:, 1].min()), float(m.verts[:, 1].max())
+            if hi > C.BELT_TOP + 1.0:
+                proud.append((name, round(hi - C.BELT_TOP, 1)))
+                if min(abs(y0), abs(y1)) < reach - 1e-6:
+                    intruding.append((name, round(y0), round(y1)))
+    rep.add("nothing the belt carries stands in a box's way",
+            not intruding,
+            f"the lane a box can occupy is |y| <= {reach:.0f} mm; "
+            f"{len(proud)} pieces stand above the surface and none of them "
+            f"reach into it" if not intruding else f"{intruding[:3]}")
+
+
 def check_physics(p: ArmParams, frames, diag, rep: Report) -> None:
     """The invariants the rigid-body solver has to satisfy.
 
@@ -560,6 +608,7 @@ def main(argv=None) -> int:
     check_bands(rep)
     check_program(p, frames, diag, rep)
     check_designation(p, frames, diag, protos, rep)
+    check_belt(frames, rep)
     check_physics(p, frames, diag, rep)
     check_clearance(p, frames, protos, rep)
     print(rep.render())
