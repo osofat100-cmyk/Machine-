@@ -104,7 +104,11 @@ class SizeClass:
 # apart, is 4800 N*mm. Drop it and the boxes are flimsier; that single
 # number is the difference between a parcel and a shoebox.
 BOARD_CRUSH = 0.5                      # N/mm^2, local crush strength
-BOARD_BEND = 4800.0                    # N*mm, panel flexural rigidity
+# Light single-wall. A double-wall parcel folds 3 mm under this claw,
+# which is real and which you cannot see from across the cell -- about
+# two pixels. These are shoeboxes, and they crunch: 9 mm on the largest
+# box, deep enough to shade.
+BOARD_BEND = 1200.0                    # N*mm, panel flexural rigidity
 
 SIZE_SCALE = 0.80
 CLASSES = (

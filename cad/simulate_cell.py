@@ -228,9 +228,10 @@ def check_designation(p: ArmParams, frames, diag, protos, rep: Report) -> None:
             f"(bin half-width {C.BIN_INNER:.0f} mm)" if not wrong
             else f"{wrong[:3]}")
 
-    # and the jaws closed on the width that was measured, not a nominal one
-    off = max((abs(gap - size) for _, _, gap, size, _ in diag["grasp_pose"]),
-              default=1e9)
+    # and the jaws closed on the width that was measured, not a nominal
+    # one -- less what the box gives, which is the whole of the grip.
+    off = max((abs(gap - SO.grip_gap(p, size))
+               for _, _, gap, size, _ in diag["grasp_pose"]), default=1e9)
     rep.add("the jaws close on the width that was measured", off < 1e-6,
             f"{len(diag['grasp_pose'])} grasps, worst gap error {off:.1e} mm "
             f"across sizes "
@@ -242,11 +243,12 @@ def check_designation(p: ArmParams, frames, diag, protos, rep: Report) -> None:
     for idx, q, gap, size, key in diag["grasp_pose"][:12]:
         pose = K.posed(p, q, gap)
         worst_geo = max(worst_geo,
-                        abs(S.measure_jaw_gap(pose, protos) - size))
+                        abs(S.measure_jaw_gap(pose, protos)
+                            - SO.grip_gap(p, size)))
         n += 1
     rep.add("the claw really is closed on the box that wide", worst_geo < 0.3,
             f"{n} grasps measured from the placed triangles, worst "
-            f"disagreement with the box {worst_geo:.3f} mm")
+            f"disagreement with the squeezed box {worst_geo:.3f} mm")
 
     # ...and no part of the claw is inside the box it is holding.
     #
