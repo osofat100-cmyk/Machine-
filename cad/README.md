@@ -183,7 +183,7 @@ python3 simulate_cell.py --check-only
 ```
 
 Five arms beside a belt that never stops: three on one side, two on the
-other, staggered 650 mm apart. Boxes of three sizes arrive at random
+other, staggered 800 mm apart. Boxes of three sizes arrive at random
 times and random positions across the belt. Every box is the same colour
 and the same shape, at any size inside its band, so where one goes is
 decided by measuring it and nothing else.
@@ -197,48 +197,58 @@ Territory used to be a stretch *and* the near half of it, which made
 the arms look like they could only get halfway across, and made the
 extra reach pointless.
 
-Reaching across is what makes two arms able to touch. The 270 mm between
-windows is a gap between the points their *tools* visit, not between the
-machines -- the machines' reaches genuinely overlap. So the cell
-interlocks on adjacency: two arms that can reach the same air are never
-both in a pick, which still lets three of the five work at once. What
-that buys is measured rather than argued, from the placed triangles
-every other frame -- over the whole run the closest any two arms came
-was 234 mm.
-
 A box its owner is too busy for stays on the belt for the next arm along;
 one nobody catches rides to the end and falls off it.
 
-### An interlock is not a schedule
+### All five work at once, and the layout is why
 
-Two arms stood still through an entire render and every check passed,
-because "no two adjacent arms work at once" is satisfied perfectly by
-two arms doing nothing at all.
+Reaching across is what makes two arms able to touch, and the cell used
+to answer that with an **interlock**: an arm whose neighbour was
+mid-pick stood still. It worked, and it was the wrong answer. Two
+machines that cannot both run are two machines you are paying for and
+using as one -- a third of the line idle at any moment to keep the rest
+safe is not a safety system, it is a smaller cell.
 
-Adjacency is a path, `A1-A2-A3-A4-A5`, so the largest set that can work
-at once is either `{A1, A3, A5}` or `{A2, A4}` -- and the claim loop
-scanned arms in index order, which picks the same one of those every
-frame forever. A1 claims and interlocks A2; A3 is then free, claims, and
-interlocks A4; A5 claims; the instant A1 finishes it is first in the
-scan again. Measured over 26 s: `A1:4 A2:0 A3:4 A4:0 A5:4`, and the two
-zeros had moved 0.00 degrees.
+Worse, it hid a scheduling bug for a whole render. Adjacency is a path,
+`A1-A2-A3-A4-A5`, so the largest set that could work at once was either
+`{A1, A3, A5}` or `{A2, A4}`, and a claim loop that scanned arms in
+index order picked the same one of those every frame forever. Measured:
+`A1:4 A2:0 A3:4 A4:0 A5:4`, with the two zeros having moved **0.00
+degrees**. Every check passed, because "no two adjacent arms work at
+once" is satisfied perfectly by two arms doing nothing at all.
 
-Fixing the ordering alone only half worked, because there are two
-mechanisms. So the dispatcher is a queue with two rules:
+So the interlock is gone and the collision is fixed where it lives, in
+the layout. Same 26 s, same seed, every arm free to work:
 
-- **Longest idle first**, and an arm that has just worked yields to a
-  neighbour that has been waiting longer *and has a box it can take*.
-  Without the yield the parity never breaks; without the second
-  condition an arm stands down for a neighbour with nothing to stand
-  down for, which costs throughput and fixes nothing.
-- **An arm ahead on the count lets a box run to a quieter arm
-  downstream.** The first arm sees every box first, so by the time one
-  had travelled far enough for A2 to claim it, A1 was mid-pick and A2
-  was interlocked. A box A1 can reach now, every arm downstream can
-  reach later -- which is the same fact the hand-off above rests on.
+| | closest two arms | picked |
+|---|---|---|
+| 650 mm stagger, 445 mm standoff | **18 mm** — fails a 50 mm floor | 13 |
+| 800 mm stagger, 480 mm standoff | **145 mm** | 14 |
 
-Now: `A1:2 A2:1 A3:2 A4:2 A5:2`. The check that would have caught it is
-**"every arm does a share of the work"**, and it reports the split.
+Adjacent arms sit on opposite sides of the belt, so standing the bases
+back separates them *across* the belt as well as along it — and 480 +
+230 = 710 mm to the far edge is still inside the 735 mm the envelope is
+verified to. The belt grows to ±2100 to carry the wider stagger.
+
+It grows for a second reason too, which is a bug this turned up: a box
+may not be claimed before the sensor has measured it, and `can_claim`
+never asked. The cell sorts on what the sensor reads, so an arm claiming
+upstream of the sensor is sorting on what the *spawner* knew — a
+different machine, and one whose "the sorting is a measurement" claim
+would be false. Two candidate layouts put the first arm's window
+upstream of the sensor and nothing objected. It objects now.
+
+What is left of the dispatcher is longest-idle ordering, for
+determinism, and one rule that levels the line: an arm ahead on the
+count lets a box run to a quieter arm downstream, since a box it can
+reach now, every arm downstream can reach later. Result: **5 of 5 arms
+working at once**, `A1:3 A2:3 A3:3 A4:2 A5:3`, and 14 of 23 boxes picked
+against 9 with the interlock.
+
+The two checks that hold it: **"every arm can be working at the same
+time"**, and `check_clearance`, which is now the *only* thing promising
+two arms never touch — measured between placed triangles every other
+frame rather than asserted by a rule.
 
 ### The drop is solved, not drawn
 

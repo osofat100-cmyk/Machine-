@@ -72,17 +72,22 @@ Every box is the same colour and the same shape, at any size inside its
 band, so the sorting is a measurement rather than a colour match.
 
 **Each arm works the whole width of its own stretch of belt.** That is
-what the longer links are for: the far edge is 701 mm from a base, and
-reach falls off with height. Reaching across is also what makes two arms
-able to touch, so the cell interlocks on adjacency -- and three of the
-five still work at once. Measured from the placed triangles every other
-frame, the closest any two arms came over the whole run was 234 mm.
+what the longer links are for: the far edge is 710 mm from a base, and
+reach falls off with height.
+
+**And all five work at once, always.** Reaching across is what makes two
+arms able to touch, and the cell used to answer that by interlocking on
+adjacency -- an arm whose neighbour was mid-pick stood still. Two
+machines that cannot both run are two machines you are paying for and
+using as one, so the interlock is gone and the collision is fixed in the
+layout instead: 800 mm of stagger, 480 mm of standoff. At the old
+spacing two arms passed within **18 mm** of each other with everyone
+working; now the closest they ever come is **145 mm**, measured between
+placed triangles every other frame, and throughput goes from 9 boxes to
+14.
 
 A box its owner is too busy for goes to the next arm along; one nobody
-catches runs off the end and is counted. And the arms share the work:
-an interlock that two arms satisfy by doing nothing at all is not a
-schedule, and two of them once stood still through a whole render with
-nothing wrong with either. Boxes dropped into a bin fall
+catches runs off the end and is counted. Boxes dropped into a bin fall
 and land on what is already there. And because territory constrains the
 tool but not the elbow, the clearance between every pair of arms is
 measured from the placed triangles every frame.
