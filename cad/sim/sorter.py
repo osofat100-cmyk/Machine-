@@ -721,7 +721,7 @@ def run(p: ArmParams, seconds: float = 26.0, fps: int = 30, seed: int = 11,
             # about the solver rather than a tolerance someone chose.
             weight = 9810.0 * sum(b.mass for b in moving)
             diag["energy_lift"].append(
-                ((w.energy() - e0) / weight, w.max_depth, str(key),
+                ((w.energy() - e0) / weight, w.max_contact, str(key),
                  round(t, 2)))
             diag["overlap"].append(w.max_depth)
 

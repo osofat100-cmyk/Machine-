@@ -330,7 +330,14 @@ class World:
         # once a frame instead costs a whole extra broad and narrow
         # phase over every body in the world, sleeping ones included --
         # which is more work than the step itself.
+        #
+        # Two of them, because two questions want different answers.
+        # `max_depth` skips anything static: a box resting on a floor is
+        # not "inside" the floor in the sense that matters for a pile.
+        # `max_contact` skips nothing, because a box *is* pushed back out
+        # of a floor it landed in, and that push is work.
         self.max_depth = 0.0
+        self.max_contact = 0.0
         # Last step's accumulated impulses, keyed by `Contact.key`.
         self.cache: dict = {}
 
@@ -577,6 +584,7 @@ class World:
             [self.max_depth]
             + [c.depth for c in contacts
                if c.b is None or not (c.a.static or c.b.static)])
+        self.max_contact = max([self.max_contact] + [c.depth for c in contacts])
         for body in self.bodies:
             body.pen = 0.0
         for c in contacts:
@@ -622,6 +630,7 @@ class World:
 
     def advance(self, dt: float, substep: float = 1.0 / 240.0) -> None:
         self.max_depth = 0.0
+        self.max_contact = 0.0
         n = max(1, int(np.ceil(dt / substep)))
         h = dt / n
         for _ in range(n):
