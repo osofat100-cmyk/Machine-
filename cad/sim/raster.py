@@ -282,8 +282,26 @@ def depth_and_inv(verts, tris, cam, w, h):
     if hit.size:
         t = tris[tribuf[hit]]
         b = barycentric(sx, sy, zc, tris, tribuf, hit, w)
-        invbuf[hit] = (b[:, 0] / zc[t[:, 0]] + b[:, 1] / zc[t[:, 1]]
-                       + b[:, 2] / zc[t[:, 2]]).astype(np.float32)
+        # `barycentric` hands back *perspective-correct* weights -- it has
+        # already divided by z and renormalised, which is what colours and
+        # normals want. Depth is the one attribute that must not be
+        # interpolated that way twice: 1/z is linear in screen space, so
+        # dividing these weights by z again computes sum(w_i / z_i), which
+        # is not 1/z and is not anything.
+        #
+        # With perspective-correct weights the identity is z = sum(w_i * z_i),
+        # so the depth comes back by multiplying and taking the reciprocal.
+        # The error in the old form is zero when a triangle's corners are
+        # all the same distance away and grows with the spread between
+        # them -- so every small triangle was nearly right and the belt,
+        # one pair of triangles 4200 mm long with corners from 2 m to 9 m
+        # out, was 90 mm too near. That is enough for the belt to win the
+        # depth test against the bottom of every box standing on it, which
+        # is exactly how it looked: boxes sunk to the waist in the belt.
+        z = (b[:, 0] * zc[t[:, 0]] + b[:, 1] * zc[t[:, 1]]
+             + b[:, 2] * zc[t[:, 2]])
+        invbuf[hit] = (1.0 / np.where(np.abs(z) < 1e-9, 1e-9, z)).astype(
+            np.float32)
         return tribuf, hit, b, invbuf
     return tribuf, hit, np.zeros((0, 3), np.float32), invbuf
 
