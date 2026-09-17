@@ -44,9 +44,14 @@ LIFT_T = 1.60
 DROP_T = 0.65
 OPEN_T = 0.30
 RETURN_T = 1.70
+# The task ends when the box is let go. Going home is *not* part of it:
+# an arm that has to finish walking back to its park pose before the
+# dispatcher will look at it is an arm standing in its own way, and with
+# boxes arriving every second and a half that dead trip is most of a
+# cycle. Returning is what an arm does when nothing needs doing, and
+# anything needing doing interrupts it -- see `home_pose`.
 PHASES = (("TRACK", TRACK_T), ("DESCEND", DESCEND_T), ("CLOSE", CLOSE_T),
-          ("LIFT", LIFT_T), ("DROP", DROP_T), ("OPEN", OPEN_T),
-          ("RETURN", RETURN_T))
+          ("LIFT", LIFT_T), ("DROP", DROP_T), ("OPEN", OPEN_T))
 CYCLE_T = sum(d for _, d in PHASES)
 INTERCEPT_T = TRACK_T + DESCEND_T      # from claim to touchdown
 
@@ -316,6 +321,12 @@ class ArmState:
     # When this arm last had nothing to do. The dispatcher is a queue,
     # not a scan, and this is its key -- see `run`.
     idle_since: float = 0.0
+    # Going home, if it is going home: where it started, how open its
+    # jaws were, and how many frames in it is. Cleared the instant it
+    # claims something, because the way back is never worth finishing.
+    home_from: np.ndarray | None = None
+    home_gap: float = PARK_GAP
+    home_k: int = 0
 
     @property
     def phase(self) -> str:
@@ -409,6 +420,22 @@ def _polar(arm: C.Arm, pt):
     return float(np.hypot(d[0], d[1])), float(a), float(d[2])
 
 
+def home_pose(st, s: float, p: ArmParams):
+    """Where an idle arm is on its way back to park.
+
+    The same motion RETURN used to be, lifted out of the task so that
+    nothing waits on it. It has no parcel and asks for no jaw
+    alignment -- it is carrying nothing -- and it is abandoned mid-way
+    the moment a box is claimed, which is the whole point.
+    """
+    e = K.ease(s)
+    bump = ARC * np.sin(np.pi * s) ** 2
+    pos = _swing(st.arm, st.home_from[:3, 3], st.park_tcp[:3, 3], e, bump)
+    gap = float(K.blend([st.home_gap], [PARK_GAP], s)[0])
+    lp = st.arm.to_local(pos)
+    return st.arm.base @ K.target_frame(lp), gap
+
+
 def _swing(arm: C.Arm, p0, p1, e: float, bump: float = 0.0) -> np.ndarray:
     """Blend two points *around* the arm, not through it.
 
@@ -486,13 +513,9 @@ def target_pose(st: ArmState, s: float, t: float, p: ArmParams):
     elif ph == "DROP":
         pos = (1 - e) * (task.bin_pt + hover) + e * _drop_pt(p, task, size)
         gap = grip_gap(p, size)
-    elif ph == "OPEN":
+    else:                                            # OPEN
         pos = _drop_pt(p, task, size)
         gap = float(K.blend([grip_gap(p, size)], [open_gap(size)], s)[0])
-    else:                                            # RETURN
-        # ...and shut on the way home, so the arm parks closed.
-        pos = _swing(arm, task.anchor[:3, 3], st.park_tcp[:3, 3], e, bump)
-        gap = float(K.blend([open_gap(size)], [PARK_GAP], s)[0])
 
     lp = arm.to_local(pos)
     jaw = _jaw_local(arm, lp, _square_weight(ph, s), task.jaw_az)
@@ -676,6 +699,7 @@ def run(p: ArmParams, seconds: float = 26.0, fps: int = 30, seed: int = 11,
     """
     parcels = spawn_plan(seconds, seed, mean_gap, lead=-lead)
     steps = {name: max(1, int(round(d * fps))) for name, d in PHASES}
+    home_steps = max(1, int(round(RETURN_T * fps)))
     states = []
     for a in C.ARMS:
         local_pt = a.to_local(a.park_point)
@@ -748,6 +772,7 @@ def run(p: ArmParams, seconds: float = 26.0, fps: int = 30, seed: int = 11,
             st.task = Task(pc, st.arm.bins[C.classify(pc.size).key],
                            meet=meet, jaw_az=_jaw_az(st.arm, meet),
                            anchor=st.tcp.copy(), gap0=st.gap)
+            st.home_from = None                  # the way back can wait
             diag["claims"].append((round(t, 2), st.arm.name, pc.pid, pc.cls.key))
 
         # --- drive every arm ------------------------------------------
@@ -761,11 +786,23 @@ def run(p: ArmParams, seconds: float = 26.0, fps: int = 30, seed: int = 11,
                 st.joints = q
                 diag["ik_pos"].append(pe)
                 diag["ik_ang"].append(ae)
+            elif st.home_from is not None:
+                # On its way home, and it can be interrupted at any
+                # frame of it. Nothing depends on it arriving.
+                st.home_k += 1
+                s_home = min(1.0, st.home_k / max(1, home_steps))
+                goal, gap = home_pose(st, s_home, p)
+                local = np.linalg.inv(st.arm.base) @ goal
+                q, pe, ae = K.solve_ik(p, local, st.joints)
+                st.joints = q
+                diag["ik_pos"].append(pe)
+                diag["ik_ang"].append(ae)
+                if s_home >= 1.0:
+                    st.home_from = None          # parked; just hold it
             else:
-                # Hold whatever joints the arm finished RETURN in. They
-                # already hold the park pose; snapping to the stored park
-                # solution instead would step the wrist a hundred degrees
-                # to reach the same point a different way.
+                # Parked. Hold whatever joints it arrived in: snapping to
+                # the stored park solution would step the wrist a hundred
+                # degrees to reach the same point a different way.
                 gap = st.gap
             st.gap = gap
             st.tcp = st.arm.to_world(K.tcp(p, st.joints))
@@ -840,6 +877,11 @@ def run(p: ArmParams, seconds: float = 26.0, fps: int = 30, seed: int = 11,
             if task.phase_i >= len(PHASES):
                 st.task = None
                 st.idle_since = t
+                # Start home from wherever letting go left it. If a box
+                # turns up first, this is simply abandoned.
+                st.home_from = st.tcp.copy()
+                st.home_gap = st.gap
+                st.home_k = 0
 
 
         # --- physics ---------------------------------------------------
