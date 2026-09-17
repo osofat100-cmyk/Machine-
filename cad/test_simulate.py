@@ -145,11 +145,24 @@ def test_jaw_gap_round_trips_through_the_opening():
 
     The claw's opening is an angle and the cell thinks in millimetres,
     so every grip goes through this conversion and back. An inverse
-    that is nearly right is a gripper that nearly closes."""
-    for gap in (18.0, 32.0, 54.0, 90.0, 140.0, 164.0):
+    that is nearly right is a gripper that nearly closes.
+
+    The gaps are swept across the travel the head actually allows
+    rather than written down. They used to be a fixed list ending at
+    164 mm, which stopped being an opening this claw has when the
+    fingers grew to 125 mm and the travel narrowed to 27..72 degrees --
+    the inverse was exact at every one of them, and the test failed
+    anyway. A sample that has to be edited to stay green tests the
+    editor.
+    """
+    shut, wide = (K.jaw_gap(DEFAULT, DEFAULT.grab_open_min),
+                  K.jaw_gap(DEFAULT, DEFAULT.grab_open_max))
+    for f in (0.0, 0.1, 0.25, 0.5, 0.75, 0.9, 1.0):
+        gap = shut + (wide - shut) * f
         q = K.posed(DEFAULT, DEFAULT.joints, gap)
         assert abs(K.jaw_gap(q) - gap) < 1e-9, (gap, K.jaw_gap(q))
-        assert DEFAULT.grab_open_min <= q.grab_open <= DEFAULT.grab_open_max
+        assert (DEFAULT.grab_open_min - 1e-9 <= q.grab_open
+                <= DEFAULT.grab_open_max + 1e-9), (gap, q.grab_open)
 
 
 def test_the_jaws_actually_face_each_other():
