@@ -1,4 +1,4 @@
-"""The eleven parts.
+"""The fourteen parts.
 
 Each builder takes an `ArmParams` and returns a build123d `Part`.
 
@@ -12,8 +12,8 @@ code-CAD equivalent of choosing mate references consistently.
 from __future__ import annotations
 
 from build123d import (
-    Align, Axis, Box, Cone, Cylinder, GeomType, Part, Plane, Pos, Rot,
-    chamfer, fillet,
+    Align, Axis, Box, Cone, Cylinder, GeomType, Part, Plane, Polygon, Pos,
+    Rot, chamfer, extrude, fillet,
 )
 
 from .params import ArmParams
@@ -315,34 +315,218 @@ def tool_flange(p: ArmParams) -> Part:
 # --------------------------------------------------------------------
 # 10 / 11  (instanced twice in the assembly)
 # --------------------------------------------------------------------
-def gripper_finger(p: ArmParams) -> Part:
-    """One jaw of a two-finger parallel gripper.
+def grabber_jaw(p: ArmParams) -> Part:
+    """One jaw of the claw. Instanced `grab_jaws` times round the axis.
 
-    Authored as an L: a shank up +Z, then a tip folding in toward -X.
+    Authored at its own pivot, pointing along +Z with +X outboard and
+    curling toward -X -- the shape a reacher grabber's finger has so
+    that it closes *around* a thing rather than merely onto it.
+
+    The curl is read from `ArmParams.grab_curl`, which is the same
+    thing `kinematics` measures the grip point from. A finger whose
+    shape and whose arithmetic are written out separately is a defect
+    this model has already had once: it cost two millimetres of
+    opening, and nothing but the placed triangles could see it.
     """
-    shank = Box(p.finger_thk, p.finger_w, p.finger_len, align=_UP)
-    tip = Pos(-p.finger_w / 2 + p.finger_thk / 2, 0, p.finger_len) * Box(
-        p.finger_w, p.finger_w, p.finger_thk, align=_UP
+    from math import degrees, hypot
+
+    # The blade is one extruded outline, not a pile of overlapping
+    # boxes. Boxes are easier to write and give a solid whose every
+    # segment joint is a shallow notch, and OCCT will not fillet a
+    # chain like that at any radius at all.
+    centre = [(0.0, -p.grab_heel), (0.0, 0.0)]
+    centre += [end for _, _, end in p.grab_curl]
+    dirs = []
+    for (ax, az), (bx, bz) in zip(centre, centre[1:]):
+        n = hypot(bx - ax, bz - az)
+        dirs.append(((bx - ax) / n, (bz - az) / n))
+    # Outward normal of each segment: the finger curls toward -X, so the
+    # convex side is the +X one.
+    norms = [(dz, -dx) for dx, dz in dirs]
+
+    def _offset(side: float) -> list:
+        out = []
+        for i, (cx, cz) in enumerate(centre):
+            if i == 0:
+                nx, nz = norms[0]
+                k = 1.0
+            elif i == len(centre) - 1:
+                nx, nz = norms[-1]
+                k = 1.0
+            else:
+                ax, az = norms[i - 1]
+                bx, bz = norms[i]
+                nx, nz = ax + bx, az + bz
+                m = hypot(nx, nz)
+                nx, nz = nx / m, nz / m
+                # a mitre, so the offset wall stays parallel to each
+                # segment instead of pinching in at the joints
+                k = 1.0 / max(0.2, nx * bx + nz * bz)
+            d = side * p.grab_jaw_thk / 2.0 * k
+            out.append((cx + nx * d, cz + nz * d))
+        return out
+
+    outline = _offset(1.0) + list(reversed(_offset(-1.0)))
+    part = extrude(Plane.XZ * Polygon(*outline, align=None),
+                   amount=p.grab_jaw_w / 2, both=True)
+    # Filleted here, on the bare outline, rather than at the end: once
+    # the pad and its tread are on, the Y-normal edge set is no longer
+    # just the profile's corners.
+    part = _safe_fillet(part, part.edges().filter_by(Axis.Y),
+                        p.grab_jaw_thk / 4)
+
+    # the pin on the heel, which is what runs in the head's arc slot
+    part = part + Pos(0, 0, -p.grab_heel) * Rot(90, 0, 0) * Cylinder(
+        p.grab_pin_dia / 2, p.grab_jaw_w + 2.0 * p.grab_clevis_wall
     )
-    part = shank + tip
-    part = _safe_fillet(part, part.edges().filter_by(Axis.Y), p.finger_thk / 3)
-    # Serrations on the gripping face.
-    for i in range(3):
-        z = p.finger_len + p.finger_thk / 2
-        notch = Pos(-p.finger_w / 2 + p.finger_thk / 2 - 2 + i * 3.0, 0, z) * Rot(
-            0, 45, 0
-        ) * Box(1.2, p.finger_w + 2, 1.2)
-        part = part - notch
-    part = part - Pos(0, 0, p.finger_len * 0.25) * Rot(0, 90, 0) * Cylinder(
-        p.tool_bolt_dia / 2, p.finger_thk * 3
+    # a lug round the pivot, so the blade is not a knife edge at the pin
+    part = part + Rot(90, 0, 0) * Cylinder(
+        p.grab_jaw_thk * 0.85, p.grab_jaw_w
     )
-    part.label = "10_gripper_finger"
+
+    # The rubber pad, on the inside of the last segment. Its outer face
+    # is the surface that touches the box, and `grab_grip_point` is the
+    # middle of it.
+    from math import cos, sin
+    a, _, (ex, ez) = p.grab_curl[-1]
+    back = p.grab_pad_len / 2.0
+    cx, cz = ex + sin(a) * back, ez - cos(a) * back
+    off = p.grab_jaw_thk / 2.0 + p.grab_pad_thk / 2.0
+    pad_at = Pos(cx - cos(a) * off, 0, cz - sin(a) * off) * Rot(
+        0, -degrees(a), 0
+    )
+    part = part + pad_at * Box(
+        p.grab_pad_thk, p.grab_jaw_w - 4.0, p.grab_pad_len
+    )
+    # The grip ridge, on the pad's face and across the finger. This is
+    # the surface that touches the box, and it is a cylinder so that it
+    # touches at `grab_pad_r` from its axis no matter what angle the
+    # curling finger presents it at.
+    part = part + pad_at * Pos(-p.grab_pad_thk / 2, 0, 0) * Rot(
+        90, 0, 0
+    ) * Cylinder(p.grab_pad_r, p.grab_jaw_w - 4.0)
+    # tread either side of it, recessed so it never takes the contact
+    for i in (-1, 1):
+        part = part - pad_at * Pos(
+            -p.grab_pad_thk / 2, 0, i * p.grab_pad_len / 3.2
+        ) * Box(2.4, p.grab_jaw_w, 2.2)
+
+    part = part - Rot(90, 0, 0) * Cylinder(
+        p.grab_pin_dia / 2, p.grab_jaw_w * 3
+    )
+    part.label = "10_grabber_jaw"
     return part
 
 
 # --------------------------------------------------------------------
-# 11 / 11  (instanced at J1, J2, J3, J5)
+# 11 / 13  (instanced at J1, J2, J3, J5)
 # --------------------------------------------------------------------
+def grabber_housing(p: ArmParams) -> Part:
+    """What the pistol grip becomes when the tool is bolted to a flange.
+
+    On the hand tool this is where the trigger, the cable anchor and
+    the return spring live. Here it is a linear actuator pulling the
+    same rod down the same tube, abstracted exactly the way
+    `actuator_can` abstracts the four joint drives: the housing is
+    modelled, what is inside it is not.
+    """
+    part = Cylinder(p.grab_housing_dia / 2, p.grab_housing_len, align=_UP)
+    # a flat with a connector boss, so it reads as a drive and not a spacer
+    part = part - Pos(p.grab_housing_dia * 0.47, 0,
+                      p.grab_housing_len / 2) * Box(
+        p.grab_housing_dia * 0.3, p.grab_housing_dia * 0.55,
+        p.grab_housing_len * 1.2
+    )
+    part = part + Pos(p.grab_housing_dia * 0.3, 0,
+                      p.grab_housing_len * 0.55) * Rot(0, 90, 0) * Cylinder(
+        p.grab_housing_dia * 0.14, p.grab_housing_dia * 0.34
+    )
+    part = part - _bolt_ring(
+        p.tool_bolt_circle / 2, p.tool_bolt_dia, p.tool_bolt_count,
+        p.grab_housing_len * 2, z=-1,
+    )
+    # The register the head goes on, and the bore the drive runs up.
+    # It stands proud rather than being a socket because the bolts that
+    # hold the housing on are already on a 31.5 mm circle: a 24 mm bore
+    # down the middle would leave about a millimetre of material
+    # between the two, and you would have a part that builds, looks
+    # right, and could not be assembled.
+    part = part + Pos(0, 0, p.grab_housing_len) * Cylinder(
+        p.grab_spigot_dia / 2, p.grab_spigot_h, align=_UP
+    )
+    part = part - Pos(0, 0, p.grab_housing_len - 10.0) * Cylinder(
+        p.grab_spigot_dia / 2 - 6.0, p.grab_spigot_h + 10.0, align=_UP
+    )
+    # Only the whole circles: the flat leaves the outer rim as an arc
+    # that runs into a sharp corner, and OCCT will not round that.
+    from math import pi
+    tops = part.edges().filter_by(GeomType.CIRCLE).group_by(Axis.Z)[-1]
+    part = _safe_fillet(
+        part,
+        [e for e in tops if abs(e.length - 2 * pi * e.radius) < 0.5],
+        2.0,
+    )
+    part.label = "12_grabber_housing"
+    return part
+
+
+def grabber_head(p: ArmParams) -> Part:
+    """The claw head: four clevis slots, four pivot pins, and the arc
+    slot that *is* the jaws' travel.
+
+    Each jaw carries a pin on its heel, and that pin runs in an arc
+    slot cut here. The slot is swept from `grab_open_min` to
+    `grab_open_max` -- the same two numbers everything else asks for
+    the travel -- so the head cannot allow an angle the model forbids,
+    nor forbid one the model allows. That is the same discipline
+    `grip_slot_len` had on the parallel gripper this replaces, where
+    the slot was built to be exactly long enough for both jaws at full
+    stroke rather than merely wide enough to look right.
+    """
+    from math import cos, radians, sin
+
+    part = Cylinder(p.grab_head_dia / 2, p.grab_head_len, align=_UP)
+    part = part - Cylinder(
+        p.grab_spigot_dia / 2 + p.clearance, p.grab_head_len * 0.62,
+        align=_UP,
+    )
+    pz = p.grab_head_len - p.grab_pin_inset
+    blade = p.grab_jaw_w + 2.0 * p.clearance
+    reach = p.grab_head_dia
+    for i in range(p.grab_jaws):
+        seat = Rot(0, 0, 360.0 * i / p.grab_jaws)
+        # the clevis slot the blade swings in: open at the end face and
+        # at the outer surface, which is where the jaw comes out
+        part = part - seat * Pos(
+            p.grab_pivot_r + reach / 2, 0, pz + p.grab_head_len
+        ) * Box(reach, blade, p.grab_head_len * 2 + 16.0)
+        part = part - seat * Pos(
+            p.grab_pivot_r + reach / 2, 0, pz
+        ) * Box(reach, blade, p.grab_jaw_thk * 1.9)
+        # the arc slot: the path the heel pin takes over the whole travel
+        cutter = None
+        for k in range(9):
+            phi = radians(p.grab_open_min + (p.grab_open_max
+                                             - p.grab_open_min) * k / 8.0)
+            hr = p.grab_pivot_r - p.grab_heel * sin(phi)
+            hz = pz - p.grab_heel * cos(phi)
+            step = seat * Pos(hr, 0, hz) * Rot(90, 0, 0) * Cylinder(
+                p.grab_slot_w / 2, blade + 2.0 * p.grab_clevis_wall + 0.8
+            )
+            cutter = step if cutter is None else cutter + step
+        part = part - cutter
+        part = part - seat * Pos(p.grab_pivot_r, 0, pz) * Rot(
+            90, 0, 0
+        ) * Cylinder(p.grab_pin_dia / 2, p.grab_head_dia * 1.2)
+    part = _safe_fillet(
+        part,
+        part.edges().filter_by(GeomType.CIRCLE).group_by(Axis.Z)[0],
+        1.5,
+    )
+    part.label = "13_grabber_head"
+    return part
+
+
 def actuator_can(p: ArmParams) -> Part:
     """Servo-gearbox body. One part, reused at four joints."""
     part = Cylinder(p.act_dia / 2, p.act_len, align=_UP)
@@ -378,8 +562,10 @@ BUILDERS = (
     wrist_housing,
     wrist_yoke,
     tool_flange,
-    gripper_finger,
+    grabber_jaw,
     actuator_can,
+    grabber_housing,
+    grabber_head,
 )
 
 

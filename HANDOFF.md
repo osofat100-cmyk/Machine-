@@ -60,9 +60,9 @@ python3 build.py          # verify, then export (~10 s)
 python3 test_robot_arm.py # 9 tests
 ```
 
-11 parts, 7.19 kg in 6061-T6, 573 mm reach. Exports STEP, STL and
-hidden-line drawings. **Refuses to export anything failing its 8
-checks.** The kinematic chain is computed twice — once by placing
+13 parts, 7.97 kg in 6061-T6, 573 mm of arm plus a reacher grabber's
+claw. Exports STEP, STL and hidden-line drawings. **Refuses to export
+anything failing its 12 checks.** The kinematic chain is computed twice — once by placing
 solids, once from scratch with 4×4 matrices — and the two must agree to
 2.6e-13 mm.
 
@@ -171,8 +171,9 @@ like everything else in `fusion360/`.
 - **Update the mock** whenever you fix a call because reality differed,
   with a comment on what you observed. Otherwise the tests keep passing
   against a fiction.
-- **Look at the gripper by eye.** The two jaws must face each other. No
-  automated check catches this; that's the whole lesson above.
+- **Look at the tool by eye.** The claw's four jaws must curl inward.
+  No automated check catches a claw that opens the wrong way; that's
+  the whole lesson above.
 
 ---
 

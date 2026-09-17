@@ -11,6 +11,7 @@ Units: millimetres and degrees throughout.
 from __future__ import annotations
 
 from dataclasses import dataclass, field, replace
+from math import cos, radians, sin
 
 
 @dataclass(frozen=True)
@@ -67,6 +68,9 @@ class ArmParams:
     wyoke_pin_dia: float = 10.0
 
     # ---- part 9: tool flange (ISO 9409-1-50-4-M6) -------------------
+    # The standard's numbers, and the designation is in the name: a
+    # 50 mm plate on a 31.5 mm circle, four M6. A tool that cannot be
+    # bolted to those is the tool's problem to solve, not the flange's.
     tool_dia: float = 50.0
     tool_thk: float = 8.0
     tool_bolt_circle: float = 31.5
@@ -75,11 +79,98 @@ class ArmParams:
     tool_spigot_dia: float = 31.5
     tool_spigot_h: float = 6.0
 
-    # ---- part 10: gripper finger ------------------------------------
-    finger_len: float = 62.0
-    finger_w: float = 14.0
-    finger_thk: float = 8.0
-    finger_stroke: float = 22.0       # half-opening at the mounted pose
+    # ---- the tool: a reacher grabber's claw (parts 10, 12, 13) ------
+    # The working end of a reacher grabber, and only that: four jaws
+    # that curl shut on whatever is between them, the head they pivot
+    # in, and a housing that drives them. Squeeze the trigger on the
+    # hand tool and a rod pulls the jaws closed; let go and a spring
+    # opens them. Here the pistol grip becomes an actuator housing and
+    # the trigger becomes a linear drive.
+    #
+    # The pole the tool is sold with is not modelled, because it is
+    # there to save a person bending down. A robot arm is already the
+    # reach; a pole bolted to J6 would be 160 mm of dead length for the
+    # wrist to carry and swing, and every clearance in the cell would
+    # be paying for it.
+    #
+    # `grab_open` is the pose, in the same sense `joints` is: how far
+    # the jaws are swung open from shut. Nothing is rebuilt when it
+    # changes, only re-placed -- the same as every joint angle.
+    grab_open: float = 52.0           # degrees at the mounted pose
+
+    # part 12: the housing that replaces the pistol grip
+    grab_housing_dia: float = 62.0
+    grab_housing_len: float = 46.0
+
+    # The register between the two: a spigot on the housing, a
+    # counterbore in the head, so the claw can only go on square and
+    # the drive has somewhere to run. On the hand tool this is the
+    # socket the pole clamps into.
+    grab_spigot_dia: float = 24.0
+    grab_spigot_h: float = 12.0
+
+    # part 13: the head the jaws pivot in
+    grab_head_dia: float = 64.0
+    grab_head_len: float = 40.0
+    grab_pivot_r: float = 22.0        # pivot pins, from the tool axis
+    grab_pin_dia: float = 6.0
+    grab_pin_inset: float = 11.0      # pin centre, back from the head's end
+    grab_clevis_wall: float = 6.0     # material either side of a blade
+
+    # part 10: one jaw, instanced `grab_jaws` times round the axis
+    grab_jaws: int = 4
+    # Long fingers, and a lot of curl, because that is what decides the
+    # biggest thing the claw can pick up. A finger has to stand off the
+    # box's face along the whole of the box's height: anywhere it comes
+    # inside that face it is not gripping the box, it is inside it.
+    #
+    # Both ends of the usable size range scale with the claw, so what a
+    # bigger claw buys is not reach but *ratio* -- widest box it can
+    # wrap over shortest it can still lift off a belt. At 92 mm and 52
+    # degrees that ratio was 2.81, and the boxes here span 2.92, so
+    # some box was always going to be speared however the sizes were
+    # scaled. At 125 mm and 70 degrees it is 3.82, which fits with
+    # room either side.
+    grab_jaw_len: float = 125.0       # along the curl, from the pivot
+    grab_jaw_w: float = 22.0
+    grab_jaw_thk: float = 9.0
+    grab_jaw_curl: float = 70.0       # degrees the finger curls inward
+    grab_jaw_segs: int = 4            # straight segments approximating it
+    grab_heel: float = 14.0           # heel behind the pivot, carrying
+                                      # the pin that runs in the head
+    grab_pad_len: float = 36.0
+    grab_pad_thk: float = 5.0
+    # A half-round ridge standing proud of the pad, and the reason the
+    # jaw opening is a number at all. The pad is a flat on a finger that
+    # is still curling, so it meets a box's flat side at an angle and
+    # touches it on one edge -- and which edge, and how far in it is,
+    # changes with the opening. A cylinder touches a plane on a line at
+    # exactly its own radius, whatever angle it is presented at.
+    grab_pad_r: float = 4.0
+
+    # The travel. Shut is not zero degrees: the pads are 5 mm of rubber
+    # on a 9 mm finger, and they meet before the fingers do.
+    #
+    # These two are the mechanism, not a note beside it. Each jaw
+    # carries a pin on its heel that runs in an arc slot cut in the
+    # head, and `parts.grabber_head` cuts that slot *from these two
+    # numbers* -- so the slot is exactly the travel, the way
+    # `grip_slot_len` was exactly the stroke on the gripper this
+    # replaced. Widen the range and the slot widens with it; there is
+    # no way to command an angle the head does not physically allow.
+    # Shut is where the pads meet, and a longer finger meets sooner:
+    # at the 17 degrees the 92 mm finger shut at, a 125 mm finger has
+    # closed through 25 mm of its opposite number. `check_grabber`
+    # caught that, which is the entire reason the travel is a pair of
+    # numbers the head is cut from rather than a comment.
+    grab_open_min: float = 27.0
+    grab_open_max: float = 72.0
+    grab_slot_w: float = 7.4          # the arc slot, across the arc
+
+    # The opening the tool centre point is defined at. A claw's grip
+    # point moves as it curls, so the TCP has to be pinned to one
+    # stated opening and everything else measured against it.
+    grab_ref_gap: float = 90.0
 
     # ---- part 11: actuator can (shared, instanced at 4 joints) ------
     act_dia: float = 58.0
@@ -87,12 +178,87 @@ class ArmParams:
     act_boss_dia: float = 26.0
     act_boss_h: float = 6.0
 
+    # ---- ratings: what the hardware can do, not what shape it is ---
+    # Not geometry, but no less a property of the machine than the
+    # finger length -- and the only numbers that decide whether a box
+    # that fits in the jaws can actually be carried by them.
+    grip_force: float = 260.0         # N of clamping force at the jaws
+    jaw_mu: float = 0.6               # friction pad against cardboard
+
     # ---- pose: the six joint angles, degrees ------------------------
     joints: tuple[float, float, float, float, float, float] = (
         0.0, -35.0, 65.0, 0.0, -30.0, 0.0
     )
 
     # ---- derived ----------------------------------------------------
+    @property
+    def flange_face_z(self) -> float:
+        """Tool mounting face, measured from the J6 frame."""
+        return self.tool_thk + self.tool_spigot_h
+
+    @property
+    def grab_head_z(self) -> float:
+        """The claw head's base, measured from the J6 frame.
+
+        The head sits straight on the housing. Nothing between them
+        but the register spigot, which is buried in both.
+        """
+        return self.flange_face_z + self.grab_housing_len
+
+    @property
+    def grab_pivot_z(self) -> float:
+        """The jaw pivot pins, measured from the J6 frame."""
+        return self.grab_head_z + self.grab_head_len - self.grab_pin_inset
+
+    @property
+    def grab_curl(self) -> tuple:
+        """The jaw's centreline, as a polyline in the jaw's own frame.
+
+        One entry per segment: (angle, (mid_x, mid_z), (end_x, end_z)),
+        starting at the pivot pointing along +Z and curling toward -X.
+
+        Three straight segments and a fillet rather than a swept spline,
+        because the polyline survives being re-driven and an OCCT sweep
+        along a spline does not, reliably.
+
+        `parts.grabber_jaw` builds from this and `kinematics` measures
+        from it. That is the whole point of it being here: the old
+        gripper wrote out the shape of the jaw tip in one place and the
+        arithmetic about where it grips in another, and the two differed
+        by 2 mm for as long as nobody measured the triangles.
+        """
+        step = self.grab_jaw_len / self.grab_jaw_segs
+        out, x, z = [], 0.0, 0.0
+        for i in range(self.grab_jaw_segs):
+            a = radians(self.grab_jaw_curl * (i + 0.5) / self.grab_jaw_segs)
+            dx, dz = -sin(a), cos(a)
+            mid = (x + dx * step / 2.0, z + dz * step / 2.0)
+            x, z = x + dx * step, z + dz * step
+            out.append((a, mid, (x, z)))
+        return tuple(out)
+
+    @property
+    def grab_grip_point(self) -> tuple[float, float]:
+        """(x, z) of the grip ridge's *axis*, in the jaw's own frame.
+
+        Half a pad back from the tip along the last segment, then
+        `grab_jaw_thk / 2 + grab_pad_thk` inboard of the centreline --
+        which is the pad's face, where the ridge sits. What touches a
+        box is `grab_pad_r` further in, and always exactly that far in,
+        which is the point of the ridge.
+        """
+        a, _, (ex, ez) = self.grab_curl[-1]
+        back = self.grab_pad_len / 2.0
+        cx, cz = ex + sin(a) * back, ez - cos(a) * back
+        inw = self.grab_jaw_thk / 2.0 + self.grab_pad_thk
+        return (cx - cos(a) * inw, cz - sin(a) * inw)
+
+    @property
+    def grab_heel_point(self) -> tuple[float, float]:
+        """(x, z) of the heel pin, jaw frame: behind and outboard of the
+        pivot, so that drawing the collar back curls the jaw shut."""
+        return (self.grab_heel * 0.45, -self.grab_heel)
+
     @property
     def shoulder_z(self) -> float:
         """Height of the J2 axis above the mounting face."""

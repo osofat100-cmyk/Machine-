@@ -1,4 +1,4 @@
-"""The main assembly: 11 parts, 15 instances, one kinematic chain.
+"""The main assembly: 12 parts, 16 instances, one kinematic chain.
 
 The chain is built as a running product of `Location`s, one per joint.
 `Pos(...) * Rot(...)` rotates about the *translated* origin, so each
@@ -55,7 +55,7 @@ def joint_frames(p: ArmParams) -> Frames:
     # J6: tool roll about the flange axis.
     f6 = f5 * Rot(0, 0, j6)
     # The tool mounting face itself.
-    tool = f6 * Pos(0, 0, p.tool_thk + p.tool_spigot_h)
+    tool = f6 * Pos(0, 0, p.flange_face_z)
     return Frames(base, f1, f2, f3, f4, f5, f6, tool)
 
 
@@ -69,8 +69,10 @@ _COLORS = {
     "07_wrist_housing": "#2d3748",
     "08_wrist_yoke": "#4a5568",
     "09_tool_flange": "#718096",
-    "10_gripper_finger": "#a0aec0",
+    "10_grabber_jaw": "#a0aec0",
     "11_actuator_can": "#1a202c",
+    "12_grabber_housing": "#2d3748",
+    "13_grabber_head": "#39414f",
 }
 
 
@@ -113,19 +115,26 @@ def build_assembly(p: ArmParams | None = None) -> Compound:
 
     # --- tool -------------------------------------------------------
     add("09_tool_flange", "09_tool_flange", f.j6)
-    stand = p.tool_thk + p.tool_spigot_h
-    for i, sign in enumerate((-1, 1)):
-        # Each finger is authored with its tip folding toward local -X, so
-        # the jaw on the -X side must be spun 180 degrees for the two tips
-        # to face each other. Getting this backwards yields a gripper whose
-        # jaws open outward -- geometrically valid, and useless. Nothing in
-        # the solid checks catches it; it was caught by looking at the
-        # render, which is why the harness needs an eye on it.
-        yaw = 180 if sign < 0 else 0
+    # The tool is a reacher grabber's claw: the housing that replaces
+    # its pistol grip, the head bolted straight onto it, and
+    # `grab_jaws` jaws swinging in that.
+    add("12_grabber_housing", "12_grabber_housing",
+        f.j6 * Pos(0, 0, p.flange_face_z))
+    add("13_grabber_head", "13_grabber_head",
+        f.j6 * Pos(0, 0, p.grab_head_z))
+    for i in range(p.grab_jaws):
+        # Each jaw is authored at its own pivot, pointing along +Z with
+        # +X outboard. Placing it is: spin to its station round the
+        # axis, out to the pivot radius, then rotate by the opening --
+        # which is why `grab_open` is a pose and not a shape. Nothing
+        # is rebuilt when it changes, exactly as with a joint angle.
         add(
-            "10_gripper_finger",
-            f"10_gripper_finger.{i + 1}",
-            f.j6 * Pos(sign * p.finger_stroke, 0, stand) * Rot(0, 0, yaw),
+            "10_grabber_jaw",
+            f"10_grabber_jaw.{i + 1}",
+            f.j6
+            * Rot(0, 0, 360.0 * i / p.grab_jaws)
+            * Pos(p.grab_pivot_r, 0, p.grab_pivot_z)
+            * Rot(0, p.grab_open, 0),
         )
 
     # --- actuators: one part, four placements ------------------------
