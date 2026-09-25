@@ -22,7 +22,7 @@ from .constants import DerivedQuantities
 from .units import Units
 from .metric import Schwarzschild, StaticSphericalMetric, V, R
 from .geodesic import (Thrust, rhs_tau, rhs_lnr, initial_state_radial, energy, energy_conditioning_scale,
-                       angular_momentum, norm,
+                       angular_momentum, norm, norm_conditioning_scale,
                        four_acceleration, RadialInfallE1, IV, IR, ITH, IPH, IUV, IUR, IUTH, IUPH, ITAU, IEK, NSTATE, STATE_NAMES)
 from .integrators import DormandPrince54, IntegrationResult
 from .curvature import (kretschmann_closed_form, tidal_tensor, tidal_eigenvalues_radial_closed_form,
@@ -112,6 +112,7 @@ class Simulation:
                                                             config.extreme_curvature_length_m,
                                                             config.include_isco, config.include_photon_sphere)
         self.segments: List[SegmentRecord] = []
+        self.stopped_early = False
         self.milestone_states: Dict[str, dict] = {}
         self.config_hash = config_hash(config.to_dict())
         self.checkpoint_paths: List[str] = []
@@ -192,8 +193,9 @@ class Simulation:
         return res, mode
 
     # ------------------------------------------------------------------
-    def run(self, resume_from: Optional[dict] = None) -> None:
+    def run(self, resume_from: Optional[dict] = None, stop_after: Optional[str] = None) -> None:
         cfg = self.cfg
+        self.stopped_early = False
         if resume_from is None:
             y = self.initial_state()
             v_off, tau_off = 0.0, 0.0
@@ -228,6 +230,10 @@ class Simulation:
             self._checkpoint(i + 1, y, v_off, tau_off)
             if self.project_dir is not None:
                 self._save_segment(seg)
+            if stop_after is not None and m_to.slug == stop_after:
+                self.stopped_early = True
+                self.log(f"stopping after milestone '{stop_after}' as requested (checkpoint written)")
+                return
         self.log(PLANCK_MESSAGE)
 
     # ------------------------------------------------------------------
@@ -341,6 +347,7 @@ class Simulation:
             "tau_total_s": u.t_to_SI(tau_total), "tau_total_years": u.t_to_years(tau_total),
             "u_v": y[IUV], "u_r": y[IUR], "u_theta": y[IUTH], "u_phi": y[IUPH],
             "E": energy(m, y), "E_killing": y[IEK], "L": angular_momentum(y), "norm_residual": norm(m, y) + 1.0,
+            "norm_residual_conditioned": (norm(m, y) + 1.0) / norm_conditioning_scale(m, y),
             "log10_K_SI": math.log10(K_SI), "log10_K_over_K_planck": math.log10(K_SI / self.dq.K_planck),
             "curvature_length_m": K_SI ** (-0.25),
             "tidal_eigenvalues_SI_per_m": [u.tidal_to_SI(x) for x in lam],
@@ -377,7 +384,7 @@ class Simulation:
             "r_geo", "r_m", "r_over_rs", "log10_r_over_rs", "v_geo", "t_ef_geo", "t_schw_geo", "t_schw_years",
             "tau_geo", "tau_s", "tau_years", "tau_since_horizon_geo", "tau_since_horizon_years", "tau_to_center_est_geo",
             "tau_to_center_est_years", "u_v", "u_r", "u_theta", "u_phi", "u_lower_v", "u_lower_r",
-            "a_v", "a_r", "a_magnitude_SI", "E", "E_killing", "E_conditioning_scale", "E_drift_conditioned", "L", "norm_residual",
+            "a_v", "a_r", "a_magnitude_SI", "E", "E_killing", "E_conditioning_scale", "E_drift_conditioned", "L", "norm_residual", "norm_conditioning_scale", "norm_residual_conditioned",
             "K_geo_log10", "K_SI_log10", "K_over_Kplanck_log10", "curvature_length_m",
             "tidal_lambda1_geo", "tidal_lambda2_geo", "tidal_lambda3_geo",
             "tidal_radial_SI_per_m", "tidal_transverse_SI_per_m", "radial_stretch_m_s2", "transverse_compress_m_s2",
@@ -440,6 +447,8 @@ class Simulation:
             cols["E_drift_conditioned"][i] = (energy(m, y) - y[IEK]) / energy_conditioning_scale(m, y)
             cols["L"][i] = angular_momentum(y)
             cols["norm_residual"][i] = norm(m, y) + 1.0
+            cols["norm_conditioning_scale"][i] = norm_conditioning_scale(m, y)
+            cols["norm_residual_conditioned"][i] = (norm(m, y) + 1.0) / norm_conditioning_scale(m, y)
             K = kretschmann_closed_form(m, r)
             lK = math.log10(K)
             cols["K_geo_log10"][i] = lK
@@ -502,6 +511,8 @@ class Simulation:
             "kruskal_v_reference_geo": float(self.v_ref_kruskal),
             "max_abs_L_drift": float(np.nanmax(np.abs(cols["L"] - cols["L"][0]))),
             "max_abs_norm_residual": float(np.nanmax(np.abs(cols["norm_residual"]))),
+            "max_abs_norm_residual_conditioned": float(np.nanmax(np.abs(cols["norm_residual_conditioned"]))),
+            "max_abs_norm_residual_where_well_conditioned": float(np.nanmax(np.abs(cols["norm_residual"])[cols["norm_conditioning_scale"] < 10.0])),
             "max_tidal_closed_form_reldiff": float(np.nanmax(cols["tidal_closed_form_reldiff"])),
             "tau_total_years_at_end": float(cols["tau_years"][-1]),
             "tau_since_horizon_years_at_end": float(cols["tau_since_horizon_years"][-1]),

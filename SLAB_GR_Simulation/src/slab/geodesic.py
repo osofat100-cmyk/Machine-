@@ -88,6 +88,14 @@ def norm(metric: StaticSphericalMetric, y: np.ndarray) -> float:
             + r * r * (y[IUTH] ** 2 + math.sin(th) ** 2 * y[IUPH] ** 2))
 
 
+def norm_conditioning_scale(metric: StaticSphericalMetric, y: np.ndarray) -> float:
+    """Largest term in g(u,u); the residual g(u,u)+1 is only resolvable to eps_machine * this.
+    O(1) for radial motion; ~L^2/r^2 for L != 0 deep inside (u^phi = L/r^2 -> 1e74 at r_QG)."""
+    r, th = y[IR], y[ITH]
+    f = metric.f(r)
+    return max(abs(f * y[IUV] ** 2), abs(2.0 * y[IUV] * y[IUR]), r * r * (y[IUTH] ** 2 + math.sin(th) ** 2 * y[IUPH] ** 2), 1.0)
+
+
 def four_acceleration(metric: StaticSphericalMetric, y: np.ndarray, thrust: Thrust) -> np.ndarray:
     """a^mu = -alpha n^mu with n the outward radial unit vector orthogonal to u."""
     a = np.zeros(4)

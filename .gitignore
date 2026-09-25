@@ -4,3 +4,5 @@ SLAB_GR_Simulation/renders/build/node_modules/
 __pycache__/
 *.pyc
 .pytest_cache/
+# claude worktrees / session files
+.claude/

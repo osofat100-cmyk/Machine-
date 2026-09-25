@@ -1,7 +1,7 @@
 {
   "project": "SLAB_GR_Simulation",
-  "generated_utc": "2026-09-25T15:08:55.082319+00:00",
-  "wall_time_s": 5.048212766647339,
+  "generated_utc": "2026-09-25T15:24:32.591465+00:00",
+  "wall_time_s": 6.1039345264434814,
   "benchmark_configuration": {
     "M_solar": 1e+18,
     "r0_over_rs": 100.0,
@@ -715,10 +715,20 @@
       "reference": "Killing symmetries; MTW \u00a725.2",
       "checks": [
         {
-          "label": "max |g(u,u) + 1| over all steps",
+          "label": "max |g(u,u) + 1| over all steps (raw)",
           "value": 4.73374672793625e-11,
           "expected": null,
           "error": 4.73374672793625e-11,
+          "tolerance": 1e-09,
+          "error_kind": "abs",
+          "passed": true,
+          "note": "well conditioned for radial motion (terms O(1)); see the conditioned version for L != 0"
+        },
+        {
+          "label": "max |g(u,u) + 1| / conditioning scale",
+          "value": 2.3668733638499086e-11,
+          "expected": null,
+          "error": 2.3668733638499086e-11,
           "tolerance": 1e-09,
           "error_kind": "abs",
           "passed": true,
@@ -862,7 +872,7 @@
           "err_tau_h_to_QG": 1.0012058732078444e-07,
           "err_dv_h_to_QG": 5.003674485325183e-07,
           "max_err_ur": 0.00017899515813735422,
-          "wall_s": 0.11314272880554199
+          "wall_s": 0.16985249519348145
         },
         {
           "rtol": 1e-08,
@@ -870,7 +880,7 @@
           "err_tau_h_to_QG": 1.0674056638571017e-09,
           "err_dv_h_to_QG": 1.3639043236051623e-09,
           "max_err_ur": 8.782141465891705e-07,
-          "wall_s": 0.2420063018798828
+          "wall_s": 0.29360127449035645
         },
         {
           "rtol": 1e-10,
@@ -878,7 +888,7 @@
           "err_tau_h_to_QG": 1.3187617664556228e-11,
           "err_dv_h_to_QG": 3.391979250729691e-12,
           "max_err_ur": 4.380233717600034e-09,
-          "wall_s": 0.5752544403076172
+          "wall_s": 0.7730121612548828
         },
         {
           "rtol": 1e-12,
@@ -886,7 +896,7 @@
           "err_tau_h_to_QG": 2.273181642920008e-13,
           "err_dv_h_to_QG": 1.4809715617241473e-13,
           "max_err_ur": 2.366860008437376e-11,
-          "wall_s": 1.372450590133667
+          "wall_s": 1.7233381271362305
         }
       ]
     }
@@ -902,6 +912,8 @@
     "kruskal_v_reference_geo": 1163.1810076307988,
     "max_abs_L_drift": 0.0,
     "max_abs_norm_residual": 4.73374672793625e-11,
+    "max_abs_norm_residual_conditioned": 2.3668733638499086e-11,
+    "max_abs_norm_residual_where_well_conditioned": 4.73374672793625e-11,
     "max_tidal_closed_form_reldiff": 4.7337120009900066e-11,
     "tau_total_years_at_end": 208112146.0001261,
     "tau_since_horizon_years_at_end": 208112.14600011488,
@@ -914,7 +926,7 @@
         "steps": 120,
         "rhs_evals": 841,
         "status": "reached_x_end",
-        "wall_time_s": 0.03867030143737793,
+        "wall_time_s": 0.04299116134643555,
         "min_h": 8.246004037490264e-08,
         "max_h": 0.03634900782193962
       },
@@ -926,7 +938,7 @@
         "steps": 30,
         "rhs_evals": 211,
         "status": "reached_x_end",
-        "wall_time_s": 0.00987100601196289,
+        "wall_time_s": 0.011346817016601562,
         "min_h": 1.8113514624035705e-05,
         "max_h": 0.030700431391929947
       },
@@ -938,7 +950,7 @@
         "steps": 24,
         "rhs_evals": 169,
         "status": "reached_x_end",
-        "wall_time_s": 0.0078887939453125,
+        "wall_time_s": 0.0090484619140625,
         "min_h": 5.314054901503262e-05,
         "max_h": 0.024521492119932174
       },
@@ -950,7 +962,7 @@
         "steps": 87,
         "rhs_evals": 610,
         "status": "reached_x_end",
-        "wall_time_s": 0.026867151260375977,
+        "wall_time_s": 0.030174732208251953,
         "min_h": 9.967501007971053e-05,
         "max_h": 0.0363446730514656
       },
@@ -962,7 +974,7 @@
         "steps": 84,
         "rhs_evals": 589,
         "status": "reached_x_end",
-        "wall_time_s": 0.02623724937438965,
+        "wall_time_s": 0.030894756317138672,
         "min_h": 0.003371479656130409,
         "max_h": 0.03632655304776287
       },
@@ -974,7 +986,7 @@
         "steps": 257,
         "rhs_evals": 1800,
         "status": "reached_x_end",
-        "wall_time_s": 0.06813764572143555,
+        "wall_time_s": 0.09229016304016113,
         "min_h": 0.018216900324879486,
         "max_h": 0.033928099347201215
       },
@@ -986,7 +998,7 @@
         "steps": 39,
         "rhs_evals": 274,
         "status": "reached_x_end",
-        "wall_time_s": 0.007083415985107422,
+        "wall_time_s": 0.013142824172973633,
         "min_h": 0.01820373911352653,
         "max_h": 0.030337810305262496
       },
@@ -998,7 +1010,7 @@
         "steps": 329,
         "rhs_evals": 2304,
         "status": "reached_x_end",
-        "wall_time_s": 0.08956003189086914,
+        "wall_time_s": 0.10821223258972168,
         "min_h": 0.008274775148020552,
         "max_h": 0.030293178314501394
       },
@@ -1010,7 +1022,7 @@
         "steps": 90,
         "rhs_evals": 631,
         "status": "reached_x_end",
-        "wall_time_s": 0.026721715927124023,
+        "wall_time_s": 0.029696941375732422,
         "min_h": 0.018198344248178032,
         "max_h": 0.030237175116847845
       },
@@ -1022,7 +1034,7 @@
         "steps": 536,
         "rhs_evals": 3753,
         "status": "reached_x_end",
-        "wall_time_s": 0.13029718399047852,
+        "wall_time_s": 0.17884302139282227,
         "min_h": 0.005385550000227113,
         "max_h": 0.030236930545161078
       },
@@ -1034,7 +1046,7 @@
         "steps": 230,
         "rhs_evals": 1611,
         "status": "reached_x_end",
-        "wall_time_s": 0.04331469535827637,
+        "wall_time_s": 0.07545137405395508,
         "min_h": 0.014453108661072633,
         "max_h": 0.03023678957491095
       },
@@ -1046,7 +1058,7 @@
         "steps": 765,
         "rhs_evals": 5356,
         "status": "reached_x_end",
-        "wall_time_s": 0.17854833602905273,
+        "wall_time_s": 0.2602081298828125,
         "min_h": 0.0003710375417256273,
         "max_h": 0.030236841039568686
       },
@@ -1058,7 +1070,7 @@
         "steps": 383,
         "rhs_evals": 2682,
         "status": "reached_x_end",
-        "wall_time_s": 0.10268616676330566,
+        "wall_time_s": 0.11900854110717773,
         "min_h": 0.006122485984619175,
         "max_h": 0.030236879097265922
       },
@@ -1070,7 +1082,7 @@
         "steps": 66,
         "rhs_evals": 463,
         "status": "reached_x_end",
-        "wall_time_s": 0.013203144073486328,
+        "wall_time_s": 0.021930217742919922,
         "min_h": 0.018198322661675915,
         "max_h": 0.030236882623942498
       }
@@ -1093,6 +1105,7 @@
         "E_killing": 1.0,
         "L": 0.0,
         "norm_residual": 0.0,
+        "norm_residual_conditioned": 0.0,
         "log10_K_SI": -96.80207218053918,
         "log10_K_over_K_planck": -235.9680326548934,
         "curvature_length_m": 1.5867848492196932e+24,
@@ -1143,6 +1156,7 @@
         "E_killing": 1.0,
         "L": 0.0,
         "norm_residual": -1.354472090042691e-14,
+        "norm_residual_conditioned": -1.354472090042691e-14,
         "log10_K_SI": -87.66479970885716,
         "log10_K_over_K_planck": -226.83076018321137,
         "curvature_length_m": 8.245175938587088e+21,
@@ -1193,6 +1207,7 @@
         "E_killing": 1.0,
         "L": 0.0,
         "norm_residual": -1.6653345369377348e-14,
+        "norm_residual_conditioned": -1.6653345369377348e-14,
         "log10_K_SI": -85.85861973487327,
         "log10_K_over_K_planck": -225.02458020922748,
         "curvature_length_m": 2.915109909125543e+21,
@@ -1243,6 +1258,7 @@
         "E_killing": 1.0,
         "L": 0.0,
         "norm_residual": -1.6653345369377348e-14,
+        "norm_residual_conditioned": -1.665334536937707e-14,
         "log10_K_SI": -84.80207218053918,
         "log10_K_over_K_planck": -223.9680326548934,
         "curvature_length_m": 1.5867848492196936e+21,
@@ -1293,6 +1309,7 @@
         "E_killing": 1.0,
         "L": 0.0,
         "norm_residual": -7.149836278586008e-14,
+        "norm_residual_conditioned": -4.705406516174516e-14,
         "log10_K_SI": -78.80207218053918,
         "log10_K_over_K_planck": -217.9680326548934,
         "curvature_length_m": 5.017854280181086e+19,
@@ -1343,6 +1360,7 @@
         "E_killing": 1.0,
         "L": 0.0,
         "norm_residual": -5.906386491005833e-13,
+        "norm_residual_conditioned": -3.24851257004824e-13,
         "log10_K_SI": -72.80207218053918,
         "log10_K_over_K_planck": -211.9680326548934,
         "curvature_length_m": 1.5867848492196936e+18,
@@ -1393,6 +1411,7 @@
         "E_killing": 1.0,
         "L": 0.0,
         "norm_residual": -5.291322935363496e-12,
+        "norm_residual_conditioned": -2.650396685126377e-12,
         "log10_K_SI": -51.8357400607379,
         "log10_K_over_K_planck": -191.00170053509208,
         "curvature_length_m": 9097771297041.055,
@@ -1443,6 +1462,7 @@
         "E_killing": 1.0,
         "L": 0.0,
         "norm_residual": -5.940581360164288e-12,
+        "norm_residual_conditioned": -2.973260970736828e-12,
         "log10_K_SI": -48.80207218053919,
         "log10_K_over_K_planck": -187.9680326548934,
         "curvature_length_m": 1586784849219.6934,
@@ -1493,6 +1513,7 @@
         "E_killing": 1.0,
         "L": 0.0,
         "norm_residual": -1.1582512726704408e-11,
+        "norm_residual_conditioned": -5.791297580501556e-12,
         "log10_K_SI": -23.029744512933043,
         "log10_K_over_K_planck": -162.19570498728723,
         "curvature_length_m": 572052.8165558435,
@@ -1543,6 +1564,7 @@
         "E_killing": 1.0,
         "L": 0.0,
         "norm_residual": -1.3107293028724598e-11,
+        "norm_residual_conditioned": -6.553658619599561e-12,
         "log10_K_SI": -15.999999999999996,
         "log10_K_over_K_planck": -155.1659604743542,
         "curvature_length_m": 9999.99999999998,
@@ -1593,6 +1615,7 @@
         "E_killing": 1.0,
         "L": 0.0,
         "norm_residual": -2.2326807069816823e-11,
+        "norm_residual_conditioned": -1.1163403541125873e-11,
         "log10_K_SI": 26.019807959341033,
         "log10_K_over_K_planck": -113.14615251501316,
         "curvature_length_m": 3.1264249664526454e-07,
@@ -1643,6 +1666,7 @@
         "E_killing": 1.0,
         "L": 0.0,
         "norm_residual": -2.6277202636038055e-11,
+        "norm_residual_conditioned": -1.313860131788128e-11,
         "log10_K_SI": 44.01980795934103,
         "log10_K_over_K_planck": -95.14615251501316,
         "curvature_length_m": 9.886623827605875e-12,
@@ -1693,6 +1717,7 @@
         "E_killing": 1.0,
         "L": 0.0,
         "norm_residual": -3.959166328115771e-11,
+        "norm_residual_conditioned": -1.9795831639743495e-11,
         "log10_K_SI": 104.01980795934104,
         "log10_K_over_K_planck": -35.14615251501316,
         "curvature_length_m": 9.886623827605878e-27,
@@ -1743,6 +1768,7 @@
         "E_killing": 1.0,
         "L": 0.0,
         "norm_residual": -4.623768035116882e-11,
+        "norm_residual_conditioned": -2.3118840174454975e-11,
         "log10_K_SI": 134.01980795934102,
         "log10_K_over_K_planck": -5.146152515013162,
         "curvature_length_m": 3.1264249664526458e-34,
@@ -1793,6 +1819,7 @@
         "E_killing": 1.0,
         "L": 0.0,
         "norm_residual": -4.734146408225115e-11,
+        "norm_residual_conditioned": -2.367073203994331e-11,
         "log10_K_SI": 139.1659604743542,
         "log10_K_over_K_planck": -5.159151946060117e-15,
         "curvature_length_m": 1.616255000000005e-35,

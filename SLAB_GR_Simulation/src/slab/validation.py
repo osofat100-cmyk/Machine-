@@ -238,7 +238,9 @@ def test7_conservation(sim: Simulation) -> dict:
              "E = f u^v - u^r = const ; L = r^2 sin^2 u^phi = const ; g(u,u) = -1", "Killing symmetries; MTW §25.2")
     s = sim.summary()
     cols = sim.columns
-    t.check("max |g(u,u) + 1| over all steps", s["max_abs_norm_residual"], None, 1e-9, kind="abs")
+    t.check("max |g(u,u) + 1| over all steps (raw)", s["max_abs_norm_residual"], None, 1e-9, kind="abs",
+            note="well conditioned for radial motion (terms O(1)); see the conditioned version for L != 0")
+    t.check("max |g(u,u) + 1| / conditioning scale", s["max_abs_norm_residual_conditioned"], None, 1e-9, kind="abs")
     t.check("max |L - L0|", s["max_abs_L_drift"], None, 1e-12, kind="abs")
     t.check("max |E(u) - E_k| where E is well conditioned (|f u^v|,|u^r| < 10, i.e. r > 0.01 r_s)", s["max_abs_E_drift_where_well_conditioned"], None, 1e-9, kind="abs",
             note="E(u) = f u^v - u^r from the integrated 4-velocity vs the separately carried Killing energy E_k")

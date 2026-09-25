@@ -1,7 +1,7 @@
 {
   "project": "SLAB_GR_Simulation",
   "status": "complete",
-  "latest_checkpoint": "checkpoints/ckpt_14_r_QG_v001.json",
+  "latest_checkpoint": "checkpoints/ckpt_14_r_QG_v002.json",
   "milestone_index": 14,
   "milestone_slug": "r_QG",
   "n_milestones": 15,

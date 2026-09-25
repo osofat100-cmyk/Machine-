@@ -35,6 +35,8 @@ def main() -> int:
     ap.add_argument("--r0", type=float, default=None, help="start radius in units of r_s")
     ap.add_argument("--tag", default=None, help="scenario name; outputs go to data/scenarios/<tag>/")
     ap.add_argument("--speculative", action="store_true", help="also run the speculative toy models (separate outputs)")
+    ap.add_argument("--stop-after-milestone", default=None, help="stop (checkpointed) after reaching this milestone slug; continue later with --resume")
+    ap.add_argument("--out-dir", default=None, help="project directory for outputs (default: this directory, or data/scenarios/<tag>)")
     args = ap.parse_args()
 
     cfg = SimulationConfig.from_json(Path(args.config))
@@ -63,7 +65,7 @@ def main() -> int:
             return 0
 
     # ---------------- simulation ----------------
-    project_dir = ROOT if tag is None else ROOT / "data" / "scenarios" / tag
+    project_dir = Path(args.out_dir) if args.out_dir else (ROOT if tag is None else ROOT / "data" / "scenarios" / tag)
     project_dir.mkdir(parents=True, exist_ok=True)
     (project_dir / "data").mkdir(exist_ok=True)
     sim = Simulation(cfg, project_dir=project_dir)
@@ -80,9 +82,12 @@ def main() -> int:
             print("latest checkpoint is final; nothing to resume (re-exporting outputs)")
         else:
             print(f"resuming from {state['latest_checkpoint']} (milestone {ck['milestone_slug']})")
-            sim.run(resume_from=ck)
+            sim.run(resume_from=ck, stop_after=args.stop_after_milestone)
     else:
-        sim.run()
+        sim.run(stop_after=args.stop_after_milestone)
+    if sim.stopped_early:
+        print(f"stopped after milestone '{args.stop_after_milestone}' (checkpointed). Continue with: python run_simulation.py --resume")
+        return 0
     sim.postprocess()
     data_dir = project_dir / "data"
     sio.write_csv(sim, data_dir / "trajectory.csv")
@@ -92,7 +97,7 @@ def main() -> int:
     if args.speculative:
         from slab.speculative.models import run_speculative_suite
         extra["speculative"] = run_speculative_suite(sim, project_dir / "data" / "speculative")
-    render_dir = ROOT / "renders" if tag is None else project_dir / "renders"
+    render_dir = ROOT / "renders" if (tag is None and args.out_dir is None) else project_dir / "renders"
     render_dir.mkdir(parents=True, exist_ok=True)
     sio.write_render_data(sim, render_dir / "trajectory_data.js", data_dir / "trajectory_render.json", cfg.render_samples, extra)
     s = sim.summary()

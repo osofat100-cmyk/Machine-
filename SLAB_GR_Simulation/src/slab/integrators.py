@@ -154,7 +154,7 @@ class DormandPrince54:
             err = self._err_norm(delta, sc)
             if err <= 1.0 or h <= self.min_step * 1.0001:
                 x_new = x + hd
-                k1_new = K[6]  # FSAL
+                k1_new = K[6].copy()  # FSAL (copy: K[6] is reused by the next attempt / event location)
                 if after_step is not None:
                     y_new = after_step(x_new, y_new)
                     k1_new = fun(x_new, y_new)

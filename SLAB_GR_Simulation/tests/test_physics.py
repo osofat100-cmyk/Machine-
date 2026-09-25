@@ -60,14 +60,16 @@ def test_geodesic_equation_matches_analytic_derivative():
         assert math.isclose(y[IUV], ref.uv(r), rel_tol=1e-14)
 
 
-def test_thrust_preserves_normalization_in_continuous_equations():
+def test_thrust_four_acceleration_orthogonal_and_unit():
+    from slab.geodesic import four_acceleration
     m = Schwarzschild()
-    y = initial_state_radial(m, 5.0, 1.0)
-    d = rhs_tau(m, y, Thrust(alpha=0.3))
-    # d/dtau [g(u,u)] = 2 g(u, du/dtau) must vanish (a orthogonal to u)
-    du = d[IUV:IUV + 4]
-    u = y[IUV:IUV + 4]
-    assert abs(m.dot(y[1], y[2], u, du)) < 1e-12
+    for r in (5.0, 2.0, 0.7):
+        y = initial_state_radial(m, r, 1.0)
+        a = four_acceleration(m, y, Thrust(alpha=0.3))
+        u = y[IUV:IUV + 4]
+        assert abs(m.dot(r, y[2], u, a)) < 1e-12          # a . u = 0  (norm preserved)
+        assert math.isclose(m.dot(r, y[2], a, a), 0.09, rel_tol=1e-12)  # |a|^2 = alpha^2
+        assert a[1] < 0.0 or r < 2.0                        # inward thrust decreases dr/dtau outside
 
 
 def test_thrust_energy_evolution_consistent():
@@ -99,3 +101,92 @@ def test_never_steps_through_r_zero():
     for seg in sim.segments:
         assert np.all(seg.y[:, 1] > 0)
     assert math.isclose(sim.segments[-1].y[-1, 1], sim.milestones[-1].r_geo, rel_tol=1e-12)
+
+
+def test_cli_stop_and_resume_matches_full_run(tmp_path):
+    """Run the CLI to the horizon, resume from the checkpoint to r_QG, compare with a single run."""
+    import subprocess, json, shutil
+    cfg = json.loads((ROOT / "simulation_config.json").read_text())
+    cfg["rtol"] = 1e-10
+    cfgp = tmp_path / "cfg.json"
+    cfgp.write_text(json.dumps(cfg))
+    base = [sys.executable, str(ROOT / "run_simulation.py"), "--config", str(cfgp), "--skip-validation", "--out-dir", str(tmp_path / "proj")]
+    subprocess.run(base + ["--stop-after-milestone", "horizon"], check=True, capture_output=True)
+    st = json.loads((tmp_path / "proj" / "simulation_state.json").read_text())
+    assert st["status"] == "in_progress" and st["milestone_slug"] == "horizon"
+    subprocess.run(base + ["--resume"], check=True, capture_output=True)
+    st = json.loads((tmp_path / "proj" / "simulation_state.json").read_text())
+    assert st["status"] == "complete" and st["milestone_slug"] == "r_QG"
+    meta_resumed = json.loads((tmp_path / "proj" / "data" / "trajectory_metadata.json").read_text())
+    subprocess.run(base[:-2] + ["--out-dir", str(tmp_path / "full")], check=True, capture_output=True)
+    meta_full = json.loads((tmp_path / "full" / "data" / "trajectory_metadata.json").read_text())
+    a = meta_resumed["milestone_states"]["r_QG"]["tau_total_geo"]
+    b = meta_full["milestone_states"]["r_QG"]["tau_total_geo"]
+    assert math.isclose(a, b, rel_tol=1e-12)
+    # checkpoints are versioned, never overwritten: the resumed run re-wrote none of the first run's files
+    ck = sorted(p.name for p in (tmp_path / "proj" / "checkpoints").glob("*.json"))
+    assert "ckpt_03_horizon_v001.json" in ck and "ckpt_14_r_QG_v001.json" in ck
+    # HDF5 readable and complete
+    import h5py
+    with h5py.File(tmp_path / "proj" / "data" / "trajectory.h5") as h:
+        keys = set(h["trajectory"].keys())
+        for k in ("tau_s", "r_m", "u_v", "u_r", "a_v", "K_SI_log10", "tidal_lambda1_geo", "lc_out_drdtEF", "step_h", "err_estimate", "kruskal_T"):
+            assert k in keys
+        assert len(h["segments_raw"].keys()) == 14
+
+
+def _static_frame_tidal_eigenvalues(r, uv, ur, uph):
+    """Independent route (valid for r > 2M): tidal tensor from the Schwarzschild Riemann tensor in
+    the STATIC orthonormal frame, contracted with the observer's boosted 4-velocity.
+    Static-frame components (M = 1): R_trtr = -2/r^3, R_tθtθ = R_tφtφ = 1/r^3, R_θφθφ = 2/r^3,
+    R_rθrθ = R_rφrφ = -1/r^3 (hats omitted).  Returns the three nonzero eigenvalues of E^a_b."""
+    f = 1 - 2 / r
+    ut = uv - ur / f                       # Schwarzschild coordinate time component (v = t + r_*)
+    uhat = np.array([math.sqrt(f) * ut, ur / math.sqrt(f), 0.0, r * uph])   # (t, r, θ, φ) orthonormal
+    assert math.isclose(-uhat[0] ** 2 + uhat[1] ** 2 + uhat[3] ** 2, -1.0, abs_tol=1e-10)
+    Rm = np.zeros((4, 4, 4, 4))
+
+    def put(a, b, c, d, val):
+        for (i, j, k, l, s) in ((a, b, c, d, 1), (b, a, c, d, -1), (a, b, d, c, -1), (b, a, d, c, 1),
+                                (c, d, a, b, 1), (d, c, a, b, -1), (c, d, b, a, -1), (d, c, b, a, 1)):
+            Rm[i, j, k, l] = s * val
+    put(0, 1, 0, 1, -2 / r**3); put(0, 2, 0, 2, 1 / r**3); put(0, 3, 0, 3, 1 / r**3)
+    put(2, 3, 2, 3, 2 / r**3); put(1, 2, 1, 2, -1 / r**3); put(1, 3, 1, 3, -1 / r**3)
+    E = np.einsum("acbd,c,d->ab", Rm, uhat, uhat)
+    eta = np.diag([-1.0, 1.0, 1.0, 1.0])
+    w = np.linalg.eigvals(eta @ E).real
+    w = np.sort(w)
+    # remove the zero eigenvalue (E u = 0)
+    i0 = int(np.argmin(np.abs(w)))
+    return np.delete(w, i0)
+
+
+@pytest.mark.parametrize("L", [0.0, 2.5, 3.9])
+def test_tidal_tensor_orbital_motion_vs_static_frame_boost(L):
+    """EF-tetrad tidal eigenvalues vs an independent static-frame computation, for radial (L=0)
+    and orbital-plunge (L != 0) 4-velocities at several exterior radii."""
+    m = Schwarzschild()
+    for r in (30.0, 8.0, 3.2, 2.2):
+        y = initial_state_radial(m, r, 1.0, L)
+        lam = tidal_tensor(m, r, math.pi / 2, y[IUV:IUV + 4], E=y[IEK])["eigenvalues"]
+        ref = _static_frame_tidal_eigenvalues(r, y[IUV], y[IUV + 1], y[IUV + 3])
+        assert np.allclose(np.sort(lam), np.sort(ref), rtol=1e-9, atol=1e-14), (r, lam, ref)
+        if L == 0.0:
+            assert np.allclose(np.sort(lam), [-2 / r**3, 1 / r**3, 1 / r**3], rtol=1e-12)
+        else:
+            # with angular momentum the radial stretching is enhanced: lambda_min < -2M/r^3
+            assert lam[0] < -2 / r**3
+
+
+def test_angular_momentum_plunge_conservation():
+    cfg = SimulationConfig(L_over_M=3.5, r0_over_rs=20.0, rtol=1e-11)
+    sim = Simulation(cfg, verbose=False)
+    sim.run()
+    sim.postprocess()
+    s = sim.summary()
+    assert [seg.mode for seg in sim.segments][:3] == ["tau", "tau", "tau"]   # exterior integrated in tau (turning points possible)
+    assert s["max_abs_L_drift"] < 1e-8                       # relative 3e-9 over ~3000 steps of a stiff spiral
+    assert s["max_abs_norm_residual_conditioned"] < 1e-9     # raw residual is round-off of ~L^2/r^2 ~ 1e75 terms at r_QG
+    assert s["max_abs_norm_residual_where_well_conditioned"] < 1e-9
+    assert s["max_abs_E_drift_where_well_conditioned"] < 1e-8
+    assert sim.columns["u_phi"][-1] > 0.0
