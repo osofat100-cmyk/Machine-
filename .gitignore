@@ -1,0 +1,6 @@
+# node
+SLAB_GR_Simulation/renders/build/node_modules/
+# python
+__pycache__/
+*.pyc
+.pytest_cache/

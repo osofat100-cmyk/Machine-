@@ -1,0 +1,30 @@
+{
+  "menu_title": "SPECULATIVE QUANTUM-GRAVITY TOY MODELS \u2014 NOT ESTABLISHED PHYSICS",
+  "banner": "SPECULATIVE MODEL \u2014 NOT experimentally established.",
+  "core_length_geo": 1.0945271036672209e-52,
+  "core_length_m": 1.616255e-31,
+  "core_length_in_planck_lengths": 10000.0,
+  "r_stop_m": 1.6162550000000003e-33,
+  "note": "Each toy model is integrated with the SAME validated EF geodesic engine, only f(r) differs. The choice of core length is arbitrary (1e4 Planck lengths here) and has NO observational basis. Inner-horizon instabilities (mass inflation) are ignored. These curves must never be read as predictions.",
+  "models": {
+    "hayward": {
+      "banner": "SPECULATIVE MODEL \u2014 NOT experimentally established.",
+      "model": "Hayward (2006) regular black hole",
+      "error": "ValueError('operands could not be broadcast together with remapped shapes [original->remapped]: (9,)  and requested shape (10,)')"
+    },
+    "bardeen": {
+      "banner": "SPECULATIVE MODEL \u2014 NOT experimentally established.",
+      "model": "Bardeen (1968) regular black hole",
+      "error": "ValueError('operands could not be broadcast together with remapped shapes [original->remapped]: (9,)  and requested shape (10,)')"
+    },
+    "dymnikova": {
+      "banner": "SPECULATIVE MODEL \u2014 NOT experimentally established.",
+      "model": "Dymnikova (1992) regular black hole",
+      "error": "ValueError('operands could not be broadcast together with remapped shapes [original->remapped]: (9,)  and requested shape (10,)')"
+    }
+  },
+  "schwarzschild_reference": {
+    "K_at_rQG_log10_SI": 139.1659604743542,
+    "tau_horizon_to_center_years": 208112.1460001622
+  }
+}
