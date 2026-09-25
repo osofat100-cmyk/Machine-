@@ -85,7 +85,11 @@ COLUMN_DESCRIPTIONS = {
     "tidal_radial_newtonian_SI_per_m": "2GM/r^3 (weak-field expression) — equals the GR radial eigenvalue for radial motion",
     "lc_out_drdtEF": "outgoing radial null direction dr/dt_EF = f/(2-f)", "lc_in_drdtEF": "ingoing radial null direction dr/dt_EF = -1",
     "worldline_drdtEF": "observer worldline slope dr/dt_EF", "dr_dt_schw": "coordinate velocity dr/dt (outside only)",
-    "redshift_1pz_to_infinity": "1+z of a radially outgoing signal from the observer received at infinity (outside only)",
+    "redshift_1pz_to_infinity": "1+z of a radially outgoing signal from the observer received at infinity (outside only); equals du/dtau; f evaluated as (r-2M)/r",
+    "u_ret_geo": "retarded (outgoing null) time u = v - 2 r_*(r), r_* = r + 2M ln|r/2M - 1| [GM/c^3]; outgoing radial light rays have u = const; exterior only (NaN/null at and inside r_s)",
+    "t_receive_years": "(u - u_start) GM/c^3 [Julian yr]: interval on a distant static observer's clock between receiving the radial signal emitted at the start and the one emitted at this event; -> infinity as r -> r_s; exterior only (NaN/null inside)",
+    "inertial_diff_radial_m_s2": "SIGNED (positive = separation) relative acceleration of a free particle released at rest a proper distance body_length_m ahead (or behind) along the thrust axis, relative to one released at the observer, in the accelerated observer's non-rotating proper reference frame, due to the frame's own acceleration: -a^2 L/c^2 (the -a^i a_j xi^j term; MTW §13.6, Ni & Zimmermann 1978). Exactly 0 when the engine is off",
+    "radial_total_diff_m_s2": "radial_stretch_m_s2 + inertial_diff_radial_m_s2 (total relative acceleration across body_length_m along the thrust/radial axis in the observer's frame; positive = separation). Equals radial_stretch_m_s2 for free fall",
     "gamma_rel_to_E1_faller": "Lorentz factor relative to the local E=1 free-faller", "v_rel_to_E1_faller": "relative speed / c",
     "kruskal_U,V,T,X": "Kruskal–Szekeres coordinates (nan when beyond double range)",
     "penrose_Ut,Vt,T,X": "compactified Kruskal coordinates atan(U), atan(V)",
@@ -94,7 +98,46 @@ COLUMN_DESCRIPTIONS = {
 }
 
 
+SIGNAL_TIMELINE_COLUMNS = ["eps", "r_over_rs", "t_receive_years", "one_plus_z", "tau_years", "t_schw_years",
+                           "u_ret_geo", "tau_geo", "t_receive_geo", "E_killing"]
+SIGNAL_TIMELINE_DESCRIPTIONS = {
+    "eps": "r/r_s - 1 of the emission event (value of the radius actually reached, log-spaced from the start radius to ~1e-12)",
+    "r_over_rs": "emission radius / r_s",
+    "t_receive_years": "(u - u_start) GM/c^3: reception-time interval on a distant static observer's clock since the start signal [Julian yr]",
+    "one_plus_z": "1+z = frequency emitted / received for the radially outgoing signal (= du/dtau)",
+    "tau_years": "emitter proper time since the start [Julian yr]",
+    "t_schw_years": "Schwarzschild coordinate time of emission since the start event [Julian yr]",
+    "u_ret_geo": "retarded time u = v - 2 r_* [GM/c^3]", "tau_geo": "emitter proper time since start [GM/c^3]",
+    "t_receive_geo": "u - u_start [GM/c^3]", "E_killing": "Killing energy of the emitter at emission (changes only under thrust)",
+}
+
+
+def _signal_timeline(sim: Simulation):
+    """The received-signal table (computed once per simulation, cached); None if unavailable."""
+    try:
+        return sim.signal_timeline()
+    except Exception as exc:  # never let an auxiliary table break the main outputs
+        print(f"signal timeline not computed: {exc}")
+        return None
+
+
+def write_signal_timeline_csv(sim: Simulation, path: Path) -> None:
+    tl = _signal_timeline(sim)
+    if tl is None:
+        return
+    with open(path, "w", newline="") as fh:
+        fh.write("# SLAB_GR_Simulation distant-observer received-signal timeline (exterior emission only)\n")
+        fh.write("# " + tl["note"] + "\n")
+        fh.write(f"# late_time_efold_years = 4GM/c^3 = {tl['late_time_efold_years']!r}; method = {tl['method']}; status = {tl.get('status', '')}\n")
+        w = csv.writer(fh)
+        w.writerow(SIGNAL_TIMELINE_COLUMNS)
+        for i in range(len(tl["eps"])):
+            w.writerow([repr(float(tl[k][i])) for k in SIGNAL_TIMELINE_COLUMNS])
+
+
 def write_csv(sim: Simulation, path: Path) -> None:
+    """Trajectory CSV; also writes the received-signal table signal_timeline.csv next to it."""
+    write_signal_timeline_csv(sim, Path(path).parent / "signal_timeline.csv")
     cols = sim.columns
     keys = list(cols.keys())
     with open(path, "w", newline="") as fh:
@@ -128,6 +171,16 @@ def write_hdf5(sim: Simulation, path: Path) -> None:
             sg.create_dataset("h", data=seg.h)
             sg.create_dataset("err", data=seg.err)
             sg.create_dataset("n_rejected", data=seg.n_rejected)
+        tl = _signal_timeline(sim)
+        if tl is not None:
+            gt = h.create_group("signal_timeline")
+            gt.attrs["note"] = tl["note"]
+            gt.attrs["method"] = tl["method"]
+            gt.attrs["status"] = tl.get("status", "")
+            gt.attrs["late_time_efold_years"] = tl["late_time_efold_years"]
+            gt.attrs["column_descriptions_json"] = dumps(SIGNAL_TIMELINE_DESCRIPTIONS)
+            for k in SIGNAL_TIMELINE_COLUMNS:
+                gt.create_dataset(k, data=np.asarray(tl[k], dtype=float))
         gm = h.create_group("milestones")
         for slug, d in sim.milestone_states.items():
             gm.create_dataset(slug, data=np.bytes_(dumps(d)))
@@ -138,6 +191,16 @@ def write_json(sim: Simulation, path: Path) -> None:
                "milestones": [m.__dict__ for m in sim.milestones],
                "milestone_states": sim.milestone_states,
                "checkpoints": sim.checkpoint_list()}
+    tl = _signal_timeline(sim)
+    if tl is not None:
+        payload["signal_timeline_summary"] = {
+            "note": tl["note"], "method": tl["method"], "status": tl.get("status", ""), "n_points": len(tl["eps"]),
+            "eps_min": tl["eps"][-1] if tl["eps"] else None,
+            "t_receive_years_at_eps_min": tl["t_receive_years"][-1] if tl["eps"] else None,
+            "one_plus_z_at_eps_min": tl["one_plus_z"][-1] if tl["eps"] else None,
+            "tau_years_at_eps_min": tl["tau_years"][-1] if tl["eps"] else None,
+            "late_time_efold_years": tl["late_time_efold_years"],
+            "files": "data/signal_timeline.csv, HDF5 group /signal_timeline, render export key signal_timeline"}
     Path(path).write_text(dumps(payload))
 
 
@@ -197,6 +260,10 @@ def write_render_data(sim: Simulation, js_path: Path, json_path: Path, n_samples
         "samples": samples,
         "n_samples": len(samples["log10_r_over_rs"]),
     }
+    tl = _signal_timeline(sim)
+    if tl is not None:
+        payload["signal_timeline"] = {k: tl[k] for k in ("note", "eps", "r_over_rs", "t_receive_years", "one_plus_z",
+                                                         "tau_years", "t_schw_years", "late_time_efold_years")}
     if extra:
         payload.update(extra)
     txt = json.dumps(_sanitize(payload), allow_nan=False)

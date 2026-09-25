@@ -1,4 +1,7 @@
-"""Automated physics validation suite (TESTS 0–8).
+"""Automated physics validation suite (TESTS 0–10).
+
+TEST 9 (accelerated observer's frame) and TEST 10 (distant-observer signal timeline) and the
+high-precision-reference part of TEST 8 were added in the engine upgrade (docs/additions/engine.md).
 
 The main simulation is only marked 'validated' if every test passes.  Each
 test records the equation being checked, the numbers obtained, the
@@ -25,6 +28,10 @@ from .geodesic import (rhs_tau, rhs_lnr, rhs_first_integral_lnr, initial_state_r
                        IR, IV, ITAU, IUV, IUR, IEK, IE, IL)
 from .integrators import DormandPrince54, integrate_scipy_dop853
 from .trajectory import Simulation, SimulationConfig
+from .accelerated import (rindler_flat_check, hovering_check, thrust_energy_closed_form, crossover_radius_geo,
+                          inertial_diff_along_thrust_SI)
+from .signals import compute_signal_timeline, one_plus_z_E1_closed_form, late_time_slopes
+from .reference import thrust_radial_reference, plunge_reference, e1_reference_check
 
 
 def _rel(a: float, b: float) -> float:
@@ -248,7 +255,27 @@ def test6_rqg(dq: DerivedQuantities) -> dict:
     return t.d
 
 
-def test7_conservation(sim: Simulation) -> dict:
+def plunge_simulation(cfg: SimulationConfig) -> Simulation:
+    """The L = 3.5 GM/c equatorial plunge from 20 r_s used by TESTS 7 and 10."""
+    cfgL = SimulationConfig(**{**cfg.to_dict(), "L_over_M": 3.5, "r0_over_rs": 20.0, "rtol": 1e-11, "thrust_alpha_SI": 0.0,
+                               "E": 1.0, "thrust_r_on_max_over_rs": math.inf})
+    simL = Simulation(cfgL, verbose=False)
+    simL.run()
+    simL.postprocess()
+    return simL
+
+
+def thrust_simulation(cfg: SimulationConfig, accel_SI: float = 9.81) -> Simulation:
+    """The 'thrust_1g' scenario (inward 1 g rocket from 100 r_s, engine on to r_QG) used by TESTS 9 and 10."""
+    c2 = SimulationConfig(**{**cfg.to_dict(), "thrust_alpha_SI": accel_SI, "E": 1.0, "L_over_M": 0.0,
+                             "thrust_r_on_min_over_rs": 0.0, "thrust_r_on_max_over_rs": math.inf})
+    simT = Simulation(c2, verbose=False)
+    simT.run()
+    simT.postprocess()
+    return simT
+
+
+def test7_conservation(sim: Simulation, simL: Simulation | None = None) -> dict:
     t = Test("TEST 7", "Conserved quantities along the geodesic",
              "E = f u^v - u^r = const ; L = r^2 sin^2 u^phi = const ; g(u,u) = -1", "Killing symmetries; MTW §25.2")
     s = sim.summary()
@@ -258,10 +285,8 @@ def test7_conservation(sim: Simulation) -> dict:
     t.check("max |g(u,u) + 1| / conditioning scale", s["max_abs_norm_residual_conditioned"], None, 1e-9, kind="abs")
     t.check("max |L - L0| (benchmark has L = 0: trivially conserved)", s["max_abs_L_drift"], None, 1e-12, kind="abs")
     # non-trivial angular-momentum conservation: equatorial plunge with L = 3.5 GM/c from 20 r_s to r_QG
-    cfgL = SimulationConfig(**{**sim.cfg.to_dict(), "L_over_M": 3.5, "r0_over_rs": 20.0, "rtol": 1e-11, "thrust_r_on_max_over_rs": math.inf})
-    simL = Simulation(cfgL, verbose=False)
-    simL.run()
-    simL.postprocess()
+    if simL is None:
+        simL = plunge_simulation(sim.cfg)
     sL = simL.summary()
     t.check("L = 3.5 plunge: max |L - L0| / L0 over all steps", sL["max_abs_L_drift"] / 3.5, None, 1e-8, kind="abs",
             note=f"{sL['n_steps_total']} steps, modes {[sg.mode for sg in simL.segments][:3]}... ; u^theta stays exactly 0: "
@@ -331,7 +356,210 @@ def test8_convergence(cfg: SimulationConfig) -> dict:
     t.check("first-integral formulation tau(h -> QG) vs analytic", float(resf.y[-1, 6]), ref.tau_between(2.0, r_qg), 1e-9)
     t.check("first-integral formulation Delta v(h -> QG) vs analytic", float(resf.y[-1, 0]), ref.v_between(2.0, r_qg), 1e-9)
     t.check("second-order vs first-integral tau(h -> QG) (two formulations agree)", rows[-1]["err_tau_h_to_QG"] + _rel(float(resf.y[-1, 6]), ref.tau_between(2.0, r_qg)), None, 2e-9, kind="abs")
+    _test8_high_precision_references(t, cfg)
     return t.d
+
+
+def _segment_errors(sim: Simulation, refd: dict, keys=("dtau", "dv")) -> dict:
+    ms = [sim.milestone_states[m.slug] for m in sim.milestones]
+    out = {}
+    name = {"dtau": "dtau_segment_geo", "dv": "dv_segment_geo"}
+    for k in keys:
+        out[f"max_rel_err_{k}_per_segment"] = max(_rel(ms[i][name[k]], refd[k][i]) for i in range(1, len(ms)))
+    out["max_rel_err_u_r_at_milestones"] = max(_rel(ms[i]["u_r"], refd["u_r"][i]) for i in range(len(ms)))
+    if "E" in refd:
+        out["max_rel_err_E_at_milestones"] = max(_rel(ms[i]["E_killing"], refd["E"][i]) for i in range(len(ms)))
+    if "dphi" in refd:
+        # phi is stored as an absolute angle (unlike v_seg/tau_seg), so per-segment increments below ~1e-15 rad
+        # deep inside are not resolvable: compare the accumulated angle at each milestone instead
+        phi_ref = np.cumsum(refd["dphi"])
+        phi_num = [float(sim.segments[0].y[0, 3] - sim.segments[0].y[0, 3])] + [float(sg.y[-1, 3] - sim.segments[0].y[0, 3]) for sg in sim.segments]
+        out["max_rel_err_phi_at_milestones"] = max(_rel(phi_num[i], phi_ref[i]) for i in range(1, len(phi_num)))
+    return out
+
+
+def _test8_high_precision_references(t: Test, cfg: SimulationConfig) -> None:
+    """Scenarios WITHOUT an elementary closed form vs 35-digit mpmath quadrature of first integrals
+    (slab.reference): the 1 g rocket (E(r) = E0 + alpha (r0 - r) exact, tau and v elliptic-type integrals)
+    over the full range r0 -> r_QG, and the L = 3.5 GM/c plunge (tau, v, phi)."""
+    t.check("mpmath quadrature self-test: tau(r_s -> 1e-30 r_s) for E = 1 vs closed form (35 digits)", e1_reference_check(), None, 1e-28, kind="abs")
+    rows = []
+    refd = None
+    alpha = horizon_index = None
+    prev, monotone = None, True
+    for rtol in [1e-6, 1e-8, 1e-10, 1e-12]:
+        c2 = SimulationConfig(**{**cfg.to_dict(), "rtol": rtol, "atol": rtol * 1e-2, "max_step_lnr": 5.0, "thrust_alpha_SI": 9.81,
+                                 "E": 1.0, "L_over_M": 0.0, "thrust_r_on_min_over_rs": 0.0, "thrust_r_on_max_over_rs": math.inf})
+        sim = Simulation(c2, verbose=False)
+        t0 = time.time()
+        sim.run()
+        if refd is None:
+            rp = [m.r_geo for m in sim.milestones]
+            alpha = sim.thrust.alpha
+            horizon_index = [m.slug for m in sim.milestones].index("horizon")
+            refd = thrust_radial_reference(rp, 1.0, alpha, rp[0], dps=35)
+        e = _segment_errors(sim, refd)
+        e.update({"rtol": rtol, "steps": int(sum(len(sg.x) - 1 for sg in sim.segments)), "wall_s": time.time() - t0})
+        rows.append(e)
+        cur = max(e["max_rel_err_dtau_per_segment"], e["max_rel_err_u_r_at_milestones"])
+        if prev is not None and cur > prev and cur > 1e-12:
+            monotone = False
+        prev = cur
+    t.d["convergence_table_thrust_1g_vs_mpmath"] = rows
+    t.d["thrust_1g_reference"] = {"method": "35-digit mpmath tanh-sinh quadrature of dtau/dr = 1/sqrt(E(r)^2 - f), dv/dr = u^v/|u^r|, "
+                                            "E(r) = 1 + alpha (r0 - r) (exact); milestone segments r0 -> r_QG",
+                                  "alpha_geo": float(alpha), "quad_rel_err_max": refd["quad_rel_err_max"],
+                                  "E_at_horizon": refd["E"][horizon_index]}
+    t.check("1 g rocket (no closed form) vs mpmath: quadrature error estimate", refd["quad_rel_err_max"], None, 1e-25, kind="abs")
+    t.check("1 g rocket vs mpmath: errors decrease monotonically with rtol", 1.0 if monotone else 0.0, 1.0, 0.0, kind="abs")
+    last = rows[-1]
+    t.check("1 g rocket vs mpmath at rtol=1e-12: max rel error of dtau per milestone segment (r0 -> r_QG)", last["max_rel_err_dtau_per_segment"], None, 1e-9, kind="abs")
+    t.check("1 g rocket vs mpmath at rtol=1e-12: max rel error of dv per milestone segment", last["max_rel_err_dv_per_segment"], None, 1e-9, kind="abs")
+    t.check("1 g rocket vs mpmath at rtol=1e-12: max rel error of u^r at milestones", last["max_rel_err_u_r_at_milestones"], None, 1e-9, kind="abs")
+    t.check("1 g rocket: carried Killing energy vs exact E(r) = 1 + alpha (r0 - r) at milestones", last["max_rel_err_E_at_milestones"], None, 1e-9, kind="abs")
+    ratio = rows[0]["max_rel_err_dtau_per_segment"] / max(rows[2]["max_rel_err_dtau_per_segment"], 1e-300)
+    t.check("1 g rocket: convergence ratio error(rtol=1e-6)/error(rtol=1e-10) >= 100 (checked as 100/ratio <= 1)", 100.0 / ratio, None, 1.0, kind="abs",
+            note=f"ratio = {ratio:.3e}")
+    # L = 3.5 plunge from 100 r_s (exterior in tau mode with event-located milestones, interior in ln r)
+    rowsL = []
+    refL = None
+    for rtol in [1e-8, 1e-10, 1e-12]:
+        c3 = SimulationConfig(**{**cfg.to_dict(), "rtol": rtol, "L_over_M": 3.5, "E": 1.0, "thrust_alpha_SI": 0.0,
+                                 "thrust_r_on_max_over_rs": math.inf})
+        sim = Simulation(c3, verbose=False)
+        t0 = time.time()
+        sim.run()
+        if refL is None:
+            refL = plunge_reference([m.r_geo for m in sim.milestones], 1.0, 3.5, dps=35)
+        e = _segment_errors(sim, refL)
+        e.update({"rtol": rtol, "steps": int(sum(len(sg.x) - 1 for sg in sim.segments)), "wall_s": time.time() - t0})
+        rowsL.append(e)
+    t.d["convergence_table_plunge_L3.5_vs_mpmath"] = rowsL
+    t.check("L = 3.5 plunge vs mpmath: quadrature error estimate", refL["quad_rel_err_max"], None, 1e-25, kind="abs")
+    lastL = rowsL[-1]
+    worstL = max(lastL["max_rel_err_dtau_per_segment"], lastL["max_rel_err_dv_per_segment"], lastL["max_rel_err_phi_at_milestones"],
+                 lastL["max_rel_err_u_r_at_milestones"])
+    t.check("L = 3.5 plunge vs mpmath at rtol=1e-12: max rel error of (dtau, dv per segment; accumulated phi and u^r at milestones), r0 = 100 r_s -> r_QG",
+            worstL, None, 1e-9, kind="abs")
+    t.check("L = 3.5 plunge: error at rtol=1e-8 > error at rtol=1e-12 (convergence)",
+            1.0 if rowsL[0]["max_rel_err_dtau_per_segment"] > lastL["max_rel_err_dtau_per_segment"] else 0.0, 1.0, 0.0, kind="abs")
+
+
+# ---------------------------------------------------------------------------
+def test9_accelerated_frame(sim: Simulation, simT: Simulation) -> dict:
+    t = Test("TEST 9", "Accelerated observer's proper reference frame: inertial (Rindler-type) differential term",
+             "d^2 xi^i/dtau^2 = -a^i - [R^i_0j0 + a^i a_j] xi^j  =>  differential along the thrust axis: -(lambda_radial + a^2) L",
+             "MTW §13.6 (proper reference frame, linear order); Ni & Zimmermann 1978, Phys. Rev. D 17, 1473 (second-order metric); "
+             "exact Rindler solution (flat space)")
+    # (a) flat space, exact Rindler comparison (engine thrust + engine geodesics, f = 1)
+    rd = rindler_flat_check(a=1.0, L=0.1, tau_max=2.0)
+    t.d["rindler_flat"] = rd
+    t.check("flat space: engine-integrated thrusting observer vs exact hyperbola (a = 1, tau <= 2)", rd["observer_vs_exact_hyperbola_max_abs"], None, 1e-9, kind="abs")
+    t.check("flat space: free particle at the observer, rest-frame position vs (1/a)(1/cosh(a tau) - 1)", rd["xi_origin_vs_exact_max_abs"], None, 1e-9, kind="abs")
+    t.check("flat space: free particle L ahead, separation vs exact L/cosh(a tau) (relative to L)", rd["separation_vs_L_over_cosh_max_rel"], None, 1e-8, kind="abs",
+            note=f"separation shrinks to {rd['separation_at_tau_max_over_L']:.4f} L at a tau = 2 (exact 1/cosh 2 = {1/math.cosh(2):.4f})")
+    t.check("flat space: measured differential acceleration at tau = 0 vs -a^2 L", rd["measured_diff_accel_at_0"], rd["predicted_inertial_term_-a2L"], 1e-6)
+    t.check("flat space: measured acceleration of the co-located free particle vs -a", rd["measured_origin_accel_at_0"], rd["predicted_origin_accel_-a"], 1e-6)
+    # (b) Schwarzschild, static (hovering) observer held by the engine; tidal and inertial terms comparable
+    hov = []
+    for r0, sign in ((4.0, 1.0), (2.2, 1.0), (2.2, -1.0)):
+        h = hovering_check(r0, L=1e-3, sign=sign)
+        hov.append(h)
+        tag = f"r0 = {r0 / 2:g} r_s, particle {'ahead (outward)' if sign > 0 else 'behind (inward)'}"
+        t.check(f"hovering observer ({tag}): engine thrust holds r fixed", h["observer_hover_max_abs_dr"], None, 1e-10, kind="abs")
+        t.check(f"hovering ({tag}): co-located free particle accelerates at -a", h["measured_origin_accel_along_r"], h["predicted_-a"], 1e-6)
+        t.check(f"hovering ({tag}): measured differential acceleration vs exact lapse value", h["measured_diff_accel"], h["exact_lapse_diff_accel"], 1e-5)
+        t.check(f"hovering ({tag}): measured vs -(lambda + a^2) L  [a^2/|lambda| = {h['a2_over_abs_lambda']:.3f}]",
+                h["measured_diff_accel"], h["predicted_-(lambda+a2)L"], 2e-2, note="first order in L = 1e-3 M")
+        t.check(f"hovering ({tag}): tidal-only prediction -lambda L would be wrong by (informational)",
+                _rel(h["tidal_only_prediction_-lambdaL"], h["measured_diff_accel"]), None, None, kind="abs",
+                note="shows that the inertial term is required in an accelerated frame")
+    t.d["hovering_checks"] = hov
+    # (c) the output columns on the thrust_1g scenario
+    cols = simT.columns
+    a_SI = simT.units.accel_to_SI(abs(simT.thrust.alpha))
+    Lb = simT.cfg.body_length_m
+    expected = inertial_diff_along_thrust_SI(a_SI, Lb)
+    t.check("thrust_1g: inertial_diff_radial_m_s2 = -a^2 L/c^2 at every step (engine on)",
+            float(np.max(np.abs(cols["inertial_diff_radial_m_s2"] - expected))) / abs(expected), None, 1e-15, kind="abs",
+            note=f"a = {a_SI:g} m/s^2, L = {Lb:g} m: a^2 L/c^2 = {abs(expected):.4e} m/s^2")
+    t.check("thrust_1g: radial_total_diff = radial_stretch + inertial_diff",
+            float(np.max(np.abs(cols["radial_total_diff_m_s2"] - cols["radial_stretch_m_s2"] - cols["inertial_diff_radial_m_s2"])
+                         / np.abs(cols["radial_total_diff_m_s2"]).clip(1e-300))), None, 1e-12, kind="abs")
+    t.check("free-fall benchmark: inertial_diff_radial_m_s2 exactly 0 (engine off)", float(np.max(np.abs(sim.columns["inertial_diff_radial_m_s2"]))), 0.0, 0.0, kind="abs")
+    r_geo = cols["r_geo"]
+    E_cf = thrust_energy_closed_form(1.0, simT.thrust.alpha, r_geo[0], r_geo)
+    relE = np.abs(cols["E_killing"] / E_cf - 1.0)
+    t.check("thrust_1g: carried Killing energy vs exact E(r) = 1 + alpha (r0 - r) at every step (max rel)", float(np.max(relE)), None, 1e-8, kind="abs",
+            note=f"the maximum sits in the first steps (r0 - r ~ 1e-9 M) where r = exp(ln r) is rounded to ~3e-14 and dE/dr = alpha = 1.6e5; "
+                 f"inside the horizon max rel = {float(np.max(relE[r_geo <= 2.0])):.1e} (milestones: TEST 8)")
+    # (d) informational: how the inertial term compares with the tidal term along the fall
+    rx = crossover_radius_geo(simT.thrust.alpha)
+    ms = simT.milestone_states
+    comp = []
+    for m in simT.milestones:
+        d = ms[m.slug]
+        tid = d["radial_stretch_accel_m_s2"]
+        comp.append({"milestone": m.slug, "r_over_rs": m.r_over_rs, "radial_stretch_m_s2": tid, "inertial_diff_m_s2": expected,
+                     "abs_ratio_inertial_to_tidal": abs(expected) / abs(tid)})
+    t.d["thrust_1g_inertial_vs_tidal"] = comp
+    t.d["crossover"] = {"r_x_over_rs": rx / 2.0, "r_x_m": simT.units.r_to_SI(rx), "r_x_ly": simT.units.m_to_ly(simT.units.r_to_SI(rx)),
+                        "definition": "2GM L/r^3 = a^2 L/c^2 (radial motion): inertial term dominates for r > r_x, curvature below"}
+    t.check("thrust_1g: ratio |inertial|/|tidal| at the start (100 r_s) (informational)", comp[0]["abs_ratio_inertial_to_tidal"], None, None, kind="abs")
+    t.check("thrust_1g: ratio |inertial|/|tidal| at the horizon (informational)",
+            next(c for c in comp if c["milestone"] == "horizon")["abs_ratio_inertial_to_tidal"], None, None, kind="abs")
+    t.check("thrust_1g: crossover radius r_x/r_s where the two are equal (informational)", rx / 2.0, None, None, kind="abs",
+            note=f"= {t.d['crossover']['r_x_ly']:.3g} ly; below r_x the tidal (curvature) term dominates")
+    return t.d
+
+
+def test10_signal_timeline(sim: Simulation, simT: Simulation, simL: Simulation) -> dict:
+    t = Test("TEST 10", "Distant-observer received-signal timeline",
+             "u = v - 2 r_*;  1+z = du/dtau = u^v - 2u^r/f;  1+z ~ exp(u/4M) (kappa = 1/4M);  E = 1: 1+z = 1/(1 - sqrt(r_s/r))",
+             "MTW §31.3–31.4 (freezing/redshift at the horizon, from memory); surface gravity kappa = 1/4M: Wald §12.5 (from memory)")
+    tl = compute_signal_timeline(sim, method="exact")
+    r = np.array(tl["r_over_rs"]) * 2.0
+    eps = np.array(tl["eps"])
+    t.check("timeline reaches eps = r/r_s - 1 <= 1.1e-12", float(eps[-1]), None, 1.1e-12, kind="abs", note=f"{len(eps)} emission radii")
+    opz = np.array(tl["one_plus_z"])
+    t.check("E = 1: 1+z vs closed form 1/(1 - sqrt(r_s/r)) over eps = 99 .. 1e-12 (max rel)", float(np.max(np.abs(opz / one_plus_z_E1_closed_form(r) - 1.0))), None, 1e-9, kind="abs")
+    ref = RadialInfallE1()
+    m = sim.metric
+    u_cf = np.array([ref.v_between(r[0], x) - 2.0 * (m.tortoise(x) - m.tortoise(r[0])) for x in r])
+    u_num = np.array(tl["t_receive_geo"])
+    t.check("E = 1: t_receive vs closed form Delta v(r) - 2 Delta r_*(r) (max abs error / max(1, |value|))",
+            float(np.max(np.abs(u_num - u_cf) / np.maximum(1.0, np.abs(u_cf)))), None, 1e-9, kind="abs")
+    tld = compute_signal_timeline(sim, method="dense")
+    t.check("dense output (one ln r integration, Hairer continuous extension) vs exact per-radius integration: 1+z",
+            float(np.max(np.abs(np.array(tld["one_plus_z"]) / opz - 1.0))), None, 1e-9, kind="abs")
+    t.check("dense vs exact: t_receive (max abs / max(1,|value|))",
+            float(np.max(np.abs(np.array(tld["t_receive_geo"]) - u_num) / np.maximum(1.0, np.abs(u_num)))), None, 1e-9, kind="abs")
+    sl = late_time_slopes(tl, 1e-8)
+    t.d["late_time_E1"] = sl
+    t.check("E = 1: 4M d ln(1+z)/du for eps <= 1e-8 -> 1 (redshift e-folds every 4GM/c^3)", sl["dln1pz_du_times_4M"], 1.0, 1e-2,
+            note=f"max local deviation {sl['max_local_dev_of_4M_dln1pz_du_from_1']:.2e}")
+    t.check("E = 1: reception time per decade of eps -> 4M ln 10 = 9.2103 M", sl["t_receive_per_decade_geo"], sl["t_receive_per_decade_expected_4Mln10"], 1e-2)
+    t.check("t_receive strictly increasing (-> infinity as eps -> 0)", 1.0 if bool(np.all(np.diff(u_num) > 0)) else 0.0, 1.0, 0.0, kind="abs",
+            note=f"t_receive(eps_min) = {tl['t_receive_years'][-1]:.6e} yr; +{sl['t_receive_per_decade_geo'] * sim.units.t_to_years(1.0):.4e} yr per further decade of eps, without bound")
+    tau_h = sim.milestone_states["horizon"]["tau_total_geo"]
+    t.check("emitter proper time at eps_min vs horizon-crossing proper time of the main run (finite)", tl["tau_geo"][-1], tau_h, 1e-9,
+            note=f"proper time elapsed over the last {math.log10(sl['eps_range'][0] / sl['eps_range'][1]):.1f} decades of eps: {sl['tau_increment_over_range_geo']:.3e} GM/c^3 "
+                 f"while t_receive advanced {sl['t_receive_increment_over_range_geo']:.2f} GM/c^3")
+    # per-sample columns of the main trajectory
+    c = sim.columns
+    inside = c["r_geo"] <= 2.0
+    t.check("trajectory columns u_ret_geo / t_receive_years are null inside the horizon and finite outside",
+            1.0 if (np.all(np.isnan(c["t_receive_years"][inside])) and np.all(np.isfinite(c["t_receive_years"][~inside]))) else 0.0, 1.0, 0.0, kind="abs")
+    # general scenarios (thrust, L != 0): the late-time law is universal
+    for name, s_ in (("thrust_1g (E -> 3.2e7)", simT), ("L = 3.5 plunge from 20 r_s (tau mode)", simL)):
+        tg = compute_signal_timeline(s_, method="exact")
+        sg = late_time_slopes(tg, 1e-8)
+        t.d[f"late_time_{name.split()[0]}"] = sg
+        t.check(f"{name}: 4M d ln(1+z)/du for eps <= 1e-8 -> 1", sg["dln1pz_du_times_4M"], 1.0, 1e-2)
+        t.check(f"{name}: t_receive strictly increasing, timeline reaches eps <= 1.1e-12",
+                1.0 if (np.all(np.diff(tg["t_receive_geo"]) > 0) and tg["eps"][-1] <= 1.1e-12) else 0.0, 1.0, 0.0, kind="abs")
+    return t.d
+
 
 
 def run_all_tests(cfg: SimulationConfig, root: Path) -> dict:
@@ -342,9 +570,12 @@ def run_all_tests(cfg: SimulationConfig, root: Path) -> dict:
     sim = Simulation(base, verbose=False)
     sim.run()
     sim.postprocess()
+    simL = plunge_simulation(base)
+    simT = thrust_simulation(base)
     tests: List[dict] = [
         test0_constants(dq), test1_schwarzschild_radius(dq), test2_horizon_regularity(sim), test3_radial_geodesic(sim),
-        test4_proper_time_benchmark(sim), test5_kretschmann(sim), test6_rqg(dq), test7_conservation(sim), test8_convergence(base),
+        test4_proper_time_benchmark(sim), test5_kretschmann(sim), test6_rqg(dq), test7_conservation(sim, simL), test8_convergence(base),
+        test9_accelerated_frame(sim, simT), test10_signal_timeline(sim, simT, simL),
     ]
     n_pass = sum(1 for x in tests if x["passed"])
     report = {

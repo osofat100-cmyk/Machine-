@@ -30,6 +30,8 @@ from .curvature import (kretschmann_closed_form, tidal_tensor, tidal_eigenvalues
                         log10_kretschmann_schwarzschild)
 from .milestones import Milestone, build_milestones
 from .checkpoints import write_checkpoint, config_hash, dumps
+from .accelerated import inertial_diff_along_thrust_SI
+from .signals import compute_signal_timeline, f_accurate, retarded_time
 
 REGIME_VALIDATED = "CLASSICAL GR — VALIDATED"
 REGIME_EXTREME = "CLASSICAL GR — EXTREME CURVATURE"
@@ -97,6 +99,24 @@ class SegmentRecord:
     wall_time_s: float
 
 
+def _concat_results(parts: List[IntegrationResult]) -> IntegrationResult:
+    """Join consecutive integration pieces (each starting where the previous ended) into one record."""
+    if len(parts) == 1:
+        return parts[0]
+    first = parts[0]
+    xs = [first.x] + [p.x[1:] for p in parts[1:]]
+    ys = [first.y] + [p.y[1:] for p in parts[1:]]
+    hs = [first.h] + [p.h[1:] for p in parts[1:]]
+    es = [first.err] + [p.err[1:] for p in parts[1:]]
+    rj = [first.n_rejected] + [p.n_rejected[1:] for p in parts[1:]]
+    return IntegrationResult(
+        x=np.concatenate(xs), y=np.concatenate(ys), h=np.concatenate(hs), err=np.concatenate(es), n_rejected=np.concatenate(rj),
+        n_rhs_evals=sum(p.n_rhs_evals for p in parts), n_accepted=sum(p.n_accepted for p in parts),
+        n_rejected_total=sum(p.n_rejected_total for p in parts), terminated_by_event=parts[-1].terminated_by_event,
+        status="+".join(p.status for p in parts), max_err=max(p.max_err for p in parts), min_h=min(p.min_h for p in parts),
+        max_h=max(p.max_h for p in parts))
+
+
 class Simulation:
     def __init__(self, config: SimulationConfig, metric: Optional[StaticSphericalMetric] = None,
                  project_dir: Optional[Path] = None, verbose: bool = True):
@@ -161,13 +181,43 @@ class Simulation:
     def integrate_segment(self, y_start: np.ndarray, r_to: float, rtol=None, atol=None,
                           h0: Optional[float] = None, h0_mode: Optional[str] = None) -> tuple[IntegrationResult, str]:
         """Integrate from the state y_start (at r = y_start[IR]) to r = r_to (< r_start).
-        h0/h0_mode: last accepted step of the previous segment (reused if the mode is unchanged)."""
+        h0/h0_mode: last accepted step of the previous segment (reused if the mode is unchanged).
+
+        If an edge of the thrust window (engine switching on/off, a discontinuity of the right-hand side)
+        lies strictly inside the segment, the segment is integrated in pieces that end exactly on the edge
+        (the error controller cannot step across a jump in dy/dx) and the pieces are concatenated."""
+        r_from = float(y_start[IR])
+        edges = sorted({e for e in (self.thrust.r_on_max, self.thrust.r_on_min)
+                        if self.thrust.alpha != 0.0 and math.isfinite(e) and r_to < e < r_from}, reverse=True)
+        if not edges:
+            return self._integrate_piece(y_start, r_to, rtol, atol, h0, h0_mode)
+        pieces = []
+        y = y_start.copy()
+        mode_first = None
+        for target in edges + [r_to]:
+            res, mode = self._integrate_piece(y, target, rtol, atol, h0, h0_mode, keep_clocks=bool(pieces),
+                                              x_offset=(pieces[-1][0].x[-1] if pieces and pieces[-1][1] == "tau" else None))
+            pieces.append((res, mode))
+            mode_first = mode_first or mode
+            y = res.y[-1].copy()
+            y[IR] = target
+            h0, h0_mode = (float(res.h[-1]) if len(res.h) > 1 else None), mode
+        return _concat_results([p[0] for p in pieces]), mode_first if len({p[1] for p in pieces}) == 1 else "+".join(p[1] for p in pieces)
+
+    def _integrate_piece(self, y_start: np.ndarray, r_to: float, rtol=None, atol=None,
+                         h0: Optional[float] = None, h0_mode: Optional[str] = None, keep_clocks: bool = False,
+                         x_offset: Optional[float] = None) -> tuple[IntegrationResult, str]:
         r_from = y_start[IR]
         mode = self._choose_mode(y_start, r_from)
-        metric, thrust = self.metric, self.thrust
+        metric = self.metric
+        # engine state decided ONCE per piece (pieces never straddle a window edge): evaluating the window
+        # per stage would flip it at the last ulp of a piece that ends on an edge (a jump the step control
+        # can only approach Zeno-fashion)
+        thrust = Thrust(alpha=self.thrust.alpha) if self.thrust.active(math.sqrt(r_from * r_to)) else None
         y0 = y_start.copy()
-        y0[IV] = 0.0
-        y0[ITAU] = 0.0
+        if not keep_clocks:
+            y0[IV] = 0.0
+            y0[ITAU] = 0.0
         integ = self._integrator(rtol, atol, mode)
         h_start = h0 if (h0 is not None and h0_mode == mode and h0 > 0) else None
         if mode == "lnr":
@@ -187,7 +237,8 @@ class Simulation:
 
             # generous upper bound on proper time: free-fall time from r_from plus margin
             tau_max = 20.0 * (r_from ** 1.5) + 1e3
-            res = integ.integrate(fun, 0.0, y0, tau_max, event=event, h0=h_start)
+            x0 = 0.0 if x_offset is None else float(x_offset)
+            res = integ.integrate(fun, x0, y0, x0 + tau_max, event=event, h0=h_start)
             if not res.terminated_by_event:
                 raise RuntimeError(f"tau-mode segment did not reach r = {r_to}: status {res.status}")
         return res, mode
@@ -424,12 +475,15 @@ class Simulation:
             "tidal_lambda1_geo", "tidal_lambda2_geo", "tidal_lambda3_geo",
             "tidal_radial_SI_per_m", "tidal_transverse_SI_per_m", "radial_stretch_m_s2", "transverse_compress_m_s2",
             "tidal_radial_newtonian_SI_per_m", "tidal_closed_form_reldiff",
+            "inertial_diff_radial_m_s2", "radial_total_diff_m_s2",
             "lc_out_drdtEF", "lc_in_drdtEF", "worldline_drdtEF", "dr_dt_schw", "redshift_1pz_to_infinity",
+            "u_ret_geo", "t_receive_years",
             "gamma_rel_to_E1_faller", "v_rel_to_E1_faller",
             "kruskal_U", "kruskal_V", "kruskal_T", "kruskal_X", "penrose_Ut", "penrose_Vt", "penrose_T", "penrose_X",
             "ur_analytic_E1", "uv_analytic_E1", "ur_reldiff_E1", "uv_reldiff_E1", "regime_code"]}
         regime_names = {0: REGIME_VALIDATED, 1: REGIME_EXTREME, 2: REGIME_PLANCK}
         Lb = cfg.body_length_m
+        a_thrust_SI = u.accel_to_SI(abs(self.thrust.alpha))
         # Kruskal/Penrose diagram: use the Schwarzschild time-translation symmetry to put the
         # horizon crossing at v = 0 (V_K = 1); otherwise exp(v/4M) overflows for v ~ 10^3 M.
         self.v_ref_kruskal = 0.0
@@ -503,6 +557,11 @@ class Simulation:
             cols["tidal_transverse_SI_per_m"][i] = lam_SI[-1]     # positive: compression
             cols["radial_stretch_m_s2"][i] = -lam_SI[0] * Lb
             cols["transverse_compress_m_s2"][i] = -lam_SI[-1] * Lb
+            # accelerated observer's frame: inertial differential term -a (a.xi) along the thrust axis
+            # (the thrust axis n is the radial tidal eigen-direction, so the two add; docs/additions/engine.md §1)
+            inert = inertial_diff_along_thrust_SI(a_thrust_SI, Lb) if self.thrust.active(r) else 0.0
+            cols["inertial_diff_radial_m_s2"][i] = inert
+            cols["radial_total_diff_m_s2"][i] = cols["radial_stretch_m_s2"][i] + inert
             cols["tidal_radial_newtonian_SI_per_m"][i] = 2.0 * dq.GM / u.r_to_SI(r) ** 3
             if y[IUPH] == 0.0 and y[IUTH] == 0.0:
                 cf = tidal_eigenvalues_radial_closed_form(1.0, r)
@@ -520,9 +579,12 @@ class Simulation:
             cols["lc_in_drdtEF"][i] = in_slope
             cols["worldline_drdtEF"][i] = ur / (uv - ur)
             if r > r_s:
-                dtdtau = uv - ur / f
+                # f from (r - 2M)/r: exact subtraction, full relative precision of f next to the horizon
+                fa = f_accurate(r, getattr(m, "M", 1.0)) if isinstance(m, Schwarzschild) else f
+                dtdtau = uv - ur / fa
                 cols["dr_dt_schw"][i] = ur / dtdtau
-                cols["redshift_1pz_to_infinity"][i] = uv - 2.0 * ur / f
+                cols["redshift_1pz_to_infinity"][i] = uv - 2.0 * ur / fa     # = du/dtau (outgoing null coordinate)
+                cols["u_ret_geo"][i] = retarded_time(m, v, r)
             # velocity relative to the local E=1 radial free-faller (always < c)
             uff = np.array([ref.uv(r), ref.ur(r), 0.0, 0.0])
             gam = -m.dot(r, y[ITH], y[IUV:IUPH + 1], uff)
@@ -540,9 +602,25 @@ class Simulation:
                 cols["uv_reldiff_E1"][i] = (uv - ref.uv(r)) / ref.uv(r)
             reg = self.regime(r)
             cols["regime_code"][i] = {REGIME_VALIDATED: 0, REGIME_EXTREME: 1, REGIME_PLANCK: 2}[reg]
+        # received-signal clock of a distant static observer: (u - u_start) GM/c^3 (exterior emission only)
+        u_ret = cols["u_ret_geo"]
+        if N and math.isfinite(u_ret[0]):
+            cols["t_receive_years"][:] = u.t_to_years(1.0) * (u_ret - u_ret[0])
         self.columns = cols
         self.regime_names = regime_names
+        self._signal_timeline = None
         return cols
+
+    # ------------------------------------------------------------------
+    def signal_timeline(self, eps_min: float = 1e-12, points_per_decade: int = 20, method: str = "exact") -> dict:
+        """Distant-observer received-signal table (see slab.signals), cached for the default arguments."""
+        default = (eps_min, points_per_decade, method) == (1e-12, 20, "exact")
+        if default and getattr(self, "_signal_timeline", None) is not None:
+            return self._signal_timeline
+        tl = compute_signal_timeline(self, eps_min=eps_min, points_per_decade=points_per_decade, method=method)
+        if default:
+            self._signal_timeline = tl
+        return tl
 
     # ------------------------------------------------------------------
     def summary(self) -> dict:
