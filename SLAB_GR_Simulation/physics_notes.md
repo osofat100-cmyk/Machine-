@@ -7,12 +7,16 @@ Tags: **EXACT GR RESULT** — closed-form consequence of the Schwarzschild solut
 **VISUALIZATION APPROXIMATION** — used only for rendering; **SPECULATIVE MODEL** — not established
 physics; **LABELLING CONVENTION** — a display choice, not physics.
 
-Citation verification status: this project was built in an environment without web access to
-NIST, journals or NASA. Textbook/paper citations are given at chapter/section level from the
-author's knowledge and are marked **[citation from memory — not re-verified online in this
-session]**; equations marked **[VERIFIED FROM CODE]** are reproduced/derived inside this repository
-(symbolically in `tools/derive_ef_curvature.py` or numerically in `src/slab/validation.py` and
-`tests/`). See `references.md` for the bibliography.
+Citation verification status (2026-09-25): every citation was checked by targeted web searches
+(page fetches were blocked, so only search-result titles, URLs and snippets count; full texts were
+not read). Flags used below: **[VERIFIED VIA WEB SEARCH]** — bibliographic data (and, for
+textbooks, the section title) confirmed; **[PARTIALLY VERIFIED]** — some details confirmed, the
+rest not; **[section number from memory — INSUFFICIENT DATA TO VERIFY]** — the textbook is
+verified but that section/equation/exercise number was not found. Confirming URLs and every
+correction are in `references.md` and `docs/additions/citations.md`. Equations marked
+**[VERIFIED FROM CODE]** are reproduced/derived inside this repository (symbolically in
+`tools/derive_ef_curvature.py` or numerically in `src/slab/validation.py` and `tests/`); that status
+does not depend on any citation.
 
 Units: geometrized G = c = 1 with M = 1 inside the engine; r_s = 2M = 2. SI conversion in
 `src/slab/units.py`: length unit M_m = GM/c², time unit M_s = GM/c³.
@@ -31,9 +35,14 @@ Units: geometrized G = c = 1 with M = 1 inside the engine; r_s = 2M = 2. SI conv
 | K_Planck | 1/l_P⁴ | 1.465e139 m⁻⁴ |
 | r_QG | (48 G² M² l_P⁴ / c⁴)^{1/6} | 1.387739e-16 m = 4.699e-38 r_s |
 
-Sources: CODATA 2018 (Tiesinga et al. 2021) for G, ħ, l_P; SI 2019 for c; project brief for M☉;
-IAU for the Julian year and the au. [citation from memory — not re-verified online] Internal
-consistency check l_P = √(ħG/c³) passes to 1.5e-8 (TEST 0) [VERIFIED FROM CODE].
+Sources: CODATA 2022 (Mohr, Newell, Taylor & Tiesinga, Rev. Mod. Phys. 97, 025002 (2025)) for
+G = 6.67430(15)e-11, ħ (exact) and l_P = 1.616255(18)e-35 m — identical to CODATA 2018 (Tiesinga et
+al. 2021) [VERIFIED VIA WEB SEARCH]; SI Brochure 9th ed. (2019) for the exact c and h [VERIFIED VIA
+WEB SEARCH]; IAU for the Julian year / light-year and IAU 2012 B2 for the au [VERIFIED VIA WEB
+SEARCH]; M☉ = 1.98847e30 kg as specified in the brief [PARTIALLY VERIFIED: it equals the IAU 2015 B3
+nominal GM☉ divided by the CODATA 2014 G; the brief's ± 7e25 kg has no traced primary source; with
+the CODATA 2022 G the ratio is 1.98841e30 kg, 3.0e-5 lower]. Internal consistency check
+l_P = √(ħG/c³) passes to 1.5e-8 (TEST 0) [VERIFIED FROM CODE].
 
 ## 2. Schwarzschild metric and the ingoing Eddington–Finkelstein chart — EXACT GR RESULT
 
@@ -41,7 +50,8 @@ Schwarzschild coordinates (t, r, θ, φ):
 
     ds² = −f c² dt² + f⁻¹ dr² + r²(dθ² + sin²θ dφ²),   f = 1 − r_s/r = 1 − 2M/r.
 
-Schwarzschild (1916); MTW ch. 31; Wald §6.1. [citation from memory] The chart is singular at
+Schwarzschild (1916) [VERIFIED VIA WEB SEARCH]; MTW ch. 31 [PARTIALLY VERIFIED: chapter topic];
+Wald §6.1 [PARTIALLY VERIFIED: section title]. The chart is singular at
 r = r_s (g_tt → 0, g_rr → ∞) although the geometry is regular there; therefore the horizon crossing
 is **never** integrated in (t, r).
 
@@ -50,8 +60,11 @@ r_* = r + 2M ln|r/2M − 1| (tortoise coordinate):
 
     ds² = −f dv² + 2 dv dr + r² dΩ².
 
-Eddington (1924), Finkelstein (1958); MTW §31.4 and Box 31.2; Wald §6.4; Carroll §5.6.
-[citation from memory] Metric, inverse (g^{vv} = 0, g^{vr} = 1, g^{rr} = f, g^{θθ} = r⁻²,
+Eddington (1924), Finkelstein (1958) [VERIFIED VIA WEB SEARCH]; MTW §31.4 and Box 31.2 [section
+number from memory — INSUFFICIENT DATA TO VERIFY; Box 31.2 is described in search results as holding
+Kruskal–Szekeres diagrams]; MTW exercise 31.5 "Eddington–Finkelstein and Kruskal–Szekeres compared"
+[PARTIALLY VERIFIED: title from a solution-manual index]; Wald §6.4 [PARTIALLY VERIFIED]; Carroll §5.6
+[PARTIALLY VERIFIED]. Metric, inverse (g^{vv} = 0, g^{vr} = 1, g^{rr} = f, g^{θθ} = r⁻²,
 g^{φφ} = (r sinθ)⁻²), Christoffel symbols, Riemann tensor and the geodesic right-hand sides are all
 finite at r = 2M (TEST 2) [VERIFIED FROM CODE]. This is the chart used for **all** integration.
 
@@ -82,7 +95,8 @@ explicitly (`slab.geodesic.rhs_tau`):
     du^θ/dτ = −(2/r) u^r u^θ + sinθ cosθ (u^φ)²
     du^φ/dτ = −(2/r) u^r u^φ − 2 cotθ u^θ u^φ.
 
-MTW §25.2 (geodesic equation), Wald §3.3. [citation from memory]
+MTW §25.2 (geodesic equation) [section number from memory — INSUFFICIENT DATA TO VERIFY];
+Wald §3.3 "Geodesics" [VERIFIED VIA WEB SEARCH: section title].
 
 Constants of motion (Killing vectors ∂_v and ∂_φ) and normalization:
 
@@ -113,10 +127,13 @@ With x = √(r/2M):
     v(r) = −4M B(x) + const,   B(x) = x³/3 − x²/2 + x − ln(1 + x) = Σ_{n≥4} (−1)ⁿ xⁿ/n
     t(r) = v − r_*  (→ +∞ as r → r_s: coordinate freezing).
 
-MTW §25.5 (radial geodesics, eq. 25.38 family), §31.4 for the EF form; Taylor & Wheeler 2000 ch. 3.
-[citation from memory] The series form of B(x) is used for x < 0.05 to avoid cancellation.
+MTW §25.5 (radial geodesics, eq. 25.38 family), §31.4 for the EF form [section/equation numbers
+from memory — INSUFFICIENT DATA TO VERIFY; ch. 25 contains the table-of-contents entry "Cycloid
+relation between r and t for straight-in fall" — PARTIALLY VERIFIED]; Taylor & Wheeler 2000 ch. 3 "Plunging" [VERIFIED
+VIA WEB SEARCH: chapter title]. The series form of B(x) is used for x < 0.05 to avoid cancellation.
 Fall from rest at r₀ (E² = f(r₀)) follows the cycloid r = (r₀/2)(1 + cos η),
-τ = √(r₀³/8M)(η + sin η) (MTW eq. 25.38) — checked to 2e-12 in `tests/test_physics.py`.
+τ = √(r₀³/8M)(η + sin η) (MTW eq. 25.38 [equation number from memory — INSUFFICIENT DATA TO
+VERIFY]) — checked to 2e-12 in `tests/test_physics.py` [VERIFIED FROM CODE].
 Benchmark: numerical τ(r_s → r_QG) matches 4M/3 to 2.3e-13 (TEST 4); u^r matches −√(2M/r)
 to 2.4e-11 at every step (TEST 3).
 
@@ -132,8 +149,16 @@ equations, g(a,a) = α² (unit test), and dE/dτ = −a_v = −(α/|n|) u^r. No 
 locally exceed c: the 4-velocity stays normalized (monitored) and the speed relative to the local
 E = 1 free-faller, v_rel = √(1 − 1/γ²) with γ = −g(u, u_ff), is < 1 by construction.
 
-Physics note: inside the horizon *any* thrust shortens the remaining proper time; the geodesic
-(free fall) maximizes it (Lewis & Kwan 2007, PASA 24, 46). [citation from memory] The 1 g
+Physics note (wording corrected 2026-09-25 after checking the citation): once inside the horizon every
+observer reaches r = 0 in finite proper time. The longest possible remaining time from the horizon is
+πGM/c³, along the free-fall geodesic with E = 0 (EXACT GR RESULT: ∫₀^{2M} dr/√(2M/r − 1) = πM,
+checked in `tests/test_citations.py`); an observer who enters with E > 0 can lengthen the remaining
+time with suitably directed thrust, but only up to that maximum (Lewis & Kwan 2007, PASA 24(2),
+46–52, whose abstract states that rockets "can increase your remaining time, but only up to a
+maximum value") [VERIFIED VIA WEB SEARCH]. The thrust implemented here, a = −α n/|n|, always raises
+E (dE/dτ above, u^r < 0) and therefore shortens the remaining time of every observer with E > 0 —
+which includes everyone who entered from outside. (The previous wording, "any thrust shortens the
+remaining proper time; the geodesic maximizes it", overstated the paper.) The 1 g
 scenario (`data/scenarios/thrust_1g`) illustrates the exterior counterpart: 17.3 proper years to
 the horizon and 0.0097 yr inside, versus 208,112 yr for free fall.
 
@@ -143,7 +168,9 @@ the horizon and 0.0097 yr inside, versus 208,112 yr for free fall.
     T² − X² = U_K V_K = (1 − r/2M) e^{r/2M}   (r = const are hyperbolae; r = 2M ⇔ U_K = 0 ⇔ T = ±X;
     r = 0 ⇔ T² − X² = 1).
 
-Kruskal (1960), Szekeres (1960); MTW §31.5; Wald §6.4. [citation from memory] The expression for
+Kruskal (1960) [VERIFIED VIA WEB SEARCH], Szekeres (1960) [VERIFIED VIA WEB SEARCH: journal, volume,
+pages]; MTW §31.5 [section number from memory — INSUFFICIENT DATA TO VERIFY]; Wald §6.4 "The Kruskal
+extension" [PARTIALLY VERIFIED: section title]. The expression for
 U_K is smooth through r = 2M. Compactified (Penrose-type) coordinates: Ũ = atan U_K, Ṽ = atan V_K,
 T̃ = (Ṽ + Ũ)/2, X̃ = (Ṽ − Ũ)/2, in which the future singularity is the line Ũ + Ṽ = π/2 and the
 horizon Ũ = 0. LABELLING CONVENTION: the Schwarzschild time origin (an exact symmetry) is chosen
@@ -156,8 +183,11 @@ Radial null directions in the EF chart: ingoing dv = 0; outgoing dr/dv = f/2. In
 t_EF = v − r: dr/dt_EF = −1 (ingoing) and f/(2 − f) (outgoing) — equal to +1 far away, 0 on the
 horizon (the outgoing generator lies on r = r_s) and → −1 as r → 0. Inside r_s both future null
 generators, hence every future-directed causal curve, have dr < 0: the singularity is in the
-future of every observer, not at a place. (MTW Box 31.2; Hawking & Ellis §5.5.) [citation from
-memory] The observer's worldline slope dr/dt_EF = u^r/(u^v − u^r) lies inside the cone at every
+future of every observer, not at a place. (MTW Box 31.2 [section number from memory — INSUFFICIENT
+DATA TO VERIFY]; MTW exercise 31.2 "Nonradial light cones" [PARTIALLY VERIFIED: title from a
+solution-manual index]; Hawking & Ellis §5.5 "The Schwarzschild and Reissner–Nordström solutions"
+[VERIFIED VIA WEB SEARCH: section title].) The observer's worldline slope
+dr/dt_EF = u^r/(u^v − u^r) lies inside the cone at every
 step (stored with the trajectory). In Kruskal/compactified coordinates all radial light cones are
 at 45° (VISUALIZATION of the same fact).
 
@@ -174,7 +204,9 @@ Kretschmann scalar:
 
     K = R_abcd R^abcd = f''² + 4f'²/r² + 4(1 − f)²/r⁴ = 48 M²/r⁶ = 48 G² M²/(c⁴ r⁶).
 
-Henry (2000), ApJ 535, 350; MTW exercise 31.1. [citation from memory] TEST 5 computes K by explicit
+Henry (2000), ApJ 535, 350–353 [VERIFIED VIA WEB SEARCH]. (Correction 2026-09-25: MTW exercise
+31.1, previously cited here, is the exercise "Tidal forces on infalling explorer" according to a
+solution-manual index — it belongs to §10, not to the Kretschmann scalar.) TEST 5 computes K by explicit
 index contraction of the components above and matches 48M²/r⁶ to 4e-16 at r = 100 … r_QG,
 including r = 2M. Values: log₁₀ K(r_s) = −84.8 m⁻⁴, log₁₀ K(r_QG) = 139.17 m⁻⁴ = log₁₀ K_Planck.
 
@@ -188,7 +220,10 @@ found also by a log-space Brent root (agreement 3e-15) and by a 40-digit mpmath 
 ## 10. Tidal gravity — EXACT GR RESULT for the tensor, linear (geodesic-deviation) approximation for Δa
 
 Geodesic deviation: D²ξ^i/dτ² = −E_ij ξ^j with E_ij = R_{μανβ} e_i^μ u^α e_j^ν u^β in the comoving
-orthonormal frame (MTW §31.2 eq. 31.6 and §37.2; Wald §3.3). [citation from memory] The relation
+orthonormal frame (MTW §31.2 eq. 31.6 and §37.2 [section/equation numbers from memory —
+INSUFFICIENT DATA TO VERIFY; ch. 37 is "Detection of gravitational waves"]; MTW exercise 31.1 "Tidal
+forces on infalling explorer" [PARTIALLY VERIFIED: title from a solution-manual index]; Wald §3.3
+[VERIFIED VIA WEB SEARCH: section title]). The relation
 Δa = −λ L between the eigenvalue λ and the relative acceleration across a proper length L is the
 *weak-separation (linear) approximation* — exact for the tensor, first order in L/r for a finite
 body.
@@ -227,7 +262,12 @@ at r_QG) but never terminate the run.
 dr/dt → 0 and 1 + z → ∞ as r → r_s: the distant observer never sees the crossing (apparent
 freezing), while the infaller crosses at finite τ (Δτ from r₀ = 100 r_s to r_s: 2.08e8 yr).
 Inside the horizon no signal reaches infinity; the corresponding fields are undefined (null).
-MTW §31.3–31.4; Wald §6.4. [citation from memory]
+MTW §31.3–31.4 [section numbers from memory — INSUFFICIENT DATA TO VERIFY]; Wald §6.4 [PARTIALLY
+VERIFIED]. Late-time behaviour: the received redshift of a radially emitted signal grows
+exponentially with e-folding time 4GM/c³ = 1/κ (surface gravity κ = 1/4M) — standard statement in
+C. M. Hirata's Caltech Ph 236 lecture XXIV [VERIFIED VIA WEB SEARCH]; flux e-folding time ~ 1/κ in
+Ames & Thorne 1968, ApJ 151, 659 [PARTIALLY VERIFIED: abstract]; κ via Wald §12.5 [PARTIALLY
+VERIFIED].
 
 ## 12. Physics-regime labels — LABELLING CONVENTION
 
@@ -243,8 +283,10 @@ identical classical GR everywhere up to r_QG.
 
 ## 13. Numerical scheme — NUMERICAL APPROXIMATION
 
-Dormand–Prince RK5(4) pair with FSAL and PI-type step control (Dormand & Prince 1980; Hairer,
-Nørsett & Wanner 1993, §II.4–II.5, Table 5.2). [citation from memory] Error norm
+Dormand–Prince RK5(4) pair with FSAL and PI-type step control (Dormand & Prince 1980, J. Comput.
+Appl. Math. 6, 19–26 [VERIFIED VIA WEB SEARCH]; Hairer, Nørsett & Wanner 1993, §II.4 [PARTIALLY
+VERIFIED: embedded formulas and step-size control are in §II.4], §II.5, Table 5.2 and the PI-control
+section [section numbers from memory — INSUFFICIENT DATA TO VERIFY]). Error norm
 ‖δ/(atol + rtol·max(|y|,|y_new|))‖_rms ≤ 1 with atol = 0 (relative-only control) for r, u^v, u^r
 (they span 40 decades) and atol = 1e-14 for the O(1) components; rtol = 1e-12 by default.
 Independent variable ln r inside (step ≤ 0.05 ⇒ Δlog₁₀K ≤ 0.13 per step: the step in r and τ
@@ -278,8 +320,9 @@ Proper time as a double: τ_total ≈ 1333 M is stored with 1e-16 relative resol
   same de Sitter core radius (for Bardeen g = (2Mℓ²)^{1/3}); the E = 1 infaller approaches r = 0 only
   asymptotically (r ∝ e^{−τ/ℓ}) and the curvature saturates at the de Sitter value K = 24/ℓ⁴
   (log10 K = 124.5 m⁻⁴ for ℓ = 10⁴ l_P, below the Planck value 139.2).
-* NASA Goddard visualizations are used only as a qualitative reference for the appearance of the
-  exterior (shadow, lensed sky); they are not evidence about interior quantum physics.
+* NASA Goddard visualizations (SVS 13326, 2019; SVS 14576/14585, 2024 — see references.md §1) are
+  used only as a qualitative reference for the appearance of the exterior (shadow, lensed sky) and
+  for visualization methodology; they are not evidence about interior quantum physics.
 * The first-person camera integrates null geodesics per pixel with the same EF equations
   (VISUALIZATION of exact physics), but its sky is synthetic and its colour mapping of the frequency
   shift is qualitative — it is labelled "Qualitative visualization — trajectory calculations remain

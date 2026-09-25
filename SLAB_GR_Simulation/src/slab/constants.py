@@ -6,13 +6,25 @@ hard-coded.  Expected values quoted in the project brief are stored
 separately in :data:`BRIEF_EXPECTATIONS` purely so the validation suite can
 compare against them.
 
-Verification status of the constant values (2026-09-25 session):
-    The build environment had no web egress to physics.nist.gov, so the
-    CODATA values below are transcribed from the CODATA 2018 recommended
-    values as known to the author (the 2022 adjustment left G, hbar-derived
-    l_P and c unchanged to the precision quoted here).  They agree with the
-    values given in the project brief.  Status: "TRANSCRIBED FROM CODATA
-    2018 — NOT RE-VERIFIED ONLINE IN THIS SESSION".
+Verification status of the constant values (checked 2026-09-25 by web search;
+page fetches were blocked, so search-result titles, URLs and snippets were used):
+    * G = 6.67430(15)e-11 m^3 kg^-1 s^-2, hbar = 1.054571817...e-34 J s (exact)
+      and l_P = 1.616255(18)e-35 m are the CODATA 2022 recommended values
+      (Mohr, Newell, Taylor & Tiesinga, Rev. Mod. Phys. 97, 025002 (2025)),
+      identical to CODATA 2018.  VERIFIED VIA WEB SEARCH.
+    * c and h are exact by the 2019 SI definition (SI Brochure 9th ed.);
+      the au is exact by IAU 2012 Resolution B2; the light-year uses the
+      Julian year of 365.25 d (IAU).  VERIFIED VIA WEB SEARCH.
+    * M_sun = 1.98847e30 kg is the project brief's value: PARTIALLY VERIFIED
+      (it equals the IAU 2015 B3 nominal GM_sun divided by the CODATA 2014 G;
+      no primary source was found for the +/- 7e25 kg uncertainty).
+    * CORRECTION (2026-09-25): the standard uncertainty of l_P was stored as
+      1.8e-41 m; the CODATA value 1.616255(18)e-35 m means 1.8e-40 m
+      (relative 1.1e-5).  Central values, and therefore every derived number,
+      are unchanged; only the propagated uncertainties of K_Planck and r_QG
+      change.
+    Details, confirming URLs and all corrections: references.md section 5 and
+    docs/additions/citations.md.
 """
 from __future__ import annotations
 
@@ -29,61 +41,82 @@ PRIMARY_CONSTANTS: Dict[str, dict] = {
         "uncertainty": 1.5e-15,
         "unit": "m^3 kg^-1 s^-2",
         "description": "Newtonian constant of gravitation",
-        "source": "CODATA 2018 recommended value (Tiesinga, Mohr, Newell & Taylor, "
-                  "Rev. Mod. Phys. 93, 025010 (2021)); NIST Reference on Constants, "
-                  "https://physics.nist.gov/cuu/Constants/ ; unchanged in CODATA 2022 at this precision",
-        "verification": "TRANSCRIBED — NOT RE-VERIFIED ONLINE IN THIS SESSION (network egress blocked)",
+        "source": "CODATA 2022 recommended value, 6.67430(15)e-11 (P. J. Mohr, D. B. Newell, B. N. Taylor "
+                  "& E. Tiesinga, Rev. Mod. Phys. 97, 025002 (2025), doi:10.1103/RevModPhys.97.025002); "
+                  "NIST Reference on Constants, https://physics.nist.gov/cuu/Constants/ ; identical to the "
+                  "CODATA 2018 value (Tiesinga et al., Rev. Mod. Phys. 93, 025010 (2021))",
+        "verification": "VERIFIED VIA WEB SEARCH (2026-09-25): value and standard uncertainty are CODATA 2022 "
+                        "(https://physics.nist.gov/cgi-bin/cuu/Value?bg ; "
+                        "https://physics.nist.gov/cuu/pdf/wallet_2022.pdf)",
     },
     "c": {
         "value": 299792458.0,
         "uncertainty": 0.0,
         "unit": "m s^-1",
         "description": "speed of light in vacuum (exact by definition of the SI metre)",
-        "source": "SI Brochure 9th ed. (BIPM 2019); CODATA",
-        "verification": "EXACT BY DEFINITION",
+        "source": "SI Brochure 9th ed. (BIPM 2019): defining constant c = 299 792 458 m/s, exact since 20 May 2019",
+        "verification": "EXACT BY DEFINITION — VERIFIED VIA WEB SEARCH (2026-09-25) "
+                        "(https://www.bipm.org/documents/20126/41483022/SI-Brochure-9-EN.pdf ; "
+                        "https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.330-2019.pdf)",
     },
     "hbar": {
         "value": 1.054571817e-34,
         "uncertainty": 0.0,
         "unit": "J s",
         "description": "reduced Planck constant h/(2 pi); h is exact in the 2019 SI, hbar quoted to 10 digits",
-        "source": "CODATA 2018; h = 6.62607015e-34 J s exact (SI 2019)",
-        "verification": "EXACT (derived from exact h; rounded to 10 significant digits)",
+        "source": "h = 6.62607015e-34 J s exact (SI Brochure 9th ed., BIPM 2019); hbar = h/(2 pi) = "
+                  "1.054571817...e-34 J s, listed as exact in CODATA 2022 (Mohr et al., Rev. Mod. Phys. 97, "
+                  "025002 (2025)) and CODATA 2018",
+        "verification": "EXACT (derived from exact h; the 10 digits printed by CODATA, 1.054 571 817..., i.e. truncated, 7e-10 relative below h/(2 pi)) — VERIFIED VIA WEB SEARCH "
+                        "(2026-09-25) (https://physics.nist.gov/cgi-bin/cuu/Value?hbar)",
     },
     "l_P": {
         "value": 1.616255e-35,
-        "uncertainty": 1.8e-41,
+        "uncertainty": 1.8e-40,
         "unit": "m",
         "description": "Planck length sqrt(hbar G / c^3)",
-        "source": "CODATA 2018 recommended value; NIST Reference on Constants",
-        "verification": "TRANSCRIBED — cross-checked internally against sqrt(hbar G/c^3) (see validation TEST 0)",
+        "source": "CODATA 2022 recommended value, 1.616255(18)e-35 m, relative standard uncertainty 1.1e-5 "
+                  "(Mohr et al., Rev. Mod. Phys. 97, 025002 (2025)); identical to CODATA 2018; "
+                  "NIST Reference on Constants",
+        "verification": "VERIFIED VIA WEB SEARCH (2026-09-25) (https://physics.nist.gov/cgi-bin/cuu/Value?plkl); "
+                        "also cross-checked internally against sqrt(hbar G/c^3) (validation TEST 0). "
+                        "CORRECTED 2026-09-25: standard uncertainty was stored as 1.8e-41 m (factor 10 too small), "
+                        "now 1.8e-40 m; central value unchanged",
     },
     "M_sun": {
         "value": 1.98847e30,
         "uncertainty": 7.0e25,
         "unit": "kg",
         "description": "solar mass",
-        "source": "Value specified in the project brief, (1.98847 +/- 0.00007)e30 kg. "
-                  "NOTE: the IAU 2015 nominal solar mass parameter GM_sun = 1.3271244e20 m^3 s^-2 "
-                  "divided by CODATA G gives 1.98841e30 kg; the 3e-5 relative difference is far "
-                  "below every other uncertainty in this project and is documented rather than hidden.",
-        "verification": "AS SPECIFIED IN BRIEF — NOT RE-VERIFIED ONLINE IN THIS SESSION",
+        "source": "Value specified in the project brief, (1.98847 +/- 0.00007)e30 kg. It equals the IAU 2015 "
+                  "Resolution B3 nominal solar mass parameter (GM)_sun = 1.3271244e20 m^3 s^-2 (exact; Prsa et al., "
+                  "Astron. J. 152, 41 (2016)) divided by the CODATA 2014 G = 6.67408e-11 (1.988475e30 kg). "
+                  "IAU 2015 B3 defines no solar mass in kg and recommends quoting (GM)/G with the adopted G. "
+                  "NOTE: divided by the CODATA 2022 G the same GM_sun gives 1.98841e30 kg; the 3.0e-5 relative "
+                  "difference is far below every other uncertainty in this project and is documented rather than hidden.",
+        "verification": "PARTIALLY VERIFIED (2026-09-25): GM_sun value and the CODATA 2014 G confirmed by web search "
+                        "(https://iopscience.iop.org/article/10.3847/0004-6256/152/2/41 ; https://arxiv.org/pdf/1507.07956); "
+                        "primary source of the brief's value and of its +/- 7e25 kg uncertainty: INSUFFICIENT DATA TO VERIFY. "
+                        "Kept as specified in the brief",
     },
     "year_julian": {
         "value": 365.25 * 86400.0,
         "uncertainty": 0.0,
         "unit": "s",
         "description": "Julian year (exact, IAU convention used for the light-year)",
-        "source": "IAU; used for all year conversions in this project",
-        "verification": "EXACT BY CONVENTION",
+        "source": "IAU convention: Julian year = 365.25 days of 86400 s, the year in the IAU definition of the "
+                  "light-year (c x Julian year = 9 460 730 472 580 800 m); used for all year conversions in this project",
+        "verification": "EXACT BY CONVENTION — VERIFIED VIA WEB SEARCH (2026-09-25) "
+                        "(https://iauarchive.eso.org/public/themes/measuring/)",
     },
     "au": {
         "value": 1.495978707e11,
         "uncertainty": 0.0,
         "unit": "m",
         "description": "astronomical unit (exact since IAU 2012 Resolution B2)",
-        "source": "IAU 2012 Resolution B2",
-        "verification": "EXACT BY DEFINITION (transcribed)",
+        "source": "IAU 2012 Resolution B2 (XXVIII General Assembly, Beijing): au = 149 597 870 700 m exactly",
+        "verification": "EXACT BY DEFINITION — VERIFIED VIA WEB SEARCH (2026-09-25) "
+                        "(https://observatoiredeparis.psl.eu/the-new-definition-of-the-astronomical-unit.html)",
     },
 }
 
