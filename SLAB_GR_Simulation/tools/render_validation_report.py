@@ -17,6 +17,33 @@ def fmt(x):
     return str(x)
 
 
+EXTRA_TABLES = {
+    "convergence_table_thrust_1g_vs_mpmath": "1 g rocket (no closed form) vs 35-digit mpmath quadrature reference, milestone segments r0 -> r_QG, step cap lifted",
+    "thrust_1g_reference": "Reference used for the 1 g rocket",
+    "convergence_table_plunge_L3.5_vs_mpmath": "L = 3.5 GM/c plunge vs 35-digit mpmath quadrature reference (r0 = 100 r_s -> r_QG)",
+    "rindler_flat": "Flat-space (Rindler) check, engine-integrated observer and free particles (geometrized units)",
+    "hovering_checks": "Static (hovering) observer held by the engine in Schwarzschild: measured vs predicted differential acceleration",
+    "thrust_1g_inertial_vs_tidal": "thrust_1g: inertial term (-a^2 L/c^2) vs radial tidal stretching across 2 m at the milestones",
+    "crossover": "Radius where the radial tidal term equals the inertial term (1 g)",
+    "late_time_E1": "Late-time received-signal behaviour, E = 1 benchmark",
+    "late_time_thrust_1g": "Late-time received-signal behaviour, thrust_1g",
+    "late_time_L": "Late-time received-signal behaviour, L = 3.5 plunge",
+}
+
+
+def _extra(w, title, obj) -> None:
+    """Generic rendering of the extra tables added with TESTS 8 (references), 9 and 10."""
+    w(f"\n{title}:\n")
+    if isinstance(obj, list) and obj and isinstance(obj[0], dict):
+        keys = list(obj[0].keys())
+        w("| " + " | ".join(keys) + " |\n|" + "---|" * len(keys))
+        for r in obj:
+            w("| " + " | ".join(fmt(r.get(k)) for k in keys) + " |")
+    elif isinstance(obj, dict):
+        for k, v in obj.items():
+            w(f"* {k}: `{fmt(v)}`")
+
+
 def main() -> None:
     rep = json.loads((ROOT / "validation_report.json").read_text())
     out = []
@@ -58,6 +85,9 @@ def main() -> None:
             w("| rtol | steps | rel. err τ(h→r_QG) | rel. err Δv(h→r_QG) | max rel. err u^r | wall [s] |\n|---|---|---|---|---|---|")
             for r in t["convergence_table"]:
                 w(f"| {r['rtol']:g} | {r['steps']} | {fmt(r['err_tau_h_to_QG'])} | {fmt(r['err_dv_h_to_QG'])} | {fmt(r['max_err_ur'])} | {r['wall_s']:.2f} |")
+        for key, title in EXTRA_TABLES.items():
+            if key in t:
+                _extra(w, title, t[key])
         w("")
     s = rep["benchmark_summary"]
     w("## 4. Benchmark run summary\n")

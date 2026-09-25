@@ -179,6 +179,9 @@ def initial_state_radial(metric: StaticSphericalMetric, r0: float, E: float, L: 
     disc = E * E - Veff
     if -1e-12 * E * E < disc < 0.0:
         disc = 0.0                      # start exactly at a turning point (rest) up to round-off
+    elif 0.0 < disc <= 8.0 * 2.220446049250313e-16 * max(E * E, Veff):
+        disc = 0.0                      # positive round-off of E^2 - V (e.g. E = sqrt(f(r0)) typed for 'rest'):
+                                        # sqrt would otherwise turn 1e-16 into a spurious u^r ~ -1e-8
     if disc < 0.0:
         raise ValueError(f"E^2 = {E*E} < effective potential {Veff} at r0 = {r0}: not a real radial velocity")
     ur = -math.sqrt(disc) if inward else math.sqrt(disc)
