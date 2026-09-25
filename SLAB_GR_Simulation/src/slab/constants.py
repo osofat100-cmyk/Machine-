@@ -150,8 +150,27 @@ class DerivedQuantities:
         self.r_isco_m = 6.0 * self.M_m
         self.l_P_from_hbar_G_c = math.sqrt(hbar * G / c**3)
 
+    def relative_uncertainties(self) -> dict:
+        """First-order propagation of the quoted constant uncertainties (independent, in quadrature).
+        The many digits printed elsewhere are for numerical reproducibility; the PHYSICAL precision of
+        every SI quantity is limited by these (G: 2.2e-5, M_sun: 3.5e-5, l_P: 1.1e-5 relative)."""
+        uG = PRIMARY_CONSTANTS["G"]["uncertainty"] / G
+        uM = PRIMARY_CONSTANTS["M_sun"]["uncertainty"] / M_sun
+        ul = PRIMARY_CONSTANTS["l_P"]["uncertainty"] / l_P
+        uGM = math.hypot(uG, uM)
+        return {
+            "G": uG, "M_sun": uM, "l_P": ul,
+            "M_kg": uM, "GM_and_all_lengths_and_times_in_SI (r_s, GM/c^3, tau, K^-1/4)": uGM,
+            "K_SI (∝ M^2)": 2.0 * uGM, "K_planck (∝ l_P^-4)": 4.0 * ul,
+            "r_QG (∝ (G M)^(1/3) l_P^(2/3))": math.hypot(uGM / 3.0, 2.0 * ul / 3.0),
+            "tidal_SI (∝ G M / r^3 at fixed r)": uGM,
+            "note": "geometrized results (in units of GM/c^2, GM/c^3) carry no constant uncertainty at all",
+        }
+
     def as_dict(self) -> dict:
-        return {k: getattr(self, k) for k in self.__dataclass_fields__}
+        d = {k: getattr(self, k) for k in self.__dataclass_fields__}
+        d["relative_uncertainties"] = self.relative_uncertainties()
+        return d
 
 
 def kretschmann_SI(r_m: float, M_m: float) -> float:

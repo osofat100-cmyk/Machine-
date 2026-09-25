@@ -6,3 +6,7 @@ __pycache__/
 .pytest_cache/
 # claude worktrees / session files
 .claude/
+# regenerable per-scenario render exports (main run export in SLAB_GR_Simulation/renders/ is committed)
+SLAB_GR_Simulation/data/scenarios/*/renders/
+SLAB_GR_Simulation/data/scenarios/*/data/trajectory_render.json
+SLAB_GR_Simulation/docs/drafts/

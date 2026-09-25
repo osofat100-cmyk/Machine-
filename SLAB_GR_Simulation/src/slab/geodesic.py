@@ -15,9 +15,10 @@ Equations of motion (second-order geodesic equation with optional thrust):
     du^a/dtau = -Gamma^a_bc u^b u^c + a^a,     dx^a/dtau = u^a
 with a^a the 4-acceleration.  For a rocket with constant proper
 acceleration alpha directed along -n (inward along the observer's local
-radial axis), a^a = -alpha n^a, n = (u^v, E, 0, 0), E = f u^v - u^r,
-which is orthogonal to u so g(u,u) = -1 is preserved exactly by the
-continuous equations.
+radial axis), a^a = -alpha n^a/|n|, n = (u^v, E, 0, 0), E = f u^v - u^r,
+|n|^2 = g(n,n) = 1 + r^2[(u^theta)^2 + sin^2 theta (u^phi)^2] (= 1 for
+radial motion).  n is orthogonal to u, so g(u,u) = -1 is preserved exactly
+by the continuous equations, and g(a,a) = alpha^2.
 
 Two choices of independent variable are supported:
     'tau' : x = tau                (dy/dx = F(y))
@@ -96,14 +97,22 @@ def norm_conditioning_scale(metric: StaticSphericalMetric, y: np.ndarray) -> flo
     return max(abs(f * y[IUV] ** 2), abs(2.0 * y[IUV] * y[IUR]), r * r * (y[IUTH] ** 2 + math.sin(th) ** 2 * y[IUPH] ** 2), 1.0)
 
 
+def radial_unit_norm(y: np.ndarray) -> float:
+    """|n| for n = (u^v, E, 0, 0): sqrt(1 + r^2 [(u^theta)^2 + sin^2 theta (u^phi)^2]) (exact identity
+    from g(u,u) = -1 and E = f u^v - u^r; well conditioned)."""
+    r, th = y[IR], y[ITH]
+    return math.sqrt(1.0 + r * r * (y[IUTH] ** 2 + math.sin(th) ** 2 * y[IUPH] ** 2))
+
+
 def four_acceleration(metric: StaticSphericalMetric, y: np.ndarray, thrust: Thrust) -> np.ndarray:
-    """a^mu = -alpha n^mu with n the outward radial unit vector orthogonal to u."""
+    """a^mu = -alpha n^mu/|n| with n the outward radial vector orthogonal to u."""
     a = np.zeros(4)
     r = y[IR]
     if thrust.active(r):
         E = y[IEK]
-        a[V] = -thrust.alpha * y[IUV]
-        a[R] = -thrust.alpha * E
+        k = thrust.alpha / radial_unit_norm(y)
+        a[V] = -k * y[IUV]
+        a[R] = -k * E
     return a
 
 
@@ -136,18 +145,25 @@ def rhs_tau(metric: StaticSphericalMetric, y: np.ndarray, thrust: Thrust | None 
     d[IEK] = 0.0
     if thrust is not None and thrust.active(r):
         E = y[IEK]                      # well-conditioned Killing energy (equals f u^v - u^r)
-        d[IUV] += -thrust.alpha * uv
-        d[IUR] += -thrust.alpha * E
-        d[IEK] = -thrust.alpha * ur     # dE/dtau = -a_v = -alpha u^r
+        k = thrust.alpha / math.sqrt(1.0 + r * r * ang)   # alpha / |n|
+        d[IUV] += -k * uv
+        d[IUR] += -k * E
+        d[IEK] = -k * ur                # dE/dtau = -a_v = -(alpha/|n|) u^r
     return d
 
 
 def rhs_lnr(metric: StaticSphericalMetric, x: float, y: np.ndarray, thrust: Thrust | None = None) -> np.ndarray:
-    """dy/d(ln r) = (dy/dtau) * r / u^r,  with r := exp(x) taken from the independent variable."""
+    """dy/d(ln r) = (dy/dtau) * r / u^r,  with r := exp(x) taken from the independent variable.
+
+    The state's r component is NOT evolved (derivative 0): it is a passive copy that callers must
+    overwrite with exp(x) (the driver does).  Integrating dr/dx = exp(x) alongside would accumulate an
+    absolute error that dwarfs the exponentially decaying true value deep inside."""
     y = y.copy()
     y[IR] = math.exp(x)
     d = rhs_tau(metric, y, thrust)
-    return d * (y[IR] / y[IUR])
+    d = d * (y[IR] / y[IUR])
+    d[IR] = 0.0
+    return d
 
 
 def initial_state_radial(metric: StaticSphericalMetric, r0: float, E: float, L: float = 0.0,
@@ -213,15 +229,46 @@ def rhs_first_integral_lnr(metric: StaticSphericalMetric, x: float, y: np.ndarra
     r = math.exp(x)
     E, L, th = y[IE], y[IL], y[2]
     uv, ur, uph = first_integral_velocity(metric, r, E, L, th)
+    if ur == 0.0:
+        raise ValueError("ln r formulation is invalid at a turning point (u^r = 0); use the tau form")
     d = np.zeros(7)
     fac = r / ur
     d[0] = uv * fac
     d[1] = r
     d[3] = uph * fac
     if thrust is not None and thrust.active(r):
-        d[IE] = (-thrust.alpha * ur) * fac
+        d[IE] = (-thrust.alpha * ur / math.sqrt(1.0 + L * L / (r * r * math.sin(th) ** 2))) * fac
     d[6] = fac
     return d
+
+
+def proper_time_to_center(metric: StaticSphericalMetric, r: float, E: float, L: float, theta: float = math.pi / 2,
+                          n: int = 4000) -> float:
+    """Classical proper time from r to r = 0 for FREE FALL with constants (E, L):
+        tau = int_0^r dr' / sqrt(E^2 - f(r')(1 + L^2/r'^2)).
+    Evaluated with the substitution r' = exp(x) (integrand ~ r'^{1/2} for L = 0, ~ r'^{3/2}
+    for L != 0 near the centre) by composite Simpson quadrature on x in [ln r - 70, ln r].
+    Exact closed forms exist for E = 1, L = 0 ((2/3) sqrt(r^3/2M)); this general form is used
+    for the 'remaining proper time' column when L != 0 or E != 1.  It assumes coasting
+    (no thrust) from r inward and is a classical-GR extrapolation, not a validated quantity."""
+    if r <= 0.0:
+        return 0.0
+    s2 = math.sin(theta) ** 2
+    x1 = math.log(r)
+    x0 = x1 - 70.0
+    x = np.linspace(x0, x1, n + 1)
+    rr = np.exp(x)
+    try:
+        fvals = metric.f(rr)                         # vectorized metric (Schwarzschild: 1 - 2M/r)
+        if np.ndim(fvals) == 0:
+            raise TypeError
+    except Exception:
+        fvals = np.array([metric.f(float(v)) for v in rr])
+    disc = E * E - fvals * (1.0 + L * L / (rr * rr * s2))
+    val = np.where(disc > 0.0, rr / np.sqrt(np.where(disc > 0.0, disc, 1.0)), 0.0)
+    w = np.full(n + 1, 2.0); w[1::2] = 4.0; w[0] = w[-1] = 1.0
+    h = (x1 - x0) / n
+    return float(np.sum(w * val) * h / 3.0)
 
 
 # ---------------------------------------------------------------------------

@@ -76,7 +76,12 @@ def main() -> int:
         state = json.loads((project_dir / "simulation_state.json").read_text())
         ck = load_checkpoint(project_dir / state["latest_checkpoint"])
         if ck.get("config_hash") != sim.config_hash:
-            print("checkpoint config hash differs from current config; refusing to resume"); return 3
+            # the checkpoint carries its full configuration: use it (no need to re-type CLI overrides)
+            cfg = SimulationConfig(**{k: (math.inf if v == "inf" else v) for k, v in ck["config"].items() if k in SimulationConfig.__dataclass_fields__})
+            sim = Simulation(cfg, project_dir=project_dir)
+            if ck.get("config_hash") != sim.config_hash:
+                print("checkpoint config hash differs from the configuration it stores; refusing to resume"); return 3
+            print("configuration restored from the checkpoint")
         sim.load_segments()
         if ck["is_final"]:
             print("latest checkpoint is final; nothing to resume (re-exporting outputs)")

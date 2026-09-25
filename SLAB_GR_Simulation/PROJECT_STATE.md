@@ -12,7 +12,7 @@
    `node tests/viewer/check_viewer.mjs`, look at `renders/screenshots/`.
 5. Update this file after every meaningful change.
 
-## Current implementation status (2026-09-25)
+## Current implementation status (2026-09-25, end of session 1)
 
 | component | status |
 |---|---|
@@ -22,8 +22,9 @@
 | versioned checkpoints + resume (`--stop-after-milestone`, `--resume`) | done, tested (`tests/test_physics.py::test_cli_stop_and_resume_matches_full_run`) |
 | speculative toy models (Hayward, Bardeen, Dymnikova) | done, separated, banner |
 | viewer skeleton (dashboard, playback, data layer, headless test) | done |
-| viewer modules: 3D scene + light cones, causal diagram, first-person ray tracer, speculative menu | IN PROGRESS (see below) |
-| docs: physics_notes.md, references.md | IN PROGRESS |
+| viewer modules: 3D scene + light cones (`scene3d.js`, `lightcone.js`), causal diagram (`causal.js`), first-person GPU ray tracer (`firstperson.js` + CPU core `firstperson_core.js`), speculative menu (`speculative.js`) | done; headless test `tests/viewer/check_viewer.mjs` (zero console errors, screenshots in `renders/screenshots/`), `tests/viewer/test_null_geodesics.mjs` (deflection, capture, conservation, horizon crossing, shadow edge) |
+| docs: physics_notes.md, references.md, docs/validation_report.md, docs/UPGRADE_PROMPT.md | done (citations NOT re-verified online — see references.md) |
+| adversarial review of the engine (6 lenses, 33 findings) | 1 confirmed + 19 triaged by hand and fixed; the automated verification was cut short by a usage limit (see "Review findings" below) |
 
 ## Equations implemented (see physics_notes.md for details and citations)
 
@@ -69,7 +70,30 @@
   term sinθ cosθ (u^φ)²; the RHS snaps |cos θ| < 1e-14 to 0 so the plane is preserved exactly.
 * The explicit index contraction of the coordinate-basis Riemann tensor overflows/cancels for
   L ≠ 0 deep inside (terms ~1e333); it is kept only as a cross-check where conditioned.
-* `tau_to_center_est` is exact only for the E = 1 radial geodesic (asymptotic estimate otherwise; labelled).
+* `tau_to_center_est` is exact for E = 1, L = 0 and a free-fall quadrature (thrust ignored) otherwise; labelled.
+* In ln r mode the state's r component is a passive copy (derivative 0); the driver overwrites it with e^x.
+  Diagnostics computed from a raw integrator result must use r = exp(x), never y[IR].
+* The second-order geodesic equation for u^v is exponentially UNSTABLE when integrated inward through a
+  de Sitter-like core (toy models: f' < 0 flips the Riccati term); the speculative suite therefore uses the
+  first-integral formulation. In Schwarzschild the mode decays (verified: u^v accurate to 2e-11 at r_QG).
+* Toy models are integrated in units of their core length (μ = M/l ≈ 1e52) with factored, overflow-safe
+  derivative formulas; Bardeen is parametrized by its de Sitter core radius (g = (2μ)^{1/3} core units).
+
+## Review findings (2026-09-25) and what was done
+
+Fixed: thrust vector not unit for L ≠ 0 (now a = −α n/|n|); comoving tetrad ill-conditioned deep inside
+(exact closed-form tidal eigenvalues); remaining-time column for L ≠ 0 / E ≠ 1 (general free-fall
+quadrature); plain-I → PI step control (Hairer DOPRI5 coefficients); FSAL no longer defeated in ln r mode
+(RHS evaluations 21294 → 20960 for more steps); per-segment clocks v_seg/τ_seg under relative-only control
+(atol = 0); initial step carried over between segments; `--resume` drops stale later segments, keeps the
+milestone record, checks segment contiguity, restores the configuration from the checkpoint; segment
+archives versioned and written before the checkpoint; strict JSON (no Infinity/NaN tokens);
+`simulation_state.json` timestamp; θ, φ exported; render r-columns exactly consistent with the log axis;
+uncertainty propagation reported (`derived_quantities.relative_uncertainties`); L ≠ 0 conservation check
+and a real convergence-ratio check in the validation suite; regime-threshold wording; "10^41" → 39 decades.
+Documented, not changed: inertial (Rindler) differential terms for thrusting observers are not displayed;
+`transverse_compress_*` columns are signed (negative = compression).
+Not verified (agents cut off): see `docs/UPGRADE_PROMPT.md` item 3.
 
 ## Files changed in the last session
 
@@ -84,12 +108,13 @@ rest_at_10rs (fall from rest at 10 r_s, matches the cycloid solution to 2e-12).
 
 ## Next technical task
 
-1. Integrate the viewer modules (scene3d/lightcone, causal, firstperson, speculative) from the
-   implementation agents; rebuild; run `node tests/viewer/check_viewer.mjs`; review screenshots.
-2. Apply confirmed findings of the adversarial physics review; re-run validation.
-3. Finalize `physics_notes.md` and `references.md` from `docs/drafts/`.
-4. Commit, push, open PR.
+See `docs/UPGRADE_PROMPT.md` (priority list). First items: verify all citations online; extend the
+first-person tracer below r = 1e-5 r_s (double precision / rescaled formulation); complete the
+adversarial review.
 
 ## Last successful checkpoint
 
 `checkpoints/ckpt_14_r_QG_v001.json` (final milestone of the validated run; see `simulation_state.json`).
+Note: checkpoints and segment archives were regenerated from scratch at the end of session 1 after the
+state vector grew from 9 to 10 components (E_killing) and segment archives became versioned; earlier
+artefacts of the superseded engine were deleted before the final commit.

@@ -32,6 +32,8 @@ const steps = [
   ['fp-outside', () => { SLAB_APP.setView('fp'); SLAB_APP.setLogR(0.7); }],
   ['fp-horizon', () => { SLAB_APP.setLogR(0.0); }],
   ['fp-inside', () => { SLAB_APP.setLogR(-0.7); }],
+  ['fp-inside-outward', () => { SLAB_APP.views.fp.yaw = Math.PI; SLAB_APP.views.fp.dirty = true; }],
+  ['fp-inside-outward-wide', () => { SLAB_APP.views.fp.fov = 140; SLAB_APP.views.fp.dirty = true; }],
   ['spec', () => { SLAB_APP.setView('spec'); }],
 ];
 const results = [];

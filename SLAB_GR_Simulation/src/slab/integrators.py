@@ -2,8 +2,9 @@
 
 DormandPrince54: the classic RK5(4) pair (Dormand & Prince 1980, J. Comput.
 Appl. Math. 6, 19; coefficients as in Hairer, Nørsett & Wanner, "Solving
-Ordinary Differential Equations I", 2nd ed., Table 5.2) with FSAL, PI-type
-step-size control, a user-supplied maximum-step function, and exact
+Ordinary Differential Equations I", 2nd ed., Table 5.2) with FSAL, the PI
+step-size controller of Hairer's DOPRI5 (fac = err^-(1/5 - 0.75 beta) *
+err_prev^beta, beta = 0.04), a user-supplied maximum-step function, and exact
 termination at a target value of a monotonic monitor function (used to stop
 precisely at each milestone radius).  Every accepted step records the step
 size and the normalized embedded error estimate, which are saved with the
@@ -72,6 +73,7 @@ class DormandPrince54:
     safety: float = 0.9
     fac_min: float = 0.2
     fac_max: float = 5.0
+    beta: float = 0.04          # PI controller weight (Hairer DOPRI5: expo1 = 1/5 - 0.75*beta)
     max_steps: int = 2_000_000
 
     def _scale(self, y0: np.ndarray, y1: np.ndarray) -> np.ndarray:
@@ -134,6 +136,8 @@ class DormandPrince54:
             h = min(h, self.max_step_fn(x, y))
 
         n_rej_here = 0
+        err_old = 1e-4          # PI controller memory (Hairer: facold)
+        expo1 = 0.2 - 0.75 * self.beta
         K = np.empty((7, n))
         for _ in range(self.max_steps):
             if direction * (x - x_end) >= 0.0:
@@ -181,7 +185,12 @@ class DormandPrince54:
                 min_h = min(min_h, h); max_h = max(max_h, h); max_err = max(max_err, err)
                 x, y, k1 = x_new, y_new, k1_new
                 n_rej_here = 0
-                fac = self.fac_max if err == 0.0 else min(self.fac_max, max(self.fac_min, self.safety * err ** (-0.2)))
+                if err == 0.0:
+                    fac = self.fac_max
+                else:
+                    # PI step control (Hairer, Nørsett & Wanner II.4; DOPRI5 code): fac = err^-expo1 * err_old^beta
+                    fac = min(self.fac_max, max(self.fac_min, self.safety * err ** (-expo1) * err_old ** self.beta))
+                err_old = max(err, 1e-4)
                 h = h * fac
             else:
                 n_rej_here += 1

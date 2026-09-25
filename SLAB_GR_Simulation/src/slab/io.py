@@ -12,32 +12,10 @@ from typing import Dict, List
 import numpy as np
 
 from . import constants as C
-from .checkpoints import dumps
+from .checkpoints import dumps, sanitize as _sanitize
 from .trajectory import Simulation, REGIME_VALIDATED, REGIME_EXTREME, REGIME_PLANCK, PLANCK_MESSAGE
 
 LOG_BANNER = "LOGARITHMIC VISUALIZATION — NOT TO SCALE"
-
-
-def _sanitize(o):
-    """Recursively replace non-finite floats (JSON has no inf/nan) and numpy scalars."""
-    if isinstance(o, dict):
-        return {str(k): _sanitize(v) for k, v in o.items()}
-    if isinstance(o, (list, tuple)):
-        return [_sanitize(v) for v in o]
-    if isinstance(o, np.ndarray):
-        return [_sanitize(v) for v in o.tolist()]
-    if isinstance(o, (bool, np.bool_)):
-        return bool(o)
-    if isinstance(o, (int, np.integer)):
-        return int(o)
-    if isinstance(o, (float, np.floating)):
-        x = float(o)
-        if math.isnan(x):
-            return None
-        if math.isinf(x):
-            return "inf" if x > 0 else "-inf"
-        return x
-    return o
 
 
 def _finite_or_str(x):
@@ -87,7 +65,8 @@ COLUMN_DESCRIPTIONS = {
     "t_schw_geo": "Schwarzschild coordinate time t = v - r_* (distant-observer bookkeeping; +inf at r_s)",
     "tau_geo": "proper time since start [GM/c^3]", "tau_s": "proper time [s]", "tau_years": "proper time [Julian yr]",
     "tau_since_horizon_years": "proper time since horizon crossing [yr]",
-    "tau_to_center_est_years": "classical proper time remaining to r=0: (2/3) sqrt(r^3/(2GM)) — exact for the E=1 geodesic, small-r asymptote otherwise",
+    "tau_to_center_est_years": "classical-GR extrapolation of the proper time remaining to r=0 assuming free fall with the current (E, L): (2/3) sqrt(r^3/(2GM)) for E=1, L=0, general quadrature otherwise (thrust ignored)",
+    "theta,phi": "angular coordinates (equatorial runs: theta = pi/2, phi accumulates for L != 0)",
     "u_v,u_r,u_theta,u_phi": "4-velocity components in EF coordinates (geometrized)",
     "a_v,a_r": "4-acceleration components (nonzero only with thrust)", "a_magnitude_SI": "proper acceleration [m/s^2]",
     "E": "Killing energy f u^v - u^r (cancellation-limited deep inside; see E_conditioning_scale)",
@@ -101,8 +80,8 @@ COLUMN_DESCRIPTIONS = {
     "tidal_closed_form_reldiff": "cross-check: frame method vs (-2M/r^3, M/r^3, M/r^3) for radial motion, or vs explicit contraction for L != 0 where well conditioned",
     "tidal_radial_SI_per_m": "most negative eigenvalue (radial, stretching) [s^-2 per m]",
     "tidal_transverse_SI_per_m": "positive eigenvalue (transverse, compressing) [s^-2 per m]",
-    "radial_stretch_m_s2": "relative acceleration across body_length_m along the radial axis [m/s^2]",
-    "transverse_compress_m_s2": "relative acceleration across body_length_m transversally [m/s^2]",
+    "radial_stretch_m_s2": "SIGNED relative acceleration across body_length_m along the eigen-direction of the most negative eigenvalue (radial): positive = separation (stretching) [m/s^2]",
+    "transverse_compress_m_s2": "SIGNED relative acceleration across body_length_m along the largest positive eigenvalue: negative = approach (compression) [m/s^2]",
     "tidal_radial_newtonian_SI_per_m": "2GM/r^3 (weak-field expression) — equals the GR radial eigenvalue for radial motion",
     "lc_out_drdtEF": "outgoing radial null direction dr/dt_EF = f/(2-f)", "lc_in_drdtEF": "ingoing radial null direction dr/dt_EF = -1",
     "worldline_drdtEF": "observer worldline slope dr/dt_EF", "dr_dt_schw": "coordinate velocity dr/dt (outside only)",
@@ -158,7 +137,7 @@ def write_json(sim: Simulation, path: Path) -> None:
     payload = {"metadata": metadata(sim), "summary": sim.summary(),
                "milestones": [m.__dict__ for m in sim.milestones],
                "milestone_states": sim.milestone_states,
-               "checkpoints": sim.checkpoint_paths}
+               "checkpoints": sim.checkpoint_list()}
     Path(path).write_text(dumps(payload))
 
 
@@ -191,6 +170,10 @@ def render_samples(sim: Simulation, n_samples: int) -> Dict[str, list]:
         interp[(targets < lo - 1e-12) | (targets > hi + 1e-12)] = np.nan
         out[k] = [None if not np.isfinite(x) else float(x) for x in interp]
     out["log10_r_over_rs"] = [float(t) for t in targets]
+    # radius columns exactly consistent with the log axis (not interpolated)
+    out["r_over_rs"] = [float(10.0 ** t) for t in targets]
+    out["r_geo"] = [2.0 * x for x in out["r_over_rs"]]
+    out["r_m"] = [x * sim.dq.r_s_m for x in out["r_over_rs"]]
     out["regime_code"] = [None if v is None else int(round(v)) for v in out["regime_code"]]
     return out
 

@@ -9,7 +9,7 @@
   "regime": "PLANCK-CURVATURE BOUNDARY",
   "r_m": 1.387739385393499e-16,
   "r_over_rs": 4.698882200332483e-38,
-  "tau_total_years": 208112146.0001261,
-  "how_to_resume": "python run_simulation.py --resume   (loads latest_checkpoint and continues to the next milestone)",
-  "updated_utc": null
+  "tau_total_years": 208112146.00013667,
+  "how_to_resume": "python run_simulation.py --resume [--tag <tag> | --out-dir <dir>]   (config is taken from the checkpoint)",
+  "updated_utc": "2026-09-25T20:10:52.239211+00:00"
 }

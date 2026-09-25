@@ -12,6 +12,29 @@ from typing import Optional
 import numpy as np
 
 
+def sanitize(o):
+    """Make an object strictly JSON-compliant: numpy -> python, inf/nan -> 'inf'/'-inf'/None."""
+    import math
+    if isinstance(o, dict):
+        return {str(k): sanitize(v) for k, v in o.items()}
+    if isinstance(o, (list, tuple)):
+        return [sanitize(v) for v in o]
+    if isinstance(o, np.ndarray):
+        return [sanitize(v) for v in o.tolist()]
+    if isinstance(o, (bool, np.bool_)):
+        return bool(o)
+    if isinstance(o, (int, np.integer)):
+        return int(o)
+    if isinstance(o, (float, np.floating)):
+        x = float(o)
+        if math.isnan(x):
+            return None
+        if math.isinf(x):
+            return "inf" if x > 0 else "-inf"
+        return x
+    return o
+
+
 def _json_default(o):
     if isinstance(o, np.ndarray):
         return o.tolist()
@@ -19,13 +42,12 @@ def _json_default(o):
         return float(o)
     if isinstance(o, (np.integer,)):
         return int(o)
-    if isinstance(o, float) and (o != o or o in (float("inf"), float("-inf"))):
-        return str(o)
     raise TypeError(f"not serializable: {type(o)}")
 
 
 def dumps(obj) -> str:
-    return json.dumps(obj, indent=2, default=_json_default, allow_nan=True)
+    """Strict JSON (RFC 8259: no Infinity/NaN tokens); non-finite floats become 'inf'/'-inf'/null."""
+    return json.dumps(sanitize(obj), indent=2, default=_json_default, allow_nan=False)
 
 
 def config_hash(config: dict) -> str:
@@ -43,9 +65,9 @@ def write_checkpoint(ckpt_dir: Path, index: int, slug: str, payload: dict) -> Pa
     payload = dict(payload)
     payload["checkpoint_version"] = version
     payload["written_utc"] = _dt.datetime.now(_dt.timezone.utc).isoformat()
-    tmp = path.with_suffix(".json.tmp")
-    tmp.write_text(dumps(payload))
-    os.replace(tmp, path)  # atomic; never overwrites an existing checkpoint
+    # exclusive create: fails instead of overwriting if the file appeared meanwhile
+    with open(path, "x") as fh:
+        fh.write(dumps(payload))
     return path
 
 

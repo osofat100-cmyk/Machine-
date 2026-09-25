@@ -77,12 +77,12 @@
     "log10_K_over_K_planck": -229.9680326548934,
     "curvature_length_m": 5.017854280181087e+22,
     "tidal_eigenvalues_SI_per_m": [
-      -1.0304209798955972e-29,
-      5.152104899477987e-30,
-      5.152104899477987e-30
+      -1.0304209798955971e-29,
+      5.1521048994779854e-30,
+      5.1521048994779854e-30
     ],
-    "radial_stretch_accel_m_s2": 2.0608419597911944e-29,
-    "transverse_compress_accel_m_s2": -1.0304209798955974e-29,
+    "radial_stretch_accel_m_s2": 2.0608419597911942e-29,
+    "transverse_compress_accel_m_s2": -1.0304209798955971e-29,
     "t_schwarzschild_geo": -24.39444915467244,
     "kruskal": {
       "U": -198238.19215326058,
@@ -102,5 +102,5 @@
   "regime": "CLASSICAL GR \u2014 VALIDATED",
   "is_final": false,
   "checkpoint_version": 1,
-  "written_utc": "2026-09-25T15:25:26.494084+00:00"
+  "written_utc": "2026-09-25T20:16:52.971262+00:00"
 }

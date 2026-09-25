@@ -25,7 +25,7 @@ from typing import Dict, List
 import numpy as np
 
 from ..metric import StaticSphericalMetric
-from ..geodesic import rhs_lnr, initial_state_radial, IR, IV, ITAU, IUV, IUR, norm
+from ..geodesic import rhs_first_integral_lnr, first_integral_velocity, IR, IV, ITAU, IUV, IUR, norm
 from ..integrators import DormandPrince54
 from ..curvature import kretschmann_closed_form
 from ..trajectory import Simulation
@@ -33,9 +33,15 @@ from ..checkpoints import dumps
 from . import BANNER, MENU_TITLE
 
 
+# NOTE ON UNITS.  The toy models are integrated in units of their CORE LENGTH l (r -> r/l) with the
+# dimensionless mass parameter mu = M/l (~1e52 for l = 1e4 Planck lengths and M = 1e18 M_sun).  In units of M
+# the core scale l ~ 1e-52 makes powers such as (r^2 + g^2)^(-7/2) overflow double precision; in core units
+# every quantity of interest is O(1) near the core and only harmless underflows occur far from it.
+# The Schwarzschild horizon sits at r = 2 mu in these units.
 @dataclass(frozen=True)
 class Hayward(StaticSphericalMetric):
-    """Hayward (2006) regular black hole.  f = 1 - 2 M r^2 / (r^3 + 2 M l^2).
+    """Hayward (2006) regular black hole.  f = 1 - 2 M r^2 / (r^3 + 2 M l^2)  ->  in core units (l = 1):
+    f = 1 - 2 mu r^2 / (r^3 + 2 mu).
 
     Source: S. A. Hayward, Phys. Rev. Lett. 96, 031103 (2006), eq. (2) with 2 M l^2 in the
     denominator (l a length of order the Planck length).  De Sitter core f ~ 1 - r^2/l^2.
@@ -43,22 +49,23 @@ class Hayward(StaticSphericalMetric):
     name: str = "Hayward (2006) regular black hole"
     established: bool = False
     citation: str = "Hayward, Phys. Rev. Lett. 96, 031103 (2006)"
-    M: float = 1.0
-    ell: float = 1e-3
+    M: float = 1.0          # mass in core units (= mu = M/l)
+    ell: float = 1.0        # core length in core units (kept for the formulas; = 1)
 
+    # overflow-safe forms with q = r^3/D in [0, 1):  f' = -(2 mu r/D)(2 - 3q),  f'' = -(4 mu/D)(1 - 9q + 9q^2)
     def f(self, r):
-        return 1.0 - 2.0 * self.M * r * r / (r**3 + 2.0 * self.M * self.ell**2)
+        D = r**3 + 2.0 * self.M * self.ell**2
+        return 1.0 - 2.0 * self.M * r * r / D
 
     def df(self, r):
         D = r**3 + 2.0 * self.M * self.ell**2
-        return -2.0 * self.M * (2.0 * r * D - 3.0 * r**4) / D**2
+        q = r**3 / D
+        return -(2.0 * self.M * r / D) * (2.0 - 3.0 * q)
 
     def d2f(self, r):
         D = r**3 + 2.0 * self.M * self.ell**2
-        Dp = 3.0 * r * r
-        N = 2.0 * r * D - 3.0 * r**4
-        Np = 2.0 * D + 2.0 * r * Dp - 12.0 * r**3
-        return -2.0 * self.M * (Np * D - 2.0 * N * Dp) / D**3
+        q = r**3 / D
+        return -(4.0 * self.M / D) * (1.0 - 9.0 * q + 9.0 * q * q)
 
 
 @dataclass(frozen=True)
@@ -71,21 +78,26 @@ class Bardeen(StaticSphericalMetric):
     name: str = "Bardeen (1968) regular black hole"
     established: bool = False
     citation: str = "Bardeen (1968) GR5 Tbilisi p.174; Ayón-Beato & García, Phys. Lett. B 493, 149 (2000)"
-    M: float = 1.0
-    g: float = 1e-3
+    M: float = 1.0          # mass in core units (mu)
+    g: float = 1.0          # core length in core units
 
+    # overflow/underflow-safe forms with w = s^{-1/2}, p = r^2/s in [0, 1):
+    #   f = 1 - 2 mu p w,  f' = -2 mu r w^3 (2 - 3p),  f'' = -2 mu w^3 (2 - 15p + 15p^2)
     def f(self, r):
-        return 1.0 - 2.0 * self.M * r * r / (r * r + self.g**2) ** 1.5
+        s = r * r + self.g**2
+        return 1.0 - 2.0 * self.M * (r * r / s) / math.sqrt(s)
 
     def df(self, r):
         s = r * r + self.g**2
-        # d/dr [ r^2 s^{-3/2} ] = 2 r s^{-3/2} - 3 r^3 s^{-5/2}
-        return -2.0 * self.M * (2.0 * r * s**-1.5 - 3.0 * r**3 * s**-2.5)
+        w = 1.0 / math.sqrt(s)
+        p = r * r / s
+        return -2.0 * self.M * r * w * w * w * (2.0 - 3.0 * p)
 
     def d2f(self, r):
         s = r * r + self.g**2
-        # d/dr [2 r s^{-3/2} - 3 r^3 s^{-5/2}] = 2 s^{-3/2} - 6 r^2 s^{-5/2} - 9 r^2 s^{-5/2} + 15 r^4 s^{-7/2}
-        return -2.0 * self.M * (2.0 * s**-1.5 - 15.0 * r * r * s**-2.5 + 15.0 * r**4 * s**-3.5)
+        w = 1.0 / math.sqrt(s)
+        p = r * r / s
+        return -2.0 * self.M * w * w * w * (2.0 - 15.0 * p + 15.0 * p * p)
 
 
 @dataclass(frozen=True)
@@ -98,30 +110,39 @@ class Dymnikova(StaticSphericalMetric):
     name: str = "Dymnikova (1992) regular black hole"
     established: bool = False
     citation: str = "Dymnikova, Gen. Relativ. Gravit. 24, 235 (1992)"
-    M: float = 1.0
-    r0: float = 1e-3
+    M: float = 1.0          # mass in core units (mu)
+    r0: float = 1.0         # core length in core units
 
     @property
     def rstar3(self):
         return 2.0 * self.M * self.r0**2
 
-    def _mass(self, r):
-        return self.M * (1.0 - math.exp(-r**3 / self.rstar3))
+    def _q(self, r):
+        """q = r^3 / r_*^3 in log space (r up to 2 mu ~ 1e52 in core units)."""
+        lq = 3.0 * math.log(r) - math.log(self.rstar3)
+        return math.exp(lq) if lq < 700.0 else math.inf
+
+    def _mass_terms(self, r):
+        """m = M (1 - e^-q) via expm1 (no cancellation for q << 1), m' = 3 e q M / r, m'' = 3 e q M (2 - 3q)/r^2."""
+        q = self._q(r)
+        if q > 700.0:
+            return self.M, 0.0, 0.0
+        e = math.exp(-q)
+        m = -self.M * math.expm1(-q)
+        mp = 3.0 * e * q * self.M / r
+        mpp = 3.0 * e * q * self.M * (2.0 - 3.0 * q) / (r * r)
+        return m, mp, mpp
 
     def f(self, r):
-        return 1.0 - 2.0 * self._mass(r) / r
+        m, _, _ = self._mass_terms(r)
+        return 1.0 - 2.0 * m / r
 
     def df(self, r):
-        e = math.exp(-r**3 / self.rstar3)
-        m = self.M * (1.0 - e)
-        mp = self.M * e * 3.0 * r * r / self.rstar3
+        m, mp, _ = self._mass_terms(r)
         return 2.0 * m / (r * r) - 2.0 * mp / r
 
     def d2f(self, r):
-        e = math.exp(-r**3 / self.rstar3)
-        m = self.M * (1.0 - e)
-        mp = self.M * e * 3.0 * r * r / self.rstar3
-        mpp = self.M * e * (6.0 * r / self.rstar3 - 9.0 * r**4 / self.rstar3**2)
+        m, mp, mpp = self._mass_terms(r)
         return -4.0 * m / r**3 + 4.0 * mp / (r * r) - 2.0 * mpp / r
 
 
@@ -150,25 +171,36 @@ MODEL_DOCS = {
 }
 
 
-def run_model(model: StaticSphericalMetric, sim: Simulation, r_stop_geo: float, rtol=1e-10) -> Dict:
-    """Radial E = 1 infall in the toy metric from r = r_s(Schwarzschild) down to r_stop, ln r mode."""
-    r_h = 2.0
-    y0 = initial_state_radial(model, r_h, 1.0, 0.0)
-    integ = DormandPrince54(rtol=rtol, atol=np.array([1e-12, 0, 1e-14, 1e-14, 0, 0, 1e-14, 1e-14, 1e-12]), max_step=0.02)
+def run_model(model: StaticSphericalMetric, sim: Simulation, r_stop_core: float, ell_m: float, rtol=1e-10) -> Dict:
+    """Radial E = 1 infall in the toy metric from the Schwarzschild horizon r = 2 mu down to r_stop (core units),
+    ln r mode.  ell_m = core length in metres (unit conversion)."""
+    mu = model.M
+    r_h = 2.0 * mu
+    # FIRST-INTEGRAL formulation (E, L exact; u^v, u^r reconstructed algebraically at every step).
+    # The second-order geodesic equation for u^v is exponentially UNSTABLE when integrated inward through a
+    # de Sitter-like core (f' < 0 there flips the sign of the Riccati term -(f'/2)(u^v)^2): perturbations grow
+    # by ~e per e-fold of r, i.e. by ~1e17 across the core region of these models.  The first-integral form has
+    # no such mode and is exact for geodesics.  (In Schwarzschild the same mode decays, which is why the
+    # validated run uses the second-order form and cross-checks it against this one in TEST 8.)
+    y0 = np.array([0.0, r_h, math.pi / 2, 0.0, 1.0, 0.0, 0.0])          # [v_seg, r, theta, phi, E, L, tau_seg]
+    integ = DormandPrince54(rtol=rtol, atol=np.array([0.0, 0, 1e-14, 1e-14, 1e-14, 1e-14, 0.0]), max_step=0.02)
 
     def fun(x, y):
-        return rhs_lnr(model, x, y)
+        return rhs_first_integral_lnr(model, x, y)
 
-    def resync(x, y):
-        y = y.copy(); y[IR] = math.exp(x); return y
-
-    res = integ.integrate(fun, math.log(r_h), y0, math.log(r_stop_geo), after_step=resync)
-    r = np.exp(res.x)
-    K = np.array([kretschmann_closed_form(model, ri) for ri in r])
-    K_sch = 48.0 / r**6
+    res = integ.integrate(fun, math.log(r_h), y0, math.log(r_stop_core))
+    r = np.exp(res.x)                                   # core units
+    vel = np.array([first_integral_velocity(model, ri, 1.0, 0.0) for ri in r])   # (u^v, u^r, u^phi)
+    with np.errstate(all="ignore"):
+        K = np.array([kretschmann_closed_form(model, ri) for ri in r])       # per l^4
+    log10_K_sch = math.log10(48.0) + 2.0 * math.log10(mu) - 6.0 * np.log10(r)   # log space: r^6 overflows
     fvals = np.array([model.f(ri) for ri in r])
-    f_sch = 1.0 - 2.0 / r
-    u = sim.units
+    f_sch = 1.0 - 2.0 * mu / r
+    from ..constants import c as _c, YEAR as _YEAR
+    log10_l4 = 4.0 * math.log10(ell_m)
+    to_SI_logK = None
+    to_SI_logK = lambda k: (math.log10(k) - log10_l4) if (k is not None and k > 0 and math.isfinite(k)) else None
+    to_years = lambda t: t * ell_m / _c / _YEAR
     dev = np.abs(fvals / f_sch - 1.0)
     idx_dev = int(np.argmax(dev > 1e-2)) if np.any(dev > 1e-2) else None
     # inner horizon: sign change of f inside
@@ -177,27 +209,30 @@ def run_model(model: StaticSphericalMetric, sim: Simulation, r_stop_geo: float, 
     for i in range(1, len(sgn)):
         if sgn[i - 1] < 0 <= sgn[i]:
             inner = float(r[i]); break
+    logK_SI = [to_SI_logK(k) for k in K]
+    logK_sch_SI = [float(v - log10_l4) for v in log10_K_sch]
     out = {
         "banner": BANNER,
         "model": model.name,
-        "parameters": {k: getattr(model, k) for k in model.__dataclass_fields__ if k not in ("name", "established", "citation")},
-        "parameter_note": "core length in units of GM/c^2; in metres multiply by M_m",
+        "parameters": {"mu = M / l": mu, "core_length_m": ell_m},
+        "parameter_note": "integrated in units of the core length l; mu = M/l",
         "status": res.status,
         "n_steps": int(res.n_accepted),
-        "max_norm_residual": float(np.max(np.abs([norm(model, yy) + 1 for yy in res.y]))),
-        "r_geo": r.tolist(),
-        "log10_r_over_rs": np.log10(r / 2.0).tolist(),
-        "log10_K_SI": [u.log10_kretschmann_to_SI(math.log10(k)) if k > 0 else None for k in K],
-        "log10_K_schwarzschild_SI": [u.log10_kretschmann_to_SI(math.log10(k)) for k in K_sch],
-        "log10_K_over_Kplanck": [u.log10_kretschmann_to_SI(math.log10(k)) - math.log10(sim.dq.K_planck) if k > 0 else None for k in K],
+        "formulation": "first integrals (E = 1, L = 0), ln r independent variable; see comment in run_model",
+        "max_E_drift": float(np.max(np.abs(res.y[:, 4] - 1.0))),
+        "r_geo": (r / mu).tolist(),                                     # in units of GM/c^2 for compatibility
+        "log10_r_over_rs": np.log10(r / (2.0 * mu)).tolist(),
+        "log10_K_SI": logK_SI,
+        "log10_K_schwarzschild_SI": logK_sch_SI,
+        "log10_K_over_Kplanck": [(v - math.log10(sim.dq.K_planck)) if v is not None else None for v in logK_SI],
         "f": fvals.tolist(),
-        "tau_since_horizon_years": [u.t_to_years(t) for t in res.y[:, ITAU]],
-        "u_r": res.y[:, IUR].tolist(),
-        "K_max_log10_SI": float(np.max([u.log10_kretschmann_to_SI(math.log10(k)) for k in K if k > 0])),
-        "r_1pct_deviation_from_schwarzschild_m": float(u.r_to_SI(r[idx_dev])) if idx_dev is not None else None,
-        "inner_horizon_r_m": u.r_to_SI(inner) if inner is not None else None,
-        "reaches_r0_in_finite_proper_time": "no (de Sitter core: r ~ exp(-tau/l), asymptotic approach)" if model.f(1e-12 * model.__dict__.get("ell", model.__dict__.get("g", model.__dict__.get("r0", 1e-3)))) > 0 else "unknown",
-        "tau_horizon_to_stop_years": u.t_to_years(res.y[-1, ITAU]),
+        "tau_since_horizon_years": [to_years(t) for t in res.y[:, 6]],
+        "u_r": vel[:, 1].tolist(),
+        "K_max_log10_SI": float(max(v for v in logK_SI if v is not None)),
+        "r_1pct_deviation_from_schwarzschild_m": float(r[idx_dev] * ell_m) if idx_dev is not None else None,
+        "inner_horizon_r_m": inner * ell_m if inner is not None else None,
+        "reaches_r0_in_finite_proper_time": "no (de Sitter core: r ~ exp(-tau/l), asymptotic approach)" if model.f(1e-6) > 0 else "unknown",
+        "tau_horizon_to_stop_years": to_years(res.y[-1, 6]),
         "docs": MODEL_DOCS,
     }
     return out
@@ -208,21 +243,25 @@ def run_speculative_suite(sim: Simulation, out_dir: Path, core_length_over_M: fl
     the Schwarzschild reference on the same grid.  Writes JSON to out_dir and returns the payload."""
     out_dir.mkdir(parents=True, exist_ok=True)
     lP = sim.dq.l_P_over_M
-    ell = core_length_over_M if core_length_over_M is not None else 1e4 * lP
-    r_stop = 1e-2 * ell
+    ell = core_length_over_M if core_length_over_M is not None else 1e4 * lP    # in units of GM/c^2
+    ell_m = sim.units.r_to_SI(ell)
+    mu = 1.0 / ell                                                                # M / l
+    r_stop = 1e-2                                                                 # core units
     results = {}
-    for key, model in (("hayward", Hayward(ell=ell)), ("bardeen", Bardeen(g=ell)), ("dymnikova", Dymnikova(r0=ell))):
+    # Bardeen's charge g is NOT its core scale: near the centre f ~ 1 - 2 M r^2/g^3, i.e. a de Sitter radius
+    # sqrt(g^3/2M).  Choosing g = (2 mu)^(1/3) (core units) gives all three models the same de Sitter core radius l.
+    for key, model in (("hayward", Hayward(M=mu)), ("bardeen", Bardeen(M=mu, g=(2.0 * mu) ** (1.0 / 3.0))), ("dymnikova", Dymnikova(M=mu))):
         try:
-            results[key] = run_model(model, sim, r_stop)
+            results[key] = run_model(model, sim, r_stop, ell_m)
         except Exception as e:  # pragma: no cover
             results[key] = {"banner": BANNER, "model": model.name, "error": repr(e)}
     payload = {
         "menu_title": MENU_TITLE,
         "banner": BANNER,
         "core_length_geo": ell,
-        "core_length_m": sim.units.r_to_SI(ell),
+        "core_length_m": ell_m,
         "core_length_in_planck_lengths": ell / lP,
-        "r_stop_m": sim.units.r_to_SI(r_stop),
+        "r_stop_m": r_stop * ell_m,
         "note": ("Each toy model is integrated with the SAME validated EF geodesic engine, only f(r) differs. "
                  "The choice of core length is arbitrary (1e4 Planck lengths here) and has NO observational basis. "
                  "Inner-horizon instabilities (mass inflation) are ignored. These curves must never be read as predictions."),

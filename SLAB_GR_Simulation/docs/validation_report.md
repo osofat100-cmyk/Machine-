@@ -1,6 +1,6 @@
 # SLAB_GR_Simulation — validation report
 
-Generated: 2026-09-25T15:35:58.000828+00:00  ·  status: **VALIDATED**  ·  9/9 tests passed  ·  wall time 4.2 s
+Generated: 2026-09-25T20:31:37.987130+00:00  ·  status: **VALIDATED**  ·  9/9 tests passed  ·  wall time 5.0 s
 
 Every number below is computed by `src/slab/validation.py` from the constants in `src/slab/constants.py`; nothing is typed in by hand. Tags: **EXACT GR RESULT** (closed-form consequence of the Schwarzschild solution), **NUMERICAL** (integrated/rooted value with the quoted error), **BRIEF** (value quoted in the project brief, used only as a comparison target).
 
@@ -38,6 +38,7 @@ Every number below is computed by `src/slab/validation.py` from the constants in
 | r_photon_sphere_m | 4.430009e+21 |
 | r_isco_m | 8.860018e+21 |
 | l_P_from_hbar_G_c | 1.616255e-35 |
+| relative_uncertainties | {'G': 2.2474266964325848e-05, 'M_sun': 3.5202944977797e-05, 'l_P': 1.1136856498510445e-06, 'M_kg': 3.5202944977797e-05, 'GM_and_all_lengths_and_times_in_SI (r_s, GM/c^3, tau, K^-1/4)': 4.1765296726990835e-05, 'K_SI (∝ M^2)': 8.353059345398167e-05, 'K_planck (∝ l_P^-4)': 4.454742599404178e-06, 'r_QG (∝ (G M)^(1/3) l_P^(2/3))': 1.3941549386238436e-05, 'tidal_SI (∝ G M / r^3 at fixed r)': 4.1765296726990835e-05, 'note': 'geometrized results (in units of GM/c^2, GM/c^3) carry no constant uncertainty at all'} |
 
 Brief expectations (comparison targets only): M_kg = 1.98847e+48, r_s_m = 2.95334e+21, r_s_ly = 312168.0, GM_over_c3_years = 156084.0, tau_horizon_to_singularity_years = 208112.0, r_QG_m = 1.39e-16
 
@@ -81,12 +82,16 @@ Reference: Eddington 1924; Finkelstein 1958; MTW Box 31.2; Wald §6.4
 | |RHS(2M(1+eps)) - RHS(2M(1-eps))|_max, eps=1e-6 | 1.000000e-06 | — | 1.000000e-06 | 1.000000e-04 | ok | continuity of the equations of motion through the horizon |
 | Kruskal U at horizon | 0 | 0 | 0 | 1.000000e-300 | ok |  |
 | Kruskal (T, X) at horizon | 0.5 | finite | — | — | ok |  |
-| u^v at horizon (numerical) vs 1/2 | 0.5 | 0.5 | 1.163514e-13 | 1.000000e-09 | ok |  |
-| u^r at horizon (numerical) vs -1 | -1 | -1 | 1.330047e-13 | 1.000000e-09 | ok |  |
-| rejected steps in the segment ending on the horizon | 0 | 0 | 0 | 0 | ok | no step-size collapse approaching r = 2M |
-| max normalized error estimate in that segment | 0.555956842 | — | 0.555956842 | 1 | ok |  |
-| first accepted step size (ln r) just inside the horizon | 9.967501e-05 | — | — | — | ok | informational: ln r step immediately after crossing |
-| rejected steps in the segment starting on the horizon | 0 | 0 | 0 | 0 | ok |  |
+| u^v at horizon (numerical) vs 1/2 | 0.5 | 0.5 | 9.092727e-14 | 1.000000e-09 | ok |  |
+| u^r at horizon (numerical) vs -1 | -1 | -1 | 1.025846e-13 | 1.000000e-09 | ok |  |
+| rejected steps in the segment ending on the horizon, excluding the segment's first step | 0 | 0 | 0 | 0 | ok | total rejections 1 (first-step rejections are a segment-restart artefact of the carried-over step size) |
+| step-size ratio min/max in the segment ending on the horizon (no collapse) | 0.388437182 | — | — | — | ok | informational; must stay well above ~1e-3 |
+| no step-size collapse ending on the horizon: min step > 1e-3 x max step | 0.00257441884 | — | 0.00257441884 | 1 | ok |  |
+| max normalized error estimate in the segment ending on the horizon | 0.76941598 | — | 0.76941598 | 1 | ok |  |
+| rejected steps in the segment starting on the horizon, excluding the segment's first step | 0 | 0 | 0 | 0 | ok | total rejections 2 (first-step rejections are a segment-restart artefact of the carried-over step size) |
+| step-size ratio min/max in the segment starting on the horizon (no collapse) | 0.225799839 | — | — | — | ok | informational; must stay well above ~1e-3 |
+| no step-size collapse starting on the horizon: min step > 1e-3 x max step | 0.00442870112 | — | 0.00442870112 | 1 | ok |  |
+| max normalized error estimate in the segment starting on the horizon | 0.658817143 | — | 0.658817143 | 1 | ok |  |
 
 ### TEST 3 — Radial E = 1 geodesic vs analytic solution  ·  **PASS**
 
@@ -95,29 +100,29 @@ Reference: MTW §25.5 & Box 31.2; Wald problem 6.4
 
 | check | value | expected | error | tolerance | result | note |
 |---|---|---|---|---|---|---|
-| max |u^r/u^r_analytic - 1| over all steps | 2.366860e-11 | — | 2.366860e-11 | 1.000000e-09 | ok |  |
-| max |u^v/u^v_analytic - 1| over all steps | 2.628930e-11 | — | 2.628930e-11 | 1.000000e-09 | ok |  |
-| max relative error of Delta v per milestone segment (vs series-evaluated analytic v(r)) | 3.063148e-12 | — | 3.063148e-12 | 1.000000e-09 | ok |  |
-| max relative error of Delta tau per milestone segment | 2.416101e-11 | — | 2.416101e-11 | 1.000000e-09 | ok |  |
+| max |u^r/u^r_analytic - 1| over all steps | 1.507453e-11 | — | 1.507453e-11 | 1.000000e-09 | ok |  |
+| max |u^v/u^v_analytic - 1| over all steps | 1.687009e-11 | — | 1.687009e-11 | 1.000000e-09 | ok |  |
+| max relative error of Delta v per milestone segment (vs series-evaluated analytic v(r)) | 1.717299e-12 | — | 1.717299e-12 | 1.000000e-09 | ok |  |
+| max relative error of Delta tau per milestone segment | 1.500137e-11 | — | 1.500137e-11 | 1.000000e-09 | ok |  |
 
 Per-segment comparison with the analytic E = 1 solution (geometrized units):
 
 | from | to | Δv numeric | Δv analytic | rel. err | Δτ numeric | Δτ analytic | rel. err |
 |---|---|---|---|---|---|---|---|
-| start | isco | 1159.90556 | 1159.90556 | 2.121020e-13 | 1326.40513 | 1326.40513 | 1.731352e-13 |
-| isco | photon_sphere | 2.68629606 | 2.68629606 | 3.608860e-13 | 4.47871349 | 4.47871349 | 2.133827e-13 |
-| photon_sphere | horizon | 0.589155639 | 0.589155639 | 2.743731e-13 | 1.11615641 | 1.11615641 | 1.547728e-13 |
-| horizon | 0.1rs | 0.552749415 | 0.552749415 | 1.110726e-13 | 1.29116963 | 1.29116963 | 1.313864e-13 |
-| 0.1rs | 0.01rs | 0.00790258245 | 0.00790258245 | 1.804401e-13 | 0.0408303688 | 0.0408303688 | 2.815979e-13 |
-| 0.01rs | 1ly | 9.261411e-05 | 9.261411e-05 | 2.082176e-12 | 0.00133332569 | 0.00133332569 | 1.430017e-12 |
-| 1ly | 1e-6rs | 9.247906e-12 | 9.247906e-12 | 3.063148e-12 | 6.311283e-09 | 6.311283e-09 | 3.644490e-12 |
-| 1e-6rs | 1au | 9.992007e-13 | 9.992007e-13 | 3.051658e-12 | 1.333333e-09 | 1.333333e-09 | 4.039952e-12 |
-| 1au | extreme_curvature | 2.554153e-21 | 2.554153e-21 | 3.045168e-12 | 4.722781e-16 | 4.722781e-16 | 6.849611e-12 |
-| extreme_curvature | 1km | 1.164060e-23 | 1.164060e-23 | 3.030984e-12 | 8.402735e-18 | 8.402735e-18 | 7.630067e-12 |
-| 1km | 1m | 1.146497e-37 | 1.146497e-37 | 3.039178e-12 | 2.626969e-28 | 2.626969e-28 | 1.224153e-11 |
-| 1m | atomic | 1.146498e-43 | 1.146498e-43 | 3.041852e-12 | 8.307468e-33 | 8.307468e-33 | 1.421107e-11 |
-| atomic | nuclear | 1.146498e-63 | 1.146498e-63 | 3.036247e-12 | 8.307468e-48 | 8.307468e-48 | 2.087158e-11 |
-| nuclear | r_QG | 1.124418e-73 | 1.124418e-73 | 3.045090e-12 | 2.491243e-55 | 2.491243e-55 | 2.416101e-11 |
+| start | isco | 1159.90556 | 1159.90556 | 1.609388e-13 | 1326.40513 | 1326.40513 | 1.319942e-13 |
+| isco | photon_sphere | 2.68629606 | 2.68629606 | 2.843445e-13 | 4.47871349 | 4.47871349 | 1.683661e-13 |
+| photon_sphere | horizon | 0.589155639 | 0.589155639 | 2.131291e-13 | 1.11615641 | 1.11615641 | 1.199589e-13 |
+| horizon | 0.1rs | 0.552749415 | 0.552749415 | 8.817520e-14 | 1.29116963 | 1.29116963 | 1.014633e-13 |
+| 0.1rs | 0.01rs | 0.00790258245 | 0.00790258245 | 7.682972e-14 | 0.0408303688 | 0.0408303688 | 1.488713e-13 |
+| 0.01rs | 1ly | 9.261411e-05 | 9.261411e-05 | 6.229408e-13 | 0.00133332569 | 0.00133332569 | 3.081862e-13 |
+| 1ly | 1e-6rs | 9.247906e-12 | 9.247906e-12 | 1.695615e-12 | 6.311283e-09 | 6.311283e-09 | 1.681024e-12 |
+| 1e-6rs | 1au | 9.992007e-13 | 9.992007e-13 | 1.120902e-12 | 1.333333e-09 | 1.333333e-09 | 1.822073e-12 |
+| 1au | extreme_curvature | 2.554153e-21 | 2.554153e-21 | 1.690991e-12 | 4.722781e-16 | 4.722781e-16 | 3.613971e-12 |
+| extreme_curvature | 1km | 1.164060e-23 | 1.164060e-23 | 1.319965e-12 | 8.402735e-18 | 8.402735e-18 | 3.938070e-12 |
+| 1km | 1m | 1.146497e-37 | 1.146497e-37 | 1.703994e-12 | 2.626969e-28 | 2.626969e-28 | 7.109697e-12 |
+| 1m | atomic | 1.146498e-43 | 1.146498e-43 | 1.672298e-12 | 8.307468e-33 | 8.307468e-33 | 8.266442e-12 |
+| atomic | nuclear | 1.146498e-63 | 1.146498e-63 | 1.700496e-12 | 8.307468e-48 | 8.307468e-48 | 1.287230e-11 |
+| nuclear | r_QG | 1.124418e-73 | 1.124418e-73 | 1.717299e-12 | 2.491243e-55 | 2.491243e-55 | 1.500137e-11 |
 
 ### TEST 4 — Horizon-to-singularity proper-time benchmark  ·  **PASS**
 
@@ -129,7 +134,7 @@ Reference: MTW §25.5 eq. (25.38) (cycloid solution); Taylor & Wheeler 'Explorin
 | tau(horizon -> r_QG) numeric [GM/c^3] | 1.33333333 | 1.33333333 | 2.273182e-13 | 1.000000e-09 | ok | analytic 4M/3 (1 - (r_QG/2M)^(3/2)); the missing tail (r_QG -> 0) is 1.358e-56 GM/c^3 |
 | tau(horizon -> r_QG) [yr] vs 4GM/(3c^3) in years | 2.081121e+05 | 2.081121e+05 | 2.273910e-13 | 1.000000e-09 | ok |  |
 | 4GM/(3c^3) [yr] vs brief 208,112 | 2.081121e+05 | 2.081120e+05 | 7.015461e-07 | 1.000000e-05 | ok |  |
-| tau(r0 -> r_QG) numeric vs analytic | 1333.33333 | 1333.33333 | 1.734293e-13 | 1.000000e-09 | ok |  |
+| tau(r0 -> r_QG) numeric vs analytic | 1333.33333 | 1333.33333 | 1.321609e-13 | 1.000000e-09 | ok |  |
 
 ### TEST 5 — Kretschmann scalar  ·  **PASS**
 
@@ -174,11 +179,14 @@ Reference: Killing symmetries; MTW §25.2
 
 | check | value | expected | error | tolerance | result | note |
 |---|---|---|---|---|---|---|
-| max |g(u,u) + 1| over all steps (raw) | 4.733747e-11 | — | 4.733747e-11 | 1.000000e-09 | ok | well conditioned for radial motion (terms O(1)); see the conditioned version for L != 0 |
-| max |g(u,u) + 1| / conditioning scale | 2.366873e-11 | — | 2.366873e-11 | 1.000000e-09 | ok |  |
-| max |L - L0| | 0 | — | 0 | 1.000000e-12 | ok |  |
-| max |E(u) - E_k| where E is well conditioned (|f u^v|,|u^r| < 10, i.e. r > 0.01 r_s) | 1.013056e-11 | — | 1.013056e-11 | 1.000000e-09 | ok | E(u) = f u^v - u^r from the integrated 4-velocity vs the separately carried Killing energy E_k |
-| max |E - E0| / conditioning scale (all steps) | 2.648724e-12 | — | 2.648724e-12 | 1.000000e-09 | ok | E = f u^v - u^r cancels two terms ~sqrt(2M/r) ~ 1e19 at r_QG; raw drift = 1.204e+07 is round-off of those terms, not integration error (see physics_notes.md) |
+| max |g(u,u) + 1| over all steps (raw) | 3.014922e-11 | — | 3.014922e-11 | 1.000000e-09 | ok | well conditioned for radial motion (terms O(1)); see the conditioned version for L != 0 |
+| max |g(u,u) + 1| / conditioning scale | 1.507461e-11 | — | 1.507461e-11 | 1.000000e-09 | ok |  |
+| max |L - L0| (benchmark has L = 0: trivially conserved) | 0 | — | 0 | 1.000000e-12 | ok |  |
+| L = 3.5 plunge: max |L - L0| / L0 over all steps | 4.233576e-10 | — | 4.233576e-10 | 1.000000e-08 | ok | 7416 steps, modes ['tau', 'tau', 'tau']... ; u^theta stays exactly 0: True |
+| L = 3.5 plunge: max conditioned |g(u,u)+1| | 6.369905e-12 | — | 6.369905e-12 | 1.000000e-09 | ok |  |
+| L = 3.5 plunge: max conditioned E drift | 2.233991e-12 | — | 2.233991e-12 | 1.000000e-09 | ok |  |
+| max |E(u) - E_k| where E is well conditioned (|f u^v|,|u^r| < 10, i.e. r > 0.01 r_s) | 5.941914e-12 | — | 5.941914e-12 | 1.000000e-09 | ok | E(u) = f u^v - u^r from the integrated 4-velocity vs the separately carried Killing energy E_k |
+| max |E - E0| / conditioning scale (all steps) | 2.046624e-12 | — | 2.046624e-12 | 1.000000e-09 | ok | E = f u^v - u^r cancels two terms ~sqrt(2M/r) ~ 1e19 at r_QG; the raw drift 5.950e+06 is rtol x that magnitude, i.e. tolerance-level error of the huge velocity components, not an error in the conserved energy itself (see physics_notes.md §4) |
 
 ### TEST 8 — Convergence with tolerance + independent integrator/formulation cross-checks  ·  **PASS**
 
@@ -187,37 +195,37 @@ Reference: Hairer, Nørsett & Wanner 1993 ch. II; Dormand & Prince 1980
 
 | check | value | expected | error | tolerance | result | note |
 |---|---|---|---|---|---|---|
-| errors decrease monotonically with tolerance (until the ~1e-11 round-off floor) | 1 | 1 | 0 | 0 | ok |  |
+| errors decrease monotonically with tolerance (exemption only below 1e-12) | 1 | 1 | 0 | 0 | ok |  |
 | error(tau) at rtol=1e-12 (uncapped step) | 2.273182e-13 | — | 2.273182e-13 | 1.000000e-09 | ok |  |
-| max error(u^r) at rtol=1e-12 (uncapped step) | 2.366860e-11 | — | 2.366860e-11 | 1.000000e-09 | ok |  |
-| convergence ratio error(rtol=1e-6)/error(rtol=1e-10) > 10 | 40864.2939 | — | — | — | ok | informational: how much the error shrinks over four decades of tolerance |
-| SciPy DOP853 (rtol 1e-13) tau(h -> QG) vs analytic | 1.33333333 | 1.33333333 | 4.496403e-15 | 1.000000e-09 | ok |  |
-| SciPy DOP853 Delta v(h -> QG) vs analytic | 0.560744611 | 0.560744611 | 1.049352e-14 | 1.000000e-09 | ok |  |
-| first-integral formulation tau(h -> QG) vs analytic | 1.33333333 | 1.33333333 | 2.974287e-13 | 1.000000e-09 | ok |  |
-| first-integral formulation Delta v(h -> QG) vs analytic | 0.560744611 | 0.560744611 | 5.120043e-13 | 1.000000e-09 | ok |  |
-| second-order vs first-integral tau(h -> QG) (two formulations agree) | 5.247469e-13 | — | 5.247469e-13 | 2.000000e-09 | ok |  |
+| max error(u^r) at rtol=1e-12 (uncapped step) | 1.507453e-11 | — | 1.507453e-11 | 1.000000e-09 | ok |  |
+| convergence ratio error(rtol=1e-6)/error(rtol=1e-10) >= 100 (checked as 100/ratio <= 1) | 0.00259282289 | — | 0.00259282289 | 1 | ok | ratio = 3.857e+04 over four decades of tolerance |
+| SciPy DOP853 (rtol 1e-13) tau(h -> QG) vs analytic | 1.33333333 | 1.33333333 | 4.662937e-15 | 1.000000e-09 | ok |  |
+| SciPy DOP853 Delta v(h -> QG) vs analytic | 0.560744611 | 0.560744611 | 8.315616e-15 | 1.000000e-09 | ok |  |
+| first-integral formulation tau(h -> QG) vs analytic | 1.33333333 | 1.33333333 | 2.181588e-13 | 1.000000e-09 | ok |  |
+| first-integral formulation Delta v(h -> QG) vs analytic | 0.560744611 | 0.560744611 | 3.747967e-13 | 1.000000e-09 | ok |  |
+| second-order vs first-integral tau(h -> QG) (two formulations agree) | 4.454770e-13 | — | 4.454770e-13 | 2.000000e-09 | ok |  |
 
 Convergence with tolerance (step cap lifted so that the error controller alone sets the step):
 
 | rtol | steps | rel. err τ(h→r_QG) | rel. err Δv(h→r_QG) | max rel. err u^r | wall [s] |
 |---|---|---|---|---|---|
-| 1e-06 | 258 | 1.001206e-07 | 5.003674e-07 | 1.789952e-04 | 0.12 |
-| 1e-08 | 538 | 1.067406e-09 | 1.363904e-09 | 8.782141e-07 | 0.24 |
-| 1e-10 | 1246 | 1.318762e-11 | 3.391979e-12 | 4.380234e-09 | 0.50 |
-| 1e-12 | 3041 | 2.273182e-13 | 1.480972e-13 | 2.366860e-11 | 1.24 |
+| 1e-06 | 258 | 7.536573e-08 | 2.181327e-07 | 1.059516e-04 | 0.05 |
+| 1e-08 | 585 | 8.286633e-10 | 7.581093e-10 | 5.443174e-07 | 0.11 |
+| 1e-10 | 1411 | 9.606482e-12 | 2.986494e-12 | 2.747138e-09 | 0.26 |
+| 1e-12 | 3471 | 2.273182e-13 | 1.480972e-13 | 1.507453e-11 | 0.66 |
 
 ## 4. Benchmark run summary
 
-* n_steps_total: `3041`
-* n_rhs_evals_total: `21294`
-* n_rejected_total: `0`
-* max_err_estimate: `0.598925941`
-* max_abs_norm_residual: `4.733747e-11`
-* max_abs_E_drift_raw: `1.203610e+07`
-* max_E_drift_conditioned: `2.648724e-12`
-* max_abs_E_drift_where_well_conditioned: `1.013056e-11`
+* n_steps_total: `3471`
+* n_rhs_evals_total: `20966`
+* n_rejected_total: `22`
+* max_err_estimate: `0.76941598`
+* max_abs_norm_residual: `3.014922e-11`
+* max_abs_E_drift_raw: `5.949953e+06`
+* max_E_drift_conditioned: `2.046624e-12`
+* max_abs_E_drift_where_well_conditioned: `5.941914e-12`
 * max_abs_L_drift: `0`
-* max_tidal_closed_form_reldiff: `3.749397e-16`
+* max_tidal_closed_form_reldiff: `3.686143e-16`
 * tau_total_years_at_end: `2.081121e+08`
 * tau_since_horizon_years_at_end: `2.081121e+05`
 

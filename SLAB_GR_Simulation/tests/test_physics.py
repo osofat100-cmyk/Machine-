@@ -60,16 +60,19 @@ def test_geodesic_equation_matches_analytic_derivative():
         assert math.isclose(y[IUV], ref.uv(r), rel_tol=1e-14)
 
 
-def test_thrust_four_acceleration_orthogonal_and_unit():
+@pytest.mark.parametrize("L", [0.0, 3.0])
+def test_thrust_four_acceleration_orthogonal_and_unit(L):
     from slab.geodesic import four_acceleration
     m = Schwarzschild()
     for r in (5.0, 2.0, 0.7):
-        y = initial_state_radial(m, r, 1.0)
+        y = initial_state_radial(m, r, 1.0, L)
         a = four_acceleration(m, y, Thrust(alpha=0.3))
         u = y[IUV:IUV + 4]
-        assert abs(m.dot(r, y[2], u, a)) < 1e-12          # a . u = 0  (norm preserved)
-        assert math.isclose(m.dot(r, y[2], a, a), 0.09, rel_tol=1e-12)  # |a|^2 = alpha^2
-        assert a[1] < 0.0 or r < 2.0                        # inward thrust decreases dr/dtau outside
+        assert abs(m.dot(r, y[2], u, a)) < 1e-12 * max(1.0, abs(a).max() * abs(u).max())   # a . u = 0
+        assert math.isclose(m.dot(r, y[2], a, a), 0.09, rel_tol=1e-12)  # |a|^2 = alpha^2 (also for L != 0)
+        # RHS with thrust equals geodesic RHS plus a (both formulations consistent)
+        d0, d1 = rhs_tau(m, y), rhs_tau(m, y, Thrust(alpha=0.3))
+        assert np.allclose(d1[IUV:IUV + 4] - d0[IUV:IUV + 4], a, rtol=1e-12, atol=1e-15)
 
 
 def test_thrust_energy_evolution_consistent():

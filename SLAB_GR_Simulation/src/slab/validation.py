@@ -108,16 +108,18 @@ def test2_horizon_regularity(sim: Simulation) -> dict:
     if ms is not None:
         t.check("u^v at horizon (numerical) vs 1/2", ms["u_v"], 0.5, 1e-9)
         t.check("u^r at horizon (numerical) vs -1", ms["u_r"], -1.0, 1e-9)
-    seg = next((s for s in sim.segments if s.slug_to == "horizon"), None)
-    if seg is not None:
-        t.check("rejected steps in the segment ending on the horizon", int(seg.n_rejected.sum()), 0, 0, kind="abs",
-                note="no step-size collapse approaching r = 2M")
-        t.check("max normalized error estimate in that segment", float(seg.err.max()), None, 1.0, kind="abs")
-    seg2 = next((s for s in sim.segments if s.slug_from == "horizon"), None)
-    if seg2 is not None:
-        t.check("first accepted step size (ln r) just inside the horizon", float(seg2.h[1]), None, None, kind="abs",
-                note="informational: ln r step immediately after crossing")
-        t.check("rejected steps in the segment starting on the horizon", int(seg2.n_rejected.sum()), 0, 0, kind="abs")
+    for which, seg in (("ending on", next((s for s in sim.segments if s.slug_to == "horizon"), None)),
+                       ("starting on", next((s for s in sim.segments if s.slug_from == "horizon"), None))):
+        if seg is None:
+            continue
+        rej = seg.n_rejected
+        interior_rej = int(rej[2:].sum())   # rejections after the first step (index 1 = first step of the segment)
+        t.check(f"rejected steps in the segment {which} the horizon, excluding the segment's first step", interior_rej, 0, 0, kind="abs",
+                note=f"total rejections {int(rej.sum())} (first-step rejections are a segment-restart artefact of the carried-over step size)")
+        t.check(f"step-size ratio min/max in the segment {which} the horizon (no collapse)", float(seg.h[1:].min() / seg.h[1:].max()), None, None, kind="abs",
+                note="informational; must stay well above ~1e-3")
+        t.check(f"no step-size collapse {which} the horizon: min step > 1e-3 x max step", 1e-3 * float(seg.h[1:].max()) / float(seg.h[1:].min()), None, 1.0, kind="abs")
+        t.check(f"max normalized error estimate in the segment {which} the horizon", float(seg.err.max()), None, 1.0, kind="abs")
     return t.d
 
 
@@ -254,12 +256,24 @@ def test7_conservation(sim: Simulation) -> dict:
     t.check("max |g(u,u) + 1| over all steps (raw)", s["max_abs_norm_residual"], None, 1e-9, kind="abs",
             note="well conditioned for radial motion (terms O(1)); see the conditioned version for L != 0")
     t.check("max |g(u,u) + 1| / conditioning scale", s["max_abs_norm_residual_conditioned"], None, 1e-9, kind="abs")
-    t.check("max |L - L0|", s["max_abs_L_drift"], None, 1e-12, kind="abs")
+    t.check("max |L - L0| (benchmark has L = 0: trivially conserved)", s["max_abs_L_drift"], None, 1e-12, kind="abs")
+    # non-trivial angular-momentum conservation: equatorial plunge with L = 3.5 GM/c from 20 r_s to r_QG
+    cfgL = SimulationConfig(**{**sim.cfg.to_dict(), "L_over_M": 3.5, "r0_over_rs": 20.0, "rtol": 1e-11, "thrust_r_on_max_over_rs": math.inf})
+    simL = Simulation(cfgL, verbose=False)
+    simL.run()
+    simL.postprocess()
+    sL = simL.summary()
+    t.check("L = 3.5 plunge: max |L - L0| / L0 over all steps", sL["max_abs_L_drift"] / 3.5, None, 1e-8, kind="abs",
+            note=f"{sL['n_steps_total']} steps, modes {[sg.mode for sg in simL.segments][:3]}... ; u^theta stays exactly 0: "
+                 f"{bool(np.all(simL.columns['u_theta'] == 0.0))}")
+    t.check("L = 3.5 plunge: max conditioned |g(u,u)+1|", sL["max_abs_norm_residual_conditioned"], None, 1e-9, kind="abs")
+    t.check("L = 3.5 plunge: max conditioned E drift", sL["max_E_drift_conditioned"], None, 1e-9, kind="abs")
     t.check("max |E(u) - E_k| where E is well conditioned (|f u^v|,|u^r| < 10, i.e. r > 0.01 r_s)", s["max_abs_E_drift_where_well_conditioned"], None, 1e-9, kind="abs",
             note="E(u) = f u^v - u^r from the integrated 4-velocity vs the separately carried Killing energy E_k")
     t.check("max |E - E0| / conditioning scale (all steps)", s["max_E_drift_conditioned"], None, 1e-9, kind="abs",
-            note="E = f u^v - u^r cancels two terms ~sqrt(2M/r) ~ 1e19 at r_QG; raw drift = "
-                 f"{s['max_abs_E_drift_raw']:.3e} is round-off of those terms, not integration error (see physics_notes.md)")
+            note="E = f u^v - u^r cancels two terms ~sqrt(2M/r) ~ 1e19 at r_QG; the raw drift "
+                 f"{s['max_abs_E_drift_raw']:.3e} is rtol x that magnitude, i.e. tolerance-level error of the huge velocity "
+                 "components, not an error in the conserved energy itself (see physics_notes.md §4)")
     return t.d
 
 
@@ -288,15 +302,16 @@ def test8_convergence(cfg: SimulationConfig) -> dict:
         rows.append({"rtol": rtol, "steps": sim.summary()["n_steps_total"], "err_tau_h_to_QG": e_tau, "err_dv_h_to_QG": e_v,
                      "max_err_ur": e_ur, "wall_s": time.time() - t0})
         cur = max(e_tau, e_ur)
-        if prev is not None and cur > prev and cur > 1e-11:
+        if prev is not None and cur > prev and cur > 1e-12:
             monotone = False
         prev = cur
     t.d["convergence_table"] = rows
-    t.check("errors decrease monotonically with tolerance (until the ~1e-11 round-off floor)", 1.0 if monotone else 0.0, 1.0, 0.0, kind="abs")
+    t.check("errors decrease monotonically with tolerance (exemption only below 1e-12)", 1.0 if monotone else 0.0, 1.0, 0.0, kind="abs")
     t.check("error(tau) at rtol=1e-12 (uncapped step)", rows[-1]["err_tau_h_to_QG"], None, 1e-9, kind="abs")
     t.check("max error(u^r) at rtol=1e-12 (uncapped step)", rows[-1]["max_err_ur"], None, 1e-9, kind="abs")
-    t.check("convergence ratio error(rtol=1e-6)/error(rtol=1e-10) > 10", rows[0]["max_err_ur"] / max(rows[2]["max_err_ur"], 1e-300), None, None, kind="abs",
-            note="informational: how much the error shrinks over four decades of tolerance")
+    ratio = rows[0]["max_err_ur"] / max(rows[2]["max_err_ur"], 1e-300)
+    t.check("convergence ratio error(rtol=1e-6)/error(rtol=1e-10) >= 100 (checked as 100/ratio <= 1)", 100.0 / ratio, None, 1.0, kind="abs",
+            note=f"ratio = {ratio:.3e} over four decades of tolerance")
     # --- independent integrator: SciPy DOP853 on the same ln r system, horizon -> r_QG
     m = Schwarzschild()
     y0 = np.array([0.0, 2.0, math.pi / 2, 0.0, ref.uv(2.0), ref.ur(2.0), 0.0, 0.0, 0.0, 1.0])

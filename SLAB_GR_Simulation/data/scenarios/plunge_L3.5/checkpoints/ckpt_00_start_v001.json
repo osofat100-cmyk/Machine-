@@ -72,12 +72,13 @@
     "E_killing": 1.0,
     "L": 3.5,
     "norm_residual": 0.0,
+    "norm_residual_conditioned": 0.0,
     "log10_K_SI": -96.80207218053918,
     "log10_K_over_K_planck": -235.9680326548934,
     "curvature_length_m": 1.5867848492196932e+24,
     "tidal_eigenvalues_SI_per_m": [
       -1.0308943295332364e-32,
-      5.1521048994779856e-33,
+      5.152104899477985e-33,
       5.1568383958543805e-33
     ],
     "radial_stretch_accel_m_s2": 2.0617886590664728e-32,
@@ -101,5 +102,5 @@
   "regime": "CLASSICAL GR \u2014 VALIDATED",
   "is_final": false,
   "checkpoint_version": 1,
-  "written_utc": "2026-09-25T15:22:38.099483+00:00"
+  "written_utc": "2026-09-25T20:16:12.685913+00:00"
 }

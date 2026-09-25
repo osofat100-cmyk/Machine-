@@ -35,9 +35,10 @@ trajectories and never integrates the observer's motion itself.
 cd SLAB_GR_Simulation
 pip install -r requirements.txt            # numpy scipy h5py mpmath sympy pytest
 python run_simulation.py --speculative     # validation gate (TESTS 0–8) -> simulation -> data -> render export
-python -m pytest tests -q                  # physics tests + CLI checkpoint/resume test
+python -m pytest tests -q                  # 26 physics/numerics/IO tests incl. CLI checkpoint/resume
 # open renders/viewer.html in a browser (works from file://; no network needed)
-node tests/viewer/check_viewer.mjs         # headless viewer smoke test + screenshots (optional)
+node tests/viewer/test_null_geodesics.mjs  # first-person ray-tracer physics checks (CPU replica of the shader)
+node tests/viewer/check_viewer.mjs         # headless viewer smoke test + screenshots (needs Chromium)
 ```
 
 Useful options: `--resume` (continue from the newest checkpoint in `simulation_state.json`),
@@ -67,7 +68,7 @@ Geometrized units G = c = M = 1 (r_s = 2). The observer's worldline is integrate
 second-order geodesic equation (with an optional radial thrust 4-acceleration) in ingoing
 Eddington–Finkelstein coordinates, which are regular at r = r_s, with a Dormand–Prince RK5(4)
 adaptive integrator whose independent variable is ln r inside the hole (τ outside where a
-turning point can occur). The 10^41-decade range in r is therefore covered with ~3000 steps,
+turning point can occur). The 39-decade range in r (r0/r_QG = 2.1e39) is therefore covered with ~3000 steps,
 the step in r and τ shrinking automatically as the curvature K = 48G²M²/(c⁴r⁶) grows, and the
 integrator never steps through r = 0. The Killing energy is carried as an independent
 well-conditioned variable so that the comoving frame and the tidal tensor remain accurate
@@ -75,6 +76,19 @@ deep inside. Kruskal–Szekeres/Penrose coordinates, light-cone orientation, the
 scalar, the tidal eigenvalues and the distant-observer quantities are computed analytically
 from the state at every step. See `physics_notes.md` for equations and citations and
 `validation_report.json` for the automated benchmarks.
+
+## Viewer
+
+Open `renders/viewer.html` (works from `file://`, no network). Tabs: **3D view** (log-radius, linear local,
+horizon neighbourhood, deep interior, curvature; third-person orbit camera; exact local light-cone glyph
+and (t_EF, r) inset), **Causal / Kruskal diagram** (Kruskal–Szekeres and compactified Penrose-type
+diagrams synchronized with the 3D position), **First-person camera** (per-pixel null geodesics on the GPU
+in EF coordinates with aberration and frequency shift; synthetic sky; labelled "Qualitative visualization —
+trajectory calculations remain relativistic."; disabled and labelled below r = 1e-5 r_s where 32-bit GPU
+floats fail), and the separate **SPECULATIVE QUANTUM-GRAVITY TOY MODELS — NOT ESTABLISHED PHYSICS** menu.
+Playback runs along log10(r/r_s) (proper time is useless as an axis: 99.9999 % of it is spent outside
+0.1 r_s); the dashboard shows all quantities of the brief in real time. Rebuild after editing
+`renders/src/*.js` with `renders/build/build.sh` (esbuild + vendored three.js, no network needed).
 
 ## Validation (automated, must pass before the simulation is marked validated)
 

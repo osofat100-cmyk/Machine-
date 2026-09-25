@@ -8,6 +8,7 @@ without recomputing earlier segments.
 """
 from __future__ import annotations
 
+import datetime as _dt
 import json
 import math
 import time
@@ -22,7 +23,7 @@ from .constants import DerivedQuantities
 from .units import Units
 from .metric import Schwarzschild, StaticSphericalMetric, V, R
 from .geodesic import (Thrust, rhs_tau, rhs_lnr, initial_state_radial, energy, energy_conditioning_scale,
-                       angular_momentum, norm, norm_conditioning_scale,
+                       angular_momentum, norm, norm_conditioning_scale, proper_time_to_center,
                        four_acceleration, RadialInfallE1, IV, IR, ITH, IPH, IUV, IUR, IUTH, IUPH, ITAU, IEK, NSTATE, STATE_NAMES)
 from .integrators import DormandPrince54, IntegrationResult
 from .curvature import (kretschmann_closed_form, tidal_tensor, tidal_eigenvalues_frame, tidal_eigenvalues_radial_closed_form,
@@ -140,8 +141,9 @@ class Simulation:
     def _integrator(self, rtol: Optional[float] = None, atol: Optional[float] = None, mode: str = "lnr") -> DormandPrince54:
         rtol = self.cfg.rtol if rtol is None else rtol
         atol = self.cfg.atol if atol is None else atol
-        # relative-only control for r, u^v, u^r (span ~40 decades); atol for O(1)-scaled components
-        atol_vec = np.array([atol, 0.0, atol, atol, 0.0, 0.0, atol, atol, atol, atol])
+        # relative-only control (atol = 0) for v_seg, r, u^v, u^r, tau_seg: they span up to 40 decades
+        # (per-segment v/tau increments are ~1e-55 M deep inside); atol only for the O(1) angles/E
+        atol_vec = np.array([0.0, 0.0, atol, atol, 0.0, 0.0, atol, atol, 0.0, atol])
         if mode == "lnr":
             return DormandPrince54(rtol=rtol, atol=atol_vec, max_step=self.cfg.max_step_lnr)
         frac = self.cfg.max_dr_over_r_tau
@@ -156,8 +158,10 @@ class Simulation:
         return DormandPrince54(rtol=rtol, atol=atol_vec, max_step_fn=max_step_fn)
 
     # ------------------------------------------------------------------
-    def integrate_segment(self, y_start: np.ndarray, r_to: float, rtol=None, atol=None) -> tuple[IntegrationResult, str]:
-        """Integrate from the state y_start (at r = y_start[IR]) to r = r_to (< r_start)."""
+    def integrate_segment(self, y_start: np.ndarray, r_to: float, rtol=None, atol=None,
+                          h0: Optional[float] = None, h0_mode: Optional[str] = None) -> tuple[IntegrationResult, str]:
+        """Integrate from the state y_start (at r = y_start[IR]) to r = r_to (< r_start).
+        h0/h0_mode: last accepted step of the previous segment (reused if the mode is unchanged)."""
         r_from = y_start[IR]
         mode = self._choose_mode(y_start, r_from)
         metric, thrust = self.metric, self.thrust
@@ -165,18 +169,14 @@ class Simulation:
         y0[IV] = 0.0
         y0[ITAU] = 0.0
         integ = self._integrator(rtol, atol, mode)
+        h_start = h0 if (h0 is not None and h0_mode == mode and h0 > 0) else None
         if mode == "lnr":
             x0, x1 = math.log(r_from), math.log(r_to)
 
             def fun(x, y):
-                return rhs_lnr(metric, x, y, thrust)
+                return rhs_lnr(metric, x, y, thrust)      # uses r = exp(x); the state's r is only a diagnostic copy
 
-            def resync(x, y):
-                y = y.copy()
-                y[IR] = math.exp(x)
-                return y
-
-            res = integ.integrate(fun, x0, y0, x1, after_step=resync)
+            res = integ.integrate(fun, x0, y0, x1, h0=h_start)
             res.y[:, IR] = np.exp(res.x)   # r is the independent variable: exact
         else:
             def fun(x, y):
@@ -187,7 +187,7 @@ class Simulation:
 
             # generous upper bound on proper time: free-fall time from r_from plus margin
             tau_max = 20.0 * (r_from ** 1.5) + 1e3
-            res = integ.integrate(fun, 0.0, y0, tau_max, event=event)
+            res = integ.integrate(fun, 0.0, y0, tau_max, event=event, h0=h_start)
             if not res.terminated_by_event:
                 raise RuntimeError(f"tau-mode segment did not reach r = {r_to}: status {res.status}")
         return res, mode
@@ -207,11 +207,18 @@ class Simulation:
             v_off = float(resume_from["v_offset"])
             tau_off = float(resume_from["tau_offset"])
             start_idx = int(resume_from["milestone_index"])
-            self._record_milestone(start_idx, y, v_off, tau_off, "resumed")
+            # segments beyond the resume point (from an older, longer run of the same config) are stale
+            self.segments = [sg for sg in self.segments if sg.index < start_idx]
+            if self.milestones[start_idx].slug not in self.milestone_states:
+                self._record_milestone(start_idx, y, v_off, tau_off, "resumed")
+            else:
+                self.milestone_states[self.milestones[start_idx].slug]["status"] = "resumed"
+        h_prev, mode_prev = None, None
         for i in range(start_idx, len(self.milestones) - 1):
             m_from, m_to = self.milestones[i], self.milestones[i + 1]
             t0 = time.time()
-            res, mode = self.integrate_segment(y, m_to.r_geo)
+            res, mode = self.integrate_segment(y, m_to.r_geo, h0=h_prev, h0_mode=mode_prev)
+            h_prev, mode_prev = (float(res.h[-1]) if len(res.h) > 1 else None), mode
             wall = time.time() - t0
             seg = SegmentRecord(i, m_from.slug, m_to.slug, mode, v_off, tau_off, res.x, res.y, res.h, res.err,
                                 res.n_rejected, res.n_rhs_evals, res.status, wall)
@@ -227,9 +234,9 @@ class Simulation:
                      f"rej={res.n_rejected_total:4d} maxerr={res.max_err:.2e} wall={wall:.2f}s "
                      f"tau_total={self.units.t_to_years(tau_off):.6e} yr")
             self._record_milestone(i + 1, y, v_off, tau_off, "reached", dv_segment=y_end[IV], dtau_segment=y_end[ITAU])
-            self._checkpoint(i + 1, y, v_off, tau_off)
             if self.project_dir is not None:
-                self._save_segment(seg)
+                self._save_segment(seg)       # segment archive first, then the checkpoint that points past it
+            self._checkpoint(i + 1, y, v_off, tau_off)
             if stop_after is not None and m_to.slug == stop_after:
                 self.stopped_early = True
                 self.log(f"stopping after milestone '{stop_after}' as requested (checkpoint written)")
@@ -283,32 +290,60 @@ class Simulation:
             "r_m": payload["state_SI"]["r_m"],
             "r_over_rs": payload["state_SI"]["r_over_rs"],
             "tau_total_years": payload["state_SI"]["tau_total_years"],
-            "how_to_resume": "python run_simulation.py --resume   (loads latest_checkpoint and continues to the next milestone)",
-            "updated_utc": payload.get("written_utc"),
+            "how_to_resume": "python run_simulation.py --resume [--tag <tag> | --out-dir <dir>]   (config is taken from the checkpoint)",
+            "updated_utc": _dt.datetime.now(_dt.timezone.utc).isoformat(),
         }
         state_path.write_text(dumps(state))
 
     def _save_segment(self, seg: SegmentRecord) -> None:
+        """Segment archives are versioned like checkpoints (never overwritten)."""
         d = self.project_dir / "data" / "segments"
         d.mkdir(parents=True, exist_ok=True)
-        np.savez_compressed(d / f"segment_{seg.index:02d}_{seg.slug_from}_to_{seg.slug_to}_{self.config_hash}.npz",
+        version = 1
+        while (d / f"segment_{seg.index:02d}_{seg.slug_from}_to_{seg.slug_to}_{self.config_hash}_v{version:03d}.npz").exists():
+            version += 1
+        np.savez_compressed(d / f"segment_{seg.index:02d}_{seg.slug_from}_to_{seg.slug_to}_{self.config_hash}_v{version:03d}.npz",
                             x=seg.x, y=seg.y, h=seg.h, err=seg.err, n_rejected=seg.n_rejected,
                             meta=np.array(json.dumps({"index": seg.index, "slug_from": seg.slug_from, "slug_to": seg.slug_to,
                                                       "mode": seg.mode, "v_offset": seg.v_offset, "tau_offset": seg.tau_offset,
                                                       "n_rhs_evals": seg.n_rhs_evals, "status": seg.status,
                                                       "wall_time_s": seg.wall_time_s})))
 
+    def checkpoint_list(self) -> List[str]:
+        """All checkpoint files of this configuration present on disk (newest version per milestone)."""
+        if self.project_dir is None:
+            return list(self.checkpoint_paths)
+        out = []
+        for p in sorted((self.project_dir / "checkpoints").glob("ckpt_*_v*.json")):
+            try:
+                if json.loads(p.read_text()).get("config_hash") == self.config_hash:
+                    out.append(str(p.relative_to(self.project_dir)))
+            except Exception:
+                continue
+        return out
+
     def load_segments(self) -> None:
         """Reload previously integrated segments (for --resume / re-export) and rebuild the milestone table."""
         d = self.project_dir / "data" / "segments"
-        self.segments = []
-        for p in sorted(d.glob(f"segment_*_{self.config_hash}.npz")):
+        latest: Dict[int, tuple] = {}
+        for p in sorted(d.glob(f"segment_*_{self.config_hash}_v*.npz")):
             z = np.load(p, allow_pickle=False)
             meta = json.loads(str(z["meta"]))
-            self.segments.append(SegmentRecord(meta["index"], meta["slug_from"], meta["slug_to"], meta["mode"],
-                                               meta["v_offset"], meta["tau_offset"], z["x"], z["y"], z["h"], z["err"],
-                                               z["n_rejected"], meta["n_rhs_evals"], meta["status"], meta["wall_time_s"]))
-        self.segments.sort(key=lambda s: s.index)
+            ver = int(p.stem.rsplit("_v", 1)[1])
+            if meta["index"] not in latest or ver > latest[meta["index"]][0]:
+                latest[meta["index"]] = (ver, SegmentRecord(meta["index"], meta["slug_from"], meta["slug_to"], meta["mode"],
+                                                            meta["v_offset"], meta["tau_offset"], z["x"], z["y"], z["h"], z["err"],
+                                                            z["n_rejected"], meta["n_rhs_evals"], meta["status"], meta["wall_time_s"]))
+        self.segments = [latest[k][1] for k in sorted(latest)]
+        # contiguity: indices 0..n-1 and each segment starts where the previous one ended
+        for k, sg in enumerate(self.segments):
+            if sg.index != k:
+                raise RuntimeError(f"segment archives are not contiguous: missing segment {k} (found {sorted(latest)})")
+            if k > 0:
+                prev = self.segments[k - 1]
+                r_prev_end = self.milestones[k].r_geo
+                if abs(sg.y[0, IR] / r_prev_end - 1.0) > 1e-9 or abs(sg.v_offset - (prev.v_offset + prev.y[-1, IV])) > 1e-9 * max(1.0, abs(sg.v_offset)):
+                    raise RuntimeError(f"segment {k} does not start where segment {k-1} ended")
         self.milestone_states = {}
         for seg in self.segments:
             if seg.index == 0:
@@ -383,7 +418,7 @@ class Simulation:
             "segment", "step_h", "err_estimate", "n_rejected", "mode_is_lnr",
             "r_geo", "r_m", "r_over_rs", "log10_r_over_rs", "v_geo", "t_ef_geo", "t_schw_geo", "t_schw_years",
             "tau_geo", "tau_s", "tau_years", "tau_since_horizon_geo", "tau_since_horizon_years", "tau_to_center_est_geo",
-            "tau_to_center_est_years", "u_v", "u_r", "u_theta", "u_phi", "u_lower_v", "u_lower_r",
+            "tau_to_center_est_years", "theta", "phi", "u_v", "u_r", "u_theta", "u_phi", "u_lower_v", "u_lower_r",
             "a_v", "a_r", "a_magnitude_SI", "E", "E_killing", "E_conditioning_scale", "E_drift_conditioned", "L", "norm_residual", "norm_conditioning_scale", "norm_residual_conditioned",
             "K_geo_log10", "K_SI_log10", "K_over_Kplanck_log10", "curvature_length_m",
             "tidal_lambda1_geo", "tidal_lambda2_geo", "tidal_lambda3_geo",
@@ -429,9 +464,14 @@ class Simulation:
                 tau_h = tau
             cols["tau_since_horizon_geo"][i] = (tau - tau_h) if tau_h is not None else float("nan")
             cols["tau_since_horizon_years"][i] = u.t_to_years(tau - tau_h) if tau_h is not None else float("nan")
-            # remaining proper time to r = 0 (classical extrapolation).  Exact for the E=1 geodesic;
-            # for other worldlines it is the universal small-r asymptote (u^r -> -sqrt(2M/r)).
-            trem = ref.tau_to_center(r)
+            # remaining proper time to r = 0: classical-GR extrapolation assuming free fall from the current
+            # (E, L).  Closed form for E = 1, L = 0; general quadrature otherwise (thrust ignored from here on).
+            if y[IEK] == 1.0 and y[IUPH] == 0.0 and y[IUTH] == 0.0:
+                trem = ref.tau_to_center(r)
+            else:
+                trem = proper_time_to_center(m, r, y[IEK], angular_momentum(y), y[ITH])
+            cols["theta"][i] = y[ITH]
+            cols["phi"][i] = y[IPH]
             cols["tau_to_center_est_geo"][i] = trem
             cols["tau_to_center_est_years"][i] = u.t_to_years(trem)
             uv, ur, uth, uph = y[IUV], y[IUR], y[IUTH], y[IUPH]
