@@ -33,7 +33,12 @@
 * First integrals E = f u^v − u^r, L = r² sin²θ u^φ; g(u,u) = −1.
 * Analytic E = 1 radial solution: u^r = −√(2M/r), u^v = x/(1+x), v(r) = −4M B(x), τ(r) = −(4M/3)x³ (x = √(r/2M)).
 * Riemann tensor in EF coordinates; Kretschmann K = f''² + 4f'²/r² + 4(1−f)²/r⁴ = 48M²/r⁶.
-* Tidal tensor E_ij = R_{μανβ} e_i^μ u^α e_j^ν u^β in the comoving frame; eigenvalues (−2M/r³, M/r³, M/r³) for radial motion.
+* Tidal tensor E_ij = R_{μανβ} e_i^μ u^α e_j^ν u^β in the comoving frame. Outputs use the EXACT
+  closed form for an arbitrary 4-velocity with transverse rapidity t² = r²[(u^θ)² + sin²θ (u^φ)²]:
+  λ = (−(2+3t²), 1+3t², 1) × M/r³ (radial, transverse ⊥ motion, transverse ∥ motion); reduces to
+  (−2M/r³, M/r³, M/r³) for radial motion. Cross-checked against the explicit contraction of the
+  EF Riemann tensor, a static-frame Lorentz boost and a numeric 4×4 frame matrix
+  (`tests/test_physics.py::test_tidal_exact_eigenvalues_vs_independent_methods`).
 * Kruskal map U = −(r/2M−1) e^{r/2M} e^{−v/4M}, V = e^{v/4M}; compactified (atan) coordinates.
 * Light cones: dr/dt_EF = f/(2−f) (outgoing), −1 (ingoing).
 * Distant observer: t = v − r_*, dr/dt, 1+z = u^v − 2u^r/f.
@@ -58,10 +63,24 @@
 * The τ-mode integrator (fall from rest / L ≠ 0 outside) had an FSAL aliasing bug in the
   event-located final step (fixed 2026-09-25; regression covered by the cycloid check in
   `tests/test_physics.py`).
+* g(u,u) + 1 is likewise cancellation-limited for L ≠ 0 deep inside (u^φ = L/r² ~ 1e74 at r_QG);
+  `norm_residual_conditioned` is the meaningful diagnostic.
+* Equatorial motion: cos(π/2) = 6e-17 in floating point seeds a spurious u^θ through the source
+  term sinθ cosθ (u^φ)²; the RHS snaps |cos θ| < 1e-14 to 0 so the plane is preserved exactly.
+* The explicit index contraction of the coordinate-basis Riemann tensor overflows/cancels for
+  L ≠ 0 deep inside (terms ~1e333); it is kept only as a cross-check where conditioned.
+* `tau_to_center_est` is exact only for the E = 1 radial geodesic (asymptotic estimate otherwise; labelled).
 
 ## Files changed in the last session
 
-Initial creation of the whole project (see git log).
+Initial creation of the whole project (see git log): src/slab/*, src/slab/speculative/*, tools/*,
+tests/*, run_simulation.py, simulation_config.json, data/*, checkpoints/*, renders/* (skeleton),
+docs/*, README.md, PROJECT_STATE.md, requirements.txt.
+
+Scenario runs available in `data/scenarios/` (see its README.md): thrust_1g (1 g inward rocket:
+reaches the horizon after 17.3 proper years with E ≈ 3.2e7 and spends only 0.0097 yr inside),
+plunge_L3.5 (equatorial plunge with L = 3.5 GM/c: interior proper time 1.07e5 yr),
+rest_at_10rs (fall from rest at 10 r_s, matches the cycloid solution to 2e-12).
 
 ## Next technical task
 
