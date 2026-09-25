@@ -25,7 +25,7 @@ from .geodesic import (Thrust, rhs_tau, rhs_lnr, initial_state_radial, energy, e
                        angular_momentum, norm, norm_conditioning_scale,
                        four_acceleration, RadialInfallE1, IV, IR, ITH, IPH, IUV, IUR, IUTH, IUPH, ITAU, IEK, NSTATE, STATE_NAMES)
 from .integrators import DormandPrince54, IntegrationResult
-from .curvature import (kretschmann_closed_form, tidal_tensor, tidal_eigenvalues_radial_closed_form,
+from .curvature import (kretschmann_closed_form, tidal_tensor, tidal_eigenvalues_frame, tidal_eigenvalues_radial_closed_form,
                         log10_kretschmann_schwarzschild)
 from .milestones import Milestone, build_milestones
 from .checkpoints import write_checkpoint, config_hash, dumps
@@ -338,7 +338,7 @@ class Simulation:
         r = y[IR]
         K = kretschmann_closed_form(m, r)
         K_SI = u.kretschmann_to_SI(K)
-        lam = tidal_tensor(m, r, y[ITH], y[IUV:IUPH + 1], E=y[IEK])["eigenvalues"]
+        lam = tidal_eigenvalues_frame(m, r, y[ITH], y[IUV:IUPH + 1])
         kr = m.kruskal(v_total, r) if isinstance(m, Schwarzschild) else {}
         Lb = self.cfg.body_length_m
         d = {
@@ -456,8 +456,7 @@ class Simulation:
             cols["K_SI_log10"][i] = lK_SI
             cols["K_over_Kplanck_log10"][i] = lK_SI - math.log10(dq.K_planck)
             cols["curvature_length_m"][i] = 10.0 ** (-0.25 * lK_SI)
-            td = tidal_tensor(m, r, y[ITH], y[IUV:IUPH + 1], E=y[IEK])
-            lam = td["eigenvalues"]
+            lam = tidal_eigenvalues_frame(m, r, y[ITH], y[IUV:IUPH + 1])
             cols["tidal_lambda1_geo"][i], cols["tidal_lambda2_geo"][i], cols["tidal_lambda3_geo"][i] = lam
             lam_SI = [u.tidal_to_SI(x) for x in lam]
             cols["tidal_radial_SI_per_m"][i] = lam_SI[0]          # most negative eigenvalue: stretching axis
@@ -465,8 +464,17 @@ class Simulation:
             cols["radial_stretch_m_s2"][i] = -lam_SI[0] * Lb
             cols["transverse_compress_m_s2"][i] = -lam_SI[-1] * Lb
             cols["tidal_radial_newtonian_SI_per_m"][i] = 2.0 * dq.GM / u.r_to_SI(r) ** 3
-            cf = tidal_eigenvalues_radial_closed_form(1.0, r)
-            cols["tidal_closed_form_reldiff"][i] = max(abs(lam[0] - cf[0]) / abs(cf[0]), abs(lam[2] - cf[2]) / abs(cf[2]))
+            if y[IUPH] == 0.0 and y[IUTH] == 0.0:
+                cf = tidal_eigenvalues_radial_closed_form(1.0, r)
+                cols["tidal_closed_form_reldiff"][i] = max(abs(lam[0] - cf[0]) / abs(cf[0]), abs(lam[2] - cf[2]) / abs(cf[2]))
+            elif r * r * (y[IUPH] ** 2 + y[IUTH] ** 2) < 1e40:
+                # cross-check against the explicit index contraction where it is numerically meaningful
+                with np.errstate(all="ignore"):
+                    try:
+                        lam_c = np.sort(tidal_tensor(m, r, y[ITH], y[IUV:IUPH + 1], E=y[IEK])["eigenvalues"])
+                        cols["tidal_closed_form_reldiff"][i] = float(np.max(np.abs(lam_c - lam) / np.max(np.abs(lam))))
+                    except Exception:
+                        pass
             out_slope, in_slope = m.null_slopes_ef_time(r)
             cols["lc_out_drdtEF"][i] = out_slope
             cols["lc_in_drdtEF"][i] = in_slope

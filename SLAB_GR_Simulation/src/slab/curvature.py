@@ -144,6 +144,59 @@ def tidal_tensor(metric: StaticSphericalMetric, r: float, theta: float, u: np.nd
     return {"E_ij": Eij, "eigenvalues": w, "eigenvectors": vecs, "tetrad": tet}
 
 
+def reference_radial_frame(metric: StaticSphericalMetric, r: float) -> tuple[np.ndarray, np.ndarray]:
+    """Orthonormal radial frame that exists for all r > 0: the 4-velocity u_ref of the E = 1 radial
+    infaller and its outward radial unit vector n_ref = (u_ref^v, 1, 0, 0)."""
+    f = metric.f(r)
+    ur = -math.sqrt(max(1.0 - f, 0.0))
+    uv = 1.0 / (1.0 - ur)                      # = 1/(1 + sqrt(1-f)); regular at f = 0
+    return np.array([uv, ur, 0.0, 0.0]), np.array([uv, 1.0, 0.0, 0.0])
+
+
+def tidal_eigenvalues_frame(metric: StaticSphericalMetric, r: float, theta: float, u: np.ndarray) -> np.ndarray:
+    """Tidal eigenvalues for an ARBITRARY 4-velocity without catastrophic cancellation.
+
+    The curvature 2-form of any metric ds^2 = -f dv^2 + 2 dv dr + r^2 dOmega^2 is diagonal in
+    the bivector basis of every radially boosted orthonormal frame (0 = radial observer,
+    1 = radial, 2 = theta, 3 = phi), with
+        R_0101 = f''/2 = A,   R_0202 = R_0303 = f'/(2r) = B,   R_2323 = (1-f)/r^2 = C,
+        R_1212 = R_1313 = -f'/(2r) = D = -B      (boost invariance in the (0,1) plane <=> D = -B).
+    With the observer's frame components u_hat = (g, p, q, s) in the frame of the reference
+    E = 1 radial infaller (which exists for all r > 0), E_ab = R_acbd u^c u^d reads
+        E_00 = A p^2 + B (q^2 + s^2)        E_11 = A g^2 + D (q^2 + s^2)
+        E_22 = B g^2 + D p^2 + C s^2        E_33 = B g^2 + D p^2 + C q^2
+        E_01 = -A p g   E_02 = -B q g   E_03 = -B s g   E_12 = -D p q   E_13 = -D p s   E_23 = -C q s
+    and the eigenvalues of E^a_b = eta^{ac} E_cb are {0, lambda_1, lambda_2, lambda_3}.
+    For Schwarzschild A = -2M/r^3, B = M/r^3, C = 2M/r^3, D = -M/r^3.  The matrix is scaled
+    to O(1) before the eigenvalue solve (entries reach 1e186 for L != 0 at r_QG).
+    """
+    f, fp, fpp = metric.f(r), metric.df(r), metric.d2f(r)
+    A, B, C = 0.5 * fpp, 0.5 * fp / r, (1.0 - f) / (r * r)
+    D = -B
+    u_ref, n_ref = reference_radial_frame(metric, r)
+    p = metric.dot(r, theta, u, n_ref)
+    q = r * u[TH]
+    s_ = r * math.sin(theta) * u[PH]
+    # g = -g(u, u_ref) analytically equals sqrt(1 + p^2 + q^2 + s^2); use the latter so that the
+    # 4-velocity is exactly on the mass shell (otherwise the null eigenvalue E u = 0 leaks into the
+    # smallest tidal eigenvalue when |u| ~ 1e3 and g(u,u) = -1 holds only to ~1e-9 absolute)
+    g = math.sqrt(1.0 + p * p + q * q + s_ * s_)
+    E = np.array([
+        [A * p * p + B * (q * q + s_ * s_), -A * p * g, -B * q * g, -B * s_ * g],
+        [-A * p * g, A * g * g + D * (q * q + s_ * s_), -D * p * q, -D * p * s_],
+        [-B * q * g, -D * p * q, B * g * g + D * p * p + C * s_ * s_, -C * q * s_],
+        [-B * s_ * g, -D * p * s_, -C * q * s_, B * g * g + D * p * p + C * q * q],
+    ])
+    scale = float(np.max(np.abs(E)))
+    if scale == 0.0 or not math.isfinite(scale):
+        return np.full(3, np.nan)
+    eta = np.diag([-1.0, 1.0, 1.0, 1.0])
+    w = np.linalg.eigvals(eta @ (E / scale)).real
+    w = np.sort(w)
+    i0 = int(np.argmin(np.abs(w)))       # E u = 0: discard the null eigenvalue
+    return np.delete(w, i0) * scale
+
+
 def tidal_eigenvalues_radial_closed_form(M: float, r: float) -> tuple[float, float, float]:
     """(-2M/r^3, M/r^3, M/r^3): exact for any radially moving observer in Schwarzschild."""
     return (-2.0 * M / r**3, M / r**3, M / r**3)

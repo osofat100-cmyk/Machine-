@@ -19,7 +19,8 @@ from .constants import DerivedQuantities, BRIEF_EXPECTATIONS
 from .units import Units
 from .metric import Schwarzschild, V, R, TH, PH
 from .curvature import (riemann_lower, kretschmann_by_contraction, kretschmann_closed_form, kretschmann_schwarzschild,
-                        tidal_tensor, tidal_eigenvalues_radial_closed_form, comoving_tetrad, radial_unit_vector_closed_form)
+                        tidal_tensor, tidal_eigenvalues_frame, tidal_eigenvalues_radial_closed_form, comoving_tetrad,
+                        radial_unit_vector_closed_form)
 from .geodesic import (rhs_tau, rhs_lnr, rhs_first_integral_lnr, initial_state_radial, RadialInfallE1, energy, norm,
                        IR, IV, ITAU, IUV, IUR, IEK, IE, IL)
 from .integrators import DormandPrince54, integrate_scipy_dop853
@@ -200,7 +201,21 @@ def test5_kretschmann(sim: Simulation) -> dict:
     r_qg = sim.milestones[-1].r_geo
     uvec = np.array([ref.uv(r_qg), ref.ur(r_qg), 0.0, 0.0])
     lam = tidal_tensor(m, r_qg, math.pi / 2, uvec, E=1.0)["eigenvalues"]
-    t.check("radial tidal eigenvalue at r_QG vs -2M/r^3", float(lam[0]), -2.0 / r_qg**3, 1e-9)
+    t.check("radial tidal eigenvalue at r_QG vs -2M/r^3 (explicit contraction)", float(lam[0]), -2.0 / r_qg**3, 1e-9)
+    lam_f = tidal_eigenvalues_frame(m, r_qg, math.pi / 2, uvec)
+    t.check("radial tidal eigenvalue at r_QG vs -2M/r^3 (boost-invariant frame method used in outputs)", float(lam_f[0]), -2.0 / r_qg**3, 1e-9)
+    # orbital motion: theta eigenvalue (M/r^3)(1 + 3L^2/r^2), tracelessness and boost invariance
+    worst_o = 0.0
+    for L in (2.5, 3.9):
+        for r in (10.0, 2.0, 0.5, 1e-6, 1e-30):
+            from .geodesic import initial_state_radial as _isr
+            y1 = _isr(m, r, 1.0, L); y2 = _isr(m, r, 1.7, L)
+            l1 = np.sort(tidal_eigenvalues_frame(m, r, math.pi / 2, y1[IUV:IUV + 4]))
+            l2 = np.sort(tidal_eigenvalues_frame(m, r, math.pi / 2, y2[IUV:IUV + 4]))
+            lth = (1.0 + 3.0 * (L / r) ** 2) / r**3
+            worst_o = max(worst_o, float(np.min(np.abs(l1 - lth)) / lth), float(abs(l1.sum()) / np.max(np.abs(l1))),
+                          float(np.max(np.abs(l1 - l2) / np.max(np.abs(l1)))))
+    t.check("orbital tidal eigenvalues: theta eigenvalue (M/r^3)(1+3L^2/r^2), traceless, independent of radial velocity", worst_o, None, 1e-8, kind="abs")
     return t.d
 
 

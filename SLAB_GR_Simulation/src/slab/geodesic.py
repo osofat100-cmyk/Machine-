@@ -114,6 +114,9 @@ def rhs_tau(metric: StaticSphericalMetric, y: np.ndarray, thrust: Thrust | None 
     f = metric.f(r)
     fp = metric.df(r)
     s, co = math.sin(th), math.cos(th)
+    if abs(co) < 1e-14:
+        co = 0.0     # equatorial plane: cos(pi/2) = 6e-17 in floating point would seed a spurious u^theta
+                     # through the source term sin cos (u^phi)^2, which is amplified enormously when u^phi ~ L/r^2
     s2 = s * s
     ang = uth * uth + s2 * uph * uph          # (u^th)^2 + sin^2 (u^ph)^2
     d = np.empty(NSTATE)
