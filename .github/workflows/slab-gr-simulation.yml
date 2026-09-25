@@ -1,0 +1,123 @@
+# CI for SLAB_GR_Simulation (the validated classical-GR infall simulation and its static three.js viewer).
+#   python : pip install -e SLAB_GR_Simulation[test,tools] -> pytest -> validation gate (TESTS 0-8) -> slab-sim smoke run
+#   viewer : npm ci -> esbuild bundle -> null-geodesic tests (Node) -> Chromium pinned to playwright-core ->
+#            headless viewer tests with SwiftShader software GL (GitHub runners have no GPU; neither has the author)
+name: SLAB_GR_Simulation
+
+on:
+  push:
+    paths:
+      - "SLAB_GR_Simulation/**"
+      - ".github/workflows/slab-gr-simulation.yml"
+  pull_request:
+    paths:
+      - "SLAB_GR_Simulation/**"
+      - ".github/workflows/slab-gr-simulation.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: slab-gr-simulation-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  python:
+    name: Python 3.11 - physics tests and validation gate
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    defaults:
+      run:
+        shell: bash
+        working-directory: SLAB_GR_Simulation
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: SLAB_GR_Simulation/pyproject.toml
+
+      - name: Install the package (editable) with the test and tools extras
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e ".[test,tools]"
+
+      - name: pytest (physics, numerics, IO, CLI checkpoint/resume, packaging)
+        run: python -m pytest tests -q
+
+      - name: Validation gate (TESTS 0-8)
+        run: python run_simulation.py --validate-only
+
+      - name: Symbolic re-derivation of the EF Christoffel/Riemann components (sympy)
+        run: |
+          python tools/derive_ef_curvature.py | tee "$RUNNER_TEMP/derive.log"
+          grep -q "ALL RIEMANN COMPONENTS MATCH CODE: True" "$RUNNER_TEMP/derive.log"
+          ! grep -q "False" "$RUNNER_TEMP/derive.log"
+
+      - name: slab-sim console entry point (project discovery from the repository root, short scenario)
+        working-directory: .
+        run: |
+          slab-sim --version
+          slab-sim --skip-validation --E 0.95 --r0 10 --out-dir "$RUNNER_TEMP/scenario" | tee "$RUNNER_TEMP/scenario.log"
+          grep -q "project directory: $GITHUB_WORKSPACE/SLAB_GR_Simulation" "$RUNNER_TEMP/scenario.log"
+          grep -q "PLANCK-CURVATURE THRESHOLD REACHED." "$RUNNER_TEMP/scenario.log"
+          test -f "$RUNNER_TEMP/scenario/data/trajectory.h5"
+
+      - name: Upload the validation report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: validation-report
+          path: SLAB_GR_Simulation/validation_report.json
+          if-no-files-found: ignore
+
+  viewer:
+    name: Node 22 - viewer build and headless tests (software GL)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    defaults:
+      run:
+        shell: bash
+        working-directory: SLAB_GR_Simulation/renders/build
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: SLAB_GR_Simulation/renders/build/package-lock.json
+
+      - name: Install the pinned toolchain (esbuild, three, playwright-core)
+        run: npm ci
+
+      - name: Build the viewer bundle (esbuild)
+        run: ./build.sh
+
+      - name: Is the committed viewer.bundle.js up to date? (warning only)
+        run: |
+          git diff --quiet -- ../viewer.bundle.js \
+            || echo "::warning file=SLAB_GR_Simulation/renders/viewer.bundle.js::committed bundle differs from a fresh build (run renders/build/build.sh and commit the bundle)"
+
+      - name: First-person ray-tracer physics checks (node tests/viewer/test_null_geodesics.mjs)
+        run: npm run test:physics
+
+      - name: Install Chromium pinned to the playwright-core version
+        run: |
+          PW_VERSION="$(node -p "require('playwright-core/package.json').version")"
+          echo "playwright-core ${PW_VERSION}"
+          npx --yes "playwright@${PW_VERSION}" install --with-deps chromium
+
+      - name: Headless viewer tests (SwiftShader software GL, zero console errors required)
+        run: npm run test:viewer
+
+      - name: Upload the viewer screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: viewer-screenshots
+          path: SLAB_GR_Simulation/renders/screenshots/
+          if-no-files-found: ignore
