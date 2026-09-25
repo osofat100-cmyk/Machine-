@@ -1,200 +1,248 @@
-// First-person camera: per-pixel null geodesics integrated on the GPU in ingoing Eddington–Finkelstein
-// coordinates from the observer's comoving tetrad (aberration, gravitational + Doppler frequency shift
-// included).  The SKY IS SYNTHETIC and the colour mapping of the frequency shift is qualitative:
-// "Qualitative visualization — trajectory calculations remain relativistic."
-// Equations identical to firstperson_core.js (CPU replica, validated in tests/viewer/test_null_geodesics.mjs).
-import * as THREE from 'three';
+// First-person camera view.  DEFAULT: double-precision CPU renderer (no WebGL needed; firstperson_cpu.js) driven by
+// the exact 1D transfer table (firstperson_table.js) — valid from r = 100 r_s down to r_QG.  OPTIONAL: float32 GPU
+// shader (firstperson_gpu.js), created only if the user picks it, limited to r > 1e-5 r_s.
+// "Qualitative visualization — trajectory calculations remain relativistic."  (sky = illustrative backdrop,
+// colours qualitative unless the false-colour log10 g layer is selected).
+// Interface used by main.js: constructor(container, data, opts) / update(sample, state) / resize() / setMode(mode) /
+// dispose() / getCanvas().  Properties yaw, pitch, fov, dirty are also set directly by tests/viewer/check_viewer.mjs.
 import { fmt } from './data.js';
-import { traceRay, observerFrame } from './firstperson_core.js';
+import { observerState, skyFractions } from './firstperson_core.js';
+import { TransferTable } from './firstperson_table.js';
+import { CpuRenderer, cameraAxes, KIND_SKY, KIND_PAST, KIND_UNRESOLVED } from './firstperson_cpu.js';
+import { celestialFrame, gScaleRange, gColor, HOLE_DIRECTION } from './firstperson_sky.js';
+import { loadStars, STAR_ATTRIBUTION } from './starcatalog.js';
+import { GpuTracer, R_MIN_GPU, webglAvailable } from './firstperson_gpu.js';
 
-const R_MIN_TRACE = 2e-5;   // geometrized (= 1e-5 r_s): below this, 32-bit GPU floats cannot represent the ray state
-
-const FRAG = `
-precision highp float; precision highp int;
-uniform vec2 uRes; uniform float uR, uUv, uUr, uE; uniform vec3 uCamF, uCamR, uCamU; uniform float uTanH, uTanV;
-uniform int uMaxSteps; uniform float uCh, uRsky;
-float fOf(float r) { return 1.0 - 2.0 / r; }
-void deriv(vec3 p, vec3 k, out vec3 dp, out vec3 dk) {
-  float r = p.y, f = fOf(r), kv = k.x, kr = k.y, kp = k.z;
-  dp = k;
-  dk = vec3(-(kv*kv)/(r*r) + r*kp*kp, -(f*kv*kv)/(r*r) + (2.0/(r*r))*kv*kr + r*f*kp*kp, -(2.0/r)*kr*kp);
-}
-float stepSize(vec3 p, vec3 k) { float r = p.y; float rate = abs(k.y)/r + abs(k.z) + abs(k.x)/r + 1e-30; float c = uCh; if (r < 4.0) c *= 0.5; return c / rate; }
-void rk4(inout vec3 p, inout vec3 k, float h) {
-  vec3 d1p, d1k, d2p, d2k, d3p, d3k, d4p, d4k;
-  deriv(p, k, d1p, d1k); deriv(p + 0.5*h*d1p, k + 0.5*h*d1k, d2p, d2k); deriv(p + 0.5*h*d2p, k + 0.5*h*d2k, d3p, d3k); deriv(p + h*d3p, k + h*d3k, d4p, d4k);
-  p += h/6.0*(d1p + 2.0*d2p + 2.0*d3p + d4p); k += h/6.0*(d1k + 2.0*d2k + 2.0*d3k + d4k);
-}
-float hash(vec3 q) { return fract(sin(dot(q, vec3(12.9898, 78.233, 37.719))) * 43758.5453); }
-vec3 sky(vec3 dir) {
-  // synthetic celestial sphere: black hole at origin, observer on +x, polar axis +z; grid every 15 deg
-  float lat = asin(clamp(dir.z, -1.0, 1.0)), lon = atan(dir.y, dir.x);
-  float gl = abs(fract(lat / 0.261799 + 0.5) - 0.5), gn = abs(fract(lon / 0.261799 + 0.5) - 0.5);
-  float line = smoothstep(0.03, 0.0, gl) + smoothstep(0.03, 0.0, gn);
-  vec3 col = vec3(0.02, 0.03, 0.06) + vec3(0.25, 0.35, 0.6) * line;
-  vec3 cell = floor(dir * 40.0);
-  float h = hash(cell); if (h > 0.985) col += vec3(0.9, 0.9, 1.0) * (h - 0.985) * 50.0;   // stars
-  float band = exp(-pow(dir.z / 0.15, 2.0)); col += vec3(0.35, 0.3, 0.25) * band * 0.5;          // 'galactic' band around the pole axis
-  float away = smoothstep(0.995, 1.0, dir.x); col += vec3(0.9, 0.7, 0.2) * away;                    // marker: direction away from the hole
-  float toward = smoothstep(0.995, 1.0, -dir.x); col += vec3(0.2, 0.9, 0.6) * toward;               // marker: direction of the hole at infinity
-  return col;
-}
-void main() {
-  vec2 ndc = (gl_FragCoord.xy / uRes) * 2.0 - 1.0;
-  vec3 d = normalize(uCamF + ndc.x * uTanH * uCamR + ndc.y * uTanV * uCamU);   // tetrad components (n, theta, phi)
-  float dn = d.x; float dperp = length(d.yz); vec2 tdir = dperp > 1e-9 ? d.yz / dperp : vec2(1.0, 0.0);
-  float f0 = fOf(uR); float nn = -f0*uUv*uUv + 2.0*uUv*uE; float N = sqrt(max(nn, 1e-30));
-  float nv = uUv / N, nr = uE / N;
-  vec3 p = vec3(0.0, uR, 0.0);
-  vec3 k = vec3(-uUv + dn*nv, -uUr + dn*nr, dperp / uR);
-  float Eph = -(f0*k.x - k.y);                      // Killing energy of the future-directed photon (omega_obs = 1)
-  float Lp = uR*uR*k.z; float b2 = (Lp*Lp)/(Eph*Eph);
-  int kind = 2;                                     // 0 sky, 1 past-horizon / not modelled, 2 unresolved
-  // exact classification from the conserved quantities (see firstperson_core.js classify())
-  bool past = (uR < 2.0) ? (Eph <= 0.0) : ((k.y < 0.0) ? (uR <= 3.0 || b2 <= 27.0) : (uR < 3.0 && b2 > 27.0));
-  float psiInf = 0.0;
-  if (past) { kind = 1; }
-  else for (int i = 0; i < 4000; i++) {
-    if (i >= uMaxSteps) break;
-    float r = p.y;
-    if (r > uRsky) { psiInf = p.z + atan(r*k.z, k.y); kind = 0; break; }
-    if (r < 1e-6 || p.x < -1e6) break;
-    rk4(p, k, stepSize(p, k));
-  }
-  vec3 col;
-  if (kind == 0) {
-    // direction on the celestial sphere: outward radial +x, transverse in the (theta -> -z, phi -> +y) plane
-    vec3 t3 = normalize(vec3(0.0, tdir.y, -tdir.x));
-    vec3 dir = cos(psiInf) * vec3(1.0, 0.0, 0.0) + sin(psiInf) * t3;
-    col = sky(dir);
-    float g = 1.0 / Eph;                              // frequency ratio; qualitative colour shift below
-    float b = clamp(pow(g, 2.0), 0.15, 6.0);
-    vec3 tint = g > 1.0 ? mix(vec3(1.0), vec3(0.6, 0.75, 1.0), clamp((g - 1.0) * 0.5, 0.0, 1.0)) : mix(vec3(1.0), vec3(1.0, 0.45, 0.35), clamp((1.0 - g) * 1.5, 0.0, 1.0));
-    col *= tint * b;
-  } else if (kind == 1) { col = vec3(0.06, 0.0, 0.0); }
-  else { col = vec3(0.6, 0.0, 0.6); }
-  gl_FragColor = vec4(col, 1.0);
-}`;
-
-const VERT = `void main() { gl_Position = vec4(position, 1.0); }`;
+const BUDGET_MS = 24;           // CPU work per animation frame (keeps the UI responsive)
+const TABLE_CACHE = 6;
 
 export class FirstpersonView {
   constructor(container, data, opts = {}) {
-    this.container = container; this.data = data;
-    this.yaw = 0; this.pitch = 0; this.fov = 90; this.quality = 0.3; this.dirty = true; this.ready = false; this.lastR = null;
-    try { this._init(); this.ready = true; } catch (e) {
-      const m = document.createElement('div'); m.className = 'overlay'; m.textContent = 'first-person view unavailable (WebGL failed): ' + e; container.appendChild(m);
-    }
-  }
-  _init() {
-    this.renderer = new THREE.WebGLRenderer({ antialias: false, powerPreference: 'low-power' });
-    this.renderer.setPixelRatio(1);
-    this.container.appendChild(this.renderer.domElement);
-    const gl = this.renderer.getContext();
-    const dbg = gl.getExtension('WEBGL_debug_renderer_info');
-    const rname = dbg ? String(gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL)) : '';
-    this.software = /swiftshader|llvmpipe|software/i.test(rname);
-    if (this.software) { this.quality = 0.08; }
-    this.maxSteps = this.software ? 600 : 900;
-    this.scene = new THREE.Scene(); this.camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
-    this.uniforms = {
-      uRes: { value: new THREE.Vector2(1, 1) }, uR: { value: 200 }, uUv: { value: 1 }, uUr: { value: -0.1 }, uE: { value: 1 },
-      uCamF: { value: new THREE.Vector3(-1, 0, 0) }, uCamR: { value: new THREE.Vector3(0, 0, 1) }, uCamU: { value: new THREE.Vector3(0, -1, 0) },
-      uTanH: { value: 1 }, uTanV: { value: 1 }, uMaxSteps: { value: this.maxSteps }, uCh: { value: 0.05 }, uRsky: { value: 400 },
-    };
-    const mat = new THREE.ShaderMaterial({ uniforms: this.uniforms, vertexShader: VERT, fragmentShader: FRAG, depthTest: false, depthWrite: false });
-    this.scene.add(new THREE.Mesh(new THREE.PlaneGeometry(2, 2), mat));
-    this.target = new THREE.WebGLRenderTarget(64, 64, { minFilter: THREE.LinearFilter, magFilter: THREE.LinearFilter });
-    // blit
-    this.blitScene = new THREE.Scene();
-    this.blitMat = new THREE.MeshBasicMaterial({ map: this.target.texture });
-    this.blitScene.add(new THREE.Mesh(new THREE.PlaneGeometry(2, 2), this.blitMat));
-    // DOM overlays
-    this.banner = document.createElement('div'); this.banner.className = 'overlay'; this.banner.style.cssText += 'top:48px;bottom:auto;max-width:70%;';
-    this.container.appendChild(this.banner);
-    this.stats = document.createElement('div'); this.stats.className = 'overlay';
-    this.container.appendChild(this.stats);
-    const ctl = document.createElement('div'); ctl.className = 'overlay'; ctl.style.cssText += 'right:10px;left:auto;bottom:10px;pointer-events:auto;';
-    ctl.innerHTML = `<button id="fp-in">look toward the hole</button> <button id="fp-out">look outward</button>
-      FOV <input id="fp-fov" type="range" min="40" max="150" value="90" style="width:90px"> quality <select id="fp-q"><option value="0.08">low</option><option value="0.2">medium</option><option value="0.35">high</option></select>
-      <div class="note">drag to look around</div>`;
-    this.container.appendChild(ctl);
-    ctl.querySelector('#fp-in').onclick = () => { this.yaw = 0; this.pitch = 0; this.dirty = true; };
-    ctl.querySelector('#fp-out').onclick = () => { this.yaw = Math.PI; this.pitch = 0; this.dirty = true; };
-    ctl.querySelector('#fp-fov').oninput = e => { this.fov = parseFloat(e.target.value); this.dirty = true; };
-    ctl.querySelector('#fp-q').value = String(this.quality); ctl.querySelector('#fp-q').onchange = e => { this.quality = parseFloat(e.target.value); this.resize(); this.dirty = true; };
-    let drag = null;
-    const el = this.renderer.domElement;
-    el.addEventListener('pointerdown', e => { drag = [e.clientX, e.clientY, this.yaw, this.pitch]; });
-    window.addEventListener('pointermove', e => { if (!drag) return; this.yaw = drag[2] + (e.clientX - drag[0]) * 0.005; this.pitch = Math.max(-1.4, Math.min(1.4, drag[3] - (e.clientY - drag[1]) * 0.005)); this.dirty = true; });
-    window.addEventListener('pointerup', () => { drag = null; });
+    this.container = container; this.data = data; this.opts = opts;
+    this.yaw = 0; this.pitch = 0; this.fov = 90; this.quality = 0.5; this.dirty = true; this.ready = true;
+    this.engine = 'cpu'; this.background = 'stars'; this.layer = 'tint'; this.exposure = 0;
+    this.lastKey = null; this.tables = new Map(); this.cpu = new CpuRenderer(); this.phase = 'idle';
+    this.M = celestialFrame(); this.stars = loadStars();
+    this.gpu = null; this.gpuNote = webglAvailable() ? '' : 'WebGL is not available in this browser: GPU mode disabled.';
+    this._buildDom();
     this.resize();
   }
-  _cameraAxes() {
-    // tetrad components (n outward, theta-hat, phi-hat).  Default forward = -n (toward the hole), up = -theta-hat (north), right = phi-hat.
-    const cy = Math.cos(this.yaw), sy = Math.sin(this.yaw), cp = Math.cos(this.pitch), spp = Math.sin(this.pitch);
-    const F0 = [-1, 0, 0], R0 = [0, 0, 1], U0 = [0, -1, 0];
-    // yaw about up, then pitch about right
-    const rot = (v, axis, c, s) => { // Rodrigues
-      const d = v[0] * axis[0] + v[1] * axis[1] + v[2] * axis[2];
-      const cr = [axis[1] * v[2] - axis[2] * v[1], axis[2] * v[0] - axis[0] * v[2], axis[0] * v[1] - axis[1] * v[0]];
-      return [v[0] * c + cr[0] * s + axis[0] * d * (1 - c), v[1] * c + cr[1] * s + axis[1] * d * (1 - c), v[2] * c + cr[2] * s + axis[2] * d * (1 - c)];
-    };
-    let F = rot(F0, U0, cy, sy), R = rot(R0, U0, cy, sy);
-    F = rot(F, R, cp, spp); const U = rot(U0, R, cp, spp);
-    return { F, R, U };
+
+  _buildDom() {
+    const c = this.container;
+    if (getComputedStyle(c).position === 'static') c.style.position = 'relative';
+    this.canvas = document.createElement('canvas');
+    this.canvas.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;';
+    c.appendChild(this.canvas);
+    this.ctx = this.canvas.getContext('2d');
+    this.banner = document.createElement('div'); this.banner.className = 'overlay';
+    this.banner.style.cssText += 'top:48px;bottom:auto;max-width:min(58%, 720px);white-space:normal;font-size:11px;';
+    c.appendChild(this.banner);
+    this.stats = document.createElement('div'); this.stats.className = 'overlay'; this.stats.style.cssText += 'max-width:calc(100% - 500px);white-space:normal;font-size:11px;';
+    c.appendChild(this.stats);
+    // colour scale (false-colour layer)
+    this.scale = document.createElement('div'); this.scale.className = 'overlay';
+    this.scale.style.cssText += 'right:10px;left:auto;top:48px;bottom:auto;text-align:center;display:none;';
+    this.scaleCanvas = document.createElement('canvas'); this.scaleCanvas.width = 18; this.scaleCanvas.height = 200;
+    this.scaleCanvas.style.cssText = 'width:18px;height:200px;display:inline-block;vertical-align:middle;';
+    this.scaleLabel = document.createElement('div');
+    this.scale.append(this.scaleLabel);
+    c.appendChild(this.scale);
+    const ctl = document.createElement('div'); ctl.className = 'overlay';
+    ctl.style.cssText += 'right:10px;left:auto;bottom:10px;pointer-events:auto;text-align:right;line-height:1.9;width:470px;font-size:11px;';
+    const gpuDisabled = this.gpuNote ? 'disabled' : '';
+    ctl.innerHTML = `<button id="fp-in">look toward the hole</button> <button id="fp-out">look outward</button>
+      FOV <input id="fp-fov" type="range" min="40" max="160" value="90" style="width:90px;vertical-align:middle"><br>
+      renderer <select id="fp-engine"><option value="cpu">CPU (double precision, exact, default)</option><option value="gpu" ${gpuDisabled}>GPU (float32, r &gt; 1e-5 r_s)</option></select>
+      resolution <select id="fp-q"><option value="0.35">low</option><option value="0.5">medium</option><option value="0.75">high</option><option value="1">full</option></select><br>
+      background <select id="fp-bg"><option value="stars">star catalogue</option><option value="grid">coordinate grid</option></select>
+      colour <select id="fp-layer"><option value="tint">qualitative tint</option><option value="gmap">false colour: log10 g</option></select>
+      stars <select id="fp-exp"><option value="0">exposure ×1</option><option value="5">×100</option><option value="10">×10^4</option></select>
+      <div class="note" id="fp-note">drag to look around</div>`;
+    c.appendChild(ctl);
+    this.ctl = ctl;
+    const q = s => ctl.querySelector(s);
+    q('#fp-in').onclick = () => { this.yaw = 0; this.pitch = 0; this.dirty = true; };
+    q('#fp-out').onclick = () => { this.yaw = Math.PI; this.pitch = 0; this.dirty = true; };
+    q('#fp-fov').oninput = e => { this.fov = parseFloat(e.target.value); this.dirty = true; };
+    q('#fp-q').value = String(this.quality); q('#fp-q').onchange = e => { this.quality = parseFloat(e.target.value); this.resize(); };
+    q('#fp-bg').onchange = e => { this.background = e.target.value; this.dirty = true; };
+    q('#fp-layer').onchange = e => { this.layer = e.target.value; this.dirty = true; };
+    q('#fp-exp').onchange = e => { this.exposure = parseFloat(e.target.value); this.dirty = true; };
+    q('#fp-engine').onchange = e => this.setEngine(e.target.value);
+    if (this.gpuNote) q('#fp-note').textContent = this.gpuNote + ' Drag to look around.';
+    let drag = null;
+    this.canvas.addEventListener('pointerdown', e => { drag = [e.clientX, e.clientY, this.yaw, this.pitch]; });
+    this._onMove = e => { if (!drag) return; this.yaw = drag[2] + (e.clientX - drag[0]) * 0.005; this.pitch = Math.max(-1.5, Math.min(1.5, drag[3] - (e.clientY - drag[1]) * 0.005)); this.dirty = true; };
+    this._onUp = () => { drag = null; };
+    window.addEventListener('pointermove', this._onMove);
+    window.addEventListener('pointerup', this._onUp);
   }
-  update(smp, state) {
-    if (!this.ready || !smp) return;
-    const rGeo = 2 * smp.r_over_rs;
-    const changed = this.lastR === null || Math.abs(Math.log(rGeo / this.lastR)) > 1e-4;
-    if (!changed && !this.dirty) return;
-    this.lastR = rGeo; this.dirty = false;
-    const traceable = rGeo >= R_MIN_TRACE;
-    const rUse = traceable ? rGeo : R_MIN_TRACE;
-    // observer state at rUse: from the sample if traceable, else at the tracing limit (labelled)
-    let uv = smp.u_v, ur = smp.u_r, E = smp.E_killing ?? 1;
-    if (!traceable) { const s2 = this.data.at(Math.log10(rUse / 2)); uv = s2.u_v; ur = s2.u_r; E = s2.E_killing ?? 1; }
-    const { F, R, U } = this._cameraAxes();
-    const u = this.uniforms;
-    u.uR.value = rUse; u.uUv.value = uv; u.uUr.value = ur; u.uE.value = E;
-    u.uCamF.value.set(...F); u.uCamR.value.set(...R); u.uCamU.value.set(...U);
-    const w = this.target.width, h = this.target.height;
-    u.uRes.value.set(w, h);
-    u.uTanH.value = Math.tan(this.fov * Math.PI / 360); u.uTanV.value = u.uTanH.value * h / w;
-    u.uMaxSteps.value = this.maxSteps;
-    this.renderer.setRenderTarget(this.target); this.renderer.render(this.scene, this.camera);
-    this.renderer.setRenderTarget(null); this.renderer.render(this.blitScene, this.camera);
-    // CPU termination statistics on a coarse grid (same equations as the shader)
-    const nx = 16, ny = 10; let sky = 0, past = 0, unres = 0;
-    for (let j = 0; j < ny; j++) for (let i = 0; i < nx; i++) {
-      const px = (i + 0.5) / nx * 2 - 1, py = (j + 0.5) / ny * 2 - 1;
-      const d = [F[0] + px * u.uTanH.value * R[0] + py * u.uTanV.value * U[0], F[1] + px * u.uTanH.value * R[1] + py * u.uTanV.value * U[1], F[2] + px * u.uTanH.value * R[2] + py * u.uTanV.value * U[2]];
-      const n = Math.hypot(...d); const dn = d[0] / n, dperp = Math.hypot(d[1], d[2]) / n;
-      const res = traceRay(rUse, uv, ur, E, dn, dperp, { maxSteps: this.maxSteps });
-      if (res.kind === 'sky') sky++; else if (res.kind === 'past') past++; else unres++;
+
+  setEngine(name) {
+    if (name === 'gpu' && !this.gpu) {
+      try { this.gpu = new GpuTracer(this.container); this.container.insertBefore(this.gpu.canvas, this.canvas); this.gpu.canvas.addEventListener('pointerdown', e => this.canvas.dispatchEvent(new PointerEvent('pointerdown', e))); }
+      catch (err) {
+        this.gpu = null; this.gpuNote = 'GPU mode unavailable (WebGL failed: ' + err + ').';
+        const sel = this.ctl.querySelector('#fp-engine'); sel.value = 'cpu'; sel.querySelector('option[value=gpu]').disabled = true;
+        this.ctl.querySelector('#fp-note').textContent = this.gpuNote; name = 'cpu';
+      }
     }
-    const tot = nx * ny;
-    const inside = rGeo <= 2;
-    // exact extent of the exterior sky on the observer's celestial sphere: E_f = E + d_n |u^r|/|n| > 0
-    const fr0 = observerFrame(rUse, uv, ur, E);
-    const cosMax = -E * Math.sqrt(Math.max(1e-300, -fr0.f * uv * uv + 2 * uv * E)) / Math.max(1e-300, Math.abs(ur));
-    const skyCone = inside ? (cosMax <= -1 ? 180 : cosMax >= 1 ? 0 : Math.acos(cosMax) * 180 / Math.PI) : null;
-    this.banner.innerHTML = `<b>${this.data.raw.banner_firstperson}</b><br>Per-pixel null geodesics in ingoing Eddington–Finkelstein coordinates from the observer's comoving tetrad; ` +
-      `aberration and gravitational/Doppler frequency shift included; colours qualitative; sky synthetic (grid every 15°, gold marker = direction away from the hole, green = towards it at infinity).` +
-      (traceable ? '' : `<br><span style="color:#ffb454">Below r = ${fmt.sci(R_MIN_TRACE / 2, 1)} r_s the 32-bit GPU precision cannot represent the ray state: showing the view frozen at r = ${fmt.sci(R_MIN_TRACE / 2, 1)} r_s (LABELLED LIMIT).</span>`);
-    this.stats.innerHTML = `r = ${fmt.sci(smp.r_m, 3)} m = ${fmt.sci(smp.r_over_rs, 3)} r_s — ${inside ? 'INSIDE the horizon' : 'outside the horizon'}<br>` +
-      `pixels (coarse CPU estimate, same equations): sky ${(100 * sky / tot).toFixed(0)}%, past-horizon / not-modelled region (black) ${(100 * past / tot).toFixed(0)}%, unresolved (magenta) ${(100 * unres / tot).toFixed(0)}%<br>` +
-      `look: yaw ${(this.yaw * 180 / Math.PI).toFixed(0)}° (0 = toward the hole, 180 = outward), pitch ${(this.pitch * 180 / Math.PI).toFixed(0)}°, FOV ${this.fov}°, ${this.software ? 'software GL (low quality)' : 'GPU'}` +
-      (inside ? `<br>inside r_s the exterior universe (region I) occupies a cone of half-angle ${skyCone.toFixed(1)}° around the OUTWARD direction (rays with positive Killing energy); the rest of the sky is the other horizon / collapsing-matter region — not modelled, shown black` : '');
+    this.engine = name;
+    this.ctl.querySelector('#fp-engine').value = name;
+    this.dirty = true;
+    this.resize();
   }
+
+  getCanvas() {
+    // A canvas with the current image PLUS the baked-in labels (banner, r, colour scale) at display resolution.
+    const src = (this._gpuActive() ? this.gpu.canvas : this.canvas);
+    const W = this.container.clientWidth || src.width, H = this.container.clientHeight || src.height;
+    const out = document.createElement('canvas'); out.width = W; out.height = H;
+    const x = out.getContext('2d');
+    x.imageSmoothingEnabled = true; x.drawImage(src, 0, 0, W, H);
+    x.fillStyle = 'rgba(0,0,0,0.6)'; x.fillRect(0, 0, W, 38);
+    x.fillStyle = '#ffb454'; x.font = 'bold 13px sans-serif';
+    x.fillText(this.data.raw.banner_firstperson, 8, 15);
+    x.fillStyle = '#d8dee9'; x.font = '11px sans-serif';
+    x.fillText(this._captionLine || '', 8, 31);
+    if (this.layer === 'gmap' && !this._gpuActive()) this._drawScale(x, W - 70, 50, 16, Math.min(260, H - 100));
+    return out;
+  }
+
+  _gpuActive() { return this.engine === 'gpu' && this.gpu && this.obs && this.obs.r >= R_MIN_GPU; }
+
+  _drawScale(x, X, Y, w, h) {
+    const L = this.gRange;
+    for (let i = 0; i < h; i++) { const c = gColor(L * (1 - 2 * i / (h - 1)), L); x.fillStyle = `rgb(${255 * c[0] | 0},${255 * c[1] | 0},${255 * c[2] | 0})`; x.fillRect(X, Y + i, w, 1); }
+    x.strokeStyle = '#ccc'; x.strokeRect(X, Y, w, h);
+    x.fillStyle = '#fff'; x.font = '11px sans-serif';
+    x.fillText(`+${fmt.sci(L, 3)}`, X + w + 3, Y + 8); x.fillText('0', X + w + 3, Y + h / 2 + 4); x.fillText(`−${fmt.sci(L, 3)}`, X + w + 3, Y + h);
+    x.fillText('log10 g', X - 8, Y - 6);
+  }
+
+  _table(obs) {
+    const key = `${obs.r}|${obs.E}`;
+    let t = this.tables.get(key);
+    if (!t) {
+      t = new TransferTable(obs);
+      this.tables.set(key, t);
+      if (this.tables.size > TABLE_CACHE) this.tables.delete(this.tables.keys().next().value);
+    }
+    return t;
+  }
+
+  _startRender(opts) {
+    const W = this.canvas.width, H = this.canvas.height;
+    const { F, R, U } = cameraAxes(this.yaw, this.pitch);
+    const tanH = Math.tan(this.fov * Math.PI / 360);
+    this.cam = { F, R, U, tanH, tanV: tanH * H / W };
+    this.cpu.start({ width: W, height: H, obs: this.obs, table: this.table, cam: this.cam, M: this.M, background: this.background, layer: this.layer,
+      gRange: this.gRange, stars: this.stars, exposure: this.exposure, ...opts });
+    this.imageData = new ImageData(this.cpu.rgba, W, H);
+  }
+
+  update(smp, state) {
+    if (!smp) return;
+    const rGeo = 2 * smp.r_over_rs;
+    const E = (smp.E_killing === null || smp.E_killing === undefined || !isFinite(smp.E_killing)) ? 1 : smp.E_killing;
+    const key = `${rGeo}|${E}`;
+    let restart = false;
+    if (key !== this.lastKey) {
+      this.lastKey = key; this.sample = smp;
+      this.obs = observerState(rGeo, E);
+      this.table = this._table(this.obs);
+      this.fractions = skyFractions(this.obs);
+      this.gRange = gScaleRange(this.obs, isNaN(this.fractions.dnMinSky) ? 1 : this.fractions.dnMinSky);
+      restart = true;
+    }
+    if (this.dirty) {
+      this.dirty = false; restart = true;
+      // keep the controls in sync with state set programmatically (tests, other modules)
+      const q = sel => this.ctl.querySelector(sel);
+      q('#fp-bg').value = this.background; q('#fp-layer').value = this.layer; q('#fp-exp').value = String(this.exposure);
+      q('#fp-fov').value = String(this.fov); q('#fp-engine').value = this.engine;
+    }
+    if (this._gpuActive()) {
+      if (restart) {
+        const { F, R, U } = cameraAxes(this.yaw, this.pitch); const tanH = Math.tan(this.fov * Math.PI / 360);
+        this.cam = { F, R, U, tanH, tanV: tanH * this.gpu.canvas.height / this.gpu.canvas.width };
+        this.gpu.render(this.obs, this.cam, this.M); this._updateText();
+      }
+      this.gpu.canvas.style.display = ''; this.canvas.style.display = 'none';
+      return;
+    }
+    if (this.gpu) { this.gpu.canvas.style.display = 'none'; }
+    this.canvas.style.display = '';
+    if (restart) {
+      // coarse image first (block 8), then finish the table, then the progressive full-resolution image
+      this.phase = this.table.done ? 'render' : 'coarse';
+      this._startRender(this.phase === 'coarse' ? { maxLevel: 0 } : {});
+    }
+    const t0 = performance.now();
+    let changed = false;
+    while (performance.now() - t0 < BUDGET_MS && this.phase !== 'idle') {
+      const left = BUDGET_MS - (performance.now() - t0);
+      if (this.phase === 'coarse') { changed = this.cpu.step(left) || changed; if (this.cpu.done) this.phase = 'table'; }
+      else if (this.phase === 'table') { if (this.table.refine(left)) { this.phase = 'render'; this._startRender({ startLevel: 1 }); this.cpu.step(0); } }
+      else if (this.phase === 'render') { changed = this.cpu.step(left) || changed; if (this.cpu.done) this.phase = 'idle'; }
+    }
+    if (changed || restart) { this.ctx.putImageData(this.imageData, 0, 0); this._updateText(); }
+  }
+
+  _updateText() {
+    const smp = this.sample, o = this.obs, fr = this.fractions;
+    const inside = o.r < 2;
+    const gpu = this._gpuActive();
+    const lvlC = this.cpu.levelCounts;
+    const tot = lvlC ? lvlC[0] + lvlC[1] + lvlC[2] : 0;
+    const pc = v => (100 * v).toFixed(v < 0.001 && v > 0 ? 4 : 1);
+    const coneDeg = inside && !isNaN(fr.dnMinSky) ? Math.acos(Math.max(-1, Math.min(1, fr.dnMinSky))) * 180 / Math.PI : null;
+    const coneStr = coneDeg === null ? '' : (Math.abs(fr.dnMinSky) < 1e-6 ? `90° + ${fmt.sci(Math.asin(-fr.dnMinSky), 3)} rad` : `${coneDeg.toFixed(3)}°`);
+    this._captionLine = `r = ${fmt.sci(smp.r_m, 3)} m = ${fmt.sci(smp.r_over_rs, 3)} r_s (${inside ? 'inside' : 'outside'} the horizon) — ` +
+      `${gpu ? 'GPU float32' : 'CPU double precision'}; sky: ${this.background === 'stars' ? 'Earth J2000 bright stars' : 'RA/Dec grid'} at infinity, hole placed toward Sgr A* (ILLUSTRATIVE)` +
+      (this.layer === 'gmap' ? '; false colour = log10 g' : '; colours qualitative');
+    this.banner.innerHTML = `<b>${this.data.raw.banner_firstperson}</b><br>` +
+      `Each pixel's past light ray is followed exactly (Schwarzschild null geodesic from the falling observer's own frame: aberration, lensing and the frequency ratio g = ν_seen/ν_emitted-at-infinity included; ` +
+      `the picture is symmetric about the radial direction, so one exact 1D table of sky angles serves all pixels). ` +
+      `Backdrop: ${gpu ? 'RA/Dec grid every 15° (GPU float32 mode: no star catalogue, sky angle taken at r = 400 M)' : this.background === 'stars' ? STAR_ATTRIBUTION : 'RA/Dec grid every 15°'}; the hole is placed in the direction of ${HOLE_DIRECTION.label} — ` +
+      `green ring = 2.5° around the hole's direction, gold ring = 2.5° around the opposite direction. ${this.layer === 'gmap' ? 'Hatched grey' : 'Dark red'} = rays ending on the past horizon (not modelled), magenta = unresolved.` +
+      (this.layer === 'gmap' ? ` False colour: log10 g (red = redshift, blue = blueshift), scale at right.` : ` Colour tint is qualitative.`) +
+      (this.engine === 'gpu' && !gpu ? `<br><span style="color:#ffb454">GPU float32 cannot represent the ray state below r = ${fmt.sci(R_MIN_GPU / 2, 1)} r_s: showing the double-precision CPU renderer instead (LABELLED LIMIT).</span>` : '');
+    const tableState = this.table.done ? `${this.table.p.length} samples` : `refining (${this.table.p.length} samples)`;
+    this.stats.innerHTML = `r = ${fmt.sci(smp.r_m, 3)} m = ${fmt.sci(smp.r_over_rs, 3)} r_s = ${fmt.sci(o.r, 3)} GM/c² — ${inside ? 'INSIDE the horizon' : 'outside the horizon'}<br>` +
+      `all directions (exact): exterior sky ${pc(fr.sky)} %, past horizon / not modelled ${pc(fr.past)} %` +
+      (tot ? `; this image: sky ${pc(lvlC[KIND_SKY] / tot)} %, past ${pc(lvlC[KIND_PAST] / tot)} %, unresolved ${pc(lvlC[KIND_UNRESOLVED] / tot)} %` : '') + '<br>' +
+      (gpu ? `GPU float32 shader` : `CPU: table ${tableState}, image ${this.phase === 'idle' ? 'complete' : 'refining'}${this.background === 'stars' ? `, ${this.cpu.starCount} star images drawn` : ''}`) +
+      `; look: yaw ${(this.yaw * 180 / Math.PI).toFixed(0)}° (0 = toward the hole, 180 = outward), pitch ${(this.pitch * 180 / Math.PI).toFixed(0)}°, FOV ${this.fov}°` +
+      (inside ? `<br>Inside r_s the exterior universe is seen only along rays whose photons have positive Killing energy AND impact parameter b < 3√3 GM/c²: ` +
+        `a cone of half-angle ${coneStr} around the OUTWARD direction. All other directions (${this.layer === 'gmap' ? 'hatched grey' : 'dark red'}) show light that left the past horizon ` +
+        `(the white-hole / other-universe region of the eternal solution; for a real hole, the collapsing star) — not modelled.` : '') +
+      (o.r < 1e-6 ? `<br>Deep inside, the whole exterior sky except a tiny patch around the outward direction is squeezed into an unresolvably thin, strongly blueshifted ring at the edge of this cone; ` +
+        `the rest of the outward view is a hugely magnified, strongly redshifted image of that patch (see docs: first-person camera near r_QG).` : '');
+    if (this.layer === 'gmap' && !gpu) {
+      this.scale.style.display = '';
+      const x = this.scaleCanvas.getContext('2d'); const h = this.scaleCanvas.height;
+      for (let i = 0; i < h; i++) { const c = gColor(this.gRange * (1 - 2 * i / (h - 1)), this.gRange); x.fillStyle = `rgb(${255 * c[0] | 0},${255 * c[1] | 0},${255 * c[2] | 0})`; x.fillRect(0, i, 18, 1); }
+      this.scaleLabel.innerHTML = `log10 g<br>+${fmt.sci(this.gRange, 3)} (blue)<br>`;
+      this.scaleLabel.appendChild(this.scaleCanvas);
+      this.scaleLabel.insertAdjacentHTML('beforeend', `<br>−${fmt.sci(this.gRange, 3)} (red)<br><span class="note">g = ν_seen / ν_emitted at ∞</span>`);
+    } else this.scale.style.display = 'none';
+  }
+
   resize() {
-    if (!this.ready) return;
     const w = this.container.clientWidth || 800, h = this.container.clientHeight || 600;
-    this.renderer.setSize(w, h, false);
-    this.target.setSize(Math.max(16, Math.round(w * this.quality)), Math.max(16, Math.round(h * this.quality)));
+    const W = Math.max(32, Math.round(w * this.quality)), H = Math.max(32, Math.round(h * this.quality));
+    if (this.canvas.width !== W || this.canvas.height !== H) { this.canvas.width = W; this.canvas.height = H; }
+    if (this.gpu) this.gpu.setSize(Math.max(16, Math.round(w * Math.min(this.quality, 0.35))), Math.max(16, Math.round(h * Math.min(this.quality, 0.35))));
     this.dirty = true;
   }
+
   setMode() {}
-  dispose() { this.renderer?.dispose(); }
+
+  dispose() {
+    window.removeEventListener('pointermove', this._onMove);
+    window.removeEventListener('pointerup', this._onUp);
+    this.gpu?.dispose();
+  }
 }

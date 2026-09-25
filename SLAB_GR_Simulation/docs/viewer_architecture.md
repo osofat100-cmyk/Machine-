@@ -55,20 +55,62 @@ available for the exterior.
 
 ## First-person camera (physics)
 
-Observer state at the current sample: `(r, u^v, u^r, E_killing)` (equatorial, radial).  The
-comoving tetrad is `e0 = u`, `e1 = n = (u^v, E, 0, 0)/|n|` (local outward radial direction),
-`e2 = ∂_θ/r`, `e3 = ∂_φ/(r sinθ)`.  For each pixel with unit view direction `d` in the tetrad,
-the past-directed photon momentum is `k = -u + d^i e_i` (so that -k·u = 1 at the eye), and the
-null geodesic is integrated in the plane spanned by `n` and `d_⊥` with the EF equations
+**Default renderer: double precision on the CPU, no WebGL** (`firstperson_cpu.js`); the float32 GLSL shader
+(`firstperson_gpu.js`) is created only if the user selects "GPU (float32, r > 1e-5 r_s)" (disabled with a note
+when the browser has no WebGL; below 1e-5 r_s the view falls back to the CPU path, labelled).  All pure-physics
+modules (`firstperson_core.js`, `firstperson_table.js`, `firstperson_cpu.js`, `firstperson_sky.js`,
+`starcatalog.js`, `data/*.js`) import no DOM/WebGL and are tested directly under Node.
+
+Observer: radial, `E = E_killing` of the sample (1 for the main run), `r = 2 r_over_rs` (units GM/c²);
+`a = |u^r| = sqrt(E² − 1 + 2/r)`, `u^v = 1/(E + a)` (exact for any radial unit 4-velocity, well conditioned from
+r = 100 r_s down to r_QG).  Tetrad `e0 = u`, `e1 = n = (u^v, E)` (outward radial, unit), `e2 = ∂_θ/r`,
+`e3 = ∂_φ/(r sinθ)`.  A pixel's unit view direction `d = dn e1 + dperp e⊥` receives the future-directed photon
+`p = u − d` (observed frequency 1).  Closed forms (EXACT GR RESULTS, Killing vector `ξ = ∂_v = E u + a n`):
 ```
-dv/dλ = k^v,  dr/dλ = k^r,  dψ/dλ = k^ψ,
-dk^v/dλ = -(M/r²)(k^v)² + r (k^ψ)²,
-dk^r/dλ = -(M f/r²)(k^v)² + (2M/r²) k^v k^r + r f (k^ψ)²,
-dk^ψ/dλ = -(2/r) k^r k^ψ,
+E_ph = E + a dn,   L = r dperp,   b = L/E_ph,   g = ν_obs/ν_∞ = 1/E_ph,
+past-directed ray moves outward in r  iff  a + E dn > 0.
 ```
-(same Christoffel symbols as the timelike engine) until `r > r_sky` (escape: sky direction
-`ψ_∞ = ψ + atan2(r k^ψ, k^r)` in the ray plane, with the frequency ratio `g = 1/E_ph`,
-`E_ph = f k^v - k^r` of the future-directed momentum) or `v < v_min` (ray traced back to the
-past horizon: shown black and labelled), or the step budget is exhausted.  The sky is a
-procedural star/grid pattern so that lensing, aberration and the shrinking/expanding view of the
-exterior are visible.  Colour mapping of the redshift is qualitative and labelled as such.
+**Kind** (exact, `classify()`): exterior inward → past horizon iff `r ≤ 3M` or `b² ≤ 27M²`; exterior outward →
+past iff `2M < r < 3M` and `b² > 27M²`; interior → exterior sky iff `E_ph > 0` **and** `b² < 27M²` (the `b²`
+condition was missing before 2026-09; those rays turn at `r_t < 3M` and end on the past horizon).  The sky/past
+boundaries are the roots of `(27a² + r²) dn² + 54 E a dn + 27E² − r² = 0`,
+`dn± = (−27Ea ± |r−3| sqrt(r(r+6))) / (27a² + r²)`; at `r = 10M` this reproduces the aberrated static shadow
+`cos α' = (cos α_s + v)/(1 + v cos α_s)` to 1e-12.
+
+**Sky angle** `ψ_∞` (angle, seen from the hole, between the observer's outward radial direction and the source
+direction at infinity, in the ray plane): the orbit integral `ψ = ∫ dw / sqrt(1 − w² + 2w³/b)` (`w = b/r`), evaluated
+by adaptive Gauss–Kronrod quadrature in the scale-free variables `w`, `1/r` (substitution `w = w0 e^{−s}`,
+`s = ln(r/r0)`, i.e. integration in ln r) for monotone rays, and with `w = w_t − y²` through the turning point
+`r_t = (2b/√3) cos(⅓ arccos(−3√3/b))` for exterior rays that bounce.  Nothing over/underflows down to r ~ 1e-300.
+
+**Axial symmetry → 1D transfer table** (`firstperson_table.js`): kind and g are per-pixel closed forms; only
+`ψ_∞` is tabulated, as a function of the elevation `α = asin(dn)` outside the horizon and of `b ∈ [0, √27)`
+inside (deep inside, the part of the sky away from the zenith lives in directions within ~r^{3/2} of the
+sky-cone edge, below the double spacing of `α` but resolved in `b`).  Seeds: uniform/geometric grids plus geometric
+sequences towards every `b² = 27` divergence; adaptive midpoint bisection until linear interpolation is within
+`max(2e-5 rad, 1e-4 |ψ|)`.  A coarse table (≈100 samples, ~5 ms) is used for the first frame, the refined one
+(500–1600 samples, 10–80 ms) for the final image.
+
+**Pixel shading** (`CpuRenderer`): `ψ` from the table, sky direction `cos ψ n + sin ψ t` (`t` = the pixel's
+azimuth), rotated into celestial J2000 by a fixed frame (`firstperson_sky.js`: the hole is placed, ILLUSTRATIVELY,
+towards Sgr A*, RA 266.4168°, Dec −29.0078°; the anti-hole direction is the observer's zenith; screen up at start =
+celestial north projected).  Backgrounds: **star catalogue** (default; 1627 stars V ≤ 5 from d3-celestial ←
+XHIP, forward-mapped: images where `ψ(α) = Ψ + 2πk` or `2π − Ψ + 2πk`, magnification
+`μ = cos α dα / (sin ψ dψ)`, blackbody colour at `g T`, `m_obs = m − 2.5 log10(μ Y(gT)/Y(T))`) or
+**coordinate grid** (RA/Dec every 15°, anti-aliased with the local sky-per-pixel scale).  Layers: qualitative tint
+(labelled) or **false colour log10 g** with a labelled symmetric colour scale.  Past-horizon directions: dark red
+(hatched grey in false colour); unresolved (quadrature failure, essentially never): magenta.
+Progressive: block sizes 8 → 4 → 2 → 1, ≤ 24 ms of work per animation frame; coarse table → coarse image →
+table refinement → full image.
+
+**Overlays**: banner "Qualitative visualization — trajectory calculations remain relativistic." + explanation
+line; r in m, r_s and GM/c²; exact fractions of all directions (sky / past horizon) and of the current image
+(sky / past / unresolved); inside the horizon the sky-cone half-angle and what the other directions show.
+`getCanvas()` returns a canvas with the image plus baked-in banner, caption and colour scale (for screenshots).
+
+**Validation**: `tests/viewer/test_firstperson.mjs` (Node: table vs quadrature vs EF integration at random
+directions from 200 M to r_QG; rays from 1e-30, 1e-37 M and r_QG conserve E_ph, L; classifier vs unconditioned
+EF integration; rendered shadow radius at 5 r_s vs analytic within 2 %; renderer in Node; interior cone; star
+mapping flat limit), `tests/viewer/test_null_geodesics.mjs` (EF equations: conservation, deflection, capture,
+horizon crossing, exact shadow edge), `tests/viewer/test_firstperson_browser.mjs` (headless: CPU default, no
+WebGL context, r_QG render, false-colour scale, `getCanvas()`, playback frame time, optional GPU mode + fallback).
