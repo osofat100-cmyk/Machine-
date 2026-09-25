@@ -1,0 +1,252 @@
+{
+  "generated": "2026-09-25T21:55:32.498Z",
+  "note": "measurement only; see docs/DECLUTTER_PROMPT.md for targets",
+  "results": [
+    {
+      "size": "laptop",
+      "state": "scene-start",
+      "panels": 2,
+      "overlaps": [
+        {
+          "a": "#banner: LOGARITHMIC VISUALIZATION — NOT TO SCALE",
+          "b": "#view-scene: LOGARITHMIC VISUALIZATION — NOT TO SCALE (screen r",
+          "area_px": 10703
+        }
+      ],
+      "numbers_visible": 107,
+      "words_visible": 163,
+      "text_blocks": 122,
+      "tiny_text_blocks": 75,
+      "horizontal_overflow": false,
+      "panel_labels": [
+        "#banner: LOGARITHMIC VISUALIZATION — NOT TO SCALE",
+        "#view-scene: LOGARITHMIC VISUALIZATION — NOT TO SCALE (screen r"
+      ]
+    },
+    {
+      "size": "laptop",
+      "state": "scene-horizon",
+      "panels": 2,
+      "overlaps": [
+        {
+          "a": "#banner: LOGARITHMIC VISUALIZATION — NOT TO SCALE",
+          "b": "#view-scene: LOGARITHMIC VISUALIZATION — NOT TO SCALE (screen r",
+          "area_px": 10703
+        }
+      ],
+      "numbers_visible": 108,
+      "words_visible": 161,
+      "text_blocks": 122,
+      "tiny_text_blocks": 75,
+      "horizontal_overflow": false,
+      "panel_labels": [
+        "#banner: LOGARITHMIC VISUALIZATION — NOT TO SCALE",
+        "#view-scene: LOGARITHMIC VISUALIZATION — NOT TO SCALE (screen r"
+      ]
+    },
+    {
+      "size": "laptop",
+      "state": "scene-rQG",
+      "panels": 3,
+      "overlaps": [
+        {
+          "a": "#banner: LOGARITHMIC VISUALIZATION — NOT TO SCALE",
+          "b": "#view-scene: LOGARITHMIC VISUALIZATION — NOT TO SCALE (screen r",
+          "area_px": 10703
+        },
+        {
+          "a": "#planck: PLANCK-CURVATURE THRESHOLD REACHED. CLASSICAL GENE",
+          "b": "#view-scene: LOGARITHMIC VISUALIZATION — NOT TO SCALE (screen r",
+          "area_px": 45647
+        }
+      ],
+      "numbers_visible": 108,
+      "words_visible": 179,
+      "text_blocks": 123,
+      "tiny_text_blocks": 75,
+      "horizontal_overflow": false,
+      "panel_labels": [
+        "#banner: LOGARITHMIC VISUALIZATION — NOT TO SCALE",
+        "#planck: PLANCK-CURVATURE THRESHOLD REACHED. CLASSICAL GENE",
+        "#view-scene: LOGARITHMIC VISUALIZATION — NOT TO SCALE (screen r"
+      ]
+    },
+    {
+      "size": "laptop",
+      "state": "causal",
+      "panels": 1,
+      "overlaps": [],
+      "numbers_visible": 47,
+      "words_visible": 161,
+      "text_blocks": 55,
+      "tiny_text_blocks": 0,
+      "horizontal_overflow": false,
+      "panel_labels": [
+        "#view-causal: Kruskal (U, V) 0.8296, 1.131 Kruskal (T, X) 0.9802"
+      ]
+    },
+    {
+      "size": "laptop",
+      "state": "firstperson",
+      "panels": 1,
+      "overlaps": [],
+      "numbers_visible": 42,
+      "words_visible": 166,
+      "text_blocks": 50,
+      "tiny_text_blocks": 0,
+      "horizontal_overflow": false,
+      "panel_labels": [
+        "#view-fp: Qualitative visualization — trajectory calculation"
+      ]
+    },
+    {
+      "size": "laptop",
+      "state": "speculative",
+      "panels": 2,
+      "overlaps": [
+        {
+          "a": "#spec-banner: SPECULATIVE MODEL — NOT experimentally established",
+          "b": "#view-spec: SPECULATIVE QUANTUM-GRAVITY TOY MODELS — NOT ESTAB",
+          "area_px": 12352
+        }
+      ],
+      "numbers_visible": 117,
+      "words_visible": 404,
+      "text_blocks": 96,
+      "tiny_text_blocks": 0,
+      "horizontal_overflow": false,
+      "panel_labels": [
+        "#spec-banner: SPECULATIVE MODEL — NOT experimentally established",
+        "#view-spec: SPECULATIVE QUANTUM-GRAVITY TOY MODELS — NOT ESTAB"
+      ]
+    },
+    {
+      "size": "laptop",
+      "state": "page-errors",
+      "errors": []
+    },
+    {
+      "size": "phone",
+      "state": "scene-start",
+      "panels": 2,
+      "overlaps": [
+        {
+          "a": "#banner: LOGARITHMIC VISUALIZATION — NOT TO SCALE",
+          "b": "#view-scene: LOGARITHMIC VISUALIZATION — NOT TO SCALE (screen r",
+          "area_px": 2483
+        }
+      ],
+      "numbers_visible": 52,
+      "words_visible": 143,
+      "text_blocks": 66,
+      "tiny_text_blocks": 20,
+      "horizontal_overflow": true,
+      "panel_labels": [
+        "#banner: LOGARITHMIC VISUALIZATION — NOT TO SCALE",
+        "#view-scene: LOGARITHMIC VISUALIZATION — NOT TO SCALE (screen r"
+      ]
+    },
+    {
+      "size": "phone",
+      "state": "scene-horizon",
+      "panels": 2,
+      "overlaps": [
+        {
+          "a": "#banner: LOGARITHMIC VISUALIZATION — NOT TO SCALE",
+          "b": "#view-scene: LOGARITHMIC VISUALIZATION — NOT TO SCALE (screen r",
+          "area_px": 2483
+        }
+      ],
+      "numbers_visible": 53,
+      "words_visible": 141,
+      "text_blocks": 66,
+      "tiny_text_blocks": 20,
+      "horizontal_overflow": true,
+      "panel_labels": [
+        "#banner: LOGARITHMIC VISUALIZATION — NOT TO SCALE",
+        "#view-scene: LOGARITHMIC VISUALIZATION — NOT TO SCALE (screen r"
+      ]
+    },
+    {
+      "size": "phone",
+      "state": "scene-rQG",
+      "panels": 3,
+      "overlaps": [
+        {
+          "a": "#banner: LOGARITHMIC VISUALIZATION — NOT TO SCALE",
+          "b": "#view-scene: LOGARITHMIC VISUALIZATION — NOT TO SCALE (screen r",
+          "area_px": 2483
+        },
+        {
+          "a": "#planck: PLANCK-CURVATURE THRESHOLD REACHED. CLASSICAL GENE",
+          "b": "#view-scene: LOGARITHMIC VISUALIZATION — NOT TO SCALE (screen r",
+          "area_px": 9270
+        }
+      ],
+      "numbers_visible": 53,
+      "words_visible": 159,
+      "text_blocks": 67,
+      "tiny_text_blocks": 20,
+      "horizontal_overflow": true,
+      "panel_labels": [
+        "#banner: LOGARITHMIC VISUALIZATION — NOT TO SCALE",
+        "#planck: PLANCK-CURVATURE THRESHOLD REACHED. CLASSICAL GENE",
+        "#view-scene: LOGARITHMIC VISUALIZATION — NOT TO SCALE (screen r"
+      ]
+    },
+    {
+      "size": "phone",
+      "state": "causal",
+      "panels": 1,
+      "overlaps": [],
+      "numbers_visible": 33,
+      "words_visible": 155,
+      "text_blocks": 49,
+      "tiny_text_blocks": 0,
+      "horizontal_overflow": true,
+      "panel_labels": [
+        "#view-causal: Kruskal (U, V) 0.8296, 1.131 Kruskal (T, X) 0.9802"
+      ]
+    },
+    {
+      "size": "phone",
+      "state": "firstperson",
+      "panels": 1,
+      "overlaps": [],
+      "numbers_visible": 39,
+      "words_visible": 165,
+      "text_blocks": 49,
+      "tiny_text_blocks": 0,
+      "horizontal_overflow": true,
+      "panel_labels": [
+        "#view-fp: Qualitative visualization — trajectory calculation"
+      ]
+    },
+    {
+      "size": "phone",
+      "state": "speculative",
+      "panels": 2,
+      "overlaps": [
+        {
+          "a": "#spec-banner: SPECULATIVE MODEL — NOT experimentally established",
+          "b": "#view-spec: SPECULATIVE QUANTUM-GRAVITY TOY MODELS — NOT ESTAB",
+          "area_px": 2979
+        }
+      ],
+      "numbers_visible": 28,
+      "words_visible": 83,
+      "text_blocks": 43,
+      "tiny_text_blocks": 0,
+      "horizontal_overflow": true,
+      "panel_labels": [
+        "#spec-banner: SPECULATIVE MODEL — NOT experimentally established",
+        "#view-spec: SPECULATIVE QUANTUM-GRAVITY TOY MODELS — NOT ESTAB"
+      ]
+    },
+    {
+      "size": "phone",
+      "state": "page-errors",
+      "errors": []
+    }
+  ]
+}
