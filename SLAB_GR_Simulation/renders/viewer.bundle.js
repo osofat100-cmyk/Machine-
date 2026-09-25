@@ -5062,10 +5062,10 @@
       }
       output.object = object;
       return output;
-      function extractFromCache(cache) {
+      function extractFromCache(cache2) {
         const values = [];
-        for (const key in cache) {
-          const data2 = cache[key];
+        for (const key in cache2) {
+          const data2 = cache2[key];
           delete data2.metadata;
           values.push(data2);
         }
@@ -6041,10 +6041,10 @@
       if (this.toneMapped === false) data2.toneMapped = false;
       if (this.fog === false) data2.fog = false;
       if (Object.keys(this.userData).length > 0) data2.userData = this.userData;
-      function extractFromCache(cache) {
+      function extractFromCache(cache2) {
         const values = [];
-        for (const key in cache) {
-          const data3 = cache[key];
+        for (const key in cache2) {
+          const data3 = cache2[key];
           delete data3.metadata;
           values.push(data3);
         }
@@ -9241,7 +9241,7 @@
       return false;
     }
     function saveCache(object, geometry, program, index) {
-      const cache = {};
+      const cache2 = {};
       const attributes2 = geometry.attributes;
       let attributesNum = 0;
       const programAttributes = program.getAttributes();
@@ -9258,11 +9258,11 @@
           if (attribute && attribute.data) {
             data2.data = attribute.data;
           }
-          cache[name] = data2;
+          cache2[name] = data2;
           attributesNum++;
         }
       }
-      currentState.attributes = cache;
+      currentState.attributes = cache2;
       currentState.attributesNum = attributesNum;
       currentState.index = index;
     }
@@ -10985,213 +10985,213 @@
     return r;
   }
   function setValueV1f(gl, v) {
-    const cache = this.cache;
-    if (cache[0] === v) return;
+    const cache2 = this.cache;
+    if (cache2[0] === v) return;
     gl.uniform1f(this.addr, v);
-    cache[0] = v;
+    cache2[0] = v;
   }
   function setValueV2f(gl, v) {
-    const cache = this.cache;
+    const cache2 = this.cache;
     if (v.x !== void 0) {
-      if (cache[0] !== v.x || cache[1] !== v.y) {
+      if (cache2[0] !== v.x || cache2[1] !== v.y) {
         gl.uniform2f(this.addr, v.x, v.y);
-        cache[0] = v.x;
-        cache[1] = v.y;
+        cache2[0] = v.x;
+        cache2[1] = v.y;
       }
     } else {
-      if (arraysEqual(cache, v)) return;
+      if (arraysEqual(cache2, v)) return;
       gl.uniform2fv(this.addr, v);
-      copyArray(cache, v);
+      copyArray(cache2, v);
     }
   }
   function setValueV3f(gl, v) {
-    const cache = this.cache;
+    const cache2 = this.cache;
     if (v.x !== void 0) {
-      if (cache[0] !== v.x || cache[1] !== v.y || cache[2] !== v.z) {
+      if (cache2[0] !== v.x || cache2[1] !== v.y || cache2[2] !== v.z) {
         gl.uniform3f(this.addr, v.x, v.y, v.z);
-        cache[0] = v.x;
-        cache[1] = v.y;
-        cache[2] = v.z;
+        cache2[0] = v.x;
+        cache2[1] = v.y;
+        cache2[2] = v.z;
       }
     } else if (v.r !== void 0) {
-      if (cache[0] !== v.r || cache[1] !== v.g || cache[2] !== v.b) {
+      if (cache2[0] !== v.r || cache2[1] !== v.g || cache2[2] !== v.b) {
         gl.uniform3f(this.addr, v.r, v.g, v.b);
-        cache[0] = v.r;
-        cache[1] = v.g;
-        cache[2] = v.b;
+        cache2[0] = v.r;
+        cache2[1] = v.g;
+        cache2[2] = v.b;
       }
     } else {
-      if (arraysEqual(cache, v)) return;
+      if (arraysEqual(cache2, v)) return;
       gl.uniform3fv(this.addr, v);
-      copyArray(cache, v);
+      copyArray(cache2, v);
     }
   }
   function setValueV4f(gl, v) {
-    const cache = this.cache;
+    const cache2 = this.cache;
     if (v.x !== void 0) {
-      if (cache[0] !== v.x || cache[1] !== v.y || cache[2] !== v.z || cache[3] !== v.w) {
+      if (cache2[0] !== v.x || cache2[1] !== v.y || cache2[2] !== v.z || cache2[3] !== v.w) {
         gl.uniform4f(this.addr, v.x, v.y, v.z, v.w);
-        cache[0] = v.x;
-        cache[1] = v.y;
-        cache[2] = v.z;
-        cache[3] = v.w;
+        cache2[0] = v.x;
+        cache2[1] = v.y;
+        cache2[2] = v.z;
+        cache2[3] = v.w;
       }
     } else {
-      if (arraysEqual(cache, v)) return;
+      if (arraysEqual(cache2, v)) return;
       gl.uniform4fv(this.addr, v);
-      copyArray(cache, v);
+      copyArray(cache2, v);
     }
   }
   function setValueM2(gl, v) {
-    const cache = this.cache;
+    const cache2 = this.cache;
     const elements = v.elements;
     if (elements === void 0) {
-      if (arraysEqual(cache, v)) return;
+      if (arraysEqual(cache2, v)) return;
       gl.uniformMatrix2fv(this.addr, false, v);
-      copyArray(cache, v);
+      copyArray(cache2, v);
     } else {
-      if (arraysEqual(cache, elements)) return;
+      if (arraysEqual(cache2, elements)) return;
       mat2array.set(elements);
       gl.uniformMatrix2fv(this.addr, false, mat2array);
-      copyArray(cache, elements);
+      copyArray(cache2, elements);
     }
   }
   function setValueM3(gl, v) {
-    const cache = this.cache;
+    const cache2 = this.cache;
     const elements = v.elements;
     if (elements === void 0) {
-      if (arraysEqual(cache, v)) return;
+      if (arraysEqual(cache2, v)) return;
       gl.uniformMatrix3fv(this.addr, false, v);
-      copyArray(cache, v);
+      copyArray(cache2, v);
     } else {
-      if (arraysEqual(cache, elements)) return;
+      if (arraysEqual(cache2, elements)) return;
       mat3array.set(elements);
       gl.uniformMatrix3fv(this.addr, false, mat3array);
-      copyArray(cache, elements);
+      copyArray(cache2, elements);
     }
   }
   function setValueM4(gl, v) {
-    const cache = this.cache;
+    const cache2 = this.cache;
     const elements = v.elements;
     if (elements === void 0) {
-      if (arraysEqual(cache, v)) return;
+      if (arraysEqual(cache2, v)) return;
       gl.uniformMatrix4fv(this.addr, false, v);
-      copyArray(cache, v);
+      copyArray(cache2, v);
     } else {
-      if (arraysEqual(cache, elements)) return;
+      if (arraysEqual(cache2, elements)) return;
       mat4array.set(elements);
       gl.uniformMatrix4fv(this.addr, false, mat4array);
-      copyArray(cache, elements);
+      copyArray(cache2, elements);
     }
   }
   function setValueV1i(gl, v) {
-    const cache = this.cache;
-    if (cache[0] === v) return;
+    const cache2 = this.cache;
+    if (cache2[0] === v) return;
     gl.uniform1i(this.addr, v);
-    cache[0] = v;
+    cache2[0] = v;
   }
   function setValueV2i(gl, v) {
-    const cache = this.cache;
+    const cache2 = this.cache;
     if (v.x !== void 0) {
-      if (cache[0] !== v.x || cache[1] !== v.y) {
+      if (cache2[0] !== v.x || cache2[1] !== v.y) {
         gl.uniform2i(this.addr, v.x, v.y);
-        cache[0] = v.x;
-        cache[1] = v.y;
+        cache2[0] = v.x;
+        cache2[1] = v.y;
       }
     } else {
-      if (arraysEqual(cache, v)) return;
+      if (arraysEqual(cache2, v)) return;
       gl.uniform2iv(this.addr, v);
-      copyArray(cache, v);
+      copyArray(cache2, v);
     }
   }
   function setValueV3i(gl, v) {
-    const cache = this.cache;
+    const cache2 = this.cache;
     if (v.x !== void 0) {
-      if (cache[0] !== v.x || cache[1] !== v.y || cache[2] !== v.z) {
+      if (cache2[0] !== v.x || cache2[1] !== v.y || cache2[2] !== v.z) {
         gl.uniform3i(this.addr, v.x, v.y, v.z);
-        cache[0] = v.x;
-        cache[1] = v.y;
-        cache[2] = v.z;
+        cache2[0] = v.x;
+        cache2[1] = v.y;
+        cache2[2] = v.z;
       }
     } else {
-      if (arraysEqual(cache, v)) return;
+      if (arraysEqual(cache2, v)) return;
       gl.uniform3iv(this.addr, v);
-      copyArray(cache, v);
+      copyArray(cache2, v);
     }
   }
   function setValueV4i(gl, v) {
-    const cache = this.cache;
+    const cache2 = this.cache;
     if (v.x !== void 0) {
-      if (cache[0] !== v.x || cache[1] !== v.y || cache[2] !== v.z || cache[3] !== v.w) {
+      if (cache2[0] !== v.x || cache2[1] !== v.y || cache2[2] !== v.z || cache2[3] !== v.w) {
         gl.uniform4i(this.addr, v.x, v.y, v.z, v.w);
-        cache[0] = v.x;
-        cache[1] = v.y;
-        cache[2] = v.z;
-        cache[3] = v.w;
+        cache2[0] = v.x;
+        cache2[1] = v.y;
+        cache2[2] = v.z;
+        cache2[3] = v.w;
       }
     } else {
-      if (arraysEqual(cache, v)) return;
+      if (arraysEqual(cache2, v)) return;
       gl.uniform4iv(this.addr, v);
-      copyArray(cache, v);
+      copyArray(cache2, v);
     }
   }
   function setValueV1ui(gl, v) {
-    const cache = this.cache;
-    if (cache[0] === v) return;
+    const cache2 = this.cache;
+    if (cache2[0] === v) return;
     gl.uniform1ui(this.addr, v);
-    cache[0] = v;
+    cache2[0] = v;
   }
   function setValueV2ui(gl, v) {
-    const cache = this.cache;
+    const cache2 = this.cache;
     if (v.x !== void 0) {
-      if (cache[0] !== v.x || cache[1] !== v.y) {
+      if (cache2[0] !== v.x || cache2[1] !== v.y) {
         gl.uniform2ui(this.addr, v.x, v.y);
-        cache[0] = v.x;
-        cache[1] = v.y;
+        cache2[0] = v.x;
+        cache2[1] = v.y;
       }
     } else {
-      if (arraysEqual(cache, v)) return;
+      if (arraysEqual(cache2, v)) return;
       gl.uniform2uiv(this.addr, v);
-      copyArray(cache, v);
+      copyArray(cache2, v);
     }
   }
   function setValueV3ui(gl, v) {
-    const cache = this.cache;
+    const cache2 = this.cache;
     if (v.x !== void 0) {
-      if (cache[0] !== v.x || cache[1] !== v.y || cache[2] !== v.z) {
+      if (cache2[0] !== v.x || cache2[1] !== v.y || cache2[2] !== v.z) {
         gl.uniform3ui(this.addr, v.x, v.y, v.z);
-        cache[0] = v.x;
-        cache[1] = v.y;
-        cache[2] = v.z;
+        cache2[0] = v.x;
+        cache2[1] = v.y;
+        cache2[2] = v.z;
       }
     } else {
-      if (arraysEqual(cache, v)) return;
+      if (arraysEqual(cache2, v)) return;
       gl.uniform3uiv(this.addr, v);
-      copyArray(cache, v);
+      copyArray(cache2, v);
     }
   }
   function setValueV4ui(gl, v) {
-    const cache = this.cache;
+    const cache2 = this.cache;
     if (v.x !== void 0) {
-      if (cache[0] !== v.x || cache[1] !== v.y || cache[2] !== v.z || cache[3] !== v.w) {
+      if (cache2[0] !== v.x || cache2[1] !== v.y || cache2[2] !== v.z || cache2[3] !== v.w) {
         gl.uniform4ui(this.addr, v.x, v.y, v.z, v.w);
-        cache[0] = v.x;
-        cache[1] = v.y;
-        cache[2] = v.z;
-        cache[3] = v.w;
+        cache2[0] = v.x;
+        cache2[1] = v.y;
+        cache2[2] = v.z;
+        cache2[3] = v.w;
       }
     } else {
-      if (arraysEqual(cache, v)) return;
+      if (arraysEqual(cache2, v)) return;
       gl.uniform4uiv(this.addr, v);
-      copyArray(cache, v);
+      copyArray(cache2, v);
     }
   }
   function setValueT1(gl, v, textures) {
-    const cache = this.cache;
+    const cache2 = this.cache;
     const unit = textures.allocateTextureUnit();
-    if (cache[0] !== unit) {
+    if (cache2[0] !== unit) {
       gl.uniform1i(this.addr, unit);
-      cache[0] = unit;
+      cache2[0] = unit;
     }
     let emptyTexture2D;
     if (this.type === gl.SAMPLER_2D_SHADOW) {
@@ -11203,29 +11203,29 @@
     textures.setTexture2D(v || emptyTexture2D, unit);
   }
   function setValueT3D1(gl, v, textures) {
-    const cache = this.cache;
+    const cache2 = this.cache;
     const unit = textures.allocateTextureUnit();
-    if (cache[0] !== unit) {
+    if (cache2[0] !== unit) {
       gl.uniform1i(this.addr, unit);
-      cache[0] = unit;
+      cache2[0] = unit;
     }
     textures.setTexture3D(v || empty3dTexture, unit);
   }
   function setValueT6(gl, v, textures) {
-    const cache = this.cache;
+    const cache2 = this.cache;
     const unit = textures.allocateTextureUnit();
-    if (cache[0] !== unit) {
+    if (cache2[0] !== unit) {
       gl.uniform1i(this.addr, unit);
-      cache[0] = unit;
+      cache2[0] = unit;
     }
     textures.setTextureCube(v || emptyCubeTexture, unit);
   }
   function setValueT2DArray1(gl, v, textures) {
-    const cache = this.cache;
+    const cache2 = this.cache;
     const unit = textures.allocateTextureUnit();
-    if (cache[0] !== unit) {
+    if (cache2[0] !== unit) {
       gl.uniform1i(this.addr, unit);
-      cache[0] = unit;
+      cache2[0] = unit;
     }
     textures.setTexture2DArray(v || emptyArrayTexture, unit);
   }
@@ -11366,48 +11366,48 @@
     gl.uniform4uiv(this.addr, v);
   }
   function setValueT1Array(gl, v, textures) {
-    const cache = this.cache;
+    const cache2 = this.cache;
     const n = v.length;
     const units = allocTexUnits(textures, n);
-    if (!arraysEqual(cache, units)) {
+    if (!arraysEqual(cache2, units)) {
       gl.uniform1iv(this.addr, units);
-      copyArray(cache, units);
+      copyArray(cache2, units);
     }
     for (let i = 0; i !== n; ++i) {
       textures.setTexture2D(v[i] || emptyTexture, units[i]);
     }
   }
   function setValueT3DArray(gl, v, textures) {
-    const cache = this.cache;
+    const cache2 = this.cache;
     const n = v.length;
     const units = allocTexUnits(textures, n);
-    if (!arraysEqual(cache, units)) {
+    if (!arraysEqual(cache2, units)) {
       gl.uniform1iv(this.addr, units);
-      copyArray(cache, units);
+      copyArray(cache2, units);
     }
     for (let i = 0; i !== n; ++i) {
       textures.setTexture3D(v[i] || empty3dTexture, units[i]);
     }
   }
   function setValueT6Array(gl, v, textures) {
-    const cache = this.cache;
+    const cache2 = this.cache;
     const n = v.length;
     const units = allocTexUnits(textures, n);
-    if (!arraysEqual(cache, units)) {
+    if (!arraysEqual(cache2, units)) {
       gl.uniform1iv(this.addr, units);
-      copyArray(cache, units);
+      copyArray(cache2, units);
     }
     for (let i = 0; i !== n; ++i) {
       textures.setTextureCube(v[i] || emptyCubeTexture, units[i]);
     }
   }
   function setValueT2DArrayArray(gl, v, textures) {
-    const cache = this.cache;
+    const cache2 = this.cache;
     const n = v.length;
     const units = allocTexUnits(textures, n);
-    if (!arraysEqual(cache, units)) {
+    if (!arraysEqual(cache2, units)) {
       gl.uniform1iv(this.addr, units);
-      copyArray(cache, units);
+      copyArray(cache2, units);
     }
     for (let i = 0; i !== n; ++i) {
       textures.setTexture2DArray(v[i] || emptyArrayTexture, units[i]);
@@ -12266,20 +12266,20 @@
       this.materialCache.clear();
     }
     _getShaderCacheForMaterial(material) {
-      const cache = this.materialCache;
-      let set = cache.get(material);
+      const cache2 = this.materialCache;
+      let set = cache2.get(material);
       if (set === void 0) {
         set = /* @__PURE__ */ new Set();
-        cache.set(material, set);
+        cache2.set(material, set);
       }
       return set;
     }
     _getShaderStage(code) {
-      const cache = this.shaderCache;
-      let stage = cache.get(code);
+      const cache2 = this.shaderCache;
+      let stage = cache2.get(code);
       if (stage === void 0) {
         stage = new WebGLShaderStage(code);
-        cache.set(code, stage);
+        cache2.set(code, stage);
       }
       return stage;
     }
@@ -13025,7 +13025,7 @@
     return (lightB.castShadow ? 2 : 0) - (lightA.castShadow ? 2 : 0) + (lightB.map ? 1 : 0) - (lightA.map ? 1 : 0);
   }
   function WebGLLights(extensions) {
-    const cache = new UniformsCache();
+    const cache2 = new UniformsCache();
     const shadowCache = ShadowUniformsCache();
     const state2 = {
       version: 0,
@@ -13098,7 +13098,7 @@
           }
           numLightProbes++;
         } else if (light.isDirectionalLight) {
-          const uniforms = cache.get(light);
+          const uniforms = cache2.get(light);
           uniforms.color.copy(light.color).multiplyScalar(light.intensity);
           if (light.castShadow) {
             const shadow = light.shadow;
@@ -13116,7 +13116,7 @@
           state2.directional[directionalLength] = uniforms;
           directionalLength++;
         } else if (light.isSpotLight) {
-          const uniforms = cache.get(light);
+          const uniforms = cache2.get(light);
           uniforms.position.setFromMatrixPosition(light.matrixWorld);
           uniforms.color.copy(color).multiplyScalar(intensity);
           uniforms.distance = distance;
@@ -13145,14 +13145,14 @@
           }
           spotLength++;
         } else if (light.isRectAreaLight) {
-          const uniforms = cache.get(light);
+          const uniforms = cache2.get(light);
           uniforms.color.copy(color).multiplyScalar(intensity);
           uniforms.halfWidth.set(light.width * 0.5, 0, 0);
           uniforms.halfHeight.set(0, light.height * 0.5, 0);
           state2.rectArea[rectAreaLength] = uniforms;
           rectAreaLength++;
         } else if (light.isPointLight) {
-          const uniforms = cache.get(light);
+          const uniforms = cache2.get(light);
           uniforms.color.copy(light.color).multiplyScalar(light.intensity);
           uniforms.distance = light.distance;
           uniforms.decay = light.decay;
@@ -13174,7 +13174,7 @@
           state2.point[pointLength] = uniforms;
           pointLength++;
         } else if (light.isHemisphereLight) {
-          const uniforms = cache.get(light);
+          const uniforms = cache2.get(light);
           uniforms.skyColor.copy(light.color).multiplyScalar(intensity);
           uniforms.groundColor.copy(light.groundColor).multiplyScalar(intensity);
           state2.hemi[hemiLength] = uniforms;
@@ -13614,12 +13614,12 @@
       const material = event.target;
       material.removeEventListener("dispose", onMaterialDispose);
       for (const id in _materialCache) {
-        const cache = _materialCache[id];
+        const cache2 = _materialCache[id];
         const uuid = event.target.uuid;
-        if (uuid in cache) {
-          const shadowMaterial = cache[uuid];
+        if (uuid in cache2) {
+          const shadowMaterial = cache2[uuid];
           shadowMaterial.dispose();
-          delete cache[uuid];
+          delete cache2[uuid];
         }
       }
     }
@@ -16837,13 +16837,13 @@ void main() {
     function updateBufferData(uniformsGroup) {
       const buffer = buffers[uniformsGroup.id];
       const uniforms = uniformsGroup.uniforms;
-      const cache = uniformsGroup.__cache;
+      const cache2 = uniformsGroup.__cache;
       gl.bindBuffer(gl.UNIFORM_BUFFER, buffer);
       for (let i = 0, il = uniforms.length; i < il; i++) {
         const uniformArray = Array.isArray(uniforms[i]) ? uniforms[i] : [uniforms[i]];
         for (let j = 0, jl = uniformArray.length; j < jl; j++) {
           const uniform = uniformArray[j];
-          if (hasUniformChanged(uniform, i, j, cache) === true) {
+          if (hasUniformChanged(uniform, i, j, cache2) === true) {
             const offset = uniform.__offset;
             const values = Array.isArray(uniform.value) ? uniform.value : [uniform.value];
             let arrayOffset = 0;
@@ -16877,21 +16877,21 @@ void main() {
       }
       gl.bindBuffer(gl.UNIFORM_BUFFER, null);
     }
-    function hasUniformChanged(uniform, index, indexArray, cache) {
+    function hasUniformChanged(uniform, index, indexArray, cache2) {
       const value = uniform.value;
       const indexString = index + "_" + indexArray;
-      if (cache[indexString] === void 0) {
+      if (cache2[indexString] === void 0) {
         if (typeof value === "number" || typeof value === "boolean") {
-          cache[indexString] = value;
+          cache2[indexString] = value;
         } else {
-          cache[indexString] = value.clone();
+          cache2[indexString] = value.clone();
         }
         return true;
       } else {
-        const cachedObject = cache[indexString];
+        const cachedObject = cache2[indexString];
         if (typeof value === "number" || typeof value === "boolean") {
           if (cachedObject !== value) {
-            cache[indexString] = value;
+            cache2[indexString] = value;
             return true;
           }
         } else {
@@ -22554,85 +22554,2608 @@ void main() {
   function fOf(r) {
     return 1 - 2 / r;
   }
-  function deriv(p, k, out) {
-    const r = p[1], f = fOf(r), kv = k[0], kr = k[1], kp = k[2];
-    out[0] = kv;
-    out[1] = kr;
-    out[2] = kp;
-    out[3] = -(kv * kv) / (r * r) + r * kp * kp;
-    out[4] = -(f * kv * kv) / (r * r) + 2 / (r * r) * kv * kr + r * f * kp * kp;
-    out[5] = -(2 / r) * kr * kp;
+  function observerState(r, E = 1) {
+    const a = Math.sqrt(Math.max(0, E * E - 1 + 2 / r));
+    return { r, E, a, uv: 1 / (E + a), ur: -a, f: fOf(r) };
   }
-  function stepSize(p, k, ch) {
-    const r = p[1];
-    const rate = Math.abs(k[1]) / r + Math.abs(k[2]) + Math.abs(k[0]) / r + 1e-30;
-    let c = ch;
-    if (r < 4) c *= 0.5;
-    return c / rate;
-  }
-  function rk4(p, k, h) {
-    const d1 = new Float64Array(6), d2 = new Float64Array(6), d3 = new Float64Array(6), d4 = new Float64Array(6);
-    const p2 = [0, 0, 0], k2 = [0, 0, 0];
-    deriv(p, k, d1);
-    for (let i = 0; i < 3; i++) {
-      p2[i] = p[i] + 0.5 * h * d1[i];
-      k2[i] = k[i] + 0.5 * h * d1[3 + i];
-    }
-    deriv(p2, k2, d2);
-    for (let i = 0; i < 3; i++) {
-      p2[i] = p[i] + 0.5 * h * d2[i];
-      k2[i] = k[i] + 0.5 * h * d2[3 + i];
-    }
-    deriv(p2, k2, d3);
-    for (let i = 0; i < 3; i++) {
-      p2[i] = p[i] + h * d3[i];
-      k2[i] = k[i] + h * d3[3 + i];
-    }
-    deriv(p2, k2, d4);
-    for (let i = 0; i < 3; i++) {
-      p[i] += h / 6 * (d1[i] + 2 * d2[i] + 2 * d3[i] + d4[i]);
-      k[i] += h / 6 * (d1[3 + i] + 2 * d2[3 + i] + 2 * d3[3 + i] + d4[3 + i]);
-    }
-  }
-  function observerFrame(r, uv, ur, E) {
-    const f = fOf(r);
-    const nn = -f * uv * uv + 2 * uv * E;
-    const N = Math.sqrt(Math.max(nn, 1e-300));
-    return { f, nv: uv / N, nr: E / N };
+  function photonOf(obs, dn, dperp) {
+    const Eph = obs.E + dn * obs.a;
+    const L = obs.r * dperp;
+    return { Eph, L, b: L / Eph, outward: obs.a + obs.E * dn > 0, g: 1 / Eph };
   }
   function classify(r, kr, Eph, b2) {
-    if (r < 2) return Eph > 0 ? "sky" : "past";
+    if (r < 2) return Eph > 0 && b2 < 27 ? "sky" : "past";
     if (kr < 0) return r <= 3 || b2 <= 27 ? "past" : "sky";
     return r < 3 && b2 > 27 ? "past" : "sky";
   }
-  function traceRay(r0, uv, ur, E, dn, dperp, opts = {}) {
-    const ch = opts.ch ?? 0.05, maxSteps = opts.maxSteps ?? 600, rSky = opts.rSky ?? 400;
-    const fr = observerFrame(r0, uv, ur, E);
-    const p = [0, r0, 0];
-    const k = [-uv + dn * fr.nv, -ur + dn * fr.nr, dperp / r0];
-    const Eph = -(fOf(r0) * k[0] - k[1]);
-    const L = r0 * r0 * k[2];
-    const b2 = L * L / (Eph * Eph);
-    if (classify(r0, k[1], Eph, b2) === "past") return { kind: "past", steps: 0, Eph, L, p: p.slice(), k: k.slice() };
-    let steps = 0;
-    for (; steps < maxSteps; steps++) {
-      const r = p[1];
-      if (r > rSky) {
-        const psiInf = p[2] + Math.atan2(r * k[2], k[1]);
-        return { kind: "sky", psiInf, g: 1 / Eph, steps, Eph, L, p: p.slice(), k: k.slice() };
+  function classifyDirection(obs, dn, dperp) {
+    const ph = photonOf(obs, dn, dperp);
+    return { ...ph, kind: classify(obs.r, ph.outward ? 1 : -1, ph.Eph, ph.b * ph.b) };
+  }
+  function b27Roots(obs) {
+    const { r, E, a } = obs;
+    const A = 27 * a * a + r * r;
+    const s = Math.abs(r - 3) * Math.sqrt(r * (r + 6));
+    const out = [];
+    const lo = (-27 * E * a - s) / A, hi = (-27 * E * a + s) / A;
+    if (lo >= -1 && lo <= 1 && E * r * r - a * s > 0) out.push(lo);
+    if (hi >= -1 && hi <= 1 && E * r * r + a * s > 0) out.push(hi);
+    return out;
+  }
+  function skyFractions(obs) {
+    const cuts = [-1, 1, ...b27Roots(obs)];
+    const dnTan = -obs.a / obs.E;
+    if (dnTan > -1 && dnTan < 1) cuts.push(dnTan);
+    const dnE0 = -obs.E / obs.a;
+    if (dnE0 > -1 && dnE0 < 1) cuts.push(dnE0);
+    cuts.sort((x, y) => x - y);
+    let sky = 0, dnMinSky = NaN;
+    for (let i = 0; i + 1 < cuts.length; i++) {
+      const lo = cuts[i], hi = cuts[i + 1];
+      if (hi <= lo) continue;
+      const mid = lo + 0.5 * (hi - lo);
+      if (classifyDirection(obs, mid, Math.sqrt(1 - mid * mid)).kind === "sky") {
+        sky += hi - lo;
+        if (isNaN(dnMinSky)) dnMinSky = lo;
       }
-      if (r < 1e-6 || p[0] < -1e6) return { kind: "unresolved", steps, Eph, L, p: p.slice(), k: k.slice() };
-      rk4(p, k, stepSize(p, k, ch));
     }
-    return { kind: "unresolved", steps, Eph, L, p: p.slice(), k: k.slice() };
+    return { sky: sky / 2, past: 1 - sky / 2, cuts, dnMinSky };
+  }
+  var XGK = [
+    0.9914553711208126,
+    0.9491079123427585,
+    0.8648644233597691,
+    0.7415311855993945,
+    0.5860872354676911,
+    0.4058451513773972,
+    0.20778495500789848,
+    0
+  ];
+  var WGK = [
+    0.022935322010529224,
+    0.06309209262997856,
+    0.10479001032225019,
+    0.14065325971552592,
+    0.1690047266392679,
+    0.19035057806478542,
+    0.20443294007529889,
+    0.20948214108472782
+  ];
+  var WG = [
+    0.1294849661688697,
+    0.27970539148927664,
+    0.3818300505051189,
+    0.4179591836734694
+  ];
+  function gk15(F, a, b) {
+    const c = 0.5 * (a + b), h = 0.5 * (b - a);
+    const fc = F(c);
+    let rk = fc * WGK[7], rg = fc * WG[3];
+    for (let j = 0; j < 7; j++) {
+      const x = h * XGK[j];
+      const f1 = F(c - x), f2 = F(c + x);
+      rk += WGK[j] * (f1 + f2);
+      if (j & 1) rg += WG[j - 1 >> 1] * (f1 + f2);
+    }
+    return { value: rk * h, err: Math.abs((rk - rg) * h) };
+  }
+  function integrate(F, a, b, opts = {}) {
+    const rtol = opts.rtol ?? 1e-11, atol = opts.atol ?? 0, maxIntervals = opts.maxIntervals ?? 4e3;
+    const pts = [a, ...(opts.breaks ?? []).filter((x) => x > a && x < b).sort((x, y) => x - y), b];
+    const heap = [];
+    const push = (it) => {
+      heap.push(it);
+      let i = heap.length - 1;
+      while (i > 0) {
+        const q = i - 1 >> 1;
+        if (heap[q].err >= heap[i].err) break;
+        [heap[q], heap[i]] = [heap[i], heap[q]];
+        i = q;
+      }
+    };
+    const pop = () => {
+      const top = heap[0], last2 = heap.pop();
+      if (heap.length) {
+        heap[0] = last2;
+        let i = 0;
+        for (; ; ) {
+          const l = 2 * i + 1, r = l + 1;
+          let m = i;
+          if (l < heap.length && heap[l].err > heap[m].err) m = l;
+          if (r < heap.length && heap[r].err > heap[m].err) m = r;
+          if (m === i) break;
+          [heap[m], heap[i]] = [heap[i], heap[m]];
+          i = m;
+        }
+      }
+      return top;
+    };
+    let total = 0, err = 0, n = 0;
+    for (let i = 0; i + 1 < pts.length; i++) {
+      const it = { a: pts[i], b: pts[i + 1], ...gk15(F, pts[i], pts[i + 1]) };
+      total += it.value;
+      err += it.err;
+      push(it);
+      n++;
+    }
+    for (; ; ) {
+      if (!isFinite(total)) return { value: total, err: Infinity, ok: false, n };
+      if (err <= Math.max(atol, rtol * Math.abs(total))) return { value: total, err, ok: true, n };
+      const fin = () => ({ value: total, err, ok: err <= (opts.accept ?? 1e-7) * Math.abs(total), n });
+      if (n >= maxIntervals) return fin();
+      const w = pop();
+      const m = 0.5 * (w.a + w.b);
+      if (!(m > w.a && m < w.b)) return fin();
+      const L = { a: w.a, b: m, ...gk15(F, w.a, m) }, R = { a: m, b: w.b, ...gk15(F, m, w.b) };
+      total += L.value + R.value - w.value;
+      err += L.err + R.err - w.err;
+      if (heap.length === 0 || n % 64 === 0) {
+        total = L.value + R.value;
+        err = L.err + R.err;
+        for (const it of heap) {
+          total += it.value;
+          err += it.err;
+        }
+      }
+      push(L);
+      push(R);
+      n++;
+    }
+  }
+  function turningRadius(b) {
+    return 2 * b / Math.sqrt(3) * Math.cos(Math.acos(-3 * Math.sqrt(3) / b) / 3);
+  }
+  function psiMonotone(r0, b, qopts) {
+    if (b === 0) return { value: 0, ok: true, n: 0 };
+    const w0 = b / r0;
+    const sMax = Math.max(0, Math.log(w0 * 1e10), Math.log(1e3 / r0)) + 1;
+    const F = (s) => {
+      const e = Math.exp(-s), w = w0 * e, invr = e / r0;
+      return w / Math.sqrt(1 + w * w * (2 * invr - 1));
+    };
+    const res = integrate(F, 0, sMax, { ...qopts, breaks: [Math.log(3 / r0), Math.log(2 / r0)] });
+    return { value: res.value + w0 * Math.exp(-sMax), ok: res.ok, n: res.n };
+  }
+  function psiTurning(r0, b, qopts) {
+    const rt = turningRadius(b), wt = b / rt, ft = 1 - 2 / rt;
+    const F = (y) => {
+      const w = wt - y * y;
+      return 2 / Math.sqrt(Math.max(1e-300, ft * (w + wt) - 2 / b * w * w));
+    };
+    const d0 = Math.max(0, b * (r0 - rt) / (r0 * rt));
+    const A = integrate(F, 0, Math.sqrt(wt), qopts), B = integrate(F, 0, Math.sqrt(d0), qopts);
+    return { value: A.value + B.value, ok: A.ok && B.ok, n: A.n + B.n, rt };
+  }
+  function psiOfB(r0, b, outward, opts = {}) {
+    const qopts = { rtol: opts.rtol ?? 1e-10, maxIntervals: opts.maxIntervals ?? 500, accept: opts.accept ?? 1e-7 };
+    const res = outward ? psiMonotone(r0, b, qopts) : psiTurning(r0, b, qopts);
+    return { psi: res.value, ok: res.ok && isFinite(res.value) };
+  }
+  function psiInfExact(obs, dn, dperp, opts = {}) {
+    const ph = classifyDirection(obs, dn, dperp);
+    if (ph.kind !== "sky") return { ...ph };
+    const res = psiOfB(obs.r, ph.b, ph.outward, opts);
+    if (!res.ok) return { ...ph, kind: "unresolved", psi: res.psi };
+    return { ...ph, psi: res.psi };
+  }
+  var DP_C = [0, 1 / 5, 3 / 10, 4 / 5, 8 / 9, 1, 1];
+  var DP_A = [
+    [],
+    [1 / 5],
+    [3 / 40, 9 / 40],
+    [44 / 45, -56 / 15, 32 / 9],
+    [19372 / 6561, -25360 / 2187, 64448 / 6561, -212 / 729],
+    [9017 / 3168, -355 / 33, 46732 / 5247, 49 / 176, -5103 / 18656],
+    [35 / 384, 0, 500 / 1113, 125 / 192, -2187 / 6784, 11 / 84]
+  ];
+  var DP_B = [35 / 384, 0, 500 / 1113, 125 / 192, -2187 / 6784, 11 / 84, 0];
+  var DP_E = [71 / 57600, 0, -71 / 16695, 71 / 1920, -17253 / 339200, 22 / 525, -1 / 40];
+
+  // ../src/firstperson_table.js
+  var B27 = Math.sqrt(27);
+  var TransferTable = class {
+    constructor(obs, opts = {}) {
+      this.obs = obs;
+      this.param = obs.r < 2 ? "b" : "alpha";
+      this.atol = opts.atol ?? 2e-5;
+      this.rtol = opts.rtol ?? 1e-4;
+      this.minWidthAlpha = opts.minWidthAlpha ?? 2e-6;
+      this.maxSamples = opts.maxSamples ?? 12e3;
+      this.samples = /* @__PURE__ */ new Map();
+      this.queue = [];
+      this.version = 0;
+      this.evals = 0;
+      this.capped = 0;
+      this._seed(opts.coarse ?? 64);
+      this._rebuild();
+    }
+    // direction (dn, dperp, alpha) of a table parameter value
+    directionOf(p) {
+      const o = this.obs;
+      if (this.param === "alpha") return { dn: Math.sin(p), dperp: Math.cos(p), alpha: p };
+      const b = p, r = o.r, b2 = b * b;
+      const dn = Math.min(1, (-b2 * o.E * o.a + r * Math.sqrt(r * r - b2 * o.f)) / (b2 * o.a * o.a + r * r));
+      const dperp = Math.sqrt(Math.max(0, 1 - dn * dn));
+      return { dn, dperp, alpha: Math.atan2(dn, dperp) };
+    }
+    // table parameter of a view direction
+    paramOf(dn, dperp) {
+      if (this.param === "alpha") return Math.atan2(dn, dperp);
+      return photonOf(this.obs, dn, dperp).b;
+    }
+    _eval(p) {
+      if (this.samples.has(p)) return this.samples.get(p);
+      const d = this.directionOf(p);
+      let s;
+      if (this.param === "b") {
+        if (p === 0) s = { kind: "sky", psi: 0 };
+        else if (p >= B27) s = { kind: "past", psi: NaN };
+        else {
+          const res = psiOfB(this.obs.r, p, true);
+          s = res.ok ? { kind: "sky", psi: res.psi } : { kind: "unresolved", psi: res.psi };
+        }
+      } else {
+        const res = psiInfExact(this.obs, d.dn, d.dperp);
+        s = { kind: res.kind, psi: res.psi };
+      }
+      this.evals++;
+      this.samples.set(p, s);
+      return s;
+    }
+    _seed(n) {
+      const pts = [];
+      if (this.param === "alpha") {
+        for (let i = 0; i <= n; i++) pts.push(-Math.PI / 2 + Math.PI * i / n);
+        for (const dnb of b27Roots(this.obs)) {
+          const ab = Math.asin(dnb);
+          const probe = 1e-9;
+          const side = classifyDirection(this.obs, Math.sin(ab + probe), Math.cos(ab + probe)).kind === "sky" ? 1 : -1;
+          pts.push(ab);
+          for (let k = 1; k <= 48; k++) {
+            const d = 0.2 * Math.pow(2, -k * 0.75);
+            if (d < this.minWidthAlpha) break;
+            pts.push(ab + side * d);
+          }
+        }
+      } else {
+        pts.push(0);
+        for (let i = 1; i < n; i++) pts.push(B27 * i / n);
+        const r = this.obs.r, bSmall = 1e-3 * Math.min(1, Math.pow(r, 1.5));
+        for (let b = B27 / n; b > bSmall; b *= 0.5) pts.push(b);
+        pts.push(bSmall);
+        for (let k = 1; k <= 30; k++) pts.push(B27 * (1 - Math.pow(2, -k)));
+      }
+      const uniq = [...new Set(pts.filter((p) => isFinite(p)))].sort((x, y) => x - y);
+      for (const p of uniq) this._eval(p);
+      for (let i = 0; i + 1 < uniq.length; i++) this.queue.push([uniq[i], uniq[i + 1]]);
+    }
+    _minWidth(pl, pr) {
+      if (this.param === "alpha") return this.minWidthAlpha;
+      return 1e-10 * Math.max(Math.abs(pl), Math.abs(pr), 1e-300);
+    }
+    // Midpoint refinement for at most `budgetMs` milliseconds (or `maxEvals` evaluations).  Returns true when done.
+    refine(budgetMs = Infinity, maxEvals = Infinity) {
+      const t0 = (typeof performance !== "undefined" ? performance : Date).now();
+      let n = 0, changed = false;
+      while (this.queue.length) {
+        if (n >= maxEvals) break;
+        if ((n & 15) === 0 && (typeof performance !== "undefined" ? performance : Date).now() - t0 > budgetMs) break;
+        const [pl, pr] = this.queue.pop();
+        const sl = this.samples.get(pl), sr = this.samples.get(pr);
+        const pm = pl + 0.5 * (pr - pl);
+        if (!(pm > pl && pm < pr)) continue;
+        const tooSmall = pr - pl < this._minWidth(pl, pr) || this.samples.size >= this.maxSamples;
+        if (sl.kind !== "sky" && sr.kind !== "sky") continue;
+        if (tooSmall) {
+          this.capped++;
+          continue;
+        }
+        const sm = this._eval(pm);
+        n++;
+        changed = true;
+        let split;
+        if (sl.kind === "sky" && sr.kind === "sky" && sm.kind === "sky") {
+          const lin = 0.5 * (sl.psi + sr.psi);
+          split = Math.abs(sm.psi - lin) > Math.max(this.atol, this.rtol * Math.abs(sm.psi));
+        } else split = true;
+        if (split) {
+          this.queue.push([pl, pm]);
+          this.queue.push([pm, pr]);
+        }
+      }
+      if (changed || !this.queue.length) this._rebuild();
+      return this.queue.length === 0;
+    }
+    get done() {
+      return this.queue.length === 0;
+    }
+    _rebuild() {
+      const keys = [...this.samples.keys()].sort((x, y) => x - y);
+      const N = keys.length;
+      this.p = new Float64Array(N);
+      this.psi = new Float64Array(N);
+      this.kind = new Uint8Array(N);
+      this.alpha = new Float64Array(N);
+      for (let i = 0; i < N; i++) {
+        const s = this.samples.get(keys[i]);
+        this.p[i] = keys[i];
+        this.psi[i] = s.psi;
+        this.kind[i] = s.kind === "sky" ? 0 : s.kind === "past" ? 1 : 2;
+        this.alpha[i] = this.directionOf(keys[i]).alpha;
+      }
+      this.version++;
+    }
+    // psi_inf and d psi / d param at parameter value p (sky rays).  ok = false when neither neighbour is sky.
+    lookup(p, out = {}) {
+      const P = this.p, N = P.length;
+      let lo = 0, hi = N - 1;
+      if (p <= P[0]) {
+        hi = 1;
+      } else if (p >= P[N - 1]) {
+        lo = N - 2;
+      } else {
+        while (hi - lo > 1) {
+          const m = lo + hi >> 1;
+          if (P[m] <= p) lo = m;
+          else hi = m;
+        }
+      }
+      const kl = this.kind[lo], kh = this.kind[hi];
+      if (kl === 0 && kh === 0) {
+        const t = (p - P[lo]) / (P[hi] - P[lo]);
+        out.slope = (this.psi[hi] - this.psi[lo]) / (P[hi] - P[lo]);
+        out.psi = this.psi[lo] + t * (this.psi[hi] - this.psi[lo]);
+        out.ok = true;
+      } else if (kl === 0 || kh === 0) {
+        const i = kl === 0 ? lo : hi;
+        out.psi = this.psi[i];
+        out.slope = 0;
+        out.ok = true;
+        out.clamped = true;
+      } else {
+        out.psi = NaN;
+        out.slope = 0;
+        out.ok = false;
+      }
+      return out;
+    }
+  };
+
+  // ../src/data/blackbody_srgb.js
+  var BB_LOGT0 = 2.5;
+  var BB_DLOGT = 0.025;
+  var BLACKBODY = [
+    [2.5, -13.40666, 1, 0, 0],
+    [2.525, -11.92074, 1, 0, 0],
+    [2.55, -10.49617, 1, 0, 0],
+    [2.575, -9.13003, 1, 0, 0],
+    [2.6, -7.82027, 1, 0, 0],
+    [2.625, -6.56537, 1, 0, 0],
+    [2.65, -5.36418, 1, 0, 0],
+    [2.675, -4.21559, 1, 0, 0],
+    [2.7, -3.11845, 1, 0, 0],
+    [2.725, -2.07147, 1, 0, 0],
+    [2.75, -1.07324, 1, 0, 0],
+    [2.775, -0.1222, 1, 0, 0],
+    [2.8, 0.7833, 1, 0, 0],
+    [2.825, 1.64498, 1, 0, 0],
+    [2.85, 2.46458, 1, 0, 0],
+    [2.875, 3.24386, 1, 0, 0],
+    [2.9, 3.98455, 1, 0, 0],
+    [2.925, 4.68835, 1, 0, 0],
+    [2.95, 5.35694, 1, 0, 0],
+    [2.975, 5.99191, 1, 0, 0],
+    [3, 6.59484, 1, 0.0912, 0],
+    [3.025, 7.16722, 1, 0.164, 0],
+    [3.05, 7.71049, 1, 0.216, 0],
+    [3.075, 8.22603, 1, 0.2595, 0],
+    [3.1, 8.71518, 1, 0.2982, 0],
+    [3.125, 9.17919, 1, 0.3338, 0],
+    [3.15, 9.61928, 1, 0.3672, 0],
+    [3.175, 10.03662, 1, 0.399, 0],
+    [3.2, 10.43231, 1, 0.4295, 0],
+    [3.225, 10.80741, 1, 0.4589, 0],
+    [3.25, 11.16294, 1, 0.4875, 0],
+    [3.275, 11.49985, 1, 0.5154, 0],
+    [3.3, 11.81909, 1, 0.5426, 0.084],
+    [3.325, 12.12152, 1, 0.5693, 0.147],
+    [3.35, 12.408, 1, 0.5953, 0.1988],
+    [3.375, 12.67932, 1, 0.6209, 0.2463],
+    [3.4, 12.93625, 1, 0.6459, 0.2919],
+    [3.425, 13.17953, 1, 0.6705, 0.3365],
+    [3.45, 13.40985, 1, 0.6945, 0.3807],
+    [3.475, 13.62789, 1, 0.718, 0.4247],
+    [3.5, 13.83428, 1, 0.7409, 0.4687],
+    [3.525, 14.02963, 1, 0.7633, 0.5127],
+    [3.55, 14.21451, 1, 0.7852, 0.5566],
+    [3.575, 14.3895, 1, 0.8064, 0.6005],
+    [3.6, 14.55512, 1, 0.827, 0.6443],
+    [3.625, 14.71189, 1, 0.847, 0.6878],
+    [3.65, 14.86028, 1, 0.8664, 0.731],
+    [3.675, 15.00077, 1, 0.885, 0.7738],
+    [3.7, 15.13381, 1, 0.9029, 0.816],
+    [3.725, 15.25983, 1, 0.9201, 0.8576],
+    [3.75, 15.37924, 1, 0.9365, 0.8983],
+    [3.775, 15.49244, 1, 0.9522, 0.9381],
+    [3.8, 15.59979, 1, 0.9671, 0.9769],
+    [3.825, 15.70166, 0.9856, 0.967, 1],
+    [3.85, 15.7984, 0.9512, 0.9461, 1],
+    [3.875, 15.89033, 0.9202, 0.9268, 1],
+    [3.9, 15.97776, 0.8921, 0.9092, 1],
+    [3.925, 16.06099, 0.8666, 0.893, 1],
+    [3.95, 16.14029, 0.8434, 0.878, 1],
+    [3.975, 16.21592, 0.8224, 0.8643, 1],
+    [4, 16.28814, 0.8032, 0.8517, 1],
+    [4.025, 16.35717, 0.7858, 0.8401, 1],
+    [4.05, 16.42324, 0.7699, 0.8294, 1],
+    [4.075, 16.48655, 0.7555, 0.8196, 1],
+    [4.1, 16.5473, 0.7423, 0.8105, 1],
+    [4.125, 16.60565, 0.7302, 0.8021, 1],
+    [4.15, 16.66179, 0.7191, 0.7944, 1],
+    [4.175, 16.71585, 0.709, 0.7873, 1],
+    [4.2, 16.768, 0.6997, 0.7807, 1],
+    [4.225, 16.81836, 0.6912, 0.7746, 1],
+    [4.25, 16.86706, 0.6834, 0.769, 1],
+    [4.275, 16.91421, 0.6762, 0.7638, 1],
+    [4.3, 16.95992, 0.6696, 0.759, 1],
+    [4.325, 17.0043, 0.6635, 0.7546, 1],
+    [4.35, 17.04743, 0.6579, 0.7504, 1],
+    [4.375, 17.0894, 0.6527, 0.7466, 1],
+    [4.4, 17.13029, 0.6479, 0.7431, 1],
+    [4.425, 17.17017, 0.6435, 0.7398, 1],
+    [4.45, 17.20912, 0.6394, 0.7367, 1],
+    [4.475, 17.24719, 0.6356, 0.7339, 1],
+    [4.5, 17.28444, 0.6321, 0.7313, 1],
+    [4.525, 17.32093, 0.6288, 0.7288, 1],
+    [4.55, 17.35672, 0.6258, 0.7266, 1],
+    [4.575, 17.39183, 0.623, 0.7244, 1],
+    [4.6, 17.42633, 0.6203, 0.7224, 1],
+    [4.625, 17.46024, 0.6179, 0.7206, 1],
+    [4.65, 17.49362, 0.6156, 0.7189, 1],
+    [4.675, 17.52648, 0.6135, 0.7173, 1],
+    [4.7, 17.55887, 0.6115, 0.7158, 1],
+    [4.725, 17.59082, 0.6097, 0.7144, 1],
+    [4.75, 17.62235, 0.608, 0.7131, 1],
+    [4.775, 17.65349, 0.6064, 0.7118, 1],
+    [4.8, 17.68426, 0.6049, 0.7107, 1],
+    [4.825, 17.71469, 0.6035, 0.7096, 1],
+    [4.85, 17.7448, 0.6022, 0.7086, 1],
+    [4.875, 17.77461, 0.6009, 0.7077, 1],
+    [4.9, 17.80413, 0.5998, 0.7068, 1],
+    [4.925, 17.83339, 0.5987, 0.706, 1],
+    [4.95, 17.8624, 0.5977, 0.7052, 1],
+    [4.975, 17.89117, 0.5968, 0.7045, 1],
+    [5, 17.91973, 0.5959, 0.7038, 1],
+    [5.025, 17.94808, 0.595, 0.7031, 1],
+    [5.05, 17.97623, 0.5943, 0.7025, 1],
+    [5.075, 18.0042, 0.5935, 0.702, 1],
+    [5.1, 18.032, 0.5928, 0.7014, 1],
+    [5.125, 18.05964, 0.5922, 0.7009, 1],
+    [5.15, 18.08712, 0.5916, 0.7005, 1],
+    [5.175, 18.11447, 0.591, 0.7, 1],
+    [5.2, 18.14167, 0.5905, 0.6996, 1],
+    [5.225, 18.16875, 0.59, 0.6992, 1],
+    [5.25, 18.19572, 0.5895, 0.6988, 1],
+    [5.275, 18.22257, 0.589, 0.6985, 1],
+    [5.3, 18.24931, 0.5886, 0.6982, 1],
+    [5.325, 18.27595, 0.5882, 0.6979, 1],
+    [5.35, 18.3025, 0.5879, 0.6976, 1],
+    [5.375, 18.32897, 0.5875, 0.6973, 1],
+    [5.4, 18.35535, 0.5872, 0.6971, 1],
+    [5.425, 18.38165, 0.5869, 0.6968, 1],
+    [5.45, 18.40787, 0.5866, 0.6966, 1],
+    [5.475, 18.43403, 0.5863, 0.6964, 1],
+    [5.5, 18.46012, 0.586, 0.6962, 1],
+    [5.525, 18.48615, 0.5858, 0.696, 1],
+    [5.55, 18.51212, 0.5856, 0.6958, 1],
+    [5.575, 18.53804, 0.5853, 0.6956, 1],
+    [5.6, 18.5639, 0.5851, 0.6955, 1],
+    [5.625, 18.58972, 0.5849, 0.6953, 1],
+    [5.65, 18.61549, 0.5848, 0.6952, 1],
+    [5.675, 18.64121, 0.5846, 0.6951, 1],
+    [5.7, 18.6669, 0.5844, 0.6949, 1],
+    [5.725, 18.69254, 0.5843, 0.6948, 1],
+    [5.75, 18.71815, 0.5841, 0.6947, 1],
+    [5.775, 18.74373, 0.584, 0.6946, 1],
+    [5.8, 18.76927, 0.5839, 0.6945, 1],
+    [5.825, 18.79479, 0.5838, 0.6944, 1],
+    [5.85, 18.82027, 0.5836, 0.6943, 1],
+    [5.875, 18.84573, 0.5835, 0.6942, 1],
+    [5.9, 18.87116, 0.5834, 0.6942, 1],
+    [5.925, 18.89656, 0.5833, 0.6941, 1],
+    [5.95, 18.92195, 0.5832, 0.694, 1],
+    [5.975, 18.94731, 0.5832, 0.6939, 1],
+    [6, 18.97265, 0.5831, 0.6939, 1],
+    [6.025, 18.99797, 0.583, 0.6938, 1],
+    [6.05, 19.02328, 0.5829, 0.6938, 1],
+    [6.075, 19.04857, 0.5829, 0.6937, 1],
+    [6.1, 19.07384, 0.5828, 0.6937, 1],
+    [6.125, 19.09909, 0.5827, 0.6936, 1],
+    [6.15, 19.12433, 0.5827, 0.6936, 1],
+    [6.175, 19.14956, 0.5826, 0.6935, 1],
+    [6.2, 19.17478, 0.5826, 0.6935, 1],
+    [6.225, 19.19998, 0.5825, 0.6935, 1],
+    [6.25, 19.22517, 0.5825, 0.6934, 1],
+    [6.275, 19.25035, 0.5824, 0.6934, 1],
+    [6.3, 19.27552, 0.5824, 0.6934, 1],
+    [6.325, 19.30069, 0.5824, 0.6933, 1],
+    [6.35, 19.32584, 0.5823, 0.6933, 1],
+    [6.375, 19.35098, 0.5823, 0.6933, 1],
+    [6.4, 19.37612, 0.5823, 0.6933, 1],
+    [6.425, 19.40125, 0.5822, 0.6932, 1],
+    [6.45, 19.42637, 0.5822, 0.6932, 1],
+    [6.475, 19.45148, 0.5822, 0.6932, 1],
+    [6.5, 19.47659, 0.5822, 0.6932, 1],
+    [6.525, 19.50169, 0.5821, 0.6931, 1],
+    [6.55, 19.52679, 0.5821, 0.6931, 1],
+    [6.575, 19.55188, 0.5821, 0.6931, 1],
+    [6.6, 19.57696, 0.5821, 0.6931, 1],
+    [6.625, 19.60204, 0.5821, 0.6931, 1],
+    [6.65, 19.62712, 0.582, 0.6931, 1],
+    [6.675, 19.65219, 0.582, 0.6931, 1],
+    [6.7, 19.67726, 0.582, 0.693, 1],
+    [6.725, 19.70232, 0.582, 0.693, 1],
+    [6.75, 19.72738, 0.582, 0.693, 1],
+    [6.775, 19.75244, 0.582, 0.693, 1],
+    [6.8, 19.7775, 0.5819, 0.693, 1],
+    [6.825, 19.80255, 0.5819, 0.693, 1],
+    [6.85, 19.82759, 0.5819, 0.693, 1],
+    [6.875, 19.85264, 0.5819, 0.693, 1],
+    [6.9, 19.87768, 0.5819, 0.693, 1],
+    [6.925, 19.90272, 0.5819, 0.693, 1],
+    [6.95, 19.92776, 0.5819, 0.693, 1],
+    [6.975, 19.9528, 0.5819, 0.6929, 1],
+    [7, 19.97783, 0.5819, 0.6929, 1]
+  ];
+
+  // ../src/firstperson_sky.js
+  var D2R = Math.PI / 180;
+  var HOLE_DIRECTION = { ra_deg: 266.416837, dec_deg: -29.007811, label: "Sgr A* direction (illustrative placement)" };
+  function raDecToVec(raDeg, decDeg) {
+    const ra = raDeg * D2R, de = decDeg * D2R;
+    return [Math.cos(de) * Math.cos(ra), Math.cos(de) * Math.sin(ra), Math.sin(de)];
+  }
+  function celestialFrame(hole = HOLE_DIRECTION) {
+    const H = raDecToVec(hole.ra_deg, hole.dec_deg);
+    const X = [-H[0], -H[1], -H[2]];
+    const z = [0, 0, 1], zx = z[0] * X[0] + z[1] * X[1] + z[2] * X[2];
+    let N = [z[0] - zx * X[0], z[1] - zx * X[1], z[2] - zx * X[2]];
+    const nN = Math.hypot(...N);
+    N = N.map((v) => v / nN);
+    const T = [-N[0], -N[1], -N[2]];
+    const P = [X[1] * T[2] - X[2] * T[1], X[2] * T[0] - X[0] * T[2], X[0] * T[1] - X[1] * T[0]];
+    return Float64Array.from([...X, ...T, ...P]);
+  }
+  function bvToTemperature(bv) {
+    if (bv === null || !isFinite(bv)) bv = 0.6;
+    return 4600 * (1 / (0.92 * bv + 1.7) + 1 / (0.92 * bv + 0.62));
+  }
+  var BB_N = BLACKBODY.length;
+  var BB_LOGT1 = BB_LOGT0 + (BB_N - 1) * BB_DLOGT;
+  function blackbody(T, out = {}) {
+    const lt = Math.log10(T);
+    if (!(lt >= BB_LOGT0)) {
+      out.logY = -Infinity;
+      out.r = 1;
+      out.g = 0;
+      out.b = 0;
+      return out;
+    }
+    if (lt >= BB_LOGT1) {
+      const e = BLACKBODY[BB_N - 1];
+      out.logY = e[1] + (lt - BB_LOGT1);
+      out.r = e[2];
+      out.g = e[3];
+      out.b = e[4];
+      return out;
+    }
+    const x = (lt - BB_LOGT0) / BB_DLOGT, i = Math.min(BB_N - 2, Math.floor(x)), t = x - i;
+    const a = BLACKBODY[i], c = BLACKBODY[i + 1];
+    out.logY = a[1] + t * (c[1] - a[1]);
+    out.r = a[2] + t * (c[2] - a[2]);
+    out.g = a[3] + t * (c[3] - a[3]);
+    out.b = a[4] + t * (c[4] - a[4]);
+    return out;
+  }
+  var GSTOPS = [
+    [-1, 0.3, 0, 0.05],
+    [-0.66, 0.72, 0.08, 0.1],
+    [-0.33, 1, 0.55, 0.3],
+    [0, 0.93, 0.93, 0.93],
+    [0.33, 0.45, 0.7, 1],
+    [0.66, 0.15, 0.3, 0.85],
+    [1, 0.12, 0, 0.38]
+  ];
+  function gColor(log10g, L, out = [0, 0, 0]) {
+    let t = log10g / L;
+    if (!(t > -1)) t = -1;
+    if (t > 1) t = 1;
+    let i = 0;
+    while (i < GSTOPS.length - 2 && t > GSTOPS[i + 1][0]) i++;
+    const a = GSTOPS[i], c = GSTOPS[i + 1], u = (t - a[0]) / (c[0] - a[0]);
+    out[0] = a[1] + u * (c[1] - a[1]);
+    out[1] = a[2] + u * (c[2] - a[2]);
+    out[2] = a[3] + u * (c[3] - a[3]);
+    return out;
+  }
+  function gScaleRange(obs, dnMin) {
+    const l1 = Math.abs(Math.log10(1 / (obs.E + obs.a)));
+    const Emin = obs.E + obs.a * dnMin;
+    const l2 = Emin > 0 ? Math.abs(Math.log10(1 / Emin)) : 0;
+    const raw2 = Math.max(l1, l2);
+    if (raw2 <= 2) return Math.max(0.25, Math.ceil(raw2 * 4) / 4);
+    return Math.ceil(raw2);
+  }
+  function qualitativeTint(g, out = [1, 1, 1]) {
+    const b = Math.min(4, Math.max(0.45, g));
+    if (g > 1) {
+      const u = Math.min(1, (g - 1) * 0.5);
+      out[0] = (1 - 0.4 * u) * b;
+      out[1] = (1 - 0.25 * u) * b;
+      out[2] = b;
+    } else {
+      const u = Math.min(1, (1 - g) * 1.5);
+      out[0] = b;
+      out[1] = (1 - 0.55 * u) * b;
+      out[2] = (1 - 0.65 * u) * b;
+    }
+    return out;
+  }
+  var HOLE_VEC = raDecToVec(HOLE_DIRECTION.ra_deg, HOLE_DIRECTION.dec_deg);
+  function gridShade(S, stepDeg, pixSky, out = [0, 0]) {
+    const step = stepDeg * D2R, base = 45e-4;
+    const dec = Math.asin(Math.max(-1, Math.min(1, S[2]))), ra = Math.atan2(S[1], S[0]);
+    const hw = Math.max(base, 0.6 * pixSky);
+    let I = 0;
+    if (hw > 0.5 * step) I = Math.min(1, 2 * base / step * 2);
+    else {
+      const dd = Math.abs(dec - Math.round(dec / step) * step);
+      const dr = Math.abs(ra - Math.round(ra / step) * step) * Math.cos(dec);
+      const w = base / hw;
+      I = Math.max(0, 1 - dd / hw) * w + Math.max(0, 1 - dr / hw) * w;
+      if (Math.abs(dec) < hw) I += 0.6 * (1 - Math.abs(dec) / hw) * w;
+      I = Math.min(1, I);
+    }
+    const c = S[0] * HOLE_VEC[0] + S[1] * HOLE_VEC[1] + S[2] * HOLE_VEC[2];
+    const ang = Math.acos(Math.max(-1, Math.min(1, Math.abs(c))));
+    const ringR = 2.5 * D2R;
+    out[1] = 0;
+    if (pixSky < 0.3 * ringR && Math.abs(ang - ringR) < Math.max(base, 0.6 * pixSky)) out[1] = c > 0 ? 1 : 2;
+    out[0] = I;
+    return out;
+  }
+  function starImages(table, stars, M2, opts = {}) {
+    const obs = table.obs, P = table.p, PSI = table.psi, K = table.kind, N = P.length;
+    const images = [];
+    const bb = {}, bb0 = {};
+    const maxOrder = opts.maxOrder ?? 6;
+    for (let si = 0; si < stars.length; si++) {
+      const st = stars[si];
+      const S = st.vec;
+      const s0 = M2[0] * S[0] + M2[1] * S[1] + M2[2] * S[2];
+      const s1 = M2[3] * S[0] + M2[4] * S[1] + M2[5] * S[2];
+      const s2 = M2[6] * S[0] + M2[7] * S[1] + M2[8] * S[2];
+      const sp = Math.hypot(s1, s2);
+      const Psi = Math.atan2(sp, s0);
+      const t1 = sp > 0 ? s1 / sp : 1, t2 = sp > 0 ? s2 / sp : 0;
+      for (let i = 0; i + 1 < N; i++) {
+        if (K[i] !== 0 || K[i + 1] !== 0) continue;
+        const pa = PSI[i], pb = PSI[i + 1];
+        const lo = Math.min(pa, pb), hi = Math.max(pa, pb);
+        for (let side = 0; side < 2; side++) {
+          const base = side === 0 ? Psi : 2 * Math.PI - Psi;
+          let k = Math.ceil((lo - base) / (2 * Math.PI));
+          for (; k <= maxOrder; k++) {
+            const target = base + 2 * Math.PI * k;
+            if (target > hi) break;
+            if (target < lo || pb === pa) continue;
+            const u = (target - pa) / (pb - pa);
+            const p = P[i] + u * (P[i + 1] - P[i]);
+            const dir = table.directionOf(p);
+            const Eph = table.param === "b" ? obs.r * dir.dperp / p : obs.E + obs.a * dir.dn;
+            const g = 1 / Eph;
+            const slopeP = (pb - pa) / (P[i + 1] - P[i]);
+            const dPdAlpha = table.param === "b" ? obs.r * (obs.E * dir.dn + obs.a) / (Eph * Eph) : 1;
+            const mu = Math.min(1e8, Math.abs(dir.dperp) / Math.max(1e-300, Math.abs(Math.sin(target)) * Math.abs(slopeP) * dPdAlpha));
+            blackbody(st.T * g, bb);
+            blackbody(st.T, bb0);
+            const logF = Math.log10(mu) + (bb.logY - bb0.logY);
+            const mObs = st.mag - 2.5 * logF;
+            const sgn = side === 0 ? 1 : -1;
+            images.push({ star: si, order: k, dn: dir.dn, d: [dir.dn, dir.dperp * sgn * t1, dir.dperp * sgn * t2], g, mu, mObs, r: bb.r, gg: bb.g, b: bb.b });
+          }
+        }
+      }
+    }
+    return images;
   }
 
-  // ../src/firstperson.js
-  var R_MIN_TRACE = 2e-5;
+  // ../src/firstperson_cpu.js
+  var KIND_SKY = 0;
+  var KIND_PAST = 1;
+  var KIND_UNRESOLVED = 2;
+  var BLOCKS = [8, 4, 2, 1];
+  var now = () => (typeof performance !== "undefined" ? performance : Date).now();
+  var CpuRenderer = class {
+    constructor() {
+      this.width = 0;
+      this.height = 0;
+      this.params = null;
+      this.done = true;
+      this._starKey = null;
+      this._imgs = [];
+    }
+    // params: {width, height, obs, table, cam:{F,R,U,tanH,tanV}, M (celestial frame), background:'stars'|'grid',
+    //          layer:'tint'|'gmap', gRange (half-range of log10 g), stars (loadStars()), exposure (mag), startLevel}
+    start(params) {
+      const { width: W, height: H } = params;
+      if (W !== this.width || H !== this.height) {
+        this.width = W;
+        this.height = H;
+        this.bg = new Uint8ClampedArray(W * H * 4);
+        this.rgba = new Uint8ClampedArray(W * H * 4);
+        this.kindMap = new Uint8Array(W * H);
+        this.star = new Float32Array(W * H * 3);
+        for (let i = 3; i < this.bg.length; i += 4) {
+          this.bg[i] = 255;
+          this.rgba[i] = 255;
+        }
+      }
+      this.params = params;
+      this.level = params.startLevel ?? 0;
+      this.row = 0;
+      this.done = false;
+      this.counts = [0, 0, 0];
+      this.levelCounts = null;
+      this.pixelsDone = 0;
+      this._buildStarLayer();
+    }
+    _buildStarLayer() {
+      const P = this.params, W = this.width, H = this.height;
+      this.star.fill(0);
+      this.starCount = 0;
+      if (P.background !== "stars" || !P.stars) return;
+      const key = `${P.table.version}|${P.table.p.length}|${P.obs.r}|${P.obs.E}`;
+      if (this._starKey !== key || this._starTable !== P.table) {
+        this._imgs = starImages(P.table, P.stars, P.M);
+        this._starKey = key;
+        this._starTable = P.table;
+      }
+      const { F, R, U, tanH, tanV } = P.cam;
+      const mLim = 6.5 + (P.exposure ?? 0);
+      for (const im of this._imgs) {
+        const d = im.d;
+        const dF = d[0] * F[0] + d[1] * F[1] + d[2] * F[2];
+        if (dF <= 1e-6) continue;
+        const px = (d[0] * R[0] + d[1] * R[1] + d[2] * R[2]) / (dF * tanH);
+        const py = (d[0] * U[0] + d[1] * U[1] + d[2] * U[2]) / (dF * tanV);
+        if (px < -1.05 || px > 1.05 || py < -1.05 || py > 1.05) continue;
+        const x = (px + 1) * W / 2 - 0.5, y = (1 - py) * H / 2 - 0.5;
+        const s = mLim - im.mObs;
+        if (!isFinite(s)) continue;
+        let peak, rad;
+        if (s > 0.5) {
+          peak = Math.min(1, 0.18 + 0.1 * s);
+          rad = Math.min(5, 0.7 + 0.28 * s);
+        } else {
+          peak = 0.2 * Math.pow(10, 0.4 * (s - 0.5));
+          rad = 0.7;
+        }
+        if (peak < 4e-3) continue;
+        this.starCount++;
+        const R2 = Math.ceil(2.5 * rad), inv = 1 / (2 * rad * rad);
+        const x0 = Math.max(0, Math.floor(x - R2)), x1 = Math.min(W - 1, Math.ceil(x + R2));
+        const y0 = Math.max(0, Math.floor(y - R2)), y1 = Math.min(H - 1, Math.ceil(y + R2));
+        for (let yy = y0; yy <= y1; yy++) for (let xx = x0; xx <= x1; xx++) {
+          const w = peak * Math.exp(-((xx - x) * (xx - x) + (yy - y) * (yy - y)) * inv);
+          const o = 3 * (yy * W + xx);
+          this.star[o] += w * im.r;
+          this.star[o + 1] += w * im.gg;
+          this.star[o + 2] += w * im.b;
+        }
+      }
+    }
+    // Shade one pixel (x, y); returns the kind and writes RGB (0..1) into col.
+    shadePixel(x, y, col) {
+      const P = this.params, W = this.width, H = this.height, obs = P.obs, T = P.table;
+      const { F, R, U, tanH, tanV } = P.cam;
+      const px = (x + 0.5) / W * 2 - 1, py = 1 - (y + 0.5) / H * 2;
+      let d0 = F[0] + px * tanH * R[0] + py * tanV * U[0];
+      let d1 = F[1] + px * tanH * R[1] + py * tanV * U[1];
+      let d2 = F[2] + px * tanH * R[2] + py * tanV * U[2];
+      const nrm = 1 / Math.hypot(d0, d1, d2);
+      d0 *= nrm;
+      d1 *= nrm;
+      d2 *= nrm;
+      const dn = d0, dperp = Math.hypot(d1, d2);
+      const Eph = obs.E + dn * obs.a, outward = obs.a + obs.E * dn > 0;
+      const b = obs.r * dperp / Eph;
+      const kind = classify(obs.r, outward ? 1 : -1, Eph, b * b);
+      if (kind === "past") {
+        if (P.layer === "gmap") {
+          const h = (x + y & 7) < 2 ? 0.2 : 0.1;
+          col[0] = h;
+          col[1] = h;
+          col[2] = h;
+        } else {
+          col[0] = 0.075;
+          col[1] = 0.012;
+          col[2] = 0.012;
+        }
+        return KIND_PAST;
+      }
+      const param = T.param === "alpha" ? Math.atan2(dn, dperp) : b;
+      const L = T.lookup(param, this._lk || (this._lk = {}));
+      if (!L.ok) {
+        col[0] = 0.6;
+        col[1] = 0;
+        col[2] = 0.6;
+        return KIND_UNRESOLVED;
+      }
+      const psi = L.psi, cp = Math.cos(psi), sp = Math.sin(psi);
+      const t1 = dperp > 0 ? d1 / dperp : 1, t2 = dperp > 0 ? d2 / dperp : 0;
+      const M2 = P.M;
+      const s0 = cp, s1 = sp * t1, s2 = sp * t2;
+      const S = this._S || (this._S = [0, 0, 0]);
+      S[0] = M2[0] * s0 + M2[3] * s1 + M2[6] * s2;
+      S[1] = M2[1] * s0 + M2[4] * s1 + M2[7] * s2;
+      S[2] = M2[2] * s0 + M2[5] * s1 + M2[8] * s2;
+      const pixAng = 2 * tanH / W * dF2(px, py, tanH, tanV);
+      const dPdA = T.param === "alpha" ? 1 : obs.r * Math.abs(obs.E * dn + obs.a) / (Eph * Eph);
+      const stretch = Math.max(Math.abs(L.slope) * dPdA, Math.abs(sp) / Math.max(dperp, 1e-300));
+      const pixSky = pixAng * stretch;
+      const g = 1 / Eph;
+      const gs = this._gs || (this._gs = [0, 0]);
+      if (P.layer === "gmap") {
+        gColor(Math.log10(g), P.gRange, col);
+        gridShade(S, 30, pixSky, gs);
+        const I = 0.35 * gs[0];
+        col[0] = col[0] * 0.85 + I;
+        col[1] = col[1] * 0.85 + I;
+        col[2] = col[2] * 0.85 + I;
+      } else if (P.background === "grid") {
+        gridShade(S, 15, pixSky, gs);
+        const tint = qualitativeTint(g, this._tint || (this._tint = [1, 1, 1]));
+        col[0] = (0.02 + 0.4 * gs[0]) * tint[0];
+        col[1] = (0.03 + 0.55 * gs[0]) * tint[1];
+        col[2] = (0.06 + 0.85 * gs[0]) * tint[2];
+      } else {
+        gridShade(S, 30, pixSky, gs);
+        const tint = qualitativeTint(g, this._tint || (this._tint = [1, 1, 1]));
+        const I = 0.16 * gs[0];
+        col[0] = (4e-3 + 0.5 * I) * tint[0];
+        col[1] = (6e-3 + 0.65 * I) * tint[1];
+        col[2] = (0.014 + I) * tint[2];
+      }
+      if (gs[1] === 1) {
+        col[0] = 0.2;
+        col[1] = 0.9;
+        col[2] = 0.6;
+      } else if (gs[1] === 2) {
+        col[0] = 0.95;
+        col[1] = 0.75;
+        col[2] = 0.2;
+      }
+      return KIND_SKY;
+    }
+    // Progressive work for at most budgetMs.  Returns true if pixels changed.
+    step(budgetMs = 20) {
+      if (this.done) return false;
+      const t0 = now(), W = this.width, H = this.height, bg = this.bg, km = this.kindMap;
+      const col = [0, 0, 0];
+      let changed = false;
+      while (!this.done) {
+        const B = BLOCKS[this.level], prevB = this.level > 0 && this.level > (this.params.startLevel ?? 0) ? BLOCKS[this.level - 1] : 0;
+        const y = this.row;
+        if (y % B === 0) {
+          for (let x = 0; x < W; x += B) {
+            if (prevB && x % prevB === 0 && y % prevB === 0) continue;
+            const kind = this.shadePixel(x, y, col);
+            const r = Math.min(255, 255 * col[0]) | 0, g = Math.min(255, 255 * col[1]) | 0, b = Math.min(255, 255 * col[2]) | 0;
+            const ye = Math.min(H, y + B), xe = Math.min(W, x + B);
+            for (let yy = y; yy < ye; yy++) for (let xx = x; xx < xe; xx++) {
+              const o = yy * W + xx;
+              bg[4 * o] = r;
+              bg[4 * o + 1] = g;
+              bg[4 * o + 2] = b;
+              km[o] = kind;
+            }
+          }
+          changed = true;
+        }
+        this.row += 1;
+        if (this.row >= H) {
+          this.row = 0;
+          this.levelCounts = this._count();
+          this.level++;
+          if (this.level >= BLOCKS.length || this.params.maxLevel !== void 0 && this.level > this.params.maxLevel) this.done = true;
+        }
+        if ((this.row & 7) === 0 && now() - t0 > budgetMs) break;
+      }
+      if (changed) this.composite();
+      return changed;
+    }
+    renderAll() {
+      while (!this.done) this.step(Infinity);
+      return this;
+    }
+    _count() {
+      const c = [0, 0, 0], km = this.kindMap;
+      for (let i = 0; i < km.length; i++) c[km[i]]++;
+      return c;
+    }
+    composite() {
+      const bg = this.bg, st = this.star, out = this.rgba, N = this.width * this.height;
+      for (let i = 0; i < N; i++) {
+        out[4 * i] = bg[4 * i] + 255 * st[3 * i];
+        out[4 * i + 1] = bg[4 * i + 1] + 255 * st[3 * i + 1];
+        out[4 * i + 2] = bg[4 * i + 2] + 255 * st[3 * i + 2];
+      }
+    }
+  };
+  function dF2(px, py, tanH, tanV) {
+    return 1 / (1 + px * px * tanH * tanH + py * py * tanV * tanV);
+  }
+  function cameraAxes(yaw, pitch) {
+    const cy = Math.cos(yaw), sy = Math.sin(yaw), cp = Math.cos(pitch), spp = Math.sin(pitch);
+    const F0 = [-1, 0, 0], R0 = [0, 0, 1], U0 = [0, -1, 0];
+    const rot = (v, axis, c, s) => {
+      const d = v[0] * axis[0] + v[1] * axis[1] + v[2] * axis[2];
+      const cr = [axis[1] * v[2] - axis[2] * v[1], axis[2] * v[0] - axis[0] * v[2], axis[0] * v[1] - axis[1] * v[0]];
+      return [v[0] * c + cr[0] * s + axis[0] * d * (1 - c), v[1] * c + cr[1] * s + axis[1] * d * (1 - c), v[2] * c + cr[2] * s + axis[2] * d * (1 - c)];
+    };
+    let F = rot(F0, U0, cy, sy), R = rot(R0, U0, cy, sy);
+    F = rot(F, R, cp, spp);
+    const U = rot(U0, R, cp, spp);
+    return { F, R, U };
+  }
+
+  // ../src/data/stars_mag5.js
+  var STARS = [
+    [32349, 101.2872, -16.7161, -1.44, 9e-3],
+    [30438, 95.988, -52.6957, -0.62, 0.164],
+    [69673, 213.9153, 19.1824, -0.05, 1.239],
+    [71683, 219.9021, -60.834, -0.01, 0.71],
+    [91262, 279.2347, 38.7837, 0.03, -1e-3],
+    [24608, 79.1723, 45.998, 0.08, 0.795],
+    [24436, 78.6345, -8.2016, 0.18, -0.03],
+    [37279, 114.8255, 5.225, 0.4, 0.432],
+    [7588, 24.4285, -57.2368, 0.45, -0.158],
+    [27989, 88.7929, 7.4071, 0.45, 1.5],
+    [68702, 210.9559, -60.373, 0.61, -0.231],
+    [97649, 297.6958, 8.8683, 0.76, 0.221],
+    [60718, 186.6496, -63.0991, 0.77, -0.243],
+    [21421, 68.9802, 16.5093, 0.87, 1.538],
+    [65474, 201.2982, -11.1613, 0.98, -0.235],
+    [80763, 247.3519, -26.432, 1.06, 1.865],
+    [37826, 116.329, 28.0262, 1.16, 0.991],
+    [113368, 344.4127, -29.6222, 1.17, 0.145],
+    [62434, 191.9303, -59.6888, 1.25, -0.238],
+    [102098, 310.358, 45.2803, 1.25, 0.092],
+    [71681, 219.8962, -60.8372, 1.35, 0.9],
+    [49669, 152.093, 11.9672, 1.36, -0.087],
+    [33579, 104.6565, -28.9721, 1.5, -0.211],
+    [36850, 113.6494, 31.8883, 1.58, 0.034],
+    [61084, 187.7915, -57.1132, 1.59, 1.6],
+    [85927, 263.4022, -37.1038, 1.62, -0.231],
+    [25336, 81.2828, 6.3497, 1.64, -0.224],
+    [25428, 81.573, 28.6075, 1.65, -0.13],
+    [45238, 138.2999, -69.7172, 1.67, 0.07],
+    [26311, 84.0534, -1.2019, 1.69, -0.184],
+    [109268, 332.0583, -46.961, 1.73, -0.07],
+    [26727, 85.1897, -1.9426, 1.74, -0.199],
+    [39953, 122.3831, -47.3366, 1.75, -0.145],
+    [62956, 193.5073, 55.9598, 1.76, -0.022],
+    [15863, 51.0807, 49.8612, 1.79, 0.481],
+    [90185, 276.043, -34.3846, 1.79, -0.031],
+    [54061, 165.932, 61.751, 1.81, 1.061],
+    [34444, 107.0979, -26.3932, 1.83, 0.671],
+    [67301, 206.8852, 49.3133, 1.85, -0.099],
+    [41037, 125.6285, -59.5095, 1.86, 1.196],
+    [86228, 264.3297, -42.9978, 1.86, 0.406],
+    [28360, 89.8822, 44.9474, 1.9, 0.077],
+    [82273, 252.1662, -69.0277, 1.91, 1.447],
+    [31681, 99.4279, 16.3993, 1.93, 1e-3],
+    [42913, 131.1759, -54.7088, 1.93, 0.043],
+    [100751, 306.4119, -56.7351, 1.94, -0.118],
+    [11767, 37.9545, 89.2641, 1.97, 0.636],
+    [30324, 95.6749, -17.9559, 1.98, -0.24],
+    [46390, 141.8968, -8.6586, 1.99, 1.44],
+    [9884, 31.7934, 23.4624, 2.01, 1.151],
+    [50583, 154.9931, 19.8415, 2.01, 1.128],
+    [3419, 10.8974, -17.9866, 2.04, 1.019],
+    [92855, 283.8164, -26.2967, 2.05, -0.134],
+    [68933, 211.6706, -36.37, 2.06, 1.011],
+    [677, 2.0969, 29.0904, 2.07, -0.038],
+    [5447, 17.433, 35.6206, 2.07, 1.576],
+    [27366, 86.9391, -9.6696, 2.07, -0.168],
+    [72607, 222.6764, 74.1555, 2.07, 1.465],
+    [112122, 340.6669, -46.8846, 2.07, 1.61],
+    [86032, 263.7336, 12.56, 2.08, 0.155],
+    [14576, 47.0422, 40.9556, 2.09, -3e-3],
+    [9640, 30.9748, 42.3297, 2.1, 1.37],
+    [57632, 177.2649, 14.5721, 2.14, 0.09],
+    [4427, 14.1772, 60.7167, 2.15, -0.046],
+    [61932, 190.3793, -48.9599, 2.2, -0.023],
+    [39429, 120.896, -40.0031, 2.21, -0.269],
+    [45556, 139.2725, -59.2752, 2.21, 0.189],
+    [76267, 233.672, 26.7147, 2.22, 0.032],
+    [44816, 136.999, -43.4326, 2.23, 1.665],
+    [65378, 200.9814, 54.9254, 2.23, 0.057],
+    [100453, 305.5571, 40.2567, 2.23, 0.673],
+    [3179, 10.1268, 56.5373, 2.24, 1.17],
+    [87833, 269.1515, 51.4889, 2.24, 1.521],
+    [25930, 83.0017, -0.2991, 2.25, -0.175],
+    [746, 2.2945, 59.1498, 2.28, 0.38],
+    [66657, 204.9719, -53.4664, 2.29, -0.171],
+    [78401, 240.0834, -22.6217, 2.29, -0.117],
+    [82396, 252.5409, -34.2932, 2.29, 1.144],
+    [71860, 220.4823, -47.3882, 2.3, -0.154],
+    [71352, 218.8768, -42.1578, 2.33, -0.157],
+    [53910, 165.4603, 56.3824, 2.34, 0.033],
+    [72105, 221.2467, 27.0742, 2.35, 0.966],
+    [107315, 326.0465, 9.875, 2.38, 1.52],
+    [86670, 265.622, -39.03, 2.39, -0.171],
+    [2081, 6.571, -42.306, 2.4, 1.083],
+    [58001, 178.4577, 53.6948, 2.41, 0.044],
+    [84012, 257.5945, -15.7249, 2.43, 0.059],
+    [113881, 345.9436, 28.0828, 2.44, 1.655],
+    [35904, 111.0238, -29.3031, 2.45, -0.083],
+    [105199, 319.6449, 62.5856, 2.45, 0.257],
+    [45941, 140.5284, -55.0107, 2.47, -0.141],
+    [102488, 311.5528, 33.9703, 2.48, 1.021],
+    [113963, 346.1902, 15.2053, 2.49, -2e-3],
+    [14135, 45.5699, 4.0897, 2.54, 1.63],
+    [81377, 249.2897, -10.5671, 2.54, 0.038],
+    [68002, 208.8849, -47.2884, 2.55, -0.176],
+    [54872, 168.5271, 20.5237, 2.56, 0.128],
+    [78820, 241.3593, -19.8055, 2.56, -0.065],
+    [25985, 83.1826, -17.8223, 2.58, 0.211],
+    [59196, 182.0896, -50.7224, 2.58, -0.128],
+    [59803, 183.9515, -17.5419, 2.58, -0.107],
+    [93506, 285.653, -29.8801, 2.6, 0.062],
+    [74785, 229.2517, -9.3829, 2.61, -0.071],
+    [77070, 236.067, 6.4256, 2.63, 1.167],
+    [8903, 28.66, 20.808, 2.64, 0.165],
+    [26634, 84.9122, -34.0741, 2.65, -0.12],
+    [28380, 89.9303, 37.2126, 2.65, -0.083],
+    [61359, 188.5968, -23.3968, 2.65, 0.893],
+    [6686, 21.454, 60.2353, 2.66, 0.16],
+    [67927, 208.6712, 18.3977, 2.68, 0.58],
+    [73273, 224.633, -43.134, 2.68, -0.184],
+    [23015, 74.2484, 33.1661, 2.69, 1.49],
+    [52727, 161.6924, -49.4203, 2.69, 0.901],
+    [61585, 189.2959, -69.1356, 2.69, -0.176],
+    [85696, 262.691, -37.2958, 2.7, -0.179],
+    [35264, 109.2857, -37.0975, 2.71, 1.616],
+    [89931, 275.2485, -29.8281, 2.72, 1.38],
+    [97278, 296.5649, 10.6133, 2.72, 1.507],
+    [79593, 243.5864, -3.6943, 2.73, 1.584],
+    [80331, 245.9979, 61.5142, 2.73, 0.91],
+    [52419, 160.7392, -64.3945, 2.74, -0.22],
+    [61941, 190.4152, -1.4494, 2.74, 0.368],
+    [26241, 83.8583, -5.9099, 2.75, -0.21],
+    [65109, 200.1492, -36.7123, 2.75, 0.068],
+    [72622, 222.7196, -16.0418, 2.75, 0.147],
+    [86742, 265.8681, 4.5673, 2.76, 1.168],
+    [23875, 76.9624, -5.0864, 2.78, 0.161],
+    [80816, 247.555, 21.4896, 2.78, 0.947],
+    [84345, 258.6619, 14.3903, 2.78, 1.164],
+    [59747, 183.7863, -58.7489, 2.79, -0.193],
+    [85670, 262.6082, 52.3014, 2.79, 0.954],
+    [76297, 233.7852, -41.1668, 2.8, -0.216],
+    [25606, 82.0613, -20.7594, 2.81, 0.807],
+    [81693, 250.3215, 31.6027, 2.81, 0.65],
+    [2021, 6.4378, -77.2542, 2.82, 0.618],
+    [81266, 248.9706, -28.216, 2.82, -0.206],
+    [90496, 276.9927, -25.4217, 2.82, 1.025],
+    [1067, 3.309, 15.1836, 2.83, -0.19],
+    [39757, 121.886, -24.3043, 2.83, 0.458],
+    [77952, 238.7857, -63.4307, 2.83, 0.315],
+    [18246, 58.533, 31.8836, 2.84, 0.271],
+    [85258, 261.325, -55.5299, 2.84, 1.479],
+    [85792, 262.9604, -49.8761, 2.84, -0.136],
+    [17702, 56.8712, 24.1051, 2.85, -0.086],
+    [63608, 195.5442, 10.9592, 2.85, 0.934],
+    [107556, 326.7602, -16.1273, 2.85, 0.18],
+    [9236, 29.6925, -61.5699, 2.86, 0.29],
+    [97165, 296.2437, 45.1308, 2.86, -2e-3],
+    [30343, 95.7401, 22.5136, 2.87, 1.621],
+    [74946, 229.7274, -68.6795, 2.87, 0.014],
+    [110130, 334.6254, -60.2596, 2.87, 1.39],
+    [13847, 44.5653, -40.3047, 2.88, 0.128],
+    [94141, 287.441, -21.0236, 2.88, 0.377],
+    [36188, 111.7877, 8.2893, 2.89, -0.097],
+    [63125, 194.0069, 38.3184, 2.89, -0.115],
+    [78265, 239.713, -26.1141, 2.89, -0.18],
+    [18532, 59.4635, 40.0102, 2.9, -0.199],
+    [80112, 245.2972, -25.5928, 2.9, 0.299],
+    [106278, 322.8897, -5.5712, 2.9, 0.828],
+    [14328, 46.1991, 53.5064, 2.91, 0.716],
+    [48002, 146.7755, -65.072, 2.92, 0.273],
+    [112158, 340.7506, 30.2212, 2.93, 0.852],
+    [32768, 102.484, -50.6146, 2.94, 1.207],
+    [60965, 187.4661, -16.5154, 2.94, -0.012],
+    [109074, 331.446, -0.3199, 2.95, 0.969],
+    [18543, 59.5074, -13.5085, 2.97, 1.588],
+    [26451, 84.4112, 21.1425, 2.97, -0.148],
+    [47908, 146.4628, 23.7743, 2.97, 0.808],
+    [88635, 271.452, -30.4241, 2.98, 0.981],
+    [64962, 199.7304, -23.1715, 2.99, 0.92],
+    [87073, 266.8962, -40.127, 2.99, 0.509],
+    [93747, 286.3525, 13.8635, 2.99, 0.014],
+    [10064, 32.3859, 34.9873, 3, 0.14],
+    [54539, 167.4159, 44.4985, 3, 1.144],
+    [75097, 230.1821, 71.834, 3, 0.058],
+    [82514, 252.9676, -38.0474, 3, -0.2],
+    [108085, 328.4822, -37.3649, 3, -0.084],
+    [17358, 55.7313, 47.7876, 3.01, -0.125],
+    [30122, 95.0783, -30.0634, 3.02, -0.16],
+    [33977, 105.7561, -23.8333, 3.02, -0.077],
+    [59316, 182.5312, -22.6198, 3.02, 1.326],
+    [23416, 75.4922, 43.8233, 3.03, 0.537],
+    [62322, 191.57, -68.1081, 3.04, -0.178],
+    [71075, 218.0195, 38.3083, 3.04, 0.191],
+    [95947, 292.6803, 27.9597, 3.05, 1.088],
+    [100345, 305.2528, -14.7814, 3.05, 0.79],
+    [32246, 100.983, 25.1311, 3.06, 1.377],
+    [50801, 155.5823, 41.4995, 3.06, 1.603],
+    [94376, 288.1388, 67.6615, 3.07, 0.99],
+    [89642, 274.4068, -36.7617, 3.1, 1.582],
+    [43813, 133.8484, 5.9456, 3.11, 0.978],
+    [52943, 162.4062, -16.1936, 3.11, 1.232],
+    [56561, 173.9454, -63.0198, 3.11, -0.044],
+    [101772, 309.3918, -47.2915, 3.11, 0.998],
+    [27628, 87.74, -35.7683, 3.12, 1.146],
+    [44127, 134.8019, 48.0418, 3.12, 0.223],
+    [83081, 254.655, -55.9901, 3.12, 1.552],
+    [84379, 258.758, 24.8392, 3.12, 0.08],
+    [73334, 224.7904, -42.1042, 3.13, -0.208],
+    [45860, 140.2638, 34.3926, 3.14, 1.55],
+    [46701, 142.8055, -57.0344, 3.16, 1.538],
+    [84380, 258.7618, 36.8092, 3.16, 1.437],
+    [31685, 99.4403, -43.1959, 3.17, -0.103],
+    [46853, 143.2143, 51.6773, 3.17, 0.475],
+    [83895, 257.1966, 65.7147, 3.17, -0.12],
+    [92041, 281.4141, -26.9908, 3.17, -0.107],
+    [23767, 76.6287, 41.2345, 3.18, -0.148],
+    [71908, 220.6267, -64.9751, 3.18, 0.256],
+    [22449, 72.46, 6.9613, 3.19, 0.484],
+    [23685, 76.3653, -22.371, 3.19, 1.46],
+    [83e3, 254.4171, 9.375, 3.19, 1.16],
+    [87261, 267.4645, -37.0433, 3.19, 1.192],
+    [104732, 318.2341, 30.2269, 3.21, 0.99],
+    [116727, 354.8369, 77.6323, 3.21, 1.031],
+    [75141, 230.343, -40.6475, 3.22, -0.227],
+    [79882, 244.5804, -4.6925, 3.23, 0.966],
+    [89962, 275.3275, -2.8988, 3.23, 0.941],
+    [106032, 322.165, 70.5607, 3.23, -0.201],
+    [32607, 102.0477, -61.9414, 3.24, 0.225],
+    [99473, 302.8262, -0.8215, 3.24, -0.066],
+    [36377, 112.3076, -43.3014, 3.25, 1.509],
+    [68895, 211.5929, -26.6824, 3.25, 1.091],
+    [73714, 226.0176, -25.282, 3.25, 1.674],
+    [93194, 284.7359, 32.6896, 3.25, -0.049],
+    [17678, 56.8098, -74.239, 3.26, 1.59],
+    [3092, 9.832, 30.861, 3.27, 1.268],
+    [84970, 260.5024, -24.9995, 3.27, -0.186],
+    [113136, 343.6626, -15.8208, 3.27, 0.066],
+    [24305, 78.2329, -16.2055, 3.29, -0.11],
+    [50099, 153.4342, -70.0379, 3.29, -0.074],
+    [75458, 231.2324, 58.9661, 3.29, 1.166],
+    [21281, 68.4991, -55.045, 3.3, -0.079],
+    [51576, 158.0061, -61.6853, 3.3, -0.089],
+    [29655, 93.7194, 22.5068, 3.31, 1.6],
+    [85267, 261.3486, -56.3777, 3.31, -0.15],
+    [5165, 16.521, -46.7184, 3.32, 0.885],
+    [14354, 46.2941, 38.8403, 3.32, 1.528],
+    [59774, 183.8565, 57.0326, 3.32, 0.077],
+    [84143, 258.0383, -43.2392, 3.32, 0.441],
+    [88048, 269.7566, -9.7736, 3.32, 0.987],
+    [93864, 286.735, -27.6704, 3.32, 1.169],
+    [19780, 63.6062, -62.4739, 3.33, 0.915],
+    [54879, 168.56, 15.4296, 3.33, -3e-3],
+    [38170, 117.3236, -24.8598, 3.34, 1.218],
+    [8886, 28.5989, 63.6701, 3.35, -0.15],
+    [25281, 81.1192, -2.3971, 3.35, -0.24],
+    [32362, 101.3224, 12.8956, 3.35, 0.443],
+    [41704, 127.5661, 60.7182, 3.35, 0.856],
+    [95501, 291.3746, 3.1148, 3.36, 0.319],
+    [75264, 230.6703, -44.6896, 3.37, -0.191],
+    [43109, 131.6938, 6.4188, 3.38, 0.685],
+    [66249, 203.6733, -0.5958, 3.38, 0.114],
+    [26207, 83.7845, 9.9342, 3.39, -0.16],
+    [50371, 154.2707, -61.3323, 3.39, 1.541],
+    [63090, 193.9009, 3.3975, 3.39, 1.571],
+    [109492, 332.7137, 58.2013, 3.39, 1.558],
+    [20894, 67.1656, 15.8709, 3.4, 0.179],
+    [6867, 22.0914, -43.3182, 3.41, 1.542],
+    [18724, 60.1701, 12.4903, 3.41, -0.099],
+    [67464, 207.3762, -41.6877, 3.41, -0.225],
+    [74395, 228.0712, -52.0992, 3.41, 0.918],
+    [102422, 311.3224, 61.8388, 3.41, 0.912],
+    [112029, 340.3655, 10.8314, 3.41, -0.086],
+    [8796, 28.2704, 29.5788, 3.42, 0.488],
+    [78384, 240.0305, -38.3967, 3.42, -0.206],
+    [86974, 266.6147, 27.7207, 3.42, 0.75],
+    [102395, 311.2396, -66.2032, 3.42, 0.163],
+    [45080, 137.742, -58.9669, 3.43, -0.19],
+    [50335, 154.1726, 23.4173, 3.43, 0.307],
+    [93805, 286.5622, -4.8826, 3.43, -0.096],
+    [50372, 154.2741, 42.9144, 3.45, 0.029],
+    [3821, 12.2762, 57.8152, 3.46, 0.587],
+    [5364, 17.1475, -10.1823, 3.46, 1.161],
+    [38827, 119.1946, -52.9824, 3.46, -0.177],
+    [74666, 228.8757, 33.3148, 3.46, 0.961],
+    [12706, 40.8252, 3.2358, 3.47, 0.093],
+    [67472, 207.4041, -42.4737, 3.47, -0.17],
+    [49583, 151.8331, 16.7627, 3.48, -0.031],
+    [81833, 250.724, 38.9223, 3.48, 0.916],
+    [8102, 26.017, -15.9375, 3.49, 0.727],
+    [33856, 105.4298, -27.9348, 3.49, 1.729],
+    [55219, 169.6197, 33.0943, 3.49, 1.4],
+    [73555, 225.4865, 40.3906, 3.49, 0.956],
+    [90422, 276.7434, -45.9685, 3.49, -0.179],
+    [112623, 342.1387, -51.3169, 3.49, 0.083],
+    [32759, 102.4602, -32.5085, 3.5, -0.116],
+    [35550, 110.0307, 21.9823, 3.5, 0.374],
+    [112724, 342.4201, 66.2004, 3.5, 1.053],
+    [98337, 299.6893, 19.4921, 3.51, 1.571],
+    [112748, 342.5008, 24.6016, 3.51, 0.933],
+    [17378, 55.8121, -9.7634, 3.52, 0.915],
+    [47508, 145.2876, 9.8923, 3.52, 0.516],
+    [48774, 149.2156, -54.5678, 3.52, -0.067],
+    [92420, 282.52, 33.3627, 3.52, 3e-3],
+    [93085, 284.4325, -21.1067, 3.52, 1.151],
+    [109427, 332.5499, 6.1979, 3.52, 0.086],
+    [20889, 67.1542, 19.1804, 3.53, 1.014],
+    [40526, 124.1288, 9.1855, 3.53, 1.481],
+    [56343, 173.2505, -31.8576, 3.54, 0.947],
+    [77516, 237.405, -3.4302, 3.54, -0.036],
+    [86263, 264.3967, -15.3986, 3.54, 0.262],
+    [20042, 64.4736, -33.7983, 3.55, -0.108],
+    [27288, 86.7389, -14.822, 3.55, 0.104],
+    [69996, 214.8509, -46.0581, 3.55, -0.184],
+    [89937, 275.2641, 72.7328, 3.55, 0.489],
+    [99240, 302.1817, -66.1821, 3.55, 0.751],
+    [1562, 4.857, -8.8239, 3.56, 1.214],
+    [10602, 34.1274, -51.5122, 3.56, -0.12],
+    [55282, 169.8352, -14.7785, 3.56, 1.112],
+    [82545, 253.0839, -38.0175, 3.56, -0.21],
+    [37740, 116.1119, 24.398, 3.57, 0.932],
+    [44471, 135.9064, 47.1565, 3.57, 7e-3],
+    [71053, 217.9575, 30.3714, 3.57, 1.298],
+    [75177, 230.4515, -36.2614, 3.57, 1.534],
+    [35350, 109.5232, 16.5404, 3.58, 0.106],
+    [100064, 304.5136, -12.5449, 3.58, 0.883],
+    [7607, 24.4982, 48.6282, 3.59, 1.275],
+    [24674, 79.4016, -6.8444, 3.59, -0.115],
+    [27072, 86.1158, -22.4484, 3.59, 0.481],
+    [57757, 177.6738, 1.7647, 3.59, 0.518],
+    [60260, 185.34, -60.4011, 3.59, 1.389],
+    [6537, 21.0059, -8.1833, 3.6, 1.065],
+    [33018, 103.1972, 33.9613, 3.6, 0.102],
+    [42536, 130.0733, -52.9219, 3.6, -0.168],
+    [46651, 142.675, -40.4668, 3.6, 0.371],
+    [76470, 234.256, -28.1351, 3.6, 1.361],
+    [85727, 262.7746, -60.6838, 3.6, -0.104],
+    [13209, 42.496, 27.2605, 3.61, -0.1],
+    [15900, 51.2033, 9.0289, 3.61, 0.887],
+    [49841, 152.647, -12.3541, 3.61, 1.007],
+    [63613, 195.5678, -71.5489, 3.61, 1.19],
+    [86929, 266.4333, -64.7239, 3.61, 1.161],
+    [7097, 22.8709, 15.3458, 3.62, 0.974],
+    [17847, 57.2906, 24.0534, 3.62, -0.07],
+    [37819, 116.3137, -37.9686, 3.62, 1.706],
+    [82729, 253.6459, -42.3613, 3.62, 1.393],
+    [113726, 345.4803, 42.326, 3.62, -0.099],
+    [57363, 176.4017, -66.7288, 3.63, 0.16],
+    [101769, 309.3873, 14.5951, 3.64, 0.425],
+    [20205, 64.9483, 15.6276, 3.65, 0.981],
+    [46733, 142.8821, 63.0619, 3.65, 0.36],
+    [77233, 236.5469, 15.4218, 3.65, 0.073],
+    [88714, 271.6578, -50.0915, 3.65, -0.101],
+    [110960, 337.208, -0.02, 3.65, 0.406],
+    [75695, 231.9572, 29.1057, 3.66, 0.319],
+    [76600, 234.664, -29.7778, 3.66, -0.177],
+    [68756, 211.0973, 64.3759, 3.67, -0.049],
+    [103227, 313.7025, -58.4542, 3.67, 1.25],
+    [22549, 72.8015, 5.6051, 3.68, -0.157],
+    [42828, 130.8981, -33.1864, 3.68, -0.18],
+    [97365, 296.8469, 18.5343, 3.68, 1.313],
+    [114341, 347.3617, -21.1724, 3.68, 1.202],
+    [2920, 9.2429, 53.8969, 3.69, -0.196],
+    [9007, 28.9895, -51.6089, 3.69, 0.844],
+    [23453, 75.6195, 41.0758, 3.69, 1.154],
+    [47854, 146.3117, -62.5079, 3.69, 1.01],
+    [57399, 176.5126, 47.7794, 3.69, 1.181],
+    [106985, 325.0227, -16.6623, 3.69, 0.32],
+    [15474, 49.8792, -21.7579, 3.7, 1.614],
+    [87933, 269.4412, 29.2479, 3.7, 0.935],
+    [114971, 349.2914, 3.2823, 3.7, 0.916],
+    [22797, 73.5629, 2.4407, 3.71, -0.179],
+    [28103, 89.1012, -14.1677, 3.71, 0.337],
+    [38414, 118.0543, -40.5758, 3.71, 1.012],
+    [77622, 237.704, 4.4777, 3.71, 0.147],
+    [88771, 271.8374, 9.5638, 3.71, 0.159],
+    [98036, 298.8283, 6.4068, 3.71, 0.855],
+    [16537, 53.2327, -9.4583, 3.72, 0.881],
+    [17499, 56.2189, 24.1133, 3.72, -0.105],
+    [28358, 89.8818, 54.2847, 3.72, 1.01],
+    [104060, 316.2328, 43.9279, 3.72, 1.609],
+    [16083, 51.7923, 9.7327, 3.73, -0.082],
+    [72220, 221.5622, 1.8929, 3.73, -5e-3],
+    [87585, 268.3822, 56.8726, 3.73, 1.177],
+    [107089, 325.3694, -77.39, 3.73, 1.008],
+    [112961, 343.1536, -7.5796, 3.73, 1.626],
+    [8645, 27.8651, -10.335, 3.74, 1.136],
+    [80170, 245.4801, 19.1531, 3.74, 0.299],
+    [104887, 318.6979, 38.0453, 3.74, 0.393],
+    [44511, 136.0387, -47.0977, 3.75, 1.174],
+    [87108, 266.9732, 2.7073, 3.75, 0.043],
+    [26069, 83.4063, -62.4898, 3.76, 0.64],
+    [27654, 87.8304, -20.8791, 3.76, 0.984],
+    [30867, 97.2045, -7.0331, 3.76, -0.113],
+    [93683, 286.1708, -21.7415, 3.76, 1.012],
+    [95853, 292.4265, 51.7298, 3.76, 0.148],
+    [111169, 337.8229, 50.2825, 3.76, 0.031],
+    [13268, 42.6742, 55.8955, 3.77, 1.69],
+    [17529, 56.2985, 42.5785, 3.77, 0.425],
+    [20455, 65.7337, 17.5425, 3.77, 0.983],
+    [26549, 84.6865, -2.6001, 3.77, -0.19],
+    [41312, 126.4341, -66.1369, 3.77, 1.132],
+    [42570, 130.1565, -46.6487, 3.77, 0.67],
+    [82363, 252.4465, -59.0414, 3.77, 1.562],
+    [101958, 309.9095, 15.9121, 3.77, -0.057],
+    [105881, 321.6668, -22.4113, 3.77, 1.002],
+    [109176, 331.7528, 25.3451, 3.77, 0.435],
+    [34481, 107.1869, -70.4989, 3.78, 1.006],
+    [36046, 111.4317, 27.7981, 3.78, 1.024],
+    [48319, 147.7473, 59.0387, 3.78, 0.291],
+    [53253, 163.3736, -58.8532, 3.78, 0.945],
+    [71795, 220.2873, 13.7283, 3.78, 0.044],
+    [102618, 311.919, -9.4958, 3.78, 0],
+    [14668, 47.374, 44.8575, 3.79, 0.98],
+    [53229, 163.3279, 34.2149, 3.79, 1.04],
+    [55203, 169.5468, 31.5308, 3.79, 0.606],
+    [14879, 48.0189, -28.9876, 3.8, 0.543],
+    [37229, 114.7078, -26.8038, 3.8, -0.159],
+    [76276, 233.7006, 10.5389, 3.8, 0.268],
+    [94779, 289.2757, 53.3685, 3.8, 0.95],
+    [99675, 303.4079, 46.7413, 3.8, 1.27],
+    [21393, 68.8877, -30.5623, 3.81, 0.957],
+    [51232, 156.9697, -58.7394, 3.81, 0.317],
+    [76952, 235.6857, 26.2956, 3.81, 0.02],
+    [116584, 354.391, 46.4582, 3.81, 0.984],
+    [9487, 30.5118, 2.7638, 3.82, 0.024],
+    [45688, 139.711, 36.8026, 3.82, 0.066],
+    [56211, 172.8509, 69.3311, 3.82, 1.613],
+    [80883, 247.7284, 1.9839, 3.82, 0.022],
+    [86414, 264.8662, 46.0063, 3.82, -0.179],
+    [51069, 156.5226, -16.8363, 3.83, 1.456],
+    [68245, 209.5678, -42.1008, 3.83, -0.224],
+    [72370, 221.9655, -79.0448, 3.83, 1.433],
+    [17440, 56.0499, -64.8069, 3.84, 1.133],
+    [17448, 56.0797, 32.2882, 3.84, 0.022],
+    [20885, 67.1437, 15.9622, 3.84, 0.952],
+    [43783, 133.7618, -60.6446, 3.84, -0.104],
+    [51624, 158.2028, 9.3066, 3.84, -0.148],
+    [51986, 159.3256, -48.2256, 3.84, 0.3],
+    [61199, 188.1167, -72.133, 3.84, -0.157],
+    [88794, 271.8856, 28.7625, 3.84, -0.018],
+    [89341, 273.4409, -21.0588, 3.84, 0.195],
+    [97433, 297.0431, 70.2679, 3.84, 0.888],
+    [19747, 63.5005, -42.2944, 3.85, 1.085],
+    [27321, 86.8212, -51.0665, 3.85, 0.171],
+    [30277, 95.5285, -33.4364, 3.85, 0.858],
+    [50191, 153.684, -42.1219, 3.85, 0.051],
+    [61281, 188.3706, 69.7882, 3.85, -0.116],
+    [61622, 189.4257, -48.5413, 3.85, 0.049],
+    [78072, 239.1133, 15.6616, 3.85, 0.478],
+    [90139, 275.9245, 21.7698, 3.85, 1.168],
+    [91117, 278.8018, -8.2441, 3.85, 1.317],
+    [4436, 14.1884, 38.4993, 3.86, 0.13],
+    [21594, 69.5451, -14.304, 3.86, 1.082],
+    [25859, 82.8031, -35.4705, 3.86, 1.13],
+    [79664, 243.8595, -63.6857, 3.86, 1.105],
+    [81065, 248.3628, -78.8971, 3.86, 0.923],
+    [87808, 269.0633, 37.2505, 3.86, 1.35],
+    [110395, 335.4141, -1.3873, 3.86, -0.057],
+    [17573, 56.4567, 24.3677, 3.87, -0.063],
+    [43023, 131.5069, -46.0415, 3.87, 0.015],
+    [68282, 209.6698, -44.8036, 3.87, -0.208],
+    [71957, 220.7651, -5.6582, 3.87, 0.385],
+    [78104, 239.2212, -29.2141, 3.87, -0.199],
+    [97804, 298.1182, 1.0057, 3.87, 0.63],
+    [765, 2.3527, -45.7474, 3.88, 1.013],
+    [8832, 28.3826, 19.2939, 3.88, -0.047],
+    [48455, 148.1909, 26.007, 3.88, 1.222],
+    [74376, 227.9836, -48.7378, 3.88, -0.029],
+    [114421, 347.5897, -45.2467, 3.88, 0.998],
+    [13701, 44.1069, -8.8981, 3.89, 1.088],
+    [33152, 103.5331, -24.1842, 3.89, 1.74],
+    [45336, 138.5911, 2.3143, 3.89, -0.06],
+    [60129, 184.9765, -0.6668, 3.89, 0.026],
+    [98110, 299.0765, 35.0834, 3.89, 1.019],
+    [47431, 144.964, -1.1428, 3.9, 1.313],
+    [55425, 170.2517, -54.491, 3.9, -0.157],
+    [65936, 202.7611, -39.4073, 3.9, 1.186],
+    [18907, 60.7891, 5.9893, 3.91, 0.032],
+    [41307, 126.4151, -3.9064, 3.91, -0.012],
+    [60823, 187.0099, -50.2306, 3.91, -0.192],
+    [73807, 226.2795, -47.0512, 3.91, -0.144],
+    [76333, 233.8816, -14.7895, 3.91, 1.007],
+    [79992, 244.9352, 46.3134, 3.91, -0.151],
+    [83207, 255.0724, 30.9264, 3.92, -0.018],
+    [95168, 290.4182, -17.8472, 3.92, 0.228],
+    [104987, 318.956, 5.2478, 3.92, 0.549],
+    [2072, 6.5508, -43.6798, 3.93, 0.175],
+    [7083, 22.8129, -49.0727, 3.93, 0.972],
+    [13531, 43.5644, 52.7625, 3.93, 0.758],
+    [21444, 69.0798, -3.3525, 3.93, -0.21],
+    [37504, 115.4553, -72.6061, 3.93, 1.033],
+    [54463, 167.1475, -58.975, 3.93, 1.225],
+    [78933, 241.7018, -20.6692, 3.93, -0.046],
+    [88192, 270.1613, 2.9316, 3.93, 0.029],
+    [5348, 17.0962, -55.2458, 3.94, -0.12],
+    [37447, 115.3118, -9.5511, 3.94, 1.022],
+    [37677, 115.952, -28.9548, 3.94, 0.16],
+    [42911, 131.1712, 18.1543, 3.94, 1.083],
+    [103413, 314.2934, 41.1671, 3.94, 0.027],
+    [9598, 30.8588, 72.4213, 3.95, -2e-3],
+    [31592, 99.171, -19.2559, 3.95, 1.037],
+    [19343, 62.1654, 47.7125, 3.96, -0.025],
+    [28328, 89.7867, -42.8151, 3.96, 1.146],
+    [44248, 135.1599, 41.7829, 3.96, 0.463],
+    [45101, 137.8197, -62.317, 3.96, -0.18],
+    [95241, 290.6596, -44.459, 3.96, -0.085],
+    [95347, 290.9716, -40.6159, 3.96, -0.105],
+    [99848, 303.868, 47.7142, 3.96, 1.451],
+    [115438, 350.7426, -20.1006, 3.96, 1.082],
+    [20535, 66.0092, -34.0168, 3.97, 1.468],
+    [27673, 87.8725, 39.1485, 3.97, 1.132],
+    [35228, 109.2076, -67.9572, 3.97, 0.76],
+    [42515, 130.0256, -35.3084, 3.97, 0.936],
+    [59449, 182.913, -52.3685, 3.97, -0.156],
+    [77634, 237.7397, -33.6272, 3.97, -0.045],
+    [98495, 300.1481, -72.9105, 3.97, -0.032],
+    [110997, 337.3174, -43.4956, 3.97, 1.022],
+    [112440, 341.6328, 23.5657, 3.97, 1.07],
+    [18614, 59.7413, 35.791, 3.98, 0.016],
+    [106481, 323.4952, 45.5918, 3.98, 0.885],
+    [9347, 30.0013, -21.0778, 3.99, 1.554],
+    [29651, 93.7139, -6.2748, 3.99, 1.319],
+    [50954, 156.0988, -74.0316, 3.99, 0.369],
+    [65477, 201.3064, 54.988, 3.99, 0.169],
+    [114996, 349.3574, -58.2357, 3.99, 0.41],
+    [44382, 135.6116, -66.3961, 4, 0.145],
+    [55642, 170.9811, 10.5295, 4, 0.423],
+    [79374, 242.9989, -19.4607, 4, 0.076],
+    [8068, 25.9152, 50.6887, 4.01, -0.098],
+    [22109, 71.3756, -3.2547, 4.01, -0.148],
+    [34088, 106.0272, 20.5703, 4.01, 0.899],
+    [35037, 108.7027, -26.7727, 4.01, -0.15],
+    [71865, 220.49, -37.7935, 4.01, -0.157],
+    [78527, 240.4723, 58.5653, 4.01, 0.528],
+    [8e4, 244.9601, -50.1555, 4.01, 1.08],
+    [91792, 280.7589, -71.4281, 4.01, 1.134],
+    [101076, 307.3489, 30.3686, 4.01, 0.404],
+    [43409, 132.633, -27.7098, 4.02, 1.272],
+    [59199, 182.1034, -24.7289, 4.02, 0.334],
+    [93244, 284.9057, 15.0683, 4.02, 1.082],
+    [93429, 285.4201, -5.7391, 4.02, 1.079],
+    [10670, 34.3286, 33.8472, 4.03, 0.019],
+    [23522, 75.8545, 60.4422, 4.03, 0.921],
+    [43103, 131.6743, 28.7599, 4.03, 1.007],
+    [63003, 193.6484, -57.1779, 4.03, -0.18],
+    [88601, 271.3637, 2.5001, 4.03, 0.86],
+    [101421, 308.3032, 11.3033, 4.03, -0.123],
+    [118268, 359.8279, 6.8633, 4.03, 0.419],
+    [19587, 62.9664, -6.8376, 4.04, 0.327],
+    [57380, 176.4648, 6.5294, 4.04, 1.501],
+    [70497, 216.2992, 51.8507, 4.04, 0.497],
+    [111497, 338.8391, -0.1175, 4.04, -0.083],
+    [14632, 47.2667, 49.6133, 4.05, 0.595],
+    [40702, 124.6315, -76.9197, 4.05, 0.413],
+    [42884, 131.0998, -42.6493, 4.05, 0.874],
+    [55434, 170.2841, 6.0293, 4.05, -0.058],
+    [67459, 207.3693, 15.7979, 4.05, 1.52],
+    [70090, 215.1393, -37.8853, 4.05, -0.03],
+    [71536, 219.4718, -49.4258, 4.05, -0.152],
+    [112716, 342.3979, -13.5926, 4.05, 1.57],
+    [22957, 74.0928, 13.5145, 4.06, 1.158],
+    [36962, 113.9806, 26.8957, 4.06, 1.54],
+    [55705, 171.2205, -17.684, 4.06, 0.216],
+    [59929, 184.3928, -67.9607, 4.06, 1.603],
+    [60009, 184.6094, -64.0031, 4.06, -0.168],
+    [72010, 220.9143, -35.1737, 4.06, 1.356],
+    [83153, 254.896, -53.1604, 4.06, 1.452],
+    [69701, 214.0036, -6.0005, 4.07, 0.511],
+    [74117, 227.2109, -45.2799, 4.07, -0.162],
+    [74824, 229.3785, -58.8012, 4.07, 0.088],
+    [110991, 337.2928, 58.4152, 4.07, 0.778],
+    [3693, 11.8347, 24.2672, 4.08, 1.1],
+    [11001, 35.4373, -68.6594, 4.08, 0.034],
+    [12387, 39.8707, 0.3285, 4.08, -0.212],
+    [14146, 45.5979, -23.6245, 4.08, 0.163],
+    [33160, 103.5475, -12.0386, 4.08, 1.418],
+    [46974, 143.611, -59.2298, 4.08, -0.013],
+    [53740, 164.9436, -18.2988, 4.08, 1.079],
+    [92862, 283.8338, 43.9461, 4.08, 1.397],
+    [104139, 316.4868, -17.2329, 4.08, -0.01],
+    [105502, 320.5217, 19.8045, 4.08, 1.108],
+    [26366, 84.2266, 9.2907, 4.09, 0.951],
+    [77450, 237.1849, 18.1416, 4.09, 1.616],
+    [7513, 24.1993, 41.4055, 4.1, 0.536],
+    [12777, 41.0499, 49.2284, 4.1, 0.514],
+    [38164, 117.3096, -46.3732, 4.1, -0.16],
+    [90568, 277.2077, -49.0706, 4.1, 0.995],
+    [94160, 287.5073, -39.3408, 4.1, 1.163],
+    [12486, 40.1668, -39.8554, 4.11, 1.006],
+    [34045, 105.9396, -15.6333, 4.11, -0.112],
+    [42312, 129.411, -42.9891, 4.11, 0.109],
+    [48356, 147.8696, -14.8466, 4.11, 0.918],
+    [51839, 158.8671, -78.6078, 4.11, 1.58],
+    [57439, 176.6284, -61.1784, 4.11, 0.895],
+    [76440, 234.1801, -66.317, 4.11, 1.161],
+    [94114, 287.3681, -37.9045, 4.11, 0.042],
+    [113638, 345.22, -52.7541, 4.11, 0.96],
+    [12394, 39.8973, -68.2669, 4.12, -0.061],
+    [19812, 63.7244, 48.4093, 4.12, 0.935],
+    [28614, 90.5958, 9.6473, 4.12, 0.17],
+    [58948, 181.3022, 8.733, 4.12, 0.967],
+    [98032, 298.8154, -41.8683, 4.12, 1.063],
+    [102978, 312.9554, -26.9191, 4.12, 1.633],
+    [111043, 337.4393, -43.7492, 4.12, 1.57],
+    [25247, 80.9868, -7.8081, 4.13, 0.943],
+    [30883, 97.2408, 20.2121, 4.13, -0.115],
+    [77853, 238.4564, -16.7293, 4.13, 1.003],
+    [102485, 311.5239, -25.2709, 4.13, 0.426],
+    [112405, 341.5146, -81.3816, 4.13, 0.208],
+    [116771, 354.9877, 5.6263, 4.13, 0.507],
+    [16369, 52.7182, 12.9367, 4.14, 1.112],
+    [17608, 56.5816, 23.9484, 4.14, -0.051],
+    [42313, 129.414, 5.7038, 4.14, 3e-3],
+    [59072, 181.7204, -64.6137, 4.14, 0.353],
+    [76127, 233.2324, 31.3591, 4.14, -0.127],
+    [78159, 239.3969, 26.8779, 4.14, 1.231],
+    [107354, 326.1614, 25.645, 4.14, 0.425],
+    [109937, 333.9924, 37.7487, 4.14, 1.447],
+    [34769, 107.9661, -0.4928, 4.15, -5e-3],
+    [85112, 260.9206, 37.1459, 4.15, -0.011],
+    [116805, 355.1021, 44.3339, 4.15, -0.071],
+    [28734, 91.0301, 23.2633, 4.16, 0.835],
+    [36366, 112.278, 31.7846, 4.16, 0.32],
+    [78727, 241.0901, -11.3736, 4.16, 0.46],
+    [85340, 261.5926, -24.1753, 4.16, 0.283],
+    [2599, 8.25, 62.9318, 4.17, 0.13],
+    [17874, 57.3635, -36.2003, 4.17, 0.927],
+    [110003, 334.2085, -7.7833, 4.17, 0.979],
+    [69427, 213.2239, -10.2737, 4.18, 1.323],
+    [69732, 214.0959, 46.0883, 4.18, 0.087],
+    [81304, 249.0936, -35.2553, 4.18, 1.535],
+    [109857, 333.7591, 57.0436, 4.18, 0.278],
+    [111954, 340.1639, -27.0436, 4.18, -0.105],
+    [67457, 207.3613, -34.4508, 4.19, 1.52],
+    [92043, 281.4155, 20.5463, 4.19, 0.483],
+    [25813, 82.696, 5.9481, 4.2, -0.143],
+    [38835, 119.2147, -22.8801, 4.2, 0.718],
+    [51233, 156.9708, 36.7072, 4.2, 0.908],
+    [81126, 248.5258, 42.437, 4.2, -0.013],
+    [112447, 341.6733, 12.1729, 4.2, 0.502],
+    [113246, 343.9871, -32.5396, 4.2, 0.952],
+    [16228, 52.2672, 59.9403, 4.21, 0.419],
+    [20635, 66.3424, 22.2939, 4.21, 0.136],
+    [82080, 251.4927, 82.0373, 4.21, 0.897],
+    [101093, 307.3954, 62.9941, 4.21, 0.199],
+    [105858, 321.6109, -65.3662, 4.21, 0.494],
+    [13254, 42.6461, 38.3186, 4.22, 0.343],
+    [17651, 56.712, -23.2497, 4.22, 0.434],
+    [38518, 118.3257, -48.1029, 4.22, -0.13],
+    [78918, 241.6481, -36.8023, 4.22, -0.184],
+    [80569, 246.756, -18.4563, 4.22, 0.217],
+    [89908, 275.1893, 71.3378, 4.22, -0.093],
+    [92175, 281.7936, -4.7479, 4.22, 1.087],
+    [92609, 283.0543, -62.1876, 4.22, -0.15],
+    [92791, 283.6262, 36.8986, 4.22, 1.575],
+    [102453, 311.4156, 30.7197, 4.22, 1.051],
+    [105102, 319.354, 39.3947, 4.22, 0.098],
+    [114724, 348.5807, -6.049, 4.22, 1.545],
+    [1599, 5.0178, -64.8748, 4.23, 0.576],
+    [37629, 115.828, 28.8835, 4.23, 1.118],
+    [64394, 197.9683, 27.8782, 4.23, 0.572],
+    [67153, 206.4219, -33.0437, 4.23, 0.39],
+    [68520, 210.4116, 1.5445, 4.23, 0.121],
+    [79101, 242.1924, 44.9349, 4.23, -0.045],
+    [81852, 250.7694, -77.5174, 4.23, 1.06],
+    [93825, 286.6046, -37.0634, 4.23, 0.523],
+    [107259, 325.8769, 58.78, 4.23, 2.242],
+    [107533, 326.6984, 49.3096, 4.23, -0.12],
+    [5372, 17.187, 86.2571, 4.24, 1.213],
+    [11407, 36.7463, -47.7038, 4.24, -0.136],
+    [12770, 41.0306, -13.8587, 4.24, -0.122],
+    [6e4, 184.5868, -79.3122, 4.24, -0.123],
+    [61317, 188.4356, 41.3575, 4.24, 0.588],
+    [80911, 247.8456, -34.7044, 4.24, -0.168],
+    [86565, 265.3536, -12.8753, 4.24, 0.086],
+    [114855, 348.9729, -9.0877, 4.24, 1.107],
+    [5896, 18.9423, -68.8759, 4.25, 0.48],
+    [19167, 61.646, 50.3513, 4.25, -0.011],
+    [21402, 68.9136, 10.1608, 4.25, 0.184],
+    [21476, 69.1726, 41.2648, 4.25, 1.171],
+    [23972, 77.2866, -8.7541, 4.25, -0.187],
+    [41075, 125.7088, 43.1881, 4.25, 1.55],
+    [62896, 193.3592, -40.1789, 4.25, 0.224],
+    [70692, 216.8814, 75.696, 4.25, 1.431],
+    [107418, 326.3622, 61.1208, 4.25, 0.474],
+    [5434, 17.3755, 47.2418, 4.26, 0.012],
+    [8198, 26.3485, 9.1577, 4.26, 0.942],
+    [15510, 49.9819, -43.0698, 4.26, 0.711],
+    [16611, 53.447, -21.6329, 4.26, -0.106],
+    [19893, 64.0066, -51.4866, 4.26, 0.312],
+    [22783, 73.5125, 66.3427, 4.26, -8e-3],
+    [44066, 134.6218, 11.8577, 4.26, 0.141],
+    [86170, 264.1368, -38.6353, 4.26, 1.075],
+    [88267, 270.3767, 21.5958, 4.26, 0.406],
+    [108917, 330.9477, 64.628, 4.26, 0.379],
+    [4906, 15.7359, 7.8901, 4.27, 0.952],
+    [12828, 41.2356, 10.1141, 4.27, 0.311],
+    [19860, 63.8836, 8.8924, 4.27, -0.054],
+    [21589, 69.5394, 12.5108, 4.27, 0.122],
+    [21881, 70.5613, 22.9569, 4.27, -0.112],
+    [64004, 196.7277, -49.9062, 4.27, -0.182],
+    [74911, 229.6334, -47.8753, 4.27, -0.086],
+    [95294, 290.8047, -44.7998, 4.27, 0.35],
+    [102532, 311.6646, 16.1243, 4.27, 1.042],
+    [115830, 351.9921, 6.379, 4.27, 1.062],
+    [20711, 66.5769, 22.8136, 4.28, 0.263],
+    [47193, 144.272, 81.3264, 4.28, 1.488],
+    [51172, 156.7879, -31.0678, 4.28, 1.429],
+    [85423, 261.8386, -29.867, 4.28, 0.402],
+    [99655, 303.3494, 56.5677, 4.28, 0.114],
+    [105515, 320.5617, -16.8345, 4.28, 0.888],
+    [109410, 332.4969, 33.1782, 4.28, 0.471],
+    [114131, 346.7197, -43.5204, 4.28, 0.423],
+    [16852, 54.2183, 0.4017, 4.29, 0.575],
+    [24845, 79.8939, -13.1768, 4.29, -0.235],
+    [52154, 159.8266, -55.6033, 4.29, 1.025],
+    [57936, 178.2272, -33.9081, 4.29, -0.1],
+    [77055, 236.0147, 77.7945, 4.29, 0.038],
+    [80894, 247.7849, -16.6127, 4.29, 0.924],
+    [109139, 331.6093, -13.8697, 4.29, -0.075],
+    [111188, 337.8764, -32.3461, 4.29, 0.011],
+    [116631, 354.5342, 43.2681, 4.29, -0.083],
+    [4577, 14.6515, -29.3574, 4.3, -0.154],
+    [11484, 37.0398, 8.4601, 4.3, -0.053],
+    [17531, 56.3021, 24.4673, 4.3, -0.11],
+    [17797, 57.1495, -37.6202, 4.3, -0.038],
+    [20648, 66.3724, 17.9279, 4.3, 0.049],
+    [28404, 89.9837, 45.9367, 4.3, 1.701],
+    [42799, 130.8061, 3.3987, 4.3, -0.192],
+    [53417, 163.9033, 24.7497, 4.3, 0.016],
+    [56647, 174.2372, -0.8237, 4.3, 0.983],
+    [57669, 177.4211, -63.7885, 4.3, -0.149],
+    [61174, 188.0176, -16.196, 4.3, 0.388],
+    [70069, 215.0814, -56.3865, 4.3, 0.082],
+    [100027, 304.412, -12.5082, 4.3, 0.928],
+    [42568, 130.1543, -59.761, 4.31, -0.117],
+    [70638, 216.7301, -83.6679, 4.31, 1.3],
+    [75411, 231.1226, 37.3772, 4.31, 0.309],
+    [78990, 241.8514, -20.8688, 4.31, 0.831],
+    [101847, 309.5845, -1.1051, 4.31, 0.949],
+    [16826, 54.1224, 48.1926, 4.32, -0.058],
+    [21763, 70.1105, -19.6715, 4.32, 1.599],
+    [25945, 83.0531, 18.5942, 4.32, 2.06],
+    [29696, 93.8445, 29.4981, 4.32, 1.021],
+    [43067, 131.5939, -13.5477, 4.32, 0.9],
+    [46750, 142.9301, 22.968, 4.32, 1.541],
+    [58758, 180.7563, -63.3129, 4.32, 0.28],
+    [64241, 197.497, 17.5294, 4.32, 0.455],
+    [67669, 207.9567, -32.9941, 4.32, -0.146],
+    [72683, 222.9096, -43.5754, 4.32, -0.154],
+    [84880, 260.2069, -12.8469, 4.32, 0.037],
+    [36284, 112.0408, 8.9255, 4.33, 1.425],
+    [62867, 193.2788, -48.9433, 4.33, 1.344],
+    [70576, 216.5451, -45.3793, 4.33, 0.434],
+    [84405, 258.8374, -26.6028, 4.33, 0.855],
+    [88866, 272.1451, -63.6686, 4.33, 0.228],
+    [89826, 274.9655, 36.0645, 4.33, 1.162],
+    [2912, 9.2202, 33.7193, 4.34, -0.123],
+    [3031, 9.6389, 29.3118, 4.34, 0.871],
+    [5542, 17.7757, 55.1499, 4.34, 0.17],
+    [27100, 86.1932, -65.7355, 4.34, 0.217],
+    [31125, 97.964, -23.4184, 4.34, -0.245],
+    [40888, 125.1606, -77.4845, 4.34, 1.161],
+    [45496, 139.0503, -57.5415, 4.34, 1.602],
+    [47175, 144.2064, -49.355, 4.34, 0.173],
+    [68523, 210.4312, -45.6034, 4.34, 0.598],
+    [76552, 234.5134, -42.5673, 4.34, 1.412],
+    [85355, 261.6287, 4.1404, 4.34, 1.48],
+    [91971, 281.1932, 37.6051, 4.34, 0.192],
+    [92161, 281.7553, 18.1815, 4.34, 0.148],
+    [107348, 326.1279, 17.35, 4.34, 1.161],
+    [111022, 337.3826, 47.7069, 4.34, 1.679],
+    [14838, 47.9074, 19.7267, 4.35, 1.033],
+    [22509, 72.653, 8.9002, 4.35, 0.01],
+    [31407, 98.7441, -52.9756, 4.35, -0.021],
+    [33449, 104.3192, 58.4228, 4.35, 0.85],
+    [39794, 121.9825, -68.6171, 4.35, -0.113],
+    [43234, 132.1082, 5.8378, 4.35, -0.044],
+    [60742, 186.7345, 28.2684, 4.35, 1.128],
+    [74857, 229.4577, -30.1487, 4.35, 1.1],
+    [85822, 263.0542, 86.5865, 4.35, 0.021],
+    [90098, 275.8068, -61.4939, 4.35, 1.462],
+    [94713, 289.0921, 38.1337, 4.35, 1.258],
+    [107380, 326.2367, -33.0258, 4.35, -0.053],
+    [2484, 7.8861, -62.9582, 4.36, -0.064],
+    [3405, 10.8385, -57.4631, 4.36, 0.024],
+    [10324, 33.25, 8.8467, 4.36, 0.878],
+    [16335, 52.6437, 47.9952, 4.36, 1.367],
+    [19038, 61.1738, 22.0819, 4.36, 1.064],
+    [22701, 73.2236, -5.4527, 4.36, 0.257],
+    [24327, 78.3078, -12.9413, 4.36, -0.094],
+    [28199, 89.3842, -35.2833, 4.36, -0.165],
+    [33347, 104.0343, -17.0542, 4.36, -0.063],
+    [39863, 122.1485, -2.9838, 4.36, 0.97],
+    [68862, 211.5115, -41.1796, 4.36, -0.198],
+    [96468, 294.1803, -1.2866, 4.36, -0.079],
+    [154, 0.4901, -6.0141, 4.37, 1.631],
+    [29807, 94.1381, -35.1405, 4.37, 0.978],
+    [35415, 109.677, -24.9544, 4.37, -0.132],
+    [53773, 165.0386, -42.2259, 4.37, 0.116],
+    [88886, 272.1895, 20.8146, 4.37, -0.164],
+    [98412, 299.9341, -35.2763, 4.37, -0.15],
+    [64238, 197.4875, -5.539, 4.38, -8e-3],
+    [99255, 302.2223, 77.7114, 4.38, -0.046],
+    [115669, 351.5116, -20.642, 4.38, 1.46],
+    [116231, 353.2427, -37.8183, 4.38, -0.095],
+    [8837, 28.4114, -46.3027, 4.39, 1.597],
+    [17884, 57.3803, 65.526, 4.39, 1.87],
+    [26176, 83.7052, 9.4896, 4.39, -0.157],
+    [27913, 88.5958, 20.2762, 4.39, 0.594],
+    [30419, 95.942, 4.5929, 4.39, 0.215],
+    [39311, 120.5664, 2.3346, 4.39, 1.252],
+    [49637, 151.9761, 9.9975, 4.39, 1.448],
+    [73620, 225.7252, 2.0913, 4.39, 1.026],
+    [82673, 253.502, 10.1654, 4.39, -0.088],
+    [84893, 260.2516, -21.1129, 4.39, 0.394],
+    [96757, 295.0241, 18.0139, 4.39, 0.777],
+    [96837, 295.2622, 17.476, 4.39, 1.041],
+    [105319, 319.9666, -53.4494, 4.39, 0.191],
+    [4463, 14.3017, 23.4176, 4.4, 0.94],
+    [38070, 117.0215, -25.9372, 4.4, -0.07],
+    [39906, 122.2568, -19.245, 4.4, -0.16],
+    [93015, 284.2376, -67.2335, 4.4, 0.53],
+    [108431, 329.4795, -54.9926, 4.4, 0.297],
+    [32761, 102.4638, -53.6224, 4.41, 0.899],
+    [34693, 107.7849, 30.2452, 4.41, 1.261],
+    [70300, 215.7593, -39.5118, 4.41, -0.185],
+    [85693, 262.6846, 26.1106, 4.41, 1.434],
+    [87998, 269.6256, 30.1893, 4.41, 0.38],
+    [105138, 319.4795, 34.8969, 4.41, -0.103],
+    [114222, 346.9744, 75.3875, 4.41, 0.802],
+    [115033, 349.4759, -9.1825, 4.41, -0.144],
+    [115102, 349.706, -32.532, 4.41, 1.109],
+    [29038, 91.893, 14.7685, 4.42, -0.164],
+    [31700, 99.4726, -18.2375, 4.42, 1.137],
+    [34922, 108.3847, -44.6397, 4.42, 1.331],
+    [34981, 108.5634, -26.3525, 4.42, -0.17],
+    [40326, 123.5122, -40.3479, 4.42, 1.17],
+    [53954, 165.5824, 20.1798, 4.42, 0.053],
+    [72571, 222.5721, -27.9604, 4.42, 1.366],
+    [77257, 236.6109, 7.3531, 4.42, 0.604],
+    [88290, 270.4383, 1.3051, 4.42, 0.046],
+    [110538, 335.8901, 52.229, 4.42, 1.015],
+    [115623, 351.3449, 23.4041, 4.42, 0.617],
+    [17593, 56.5356, -12.1016, 4.43, 1.604],
+    [19849, 63.818, -7.6529, 4.43, 0.82],
+    [23040, 74.3217, 53.7521, 4.43, -0.017],
+    [94481, 288.4395, 39.146, 4.43, -0.15],
+    [98688, 300.6645, -27.7098, 4.43, 1.64],
+    [100587, 305.9651, 32.1902, 4.43, 1.331],
+    [102281, 310.8647, 15.0746, 4.43, 0.302],
+    [102624, 311.9343, -5.0277, 4.43, 1.639],
+    [1170, 3.6601, -18.9329, 4.44, 1.64],
+    [3786, 12.1706, 7.5851, 4.44, 1.5],
+    [19921, 64.121, -59.3022, 4.44, 1.078],
+    [21770, 70.1405, -41.8638, 4.44, 0.342],
+    [30060, 94.9058, 59.011, 4.44, 0.032],
+    [36795, 113.5133, -22.2961, 4.44, 0.521],
+    [40091, 122.8396, -39.6185, 4.44, 1.59],
+    [40706, 124.6388, -36.6593, 4.44, 0.222],
+    [71121, 218.1544, -50.4572, 4.44, -0.177],
+    [95771, 292.1764, 24.6649, 4.44, 1.502],
+    [7884, 25.3579, 5.4876, 4.45, 1.347],
+    [13147, 42.2726, -32.4059, 4.45, 0.981],
+    [24244, 78.0746, -11.8692, 4.45, -0.099],
+    [29426, 92.985, 14.2088, 4.45, -0.18],
+    [42402, 129.6893, 3.3414, 4.45, 1.216],
+    [44191, 135.0225, -41.2536, 4.45, 0.646],
+    [51849, 158.8971, -57.5576, 4.45, 1.604],
+    [52633, 161.4458, -80.5402, 4.45, -0.188],
+    [55084, 169.1654, -3.6516, 4.45, 0.21],
+    [80975, 248.0342, -21.4664, 4.45, 0.13],
+    [94648, 288.8877, 73.3555, 4.45, 1.257],
+    [96229, 293.5223, 7.3789, 4.45, 1.176],
+    [11569, 37.2664, 67.4025, 4.46, 0.153],
+    [18255, 58.5729, -2.9547, 4.46, 0.672],
+    [24331, 78.3228, 2.8613, 4.46, 1.166],
+    [44901, 137.2177, 51.6046, 4.46, 0.288],
+    [54682, 167.9145, -22.8258, 4.46, 0.025],
+    [59173, 182.0218, -50.6613, 4.46, -0.163],
+    [80582, 246.796, -47.5548, 4.46, -0.07],
+    [112948, 343.1314, -32.8755, 4.46, -0.037],
+    [12843, 41.2758, -18.5726, 4.47, 0.481],
+    [15549, 50.0848, 29.0485, 4.47, 1.555],
+    [23123, 74.6371, 1.714, 4.47, 1.369],
+    [30788, 97.0425, -32.5801, 4.47, -0.169],
+    [31216, 98.2259, 7.333, 4.47, 0.023],
+    [38957, 119.5602, -49.2449, 4.47, -0.18],
+    [44599, 136.2867, -72.6027, 4.47, 0.607],
+    [46146, 141.1636, 26.1823, 4.47, 1.222],
+    [47006, 143.706, 52.0515, 4.47, 0.027],
+    [57803, 177.7862, -45.1735, 4.47, 1.283],
+    [71284, 218.6701, 29.7451, 4.47, 0.364],
+    [73165, 224.2958, -4.3465, 4.47, 0.318],
+    [104858, 318.6201, 10.007, 4.47, 0.529],
+    [109111, 331.5287, -39.5434, 4.47, 1.349],
+    [3504, 11.1813, 48.2844, 4.48, -0.069],
+    [18744, 60.2242, -62.1593, 4.48, 1.5],
+    [20713, 66.5864, 15.6183, 4.48, 0.262],
+    [32578, 101.9652, 2.4122, 4.48, 1.099],
+    [49641, 151.9845, -0.3716, 4.48, -0.032],
+    [75323, 230.8444, -59.3208, 4.48, 0.169],
+    [80343, 246.0258, -20.0373, 4.48, 0.996],
+    [113889, 345.9692, 3.82, 4.48, -0.115],
+    [114119, 346.6702, -23.7431, 4.48, 0.892],
+    [9480, 30.4894, 70.907, 4.49, 0.164],
+    [21248, 68.3773, -29.7665, 4.49, 0.972],
+    [32249, 100.9971, 13.228, 4.49, 1.167],
+    [34834, 108.1401, -46.7593, 4.49, 0.324],
+    [38455, 118.161, -38.8628, 4.49, -0.188],
+    [49593, 151.8573, 35.2447, 4.49, 0.19],
+    [71762, 220.1815, 16.4183, 4.49, -2e-3],
+    [96441, 294.1106, 50.2211, 4.49, 0.395],
+    [104234, 316.7819, -25.0059, 4.49, 1.604],
+    [107310, 326.0357, 28.7426, 4.49, 0.512],
+    [116928, 355.5117, 1.78, 4.49, 0.2],
+    [116971, 355.6806, -14.5449, 4.49, -0.032],
+    [118322, 359.9791, -65.5771, 4.49, -0.075],
+    [26594, 84.7964, 4.1215, 4.5, -0.098],
+    [27530, 87.4569, -56.1667, 4.5, 1.075],
+    [43105, 131.6773, -56.7698, 4.5, -0.169],
+    [50676, 155.2283, -56.0432, 4.5, -0.102],
+    [57565, 176.9964, 20.2189, 4.5, 0.547],
+    [67275, 206.8156, 17.4569, 4.5, 0.508],
+    [99874, 303.9422, 27.8142, 4.5, 1.258],
+    [104459, 317.3985, -11.3717, 4.5, 0.926],
+    [106039, 322.1808, -21.8072, 4.5, 0.889],
+    [109285, 332.0959, -32.9885, 4.5, 0.054],
+    [109754, 333.4697, 39.7149, 4.5, 1.385],
+    [111944, 340.1286, 44.2763, 4.5, 1.318],
+    [1473, 4.5819, 36.7852, 4.51, 0.054],
+    [5586, 17.9152, 30.0896, 4.51, 1.092],
+    [27483, 87.2935, 39.1811, 4.51, 0.949],
+    [46515, 142.3113, -35.9513, 4.51, 1.408],
+    [47391, 144.8375, -61.3281, 4.51, -0.07],
+    [76852, 235.3877, 19.6704, 4.51, 0.062],
+    [98702, 300.7045, 67.8736, 4.51, 1.313],
+    [102333, 311.0097, -51.921, 4.51, 0.278],
+    [106723, 324.2701, -19.466, 4.51, -0.18],
+    [110838, 336.8332, -64.9664, 4.51, -0.029],
+    [117863, 358.596, 57.4994, 4.51, 1.19],
+    [13061, 41.9773, 29.2471, 4.52, 1.112],
+    [65271, 200.6581, -60.9884, 4.52, -0.141],
+    [65387, 201.002, -64.5357, 4.52, 0.822],
+    [69974, 214.7775, -13.3711, 4.52, 0.128],
+    [73745, 226.1114, 26.9476, 4.52, 1.24],
+    [89112, 272.8073, -45.9544, 4.52, 1.009],
+    [95176, 290.4318, -15.955, 4.52, 0.079],
+    [102431, 311.338, 57.5797, 4.52, 0.535],
+    [106140, 322.4871, 23.6388, 4.52, 1.618],
+    [111104, 337.6219, 43.1234, 4.52, -0.086],
+    [2487, 7.8895, -62.9656, 4.53, 0.147],
+    [3881, 12.4535, 41.0789, 4.53, -0.136],
+    [28413, 90.014, -3.0743, 4.53, 1.202],
+    [37096, 114.3421, -34.9685, 4.53, -0.081],
+    [69483, 213.3709, 51.79, 4.53, 0.233],
+    [85365, 261.6578, -5.0866, 4.53, 0.385],
+    [87072, 266.8901, -27.8308, 4.53, 0.6],
+    [102589, 311.8522, 36.4907, 4.53, -0.083],
+    [114570, 348.1375, 49.4062, 4.53, 0.302],
+    [24727, 79.544, 33.3716, 4.54, 1.252],
+    [31416, 98.7641, -22.9648, 4.54, -0.035],
+    [46776, 142.9955, -1.1847, 4.54, 0.109],
+    [46952, 143.5558, 36.3976, 4.54, 0.914],
+    [46977, 143.6202, 69.8303, 4.54, 0.781],
+    [72659, 222.8474, 19.1005, 4.54, 0.72],
+    [74392, 228.0554, -19.7917, 4.54, -0.071],
+    [75304, 230.789, -36.8585, 4.54, -0.155],
+    [98162, 299.2368, -27.1699, 4.54, 1.462],
+    [114144, 346.7511, 9.4095, 4.54, 1.559],
+    [115919, 352.2887, 12.7606, 4.54, 0.939],
+    [301, 0.935, -17.336, 4.55, -0.047],
+    [16281, 52.4781, 58.8787, 4.55, 0.489],
+    [23595, 76.1017, -35.483, 4.55, 1.177],
+    [33694, 105.0168, 76.9774, 4.55, 1.365],
+    [36425, 112.4491, 12.0066, 4.55, 1.276],
+    [48402, 148.0265, 54.0643, 4.55, 0.038],
+    [76371, 233.9719, -44.9584, 4.55, -0.175],
+    [80079, 245.1591, -24.1693, 4.55, 0.758],
+    [88839, 272.0207, -28.4571, 4.55, 0.938],
+    [107119, 325.4804, 71.3114, 4.55, 1.108],
+    [110351, 335.2564, 46.5366, 4.55, -0.1],
+    [110609, 336.1291, 49.4764, 4.55, 0.092],
+    [13328, 42.8785, 35.0597, 4.56, 1.554],
+    [18597, 59.6865, -61.4002, 4.56, 1.59],
+    [27830, 88.3319, 27.6123, 4.56, -8e-3],
+    [44700, 136.6324, 38.4522, 4.56, 1.037],
+    [54951, 168.801, 23.0955, 4.56, 1.657],
+    [70574, 216.5343, -45.2214, 4.56, -0.147],
+    [86092, 263.915, -46.5057, 4.56, -0.02],
+    [103004, 313.032, 27.097, 4.56, 0.835],
+    [104194, 316.6504, 47.6484, 4.56, 1.569],
+    [16870, 54.2737, -40.2745, 4.57, 1.023],
+    [80463, 246.354, 14.0333, 4.57, 2e-3],
+    [80473, 246.3963, -23.4472, 4.57, 0.227],
+    [86614, 265.4848, 72.1488, 4.57, 0.434],
+    [92818, 283.687, 22.6451, 4.57, 0.782],
+    [94005, 287.0874, -40.4967, 4.57, 1.07],
+    [97886, 298.3654, 24.0796, 4.57, -0.047],
+    [26237, 83.8465, -4.8384, 4.58, -0.183],
+    [48374, 147.9194, -46.5476, 4.58, 1.172],
+    [52468, 160.8845, -60.5666, 4.58, 1.7],
+    [64425, 198.0733, -59.9206, 4.58, -0.073],
+    [67627, 207.8581, 64.7233, 4.58, 1.572],
+    [79404, 243.0759, -27.9264, 4.58, -0.172],
+    [86284, 264.4613, -8.1188, 4.58, 0.132],
+    [115250, 350.1593, 23.7403, 4.58, 0.18],
+    [3245, 10.3315, -46.085, 4.59, 0.953],
+    [17351, 55.7086, -37.3135, 4.59, 1.191],
+    [17959, 57.5896, 71.3323, 4.59, 0.064],
+    [25473, 81.7093, 3.0957, 4.59, -0.199],
+    [42527, 130.0534, 64.3279, 4.59, 1.179],
+    [46509, 142.2871, -2.769, 4.59, 0.411],
+    [50555, 154.9031, -55.0293, 4.59, 1.6],
+    [54751, 168.1501, -60.3176, 4.59, 0.541],
+    [77512, 237.3985, 26.0684, 4.59, 0.794],
+    [77840, 238.403, -25.3271, 4.59, -0.073],
+    [91926, 281.0949, 39.6127, 4.59, 0.18],
+    [96465, 294.1768, -24.8836, 4.59, -0.075],
+    [117452, 357.2314, -28.1303, 4.59, 1e-3],
+    [20070, 64.5609, 50.2955, 4.6, 0.043],
+    [49402, 151.2811, -13.0646, 4.6, -0.087],
+    [53502, 164.1794, -37.1378, 4.6, 1.006],
+    [72125, 221.3103, 16.9643, 4.6, 0.972],
+    [75501, 231.3342, -38.7336, 4.6, 0],
+    [77760, 238.1689, 42.4515, 4.6, 0.563],
+    [95081, 290.167, 65.7145, 4.6, 0.033],
+    [443, 1.3339, -5.7076, 4.61, 1.029],
+    [1366, 4.2729, 38.6816, 4.61, 0.059],
+    [8833, 28.389, 3.1875, 4.61, 0.928],
+    [14817, 47.8224, 39.6116, 4.61, 1.115],
+    [36145, 111.6785, 49.2115, 4.61, -1e-3],
+    [39095, 119.9669, -18.3992, 4.61, 0.087],
+    [76219, 233.5446, -10.0645, 4.61, 1],
+    [101474, 308.4758, 35.2509, 4.61, 1.593],
+    [4422, 14.1663, 59.1811, 4.62, 0.957],
+    [18673, 59.9812, -24.0162, 4.62, -0.121],
+    [23497, 75.7739, 21.59, 4.62, 0.155],
+    [25923, 82.9827, -7.3015, 4.62, -0.261],
+    [44824, 137.012, -25.8585, 4.62, 1.594],
+    [54182, 166.2543, 7.336, 4.62, 0.332],
+    [54301, 166.6351, -62.4241, 4.62, 0.988],
+    [56480, 173.6902, -54.2641, 4.62, -0.077],
+    [62327, 191.5946, -56.4888, 4.62, -0.15],
+    [63007, 193.6633, -59.1467, 4.62, -0.153],
+    [80628, 246.9508, -8.3717, 4.62, 0.185],
+    [88175, 270.1209, -3.6903, 4.62, 0.39],
+    [90982, 278.3758, -42.3125, 4.62, 0.994],
+    [92946, 284.0549, 4.2036, 4.62, 0.161],
+    [13914, 44.803, 21.3404, 4.63, 0.048],
+    [37648, 115.8849, -28.4109, 4.63, 1.632],
+    [38500, 118.2651, -49.613, 4.63, -0.228],
+    [42835, 130.9182, -7.2337, 4.63, 0.84],
+    [45448, 138.9378, -37.4131, 4.63, 0.473],
+    [61789, 189.9689, -39.9873, 4.63, -0.082],
+    [66738, 205.1845, 54.6816, 4.63, 1.63],
+    [73199, 224.3959, 65.9325, 4.63, 1.59],
+    [77635, 237.7448, -25.7513, 4.63, -0.072],
+    [78662, 240.8837, -57.7751, 4.63, 0.252],
+    [90797, 277.8434, -62.2783, 4.63, -0.116],
+    [92512, 282.8004, 59.3884, 4.63, 1.185],
+    [118131, 359.4397, 25.1414, 4.63, 1.584],
+    [18216, 58.4279, -24.6122, 4.64, -0.136],
+    [22845, 73.7239, 10.1508, 4.64, 0.085],
+    [28716, 90.9799, 20.1385, 4.64, 0.236],
+    [67234, 206.6641, -51.4328, 4.64, 0.955],
+    [76669, 234.8445, 36.6358, 4.64, -0.103],
+    [76829, 235.2974, -44.6612, 4.64, 0.413],
+    [82369, 252.4585, -10.783, 4.64, 0.478],
+    [84606, 259.4177, 37.2915, 4.64, 0.043],
+    [88765, 271.8265, 8.7339, 4.64, 0.951],
+    [95585, 291.6295, 0.3386, 4.64, 0.576],
+    [101589, 308.8272, 14.6742, 4.64, 0.12],
+    [111674, 339.3434, 51.5451, 4.64, 0.254],
+    [113919, 346.0458, 50.0521, 4.64, 1.058],
+    [12719, 40.863, 27.7071, 4.65, -0.122],
+    [21273, 68.4622, 14.8444, 4.65, 0.255],
+    [23607, 76.1423, 15.4041, 4.65, -0.064],
+    [27890, 88.5252, -63.0896, 4.65, 1.022],
+    [35363, 109.5766, -36.734, 4.65, -0.099],
+    [36514, 112.6775, -30.9623, 4.65, 0.904],
+    [36917, 113.8454, -28.3693, 4.65, -0.111],
+    [51192, 156.852, -57.6388, 4.65, 0.474],
+    [58590, 180.2183, 6.6143, 4.65, 0.122],
+    [78639, 240.8037, -49.2297, 4.65, 0.902],
+    [5571, 17.8634, 21.0347, 4.66, 1.024],
+    [8497, 27.3963, -10.6864, 4.66, 0.333],
+    [31978, 100.2444, 9.8958, 4.66, -0.233],
+    [33302, 103.906, -20.1365, 4.66, 0.374],
+    [35205, 109.1458, -27.8812, 4.66, 1.589],
+    [42806, 130.8214, 21.4685, 4.66, 0.01],
+    [44626, 136.4099, -70.5385, 4.66, -0.149],
+    [53295, 163.4948, 43.19, 4.66, -0.039],
+    [61740, 189.8115, -7.9956, 4.66, 1.24],
+    [62012, 190.6477, -48.8131, 4.66, 1.075],
+    [76705, 234.9416, -34.4119, 4.66, 0.964],
+    [88567, 271.2551, -29.5801, 4.66, 0.774],
+    [89678, 274.5133, -27.0426, 4.66, 1.629],
+    [90135, 275.9149, -8.9344, 4.66, 0.932],
+    [98543, 300.2752, 27.7536, 4.66, 0.184],
+    [5742, 18.4373, 24.5837, 4.67, 1.047],
+    [16244, 52.3419, 49.5089, 4.67, -0.096],
+    [19811, 63.7222, 40.4837, 4.67, 1.007],
+    [21683, 69.8188, 15.918, 4.67, 0.147],
+    [28910, 91.5388, -14.9353, 4.67, 0.046],
+    [40167, 123.053, 17.6478, 4.67, 0.531],
+    [45075, 137.7294, 63.5136, 4.67, 0.381],
+    [88128, 270.0142, 16.7509, 4.67, 1.254],
+    [90595, 277.2994, -14.5658, 4.67, 0.076],
+    [91919, 281.0848, 39.6701, 4.67, 0.17],
+    [96100, 293.09, 69.6612, 4.67, 0.786],
+    [103738, 315.3228, -32.2578, 4.67, 0.89],
+    [7294, 23.4828, 59.232, 4.68, 0.991],
+    [8928, 28.7339, -67.6473, 4.68, 0.931],
+    [9677, 31.1227, -29.2968, 4.68, -0.156],
+    [13879, 44.6903, 39.6627, 4.68, 0.065],
+    [43878, 134.0803, -52.7235, 4.68, -0.115],
+    [47310, 144.6137, 4.6493, 4.68, 1.31],
+    [49029, 150.0534, 8.0442, 4.68, 1.589],
+    [52098, 159.6801, 31.9762, 4.68, 0.823],
+    [66006, 202.9912, -6.2558, 4.68, 1.606],
+    [66234, 203.6136, 49.016, 4.68, 0.132],
+    [80047, 245.0867, -78.6957, 4.68, 1.68],
+    [96683, 294.8442, 30.1533, 4.68, 0.971],
+    [106786, 324.438, -7.8542, 4.68, 0.175],
+    [112211, 340.8968, -18.8304, 4.68, 1.358],
+    [20732, 66.6516, 14.7138, 4.69, 0.979],
+    [24813, 79.7853, 40.0991, 4.69, 0.63],
+    [37173, 114.5752, -25.3648, 4.69, -0.1],
+    [38089, 117.084, -47.0777, 4.69, 1.039],
+    [39211, 120.3056, -1.3926, 4.69, 1.475],
+    [52102, 159.6875, -59.183, 4.69, 1.562],
+    [62268, 191.4085, -60.9813, 4.69, 1.049],
+    [107136, 325.5236, 51.1896, 4.69, -0.119],
+    [108870, 330.8402, -56.786, 4.69, 1.056],
+    [116389, 353.769, -42.6151, 4.69, 0.078],
+    [24927, 80.1122, -21.2398, 4.7, -0.048],
+    [56633, 174.1705, -9.8022, 4.7, -0.073],
+    [56922, 175.0533, -34.7447, 4.7, -0.07],
+    [82671, 253.4989, -42.362, 4.7, 0.444],
+    [91726, 280.5684, -9.0525, 4.7, 0.358],
+    [98066, 298.9598, -26.2995, 4.7, 0.748],
+    [104521, 317.5854, 10.1316, 4.7, 0.262],
+    [113116, 343.604, 84.3462, 4.7, 1.418],
+    [116247, 353.3193, -20.9145, 4.7, 0.02],
+    [13954, 44.9288, 8.9074, 4.71, -0.109],
+    [16245, 52.3445, -62.9375, 4.71, 0.41],
+    [22667, 73.1332, 14.2506, 4.71, 1.773],
+    [23693, 76.3777, -57.4727, 4.71, 0.526],
+    [25737, 82.4333, -1.0922, 4.71, 1.592],
+    [25984, 83.182, 32.192, 4.71, 0.281],
+    [45902, 140.3733, -25.9654, 4.71, 1.633],
+    [46026, 140.801, -28.8339, 4.71, 0.892],
+    [57283, 176.1907, -18.3507, 4.71, 0.958],
+    [63945, 196.5696, -48.4633, 4.71, -0.148],
+    [68191, 209.412, -63.6867, 4.71, 1.075],
+    [97938, 298.562, 8.4615, 4.71, 1.023],
+    [105140, 319.4845, -32.1725, 4.71, 0.07],
+    [114375, 347.4787, -22.4576, 4.71, 0.674],
+    [6692, 21.4834, 68.13, 4.72, 1.047],
+    [25044, 80.4406, -0.3825, 4.72, -0.168],
+    [27639, 87.7602, 37.3056, 4.72, 1.621],
+    [29276, 92.5746, -54.9686, 4.72, -0.229],
+    [40084, 122.8179, -12.927, 4.72, 0.939],
+    [46371, 141.8267, -22.3438, 4.72, 1.154],
+    [51056, 156.4784, 33.7961, 4.72, 0.26],
+    [51438, 157.5839, -71.9928, 4.72, 0.042],
+    [51658, 158.3079, 40.4256, 4.72, 0.222],
+    [58867, 181.0801, -63.1657, 4.72, -0.081],
+    [60202, 185.1793, 17.7929, 4.72, 1.01],
+    [64844, 199.3856, 40.5726, 4.72, 0.306],
+    [78592, 240.6996, 46.0367, 4.72, -0.094],
+    [84514, 259.1529, -0.4453, 4.72, 1.119],
+    [107188, 325.6646, -18.8663, 4.72, 0.868],
+    [11313, 36.4059, 50.2786, 4.73, 1.532],
+    [33202, 103.661, 13.1778, 4.73, 0.321],
+    [40096, 122.8579, -42.9873, 4.73, 0.164],
+    [53907, 165.457, -2.4846, 4.73, 1.593],
+    [78914, 241.6227, -45.1732, 4.73, 0.23],
+    [79119, 242.2429, 36.4909, 4.73, 1.015],
+    [103045, 313.1635, -8.9833, 4.73, 0.325],
+    [2505, 7.9432, 54.5223, 4.74, -0.098],
+    [6193, 19.8666, 27.2641, 4.74, 0.032],
+    [11783, 38.0218, -15.2447, 4.74, 0.454],
+    [12413, 39.95, -42.8917, 4.74, 0.061],
+    [15520, 49.997, 65.6523, 4.74, -0.108],
+    [16341, 52.6544, -5.0751, 4.74, -0.092],
+    [39903, 122.2528, -61.3024, 4.74, 0.437],
+    [42624, 130.3047, -47.3171, 4.74, 0.137],
+    [44390, 135.6362, 67.6296, 4.74, 1.542],
+    [64924, 199.6013, -18.3112, 4.74, 0.709],
+    [69191, 212.4784, -53.4389, 4.74, 0.938],
+    [77661, 237.8163, 20.9779, 4.74, 1.534],
+    [88116, 269.9481, -23.8161, 4.74, -0.03],
+    [93542, 285.7787, -42.0951, 4.74, -0.027],
+    [96052, 292.943, 34.453, 4.74, -0.15],
+    [103632, 314.9565, 47.521, 4.74, -0.084],
+    [108874, 330.8285, -2.1554, 4.74, -0.1],
+    [116602, 354.4625, -45.4924, 4.74, 0.082],
+    [35020, 108.6589, -48.2719, 4.75, -0.091],
+    [57581, 177.0606, -66.8149, 4.75, 1.522],
+    [67786, 208.3022, -31.9276, 4.75, -0.111],
+    [69713, 214.0414, 51.3672, 4.75, 0.236],
+    [76880, 235.4867, -19.6788, 4.75, 1.574],
+    [76945, 235.6709, -34.7104, 4.75, -0.151],
+    [101612, 308.8952, -60.5817, 4.75, 0.291],
+    [115088, 349.6562, 68.1114, 4.75, 0.836],
+    [2472, 7.8541, -48.8035, 4.76, 0.018],
+    [13244, 42.6186, -75.0669, 4.76, 1.337],
+    [13288, 42.7597, -21.004, 4.76, 0.906],
+    [27750, 88.1102, 1.8551, 4.76, 1.382],
+    [29997, 94.7116, 69.3198, 4.76, 0.025],
+    [38901, 119.4171, -30.3346, 4.76, 0.151],
+    [47522, 145.3209, -23.5915, 4.76, -0.117],
+    [52370, 160.5588, -64.4664, 4.76, -0.139],
+    [55266, 169.7829, 38.1856, 4.76, 0.113],
+    [60485, 186.0062, 51.5623, 4.76, 0.877],
+    [63355, 194.731, 17.4094, 4.76, 1.568],
+    [65639, 201.8632, -15.9736, 4.76, 1.096],
+    [67665, 207.9478, 34.4442, 4.76, 1.611],
+    [70264, 215.6545, -58.4591, 4.76, 0.795],
+    [84969, 260.4978, -67.7707, 4.76, 1.194],
+    [86486, 265.0993, -49.4156, 4.76, 0.415],
+    [94703, 289.0543, 21.3904, 4.76, -0.058],
+    [106801, 324.4801, 62.0819, 4.76, 0.246],
+    [114155, 346.7781, 25.4683, 4.76, 1.285],
+    [3455, 11.0475, -10.6096, 4.77, 0.998],
+    [14382, 46.385, 56.7057, 4.77, 1.018],
+    [26563, 84.7212, -7.2128, 4.77, 0.139],
+    [32533, 101.8326, 8.0373, 4.77, 1.396],
+    [45751, 139.9433, -11.9749, 4.77, 0.927],
+    [56127, 172.5787, -3.0035, 4.77, 1.529],
+    [62985, 193.5882, -9.539, 4.77, 1.59],
+    [86201, 264.2379, 68.758, 4.77, 0.43],
+    [88404, 270.7705, -8.1803, 4.77, 0.41],
+    [90905, 278.1438, 57.0456, 4.77, 0.611],
+    [98761, 300.8894, -37.9407, 4.77, 1.417],
+    [100044, 304.4467, 38.0329, 4.77, 0.377],
+    [100310, 305.1659, -12.7591, 4.77, -0.047],
+    [101027, 307.2151, -17.8137, 4.77, 0.386],
+    [112519, 341.8711, 83.1538, 4.77, 1.257],
+    [122, 0.3988, -77.0657, 4.78, 1.254],
+    [4147, 13.2521, -1.1443, 4.78, 1.55],
+    [9977, 32.1219, 37.8591, 4.78, 0.12],
+    [17587, 56.5097, 63.345, 4.78, 0.747],
+    [21029, 67.6401, 16.194, 4.78, 0.17],
+    [23231, 74.9822, -12.5374, 4.78, 0.267],
+    [26199, 83.7612, -6.002, 4.78, -0.248],
+    [39847, 122.1144, 51.5067, 4.78, 0.048],
+    [40274, 123.373, -35.8995, 4.78, -0.11],
+    [47758, 146.0504, -27.7695, 4.78, 0.516],
+    [50564, 154.934, 19.4709, 4.78, 0.452],
+    [60351, 185.6263, 25.8462, 4.78, 0.515],
+    [64852, 199.4012, 5.4699, 4.78, 1.638],
+    [70104, 215.1774, -45.1871, 4.78, 0.31],
+    [70306, 215.7741, -27.754, 4.78, 1.3],
+    [85755, 262.854, -23.9626, 4.78, 0.016],
+    [87294, 267.5463, -40.0904, 4.78, 0.259],
+    [92024, 281.3621, -64.8713, 4.78, 0.199],
+    [110371, 335.3306, 28.3305, 4.78, -0.01],
+    [110882, 336.9647, 4.6957, 4.78, 1.039],
+    [1168, 3.6507, 20.2067, 4.79, 1.572],
+    [9153, 29.4822, 23.5961, 4.79, 0.29],
+    [22678, 73.1583, 36.7032, 4.79, 1.414],
+    [41039, 125.6321, -48.4904, 4.79, -0.146],
+    [45856, 140.2367, -62.4046, 4.79, 0.926],
+    [64661, 198.8123, -67.8946, 4.79, -0.078],
+    [77655, 237.808, 35.6574, 4.79, 0.996],
+    [80815, 247.552, -25.1152, 4.79, -0.116],
+    [87220, 267.2937, -31.7032, 4.79, -0.028],
+    [88149, 270.0658, 4.3686, 4.79, -0.1],
+    [99824, 303.8162, 25.592, 4.79, -0.181],
+    [109400, 332.4518, 72.3412, 4.79, 0.919],
+    [109908, 333.9038, -41.3467, 4.79, 0.79],
+    [3300, 10.5162, 50.5125, 4.8, -0.105],
+    [4151, 13.2675, 61.124, 4.8, 0.54],
+    [15197, 48.9584, -8.8197, 4.8, 0.232],
+    [20354, 65.3882, 46.4989, 4.8, -0.022],
+    [20542, 66.024, 17.4441, 4.8, 0.154],
+    [23364, 75.3598, -7.174, 4.8, -0.164],
+    [31832, 99.8326, 42.4889, 4.8, 1.236],
+    [45038, 137.5981, 67.134, 4.8, 0.489],
+    [45493, 139.0472, 54.0219, 4.8, 0.199],
+    [45811, 140.1209, -9.5557, 4.8, 0.913],
+    [52502, 161.0288, -63.9611, 4.8, -0.134],
+    [61394, 188.7128, 22.6293, 4.8, 0.012],
+    [64022, 196.7947, 27.6247, 4.8, 1.482],
+    [69112, 212.2122, 77.5475, 4.8, 1.368],
+    [69879, 214.4992, 35.5095, 4.8, 1.057],
+    [71995, 220.8557, 26.5279, 4.8, 1.672],
+    [73568, 225.5271, 25.0081, 4.8, 1.506],
+    [79881, 244.5746, -28.614, 4.8, 8e-3],
+    [84573, 259.3315, 33.1001, 4.8, -0.166],
+    [99639, 303.3252, 46.8157, 4.8, 0.1],
+    [103089, 313.3115, 44.3873, 4.8, -0.134],
+    [105382, 320.1902, -40.8095, 4.8, 0.029],
+    [110672, 336.3193, 1.3774, 4.8, -0.171],
+    [112051, 340.4392, 29.3076, 4.8, -0.013],
+    [24010, 77.4248, 15.5972, 4.81, 0.313],
+    [24372, 78.4394, -67.1853, 4.81, 1.274],
+    [24659, 79.3712, -34.8952, 4.81, 0.987],
+    [28237, 89.4986, 25.9539, 4.81, -0.088],
+    [39138, 120.0832, -63.5675, 4.81, -0.173],
+    [47029, 143.766, 39.6215, 4.81, 0.992],
+    [55687, 171.1525, -10.8593, 4.81, 1.556],
+    [70755, 217.0506, -2.228, 4.81, 0.693],
+    [90289, 276.3377, -20.5417, 4.81, 1.31],
+    [101867, 309.6306, 21.2012, 4.81, -0.03],
+    [102724, 312.2345, 46.1141, 4.81, 0.571],
+    [9095, 29.292, -47.3853, 4.82, 0.864],
+    [24340, 78.3572, 38.4845, 4.82, 0.189],
+    [31827, 99.8197, -14.1458, 4.82, 1.459],
+    [33092, 103.3871, -20.2243, 4.82, -0.212],
+    [36773, 113.4498, -14.5239, 4.82, 1.362],
+    [50799, 155.5816, -41.65, 4.82, 1.095],
+    [51459, 157.6566, 55.9805, 4.82, 0.541],
+    [60710, 186.6323, -51.4506, 4.82, -0.141],
+    [66458, 204.3651, 36.2949, 4.82, 0.239],
+    [69226, 212.5997, 25.0917, 4.82, 0.541],
+    [78554, 240.5737, 22.8045, 4.82, 0.066],
+    [80179, 245.5181, 1.029, 4.82, 0.338],
+    [82321, 252.3092, 45.9833, 4.82, 0.087],
+    [83262, 255.265, -4.2226, 4.82, 1.483],
+    [90344, 276.4964, 65.5635, 4.82, 1.179],
+    [92782, 283.5994, 71.2972, 4.82, 1.151],
+    [104019, 316.1013, -19.855, 4.82, 0.169],
+    [110386, 335.3795, 12.2052, 4.82, -0.132],
+    [111123, 337.6617, -10.678, 4.82, -0.053],
+    [115022, 349.436, 49.0153, 4.82, 1.668],
+    [116901, 355.4409, -17.8165, 4.82, 0.822],
+    [4292, 13.7507, 58.9727, 4.83, 1.216],
+    [6813, 21.9141, 45.4067, 4.83, 0.421],
+    [12390, 39.891, -11.8722, 4.83, 0.447],
+    [12876, 41.386, -67.6166, 4.83, 0.058],
+    [34495, 107.2128, -39.6557, 4.83, -0.179],
+    [35210, 109.1535, -23.3156, 4.83, 1.601],
+    [40945, 125.3459, -33.0544, 4.83, 1.419],
+    [42726, 130.6058, -53.114, 4.83, -0.173],
+    [63724, 195.8888, -49.5273, 4.83, 0.029],
+    [73695, 225.9471, 47.6541, 4.83, 0.647],
+    [74449, 228.2066, -44.5004, 4.83, -0.177],
+    [80704, 247.1606, 41.8817, 4.83, 1.289],
+    [83574, 256.2056, -34.1229, 4.83, 0.257],
+    [92088, 281.5187, 26.6621, 4.83, 1.199],
+    [93026, 284.2653, -5.8463, 4.83, 1.057],
+    [93174, 284.6807, -37.1074, 4.83, 0.396],
+    [7007, 22.5463, 6.1438, 4.84, 1.372],
+    [10340, 33.3055, 44.2317, 4.84, 1.476],
+    [10644, 34.2635, 34.2242, 4.84, 0.607],
+    [15457, 49.8404, 3.3702, 4.84, 0.681],
+    [19740, 63.4849, 9.2638, 4.84, 0.799],
+    [26777, 85.3238, 16.5341, 4.84, -0.125],
+    [37297, 114.8639, -38.308, 4.84, -0.189],
+    [42134, 128.8321, -58.0092, 4.84, 0.981],
+    [53807, 165.1402, 3.6175, 4.84, 1.144],
+    [57328, 176.321, 8.2581, 4.84, 0.174],
+    [70027, 214.9385, 16.3069, 4.84, 1.228],
+    [81008, 248.1512, 11.488, 4.84, 1.495],
+    [81660, 250.2297, 64.589, 4.84, 1.212],
+    [82020, 251.3242, 56.7819, 4.84, 0.375],
+    [98353, 299.7383, -26.1958, 4.84, 0.882],
+    [112203, 340.8749, -41.4143, 4.84, 1.027],
+    [112374, 341.4078, -53.5001, 4.84, 1.18],
+    [114104, 346.6534, 59.4198, 4.84, -0.06],
+    [14862, 47.9845, 74.3937, 4.85, 0.035],
+    [15416, 49.6826, 34.2227, 4.85, 1.491],
+    [36431, 112.4642, -23.0243, 4.85, 0.243],
+    [49712, 152.2343, -51.8113, 4.85, -0.12],
+    [64408, 198.0133, -37.803, 4.85, 0.693],
+    [74837, 229.412, -63.6105, 4.85, 1.26],
+    [87846, 269.1976, -44.3422, 4.85, 1.176],
+    [89918, 275.2169, 3.3772, 4.85, 0.911],
+    [93148, 284.6157, -52.9386, 4.85, -0.051],
+    [2210, 6.9821, -33.0072, 4.86, 1.634],
+    [15382, 49.5921, -22.5111, 4.86, 0.904],
+    [32438, 101.5589, 59.4417, 4.86, 0.084],
+    [42483, 129.927, -29.5611, 4.86, 0.9],
+    [51808, 158.7728, 75.7129, 4.86, 0.957],
+    [64820, 199.3042, -66.7834, 4.86, 1.48],
+    [70327, 215.8446, 8.4466, 4.86, 0.01],
+    [71832, 220.4115, 8.1618, 4.86, 0.992],
+    [80181, 245.5243, 30.892, 4.86, 0.97],
+    [81122, 248.5209, -44.0453, 4.86, 0.045],
+    [81497, 249.6869, 48.9283, 4.86, 1.562],
+    [85829, 263.0668, 55.173, 4.86, 0.279],
+    [86736, 265.8575, -21.6832, 4.86, 0.469],
+    [91918, 281.0807, -35.642, 4.86, -0.168],
+    [92761, 283.5424, -22.7448, 4.86, 1.412],
+    [94643, 288.8851, -25.2567, 4.86, 0.569],
+    [101773, 309.3971, -61.5299, 4.86, 0.447],
+    [109068, 331.4198, 5.0585, 4.86, 1.443],
+    [6411, 20.5851, 45.5288, 4.87, 1.077],
+    [12093, 38.9686, 5.5932, 4.87, 0.88],
+    [15110, 48.7254, 21.0444, 4.87, -7e-3],
+    [19777, 63.5987, -10.2563, 4.87, 1.156],
+    [34899, 108.3056, -45.1827, 4.87, -3e-3],
+    [42662, 130.4306, -15.9434, 4.87, 1.063],
+    [43825, 133.8815, -27.6819, 4.87, 0.142],
+    [48559, 148.5513, -25.9323, 4.87, 1.199],
+    [51979, 159.3072, -27.4126, 4.87, 1.626],
+    [52736, 161.7134, -64.3835, 4.87, -0.149],
+    [97290, 296.5906, -19.7611, 4.87, 1.061],
+    [106551, 323.694, 38.5341, 4.87, 1.085],
+    [11345, 36.4875, -12.2905, 4.88, -0.027],
+    [25539, 81.9087, 21.937, 4.88, -0.14],
+    [27468, 87.254, 24.5675, 4.88, 1.021],
+    [27810, 88.2787, -33.8014, 4.88, -0.154],
+    [35412, 109.6682, -24.5587, 4.88, -0.16],
+    [58484, 179.9066, -78.2218, 4.88, -0.054],
+    [61960, 190.4711, 10.2356, 4.88, 0.076],
+    [63462, 195.0686, 30.785, 4.88, 1.165],
+    [82860, 254.007, 65.1348, 4.88, 0.481],
+    [87936, 269.4492, -41.7163, 4.88, 1.617],
+    [91845, 280.8802, -8.2752, 4.88, 1.112],
+    [94820, 289.4087, -18.9529, 4.88, 1.013],
+    [96341, 293.8041, -48.0992, 4.88, 1.096],
+    [117301, 356.7644, 58.652, 4.88, 1.122],
+    [118209, 359.6682, -3.556, 4.88, 0.93],
+    [118243, 359.7522, 55.7549, 4.88, -0.071],
+    [910, 2.8161, -15.468, 4.89, 0.487],
+    [22453, 72.4777, 37.4883, 4.89, 1.447],
+    [25302, 81.1868, 1.8464, 4.89, -0.2],
+    [27511, 87.3872, 12.6513, 4.89, -0.068],
+    [37265, 114.7914, 34.5843, 4.89, 0.413],
+    [37908, 116.531, 18.51, 4.89, 1.425],
+    [51523, 157.8409, -53.7155, 4.89, 0.5],
+    [52009, 159.3886, -13.3845, 4.89, 2.8],
+    [57443, 176.6295, -40.5004, 4.89, 0.664],
+    [57851, 177.9634, -65.2059, 4.89, -0.123],
+    [62886, 193.3239, 21.2449, 4.89, 0.904],
+    [69896, 214.5579, -81.0078, 4.89, 0.243],
+    [83613, 256.3445, 12.7408, 4.89, 0.125],
+    [85819, 263.044, 55.1842, 4.89, 0.251],
+    [97118, 296.0692, 37.3544, 4.89, 0.948],
+    [102831, 312.492, -33.7797, 4.89, 1.004],
+    [111841, 339.8153, 39.0503, 4.89, -0.207],
+    [115990, 352.5081, 58.5489, 4.89, -0.122],
+    [3801, 12.2084, 50.9682, 4.9, -0.091],
+    [6670, 21.4051, -14.5988, 4.9, 1.231],
+    [26885, 85.6193, 1.4746, 4.9, 1.144],
+    [33485, 104.4046, 45.0941, 4.9, 0.027],
+    [62683, 192.6715, -33.9993, 4.9, -0.031],
+    [64583, 198.5631, -59.1032, 4.9, 0.489],
+    [78655, 240.8508, -38.6025, 4.9, -0.146],
+    [78821, 241.3606, -19.8019, 4.9, -0.024],
+    [80686, 247.1173, -70.0844, 4.9, 0.555],
+    [97679, 297.7671, 22.61, 4.9, -0.153],
+    [102790, 312.3707, -46.2268, 4.9, 1.494],
+    [12623, 40.5621, 40.1939, 4.91, 0.582],
+    [21139, 67.9694, -0.044, 4.91, 1.32],
+    [23362, 75.3566, -20.0519, 4.91, -0.047],
+    [23835, 76.8625, 18.6451, 4.91, 0.657],
+    [30093, 94.9983, -2.9445, 4.91, 1.613],
+    [34622, 107.557, -4.2371, 4.91, 1.02],
+    [34752, 107.9139, 39.3205, 4.91, 1.451],
+    [52085, 159.6456, -16.8766, 4.91, 0.922],
+    [61966, 190.4857, -59.6858, 4.91, -0.044],
+    [66257, 203.6992, 37.1824, 4.91, 0.404],
+    [73473, 225.2431, -8.5189, 4.91, 0],
+    [74604, 228.6555, -31.5191, 4.91, 0.374],
+    [81724, 250.3933, -17.7422, 4.91, 1.095],
+    [83608, 256.3338, 54.47, 4.91, 0.471],
+    [98055, 298.9074, 52.4389, 4.91, 0.124],
+    [101101, 307.4125, -2.8855, 4.91, 1.16],
+    [101692, 309.1818, -2.55, 4.91, 1.606],
+    [111310, 338.2503, -61.9821, 4.91, 1.612],
+    [113186, 343.807, 8.8162, 4.91, -3e-3],
+    [9061, 29.1675, -22.5268, 4.92, 1.434],
+    [28574, 90.4601, -10.5979, 4.92, -0.128],
+    [28816, 91.2464, -16.4844, 4.92, 0.196],
+    [30520, 96.2246, 49.2879, 4.92, 1.905],
+    [34059, 105.9734, -49.5839, 4.92, 0.14],
+    [36547, 112.7686, 82.4115, 4.92, 1.633],
+    [45439, 138.903, -38.5699, 4.92, 1.084],
+    [54204, 166.3329, -27.2936, 4.92, 0.369],
+    [60697, 186.6003, 27.2682, 4.92, 0.277],
+    [66200, 203.533, 3.659, 4.92, 0.029],
+    [67480, 207.4285, 21.2641, 4.92, 1.432],
+    [72104, 221.2467, -35.1918, 4.92, 0.013],
+    [75379, 231.0495, -10.3223, 4.92, 0.453],
+    [88726, 271.7079, -43.4252, 4.92, 0.255],
+    [89861, 275.0746, 21.9613, 4.92, 1.594],
+    [90830, 277.9393, -45.9148, 4.92, -0.101],
+    [92689, 283.3064, 50.7082, 4.92, 0.903],
+    [102388, 311.2188, 25.2706, 4.92, 1.183],
+    [19515, 62.7108, -41.9936, 4.93, 0.334],
+    [19990, 64.3153, 20.5786, 4.93, 0.259],
+    [20252, 65.1027, 34.5667, 4.93, 0.95],
+    [23179, 74.8142, 37.8902, 4.93, 0.037],
+    [36942, 113.9155, -52.5338, 4.93, 1.373],
+    [37609, 115.7517, 58.7104, 4.93, 0.104],
+    [39079, 119.934, -3.6796, 4.93, 1.205],
+    [43937, 134.2434, -59.2293, 4.93, -0.182],
+    [47592, 145.5601, -23.9156, 4.93, 0.534],
+    [56280, 173.0683, -29.261, 4.93, 0.54],
+    [56986, 175.2235, -62.0901, 4.93, 1.111],
+    [59847, 184.0856, 23.9454, 4.93, 0.957],
+    [62763, 192.9247, 27.5407, 4.93, 0.681],
+    [63503, 195.1821, 56.3663, 4.93, 0.368],
+    [69269, 212.7104, -16.302, 4.93, 1.684],
+    [72631, 222.7545, -2.2992, 4.93, 0.988],
+    [73996, 226.8253, 24.8692, 4.93, 0.429],
+    [79375, 243, -10.0643, 4.93, 0.087],
+    [96483, 294.2227, -7.0275, 4.93, -0.046],
+    [99120, 301.8465, -52.8808, 4.93, 1.591],
+    [99303, 302.3567, 36.8396, 4.93, -0.139],
+    [99770, 303.6335, 36.8063, 4.93, 0.151],
+    [102571, 311.7948, 34.3741, 4.93, 1.294],
+    [114939, 349.2122, -7.7265, 4.93, 1.613],
+    [117073, 355.9979, 29.3615, 4.93, 0.935],
+    [10280, 33.0928, 30.3031, 4.94, 0.77],
+    [13905, 44.7653, 35.1831, 4.94, 1.235],
+    [33357, 104.0666, -48.7211, 4.94, 1.668],
+    [35727, 110.5564, -19.0166, 4.94, -0.039],
+    [39424, 120.8795, 27.7943, 4.94, 1.13],
+    [43347, 132.4485, -45.3079, 4.94, 0.043],
+    [48615, 148.7175, -19.0094, 4.94, 1.559],
+    [50933, 156.0327, 65.5664, 4.94, -0.052],
+    [51495, 157.7586, -73.2215, 4.94, 1.677],
+    [64166, 197.2636, -23.1181, 4.94, 1.048],
+    [64540, 198.4289, 40.1529, 4.94, 1.061],
+    [80650, 246.9959, 68.7681, 4.94, -0.051],
+    [93279, 285.0034, 32.1455, 4.94, 1.465],
+    [99742, 303.5692, 15.1976, 4.94, 0.072],
+    [101138, 307.5148, 48.9516, 4.94, -0.087],
+    [109422, 332.5366, -32.5484, 4.94, 0.489],
+    [3414, 10.867, 47.0245, 4.95, 0.17],
+    [6242, 20.0205, 58.2316, 4.95, 0.683],
+    [18505, 59.356, 63.0723, 4.95, -0.074],
+    [26736, 85.2113, -1.1288, 4.95, -0.197],
+    [29434, 93.0137, 16.1304, 4.95, -0.149],
+    [55945, 171.9843, 2.8563, 4.95, 1],
+    [61384, 188.6834, 70.0218, 4.95, 1.312],
+    [78207, 239.5474, -14.2794, 4.95, -0.08],
+    [79509, 243.3697, -54.6305, 4.95, 1.017],
+    [79822, 244.3762, 75.7553, 4.95, 0.393],
+    [98068, 298.9657, 38.4867, 4.95, -0.086],
+    [98608, 300.4364, -59.3759, 4.95, 1.356],
+    [112917, 343.0085, 43.3124, 4.95, 1.559],
+    [115738, 351.7331, 1.2556, 4.95, 0.036],
+    [117245, 356.598, 3.4868, 4.95, 2.508],
+    [7818, 25.1451, 40.577, 4.96, -0.068],
+    [7918, 25.4464, 42.6134, 4.96, 0.618],
+    [11918, 38.4613, -28.2323, 4.96, -0.05],
+    [15648, 50.3607, 43.3297, 4.96, 0.051],
+    [20877, 67.1099, 16.3597, 4.96, 1.137],
+    [24822, 79.8192, 22.0965, 4.96, 0.937],
+    [27949, 88.7116, 55.7069, 4.96, 0.052],
+    [67494, 207.4678, -18.1342, 4.96, 1.059],
+    [78180, 239.4477, 54.7498, 4.96, 0.269],
+    [78650, 240.8359, -25.8652, 4.96, 1.234],
+    [88657, 271.5079, 22.2189, 4.96, 1.656],
+    [89153, 272.9306, -23.7012, 4.96, 1.055],
+    [89172, 272.9757, 31.4053, 4.96, 1.643],
+    [115590, 351.2094, 62.2828, 4.96, 1.676],
+    [5862, 18.7963, -45.5317, 4.97, 0.571],
+    [9009, 29.0001, 68.6852, 4.97, -0.084],
+    [17313, 55.5944, 33.965, 4.97, -0.048],
+    [18772, 60.3256, -61.0788, 4.97, 1.386],
+    [20250, 65.0884, 27.3508, 4.97, 1.15],
+    [28010, 88.8747, -37.1207, 4.97, 1.102],
+    [38538, 118.3742, 26.7658, 4.97, 0.098],
+    [50847, 155.7423, -66.9015, 4.97, -0.128],
+    [60172, 185.0874, 3.3126, 4.97, 1.172],
+    [65721, 202.1075, 13.7788, 4.97, 0.714],
+    [70753, 217.0434, -29.4916, 4.97, -0.074],
+    [76742, 235.0704, -23.8181, 4.97, 1.302],
+    [79790, 244.2539, -50.0681, 4.97, 0.788],
+    [83430, 255.7828, 14.0919, 4.97, 1.6],
+    [116310, 353.4883, 31.3253, 4.97, 1.383],
+    [116758, 354.9461, -14.2222, 4.97, 0.257],
+    [117221, 356.5085, 46.4203, 4.97, 1.086],
+    [7999, 25.6813, -3.6902, 4.98, 1.378],
+    [10053, 32.3556, 25.9399, 4.98, 0.339],
+    [13884, 44.6992, -64.0713, 4.98, 0.126],
+    [23783, 76.6693, 51.5977, 4.98, 0.343],
+    [26220, 83.8159, -5.3873, 4.98, null],
+    [26235, 83.8454, -5.4161, 4.98, -0.097],
+    [37379, 115.0967, -15.2639, 4.98, 1.543],
+    [42509, 130.0061, -12.4754, 4.98, 1.415],
+    [53824, 165.1867, 6.1014, 4.98, 0.166],
+    [57696, 177.4859, -70.2258, 4.98, 1.36],
+    [60746, 186.7471, 26.8257, 4.98, 0.088],
+    [76041, 232.9458, 40.8993, 4.98, 0.086],
+    [78493, 240.3607, 29.8511, 4.98, -0.05],
+    [90156, 275.9775, 58.8007, 4.98, 0.082],
+    [92951, 284.061, 4.2021, 4.98, 0.204],
+    [95066, 290.1371, -5.4158, 4.98, 0.937],
+    [98073, 298.9807, 58.846, 4.98, 1.584],
+    [355, 1.1255, -10.5095, 4.99, 1.619],
+    [9505, 30.5755, 54.4875, 4.99, -0.071],
+    [16147, 52.0128, 49.0629, 4.99, -0.091],
+    [17304, 55.5621, -31.9384, 4.99, -0.159],
+    [18488, 59.2845, 61.1089, 4.99, 1.435],
+    [21644, 69.7231, -12.1231, 4.99, 0.074],
+    [25142, 80.7083, 3.5445, 4.99, -0.096],
+    [32844, 102.6914, 41.7812, 4.99, 1.256],
+    [32855, 102.7181, -34.3673, 4.99, 1.379],
+    [33971, 105.7282, -4.2392, 4.99, -0.195],
+    [36041, 111.4121, 9.2761, 4.99, 0.991],
+    [40259, 123.3332, -15.7882, 4.99, 1.066],
+    [44659, 136.4932, 5.0923, 4.99, 1.189],
+    [45085, 137.7683, -44.8679, 4.99, 0.222],
+    [46771, 142.9864, 11.2998, 4.99, 1.046],
+    [55560, 170.7066, 43.4827, 4.99, 0.998],
+    [59856, 184.1256, 33.0615, 4.99, 1.14],
+    [66821, 205.4365, -54.5594, 4.99, -0.055],
+    [69389, 213.0659, 2.4094, 4.99, -0.118],
+    [75206, 230.5345, -47.9278, 4.99, 0.515],
+    [75312, 230.8013, 30.2878, 4.99, 0.577],
+    [78323, 239.8761, -41.7444, 4.99, 0.988],
+    [89348, 273.4743, 64.3973, 4.99, 0.44],
+    [95372, 291.0316, 29.6213, 4.99, -0.12],
+    [98842, 301.0816, -32.0563, 4.99, 1.208],
+    [109289, 332.1081, -34.0438, 4.99, 1.499],
+    [113288, 344.1083, 49.7335, 4.99, 1.778],
+    [115115, 349.7403, -9.6107, 4.99, -0.022],
+    [19018, 61.1132, 59.1555, 5, 0.495],
+    [25278, 81.1061, 17.3835, 5, 0.544],
+    [29034, 91.8818, -37.2529, 5, -0.095],
+    [29735, 93.937, -13.7184, 5, -0.078],
+    [33345, 104.0277, -14.0434, 5, 1.182],
+    [35384, 109.6332, 49.4648, 5, 0.087],
+    [47205, 144.3028, 6.8358, 5, 1.051],
+    [55588, 170.8028, -36.1648, 5, 1.464],
+    [57175, 175.88, -62.4894, 5, 0.784],
+    [76008, 232.8539, 77.3494, 5, 1.545],
+    [79043, 242.0189, 17.047, 5, 0.931],
+    [88060, 269.772, -30.253, 5, 1.654],
+    [88788, 271.8697, 43.4619, 5, 0.913],
+    [92845, 283.7798, -22.6713, 5, 1.348],
+    [93408, 285.3599, 46.9348, 5, 0.186],
+    [94490, 288.4798, 57.7051, 5, 1.156],
+    [96275, 293.6454, 19.7734, 5, -0.093],
+    [97295, 296.6067, 33.7276, 5, 0.476],
+    [118121, 359.3962, -64.2982, 5, 0.06]
+  ];
+
+  // ../src/starcatalog.js
+  var STAR_ATTRIBUTION = "Stars V \u2264 5 (1627): d3-celestial (\xA9 O. Frohn, BSD-3) \u2190 XHIP (Anderson & Francis 2012)";
+  var cache = null;
+  function loadStars() {
+    if (cache) return cache;
+    cache = STARS.map(([hip, ra, dec, mag, bv]) => ({ hip, ra, dec, mag, bv, vec: raDecToVec(ra, dec), T: bvToTemperature(bv) }));
+    return cache;
+  }
+
+  // ../src/firstperson_gpu.js
+  var R_MIN_GPU = 2e-5;
   var FRAG = `
 precision highp float; precision highp int;
 uniform vec2 uRes; uniform float uR, uUv, uUr, uE; uniform vec3 uCamF, uCamR, uCamU; uniform float uTanH, uTanV;
-uniform int uMaxSteps; uniform float uCh, uRsky;
+uniform int uMaxSteps; uniform float uCh, uRsky; uniform mat3 uMcel;
 float fOf(float r) { return 1.0 - 2.0 / r; }
 void deriv(vec3 p, vec3 k, out vec3 dp, out vec3 dk) {
   float r = p.y, f = fOf(r), kv = k.x, kr = k.y, kp = k.z;
@@ -22645,34 +25168,19 @@ void rk4(inout vec3 p, inout vec3 k, float h) {
   deriv(p, k, d1p, d1k); deriv(p + 0.5*h*d1p, k + 0.5*h*d1k, d2p, d2k); deriv(p + 0.5*h*d2p, k + 0.5*h*d2k, d3p, d3k); deriv(p + h*d3p, k + h*d3k, d4p, d4k);
   p += h/6.0*(d1p + 2.0*d2p + 2.0*d3p + d4p); k += h/6.0*(d1k + 2.0*d2k + 2.0*d3k + d4k);
 }
-float hash(vec3 q) { return fract(sin(dot(q, vec3(12.9898, 78.233, 37.719))) * 43758.5453); }
-vec3 sky(vec3 dir) {
-  // synthetic celestial sphere: black hole at origin, observer on +x, polar axis +z; grid every 15 deg
-  float lat = asin(clamp(dir.z, -1.0, 1.0)), lon = atan(dir.y, dir.x);
-  float gl = abs(fract(lat / 0.261799 + 0.5) - 0.5), gn = abs(fract(lon / 0.261799 + 0.5) - 0.5);
-  float line = smoothstep(0.03, 0.0, gl) + smoothstep(0.03, 0.0, gn);
-  vec3 col = vec3(0.02, 0.03, 0.06) + vec3(0.25, 0.35, 0.6) * line;
-  vec3 cell = floor(dir * 40.0);
-  float h = hash(cell); if (h > 0.985) col += vec3(0.9, 0.9, 1.0) * (h - 0.985) * 50.0;   // stars
-  float band = exp(-pow(dir.z / 0.15, 2.0)); col += vec3(0.35, 0.3, 0.25) * band * 0.5;          // 'galactic' band around the pole axis
-  float away = smoothstep(0.995, 1.0, dir.x); col += vec3(0.9, 0.7, 0.2) * away;                    // marker: direction away from the hole
-  float toward = smoothstep(0.995, 1.0, -dir.x); col += vec3(0.2, 0.9, 0.6) * toward;               // marker: direction of the hole at infinity
-  return col;
-}
+float gridLine(float x, float stepRad, float hw) { float d = abs(x - floor(x / stepRad + 0.5) * stepRad); return max(0.0, 1.0 - d / hw); }
 void main() {
   vec2 ndc = (gl_FragCoord.xy / uRes) * 2.0 - 1.0;
-  vec3 d = normalize(uCamF + ndc.x * uTanH * uCamR + ndc.y * uTanV * uCamU);   // tetrad components (n, theta, phi)
+  vec3 d = normalize(uCamF + ndc.x * uTanH * uCamR + ndc.y * uTanV * uCamU);
   float dn = d.x; float dperp = length(d.yz); vec2 tdir = dperp > 1e-9 ? d.yz / dperp : vec2(1.0, 0.0);
   float f0 = fOf(uR); float nn = -f0*uUv*uUv + 2.0*uUv*uE; float N = sqrt(max(nn, 1e-30));
   float nv = uUv / N, nr = uE / N;
   vec3 p = vec3(0.0, uR, 0.0);
   vec3 k = vec3(-uUv + dn*nv, -uUr + dn*nr, dperp / uR);
-  float Eph = -(f0*k.x - k.y);                      // Killing energy of the future-directed photon (omega_obs = 1)
-  float Lp = uR*uR*k.z; float b2 = (Lp*Lp)/(Eph*Eph);
-  int kind = 2;                                     // 0 sky, 1 past-horizon / not modelled, 2 unresolved
-  // exact classification from the conserved quantities (see firstperson_core.js classify())
-  bool past = (uR < 2.0) ? (Eph <= 0.0) : ((k.y < 0.0) ? (uR <= 3.0 || b2 <= 27.0) : (uR < 3.0 && b2 > 27.0));
-  float psiInf = 0.0;
+  float Eph = uE + dn * abs(uUr);                   // exact E_ph = E + a dn (a = |u^r|)
+  float Lp = uR*dperp; float b2 = (Lp*Lp)/(Eph*Eph);
+  bool past = (uR < 2.0) ? !(Eph > 0.0 && b2 < 27.0) : ((k.y < 0.0) ? (uR <= 3.0 || b2 <= 27.0) : (uR < 3.0 && b2 > 27.0));
+  int kind = 2; float psiInf = 0.0;
   if (past) { kind = 1; }
   else for (int i = 0; i < 4000; i++) {
     if (i >= uMaxSteps) break;
@@ -22683,52 +25191,30 @@ void main() {
   }
   vec3 col;
   if (kind == 0) {
-    // direction on the celestial sphere: outward radial +x, transverse in the (theta -> -z, phi -> +y) plane
-    vec3 t3 = normalize(vec3(0.0, tdir.y, -tdir.x));
-    vec3 dir = cos(psiInf) * vec3(1.0, 0.0, 0.0) + sin(psiInf) * t3;
-    col = sky(dir);
-    float g = 1.0 / Eph;                              // frequency ratio; qualitative colour shift below
-    float b = clamp(pow(g, 2.0), 0.15, 6.0);
+    vec3 s = vec3(cos(psiInf), sin(psiInf) * tdir.x, sin(psiInf) * tdir.y);
+    vec3 S = uMcel * s;
+    float dec = asin(clamp(S.z, -1.0, 1.0)), ra = atan(S.y, S.x);
+    float I = min(1.0, gridLine(dec, 0.261799, 0.006) + gridLine(ra, 0.261799, 0.006 / max(0.05, cos(dec))));
+    col = vec3(0.02, 0.03, 0.06) + vec3(0.4, 0.55, 0.85) * I;
+    float g = 1.0 / Eph;
+    float bq = clamp(g, 0.45, 4.0);
     vec3 tint = g > 1.0 ? mix(vec3(1.0), vec3(0.6, 0.75, 1.0), clamp((g - 1.0) * 0.5, 0.0, 1.0)) : mix(vec3(1.0), vec3(1.0, 0.45, 0.35), clamp((1.0 - g) * 1.5, 0.0, 1.0));
-    col *= tint * b;
-  } else if (kind == 1) { col = vec3(0.06, 0.0, 0.0); }
+    col *= tint * bq;
+  } else if (kind == 1) { col = vec3(0.075, 0.012, 0.012); }
   else { col = vec3(0.6, 0.0, 0.6); }
   gl_FragColor = vec4(col, 1.0);
 }`;
   var VERT = `void main() { gl_Position = vec4(position, 1.0); }`;
-  var FirstpersonView = class {
-    constructor(container, data2, opts = {}) {
-      this.container = container;
-      this.data = data2;
-      this.yaw = 0;
-      this.pitch = 0;
-      this.fov = 90;
-      this.quality = 0.3;
-      this.dirty = true;
-      this.ready = false;
-      this.lastR = null;
-      try {
-        this._init();
-        this.ready = true;
-      } catch (e) {
-        const m = document.createElement("div");
-        m.className = "overlay";
-        m.textContent = "first-person view unavailable (WebGL failed): " + e;
-        container.appendChild(m);
-      }
-    }
-    _init() {
-      this.renderer = new WebGLRenderer({ antialias: false, powerPreference: "low-power" });
+  function webglAvailable() {
+    return typeof window !== "undefined" && (typeof window.WebGL2RenderingContext !== "undefined" || typeof window.WebGLRenderingContext !== "undefined");
+  }
+  var GpuTracer = class {
+    constructor(container) {
+      this.renderer = new WebGLRenderer({ antialias: false, powerPreference: "low-power", preserveDrawingBuffer: true });
       this.renderer.setPixelRatio(1);
-      this.container.appendChild(this.renderer.domElement);
-      const gl = this.renderer.getContext();
-      const dbg = gl.getExtension("WEBGL_debug_renderer_info");
-      const rname = dbg ? String(gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL)) : "";
-      this.software = /swiftshader|llvmpipe|software/i.test(rname);
-      if (this.software) {
-        this.quality = 0.08;
-      }
-      this.maxSteps = this.software ? 600 : 900;
+      this.canvas = this.renderer.domElement;
+      this.canvas.style.cssText = "position:absolute;inset:0;width:100%;height:100%;";
+      container.appendChild(this.canvas);
       this.scene = new Scene();
       this.camera = new OrthographicCamera(-1, 1, 1, -1, 0, 1);
       this.uniforms = {
@@ -22737,149 +25223,363 @@ void main() {
         uUv: { value: 1 },
         uUr: { value: -0.1 },
         uE: { value: 1 },
-        uCamF: { value: new Vector3(-1, 0, 0) },
-        uCamR: { value: new Vector3(0, 0, 1) },
-        uCamU: { value: new Vector3(0, -1, 0) },
+        uCamF: { value: new Vector3() },
+        uCamR: { value: new Vector3() },
+        uCamU: { value: new Vector3() },
         uTanH: { value: 1 },
         uTanV: { value: 1 },
-        uMaxSteps: { value: this.maxSteps },
+        uMaxSteps: { value: 900 },
         uCh: { value: 0.05 },
-        uRsky: { value: 400 }
+        uRsky: { value: 400 },
+        uMcel: { value: new Matrix3() }
       };
       const mat = new ShaderMaterial({ uniforms: this.uniforms, vertexShader: VERT, fragmentShader: FRAG, depthTest: false, depthWrite: false });
       this.scene.add(new Mesh(new PlaneGeometry(2, 2), mat));
-      this.target = new WebGLRenderTarget(64, 64, { minFilter: LinearFilter, magFilter: LinearFilter });
-      this.blitScene = new Scene();
-      this.blitMat = new MeshBasicMaterial({ map: this.target.texture });
-      this.blitScene.add(new Mesh(new PlaneGeometry(2, 2), this.blitMat));
+    }
+    setSize(w, h) {
+      this.renderer.setSize(w, h, false);
+    }
+    render(obs, cam, M2) {
+      const u = this.uniforms, c = this.canvas;
+      u.uRes.value.set(c.width, c.height);
+      u.uR.value = obs.r;
+      u.uUv.value = obs.uv;
+      u.uUr.value = obs.ur;
+      u.uE.value = obs.E;
+      u.uCamF.value.set(...cam.F);
+      u.uCamR.value.set(...cam.R);
+      u.uCamU.value.set(...cam.U);
+      u.uTanH.value = cam.tanH;
+      u.uTanV.value = cam.tanV;
+      u.uMcel.value.fromArray(Array.from(M2));
+      this.renderer.render(this.scene, this.camera);
+    }
+    dispose() {
+      this.renderer.dispose();
+      this.canvas.remove();
+    }
+  };
+
+  // ../src/firstperson.js
+  var BUDGET_MS = 24;
+  var TABLE_CACHE = 6;
+  var FirstpersonView = class {
+    constructor(container, data2, opts = {}) {
+      this.container = container;
+      this.data = data2;
+      this.opts = opts;
+      this.yaw = 0;
+      this.pitch = 0;
+      this.fov = 90;
+      this.quality = 0.5;
+      this.dirty = true;
+      this.ready = true;
+      this.engine = "cpu";
+      this.background = "stars";
+      this.layer = "tint";
+      this.exposure = 0;
+      this.lastKey = null;
+      this.tables = /* @__PURE__ */ new Map();
+      this.cpu = new CpuRenderer();
+      this.phase = "idle";
+      this.M = celestialFrame();
+      this.stars = loadStars();
+      this.gpu = null;
+      this.gpuNote = webglAvailable() ? "" : "WebGL is not available in this browser: GPU mode disabled.";
+      this._buildDom();
+      this.resize();
+    }
+    _buildDom() {
+      const c = this.container;
+      if (getComputedStyle(c).position === "static") c.style.position = "relative";
+      this.canvas = document.createElement("canvas");
+      this.canvas.style.cssText = "position:absolute;inset:0;width:100%;height:100%;";
+      c.appendChild(this.canvas);
+      this.ctx = this.canvas.getContext("2d");
       this.banner = document.createElement("div");
       this.banner.className = "overlay";
-      this.banner.style.cssText += "top:48px;bottom:auto;max-width:70%;";
-      this.container.appendChild(this.banner);
+      this.banner.style.cssText += "top:48px;bottom:auto;max-width:min(58%, 720px);white-space:normal;font-size:11px;";
+      c.appendChild(this.banner);
       this.stats = document.createElement("div");
       this.stats.className = "overlay";
-      this.container.appendChild(this.stats);
+      this.stats.style.cssText += "max-width:calc(100% - 500px);white-space:normal;font-size:11px;";
+      c.appendChild(this.stats);
+      this.scale = document.createElement("div");
+      this.scale.className = "overlay";
+      this.scale.style.cssText += "right:10px;left:auto;top:48px;bottom:auto;text-align:center;display:none;";
+      this.scaleCanvas = document.createElement("canvas");
+      this.scaleCanvas.width = 18;
+      this.scaleCanvas.height = 200;
+      this.scaleCanvas.style.cssText = "width:18px;height:200px;display:inline-block;vertical-align:middle;";
+      this.scaleLabel = document.createElement("div");
+      this.scale.append(this.scaleLabel);
+      c.appendChild(this.scale);
       const ctl = document.createElement("div");
       ctl.className = "overlay";
-      ctl.style.cssText += "right:10px;left:auto;bottom:10px;pointer-events:auto;";
+      ctl.style.cssText += "right:10px;left:auto;bottom:10px;pointer-events:auto;text-align:right;line-height:1.9;width:470px;font-size:11px;";
+      const gpuDisabled = this.gpuNote ? "disabled" : "";
       ctl.innerHTML = `<button id="fp-in">look toward the hole</button> <button id="fp-out">look outward</button>
-      FOV <input id="fp-fov" type="range" min="40" max="150" value="90" style="width:90px"> quality <select id="fp-q"><option value="0.08">low</option><option value="0.2">medium</option><option value="0.35">high</option></select>
-      <div class="note">drag to look around</div>`;
-      this.container.appendChild(ctl);
-      ctl.querySelector("#fp-in").onclick = () => {
+      FOV <input id="fp-fov" type="range" min="40" max="160" value="90" style="width:90px;vertical-align:middle"><br>
+      renderer <select id="fp-engine"><option value="cpu">CPU (double precision, exact, default)</option><option value="gpu" ${gpuDisabled}>GPU (float32, r &gt; 1e-5 r_s)</option></select>
+      resolution <select id="fp-q"><option value="0.35">low</option><option value="0.5">medium</option><option value="0.75">high</option><option value="1">full</option></select><br>
+      background <select id="fp-bg"><option value="stars">star catalogue</option><option value="grid">coordinate grid</option></select>
+      colour <select id="fp-layer"><option value="tint">qualitative tint</option><option value="gmap">false colour: log10 g</option></select>
+      stars <select id="fp-exp"><option value="0">exposure \xD71</option><option value="5">\xD7100</option><option value="10">\xD710^4</option></select>
+      <div class="note" id="fp-note">drag to look around</div>`;
+      c.appendChild(ctl);
+      this.ctl = ctl;
+      const q = (s) => ctl.querySelector(s);
+      q("#fp-in").onclick = () => {
         this.yaw = 0;
         this.pitch = 0;
         this.dirty = true;
       };
-      ctl.querySelector("#fp-out").onclick = () => {
+      q("#fp-out").onclick = () => {
         this.yaw = Math.PI;
         this.pitch = 0;
         this.dirty = true;
       };
-      ctl.querySelector("#fp-fov").oninput = (e) => {
+      q("#fp-fov").oninput = (e) => {
         this.fov = parseFloat(e.target.value);
         this.dirty = true;
       };
-      ctl.querySelector("#fp-q").value = String(this.quality);
-      ctl.querySelector("#fp-q").onchange = (e) => {
+      q("#fp-q").value = String(this.quality);
+      q("#fp-q").onchange = (e) => {
         this.quality = parseFloat(e.target.value);
         this.resize();
+      };
+      q("#fp-bg").onchange = (e) => {
+        this.background = e.target.value;
         this.dirty = true;
       };
+      q("#fp-layer").onchange = (e) => {
+        this.layer = e.target.value;
+        this.dirty = true;
+      };
+      q("#fp-exp").onchange = (e) => {
+        this.exposure = parseFloat(e.target.value);
+        this.dirty = true;
+      };
+      q("#fp-engine").onchange = (e) => this.setEngine(e.target.value);
+      if (this.gpuNote) q("#fp-note").textContent = this.gpuNote + " Drag to look around.";
       let drag = null;
-      const el = this.renderer.domElement;
-      el.addEventListener("pointerdown", (e) => {
+      this.canvas.addEventListener("pointerdown", (e) => {
         drag = [e.clientX, e.clientY, this.yaw, this.pitch];
       });
-      window.addEventListener("pointermove", (e) => {
+      this._onMove = (e) => {
         if (!drag) return;
         this.yaw = drag[2] + (e.clientX - drag[0]) * 5e-3;
-        this.pitch = Math.max(-1.4, Math.min(1.4, drag[3] - (e.clientY - drag[1]) * 5e-3));
+        this.pitch = Math.max(-1.5, Math.min(1.5, drag[3] - (e.clientY - drag[1]) * 5e-3));
         this.dirty = true;
-      });
-      window.addEventListener("pointerup", () => {
+      };
+      this._onUp = () => {
         drag = null;
-      });
+      };
+      window.addEventListener("pointermove", this._onMove);
+      window.addEventListener("pointerup", this._onUp);
+    }
+    setEngine(name) {
+      if (name === "gpu" && !this.gpu) {
+        try {
+          this.gpu = new GpuTracer(this.container);
+          this.container.insertBefore(this.gpu.canvas, this.canvas);
+          this.gpu.canvas.addEventListener("pointerdown", (e) => this.canvas.dispatchEvent(new PointerEvent("pointerdown", e)));
+        } catch (err) {
+          this.gpu = null;
+          this.gpuNote = "GPU mode unavailable (WebGL failed: " + err + ").";
+          const sel = this.ctl.querySelector("#fp-engine");
+          sel.value = "cpu";
+          sel.querySelector("option[value=gpu]").disabled = true;
+          this.ctl.querySelector("#fp-note").textContent = this.gpuNote;
+          name = "cpu";
+        }
+      }
+      this.engine = name;
+      this.ctl.querySelector("#fp-engine").value = name;
+      this.dirty = true;
       this.resize();
     }
-    _cameraAxes() {
-      const cy = Math.cos(this.yaw), sy = Math.sin(this.yaw), cp = Math.cos(this.pitch), spp = Math.sin(this.pitch);
-      const F0 = [-1, 0, 0], R0 = [0, 0, 1], U0 = [0, -1, 0];
-      const rot = (v, axis, c, s) => {
-        const d = v[0] * axis[0] + v[1] * axis[1] + v[2] * axis[2];
-        const cr = [axis[1] * v[2] - axis[2] * v[1], axis[2] * v[0] - axis[0] * v[2], axis[0] * v[1] - axis[1] * v[0]];
-        return [v[0] * c + cr[0] * s + axis[0] * d * (1 - c), v[1] * c + cr[1] * s + axis[1] * d * (1 - c), v[2] * c + cr[2] * s + axis[2] * d * (1 - c)];
-      };
-      let F = rot(F0, U0, cy, sy), R = rot(R0, U0, cy, sy);
-      F = rot(F, R, cp, spp);
-      const U = rot(U0, R, cp, spp);
-      return { F, R, U };
+    getCanvas() {
+      const src = this._gpuActive() ? this.gpu.canvas : this.canvas;
+      const W = this.container.clientWidth || src.width, H = this.container.clientHeight || src.height;
+      const out = document.createElement("canvas");
+      out.width = W;
+      out.height = H;
+      const x = out.getContext("2d");
+      x.imageSmoothingEnabled = true;
+      x.drawImage(src, 0, 0, W, H);
+      x.fillStyle = "rgba(0,0,0,0.6)";
+      x.fillRect(0, 0, W, 38);
+      x.fillStyle = "#ffb454";
+      x.font = "bold 13px sans-serif";
+      x.fillText(this.data.raw.banner_firstperson, 8, 15);
+      x.fillStyle = "#d8dee9";
+      x.font = "11px sans-serif";
+      x.fillText(this._captionLine || "", 8, 31);
+      if (this.layer === "gmap" && !this._gpuActive()) this._drawScale(x, W - 70, 50, 16, Math.min(260, H - 100));
+      return out;
+    }
+    _gpuActive() {
+      return this.engine === "gpu" && this.gpu && this.obs && this.obs.r >= R_MIN_GPU;
+    }
+    _drawScale(x, X, Y, w, h) {
+      const L = this.gRange;
+      for (let i = 0; i < h; i++) {
+        const c = gColor(L * (1 - 2 * i / (h - 1)), L);
+        x.fillStyle = `rgb(${255 * c[0] | 0},${255 * c[1] | 0},${255 * c[2] | 0})`;
+        x.fillRect(X, Y + i, w, 1);
+      }
+      x.strokeStyle = "#ccc";
+      x.strokeRect(X, Y, w, h);
+      x.fillStyle = "#fff";
+      x.font = "11px sans-serif";
+      x.fillText(`+${fmt.sci(L, 3)}`, X + w + 3, Y + 8);
+      x.fillText("0", X + w + 3, Y + h / 2 + 4);
+      x.fillText(`\u2212${fmt.sci(L, 3)}`, X + w + 3, Y + h);
+      x.fillText("log10 g", X - 8, Y - 6);
+    }
+    _table(obs) {
+      const key = `${obs.r}|${obs.E}`;
+      let t = this.tables.get(key);
+      if (!t) {
+        t = new TransferTable(obs);
+        this.tables.set(key, t);
+        if (this.tables.size > TABLE_CACHE) this.tables.delete(this.tables.keys().next().value);
+      }
+      return t;
+    }
+    _startRender(opts) {
+      const W = this.canvas.width, H = this.canvas.height;
+      const { F, R, U } = cameraAxes(this.yaw, this.pitch);
+      const tanH = Math.tan(this.fov * Math.PI / 360);
+      this.cam = { F, R, U, tanH, tanV: tanH * H / W };
+      this.cpu.start({
+        width: W,
+        height: H,
+        obs: this.obs,
+        table: this.table,
+        cam: this.cam,
+        M: this.M,
+        background: this.background,
+        layer: this.layer,
+        gRange: this.gRange,
+        stars: this.stars,
+        exposure: this.exposure,
+        ...opts
+      });
+      this.imageData = new ImageData(this.cpu.rgba, W, H);
     }
     update(smp, state2) {
-      if (!this.ready || !smp) return;
+      if (!smp) return;
       const rGeo = 2 * smp.r_over_rs;
-      const changed = this.lastR === null || Math.abs(Math.log(rGeo / this.lastR)) > 1e-4;
-      if (!changed && !this.dirty) return;
-      this.lastR = rGeo;
-      this.dirty = false;
-      const traceable = rGeo >= R_MIN_TRACE;
-      const rUse = traceable ? rGeo : R_MIN_TRACE;
-      let uv = smp.u_v, ur = smp.u_r, E = smp.E_killing ?? 1;
-      if (!traceable) {
-        const s2 = this.data.at(Math.log10(rUse / 2));
-        uv = s2.u_v;
-        ur = s2.u_r;
-        E = s2.E_killing ?? 1;
+      const E = smp.E_killing === null || smp.E_killing === void 0 || !isFinite(smp.E_killing) ? 1 : smp.E_killing;
+      const key = `${rGeo}|${E}`;
+      let restart = false;
+      if (key !== this.lastKey) {
+        this.lastKey = key;
+        this.sample = smp;
+        this.obs = observerState(rGeo, E);
+        this.table = this._table(this.obs);
+        this.fractions = skyFractions(this.obs);
+        this.gRange = gScaleRange(this.obs, isNaN(this.fractions.dnMinSky) ? 1 : this.fractions.dnMinSky);
+        restart = true;
       }
-      const { F, R, U } = this._cameraAxes();
-      const u = this.uniforms;
-      u.uR.value = rUse;
-      u.uUv.value = uv;
-      u.uUr.value = ur;
-      u.uE.value = E;
-      u.uCamF.value.set(...F);
-      u.uCamR.value.set(...R);
-      u.uCamU.value.set(...U);
-      const w = this.target.width, h = this.target.height;
-      u.uRes.value.set(w, h);
-      u.uTanH.value = Math.tan(this.fov * Math.PI / 360);
-      u.uTanV.value = u.uTanH.value * h / w;
-      u.uMaxSteps.value = this.maxSteps;
-      this.renderer.setRenderTarget(this.target);
-      this.renderer.render(this.scene, this.camera);
-      this.renderer.setRenderTarget(null);
-      this.renderer.render(this.blitScene, this.camera);
-      const nx = 16, ny = 10;
-      let sky = 0, past = 0, unres = 0;
-      for (let j = 0; j < ny; j++) for (let i = 0; i < nx; i++) {
-        const px = (i + 0.5) / nx * 2 - 1, py = (j + 0.5) / ny * 2 - 1;
-        const d = [F[0] + px * u.uTanH.value * R[0] + py * u.uTanV.value * U[0], F[1] + px * u.uTanH.value * R[1] + py * u.uTanV.value * U[1], F[2] + px * u.uTanH.value * R[2] + py * u.uTanV.value * U[2]];
-        const n = Math.hypot(...d);
-        const dn = d[0] / n, dperp = Math.hypot(d[1], d[2]) / n;
-        const res = traceRay(rUse, uv, ur, E, dn, dperp, { maxSteps: this.maxSteps });
-        if (res.kind === "sky") sky++;
-        else if (res.kind === "past") past++;
-        else unres++;
+      if (this.dirty) {
+        this.dirty = false;
+        restart = true;
+        const q = (sel) => this.ctl.querySelector(sel);
+        q("#fp-bg").value = this.background;
+        q("#fp-layer").value = this.layer;
+        q("#fp-exp").value = String(this.exposure);
+        q("#fp-fov").value = String(this.fov);
+        q("#fp-engine").value = this.engine;
       }
-      const tot = nx * ny;
-      const inside = rGeo <= 2;
-      const fr0 = observerFrame(rUse, uv, ur, E);
-      const cosMax = -E * Math.sqrt(Math.max(1e-300, -fr0.f * uv * uv + 2 * uv * E)) / Math.max(1e-300, Math.abs(ur));
-      const skyCone = inside ? cosMax <= -1 ? 180 : cosMax >= 1 ? 0 : Math.acos(cosMax) * 180 / Math.PI : null;
-      this.banner.innerHTML = `<b>${this.data.raw.banner_firstperson}</b><br>Per-pixel null geodesics in ingoing Eddington\u2013Finkelstein coordinates from the observer's comoving tetrad; aberration and gravitational/Doppler frequency shift included; colours qualitative; sky synthetic (grid every 15\xB0, gold marker = direction away from the hole, green = towards it at infinity).` + (traceable ? "" : `<br><span style="color:#ffb454">Below r = ${fmt.sci(R_MIN_TRACE / 2, 1)} r_s the 32-bit GPU precision cannot represent the ray state: showing the view frozen at r = ${fmt.sci(R_MIN_TRACE / 2, 1)} r_s (LABELLED LIMIT).</span>`);
-      this.stats.innerHTML = `r = ${fmt.sci(smp.r_m, 3)} m = ${fmt.sci(smp.r_over_rs, 3)} r_s \u2014 ${inside ? "INSIDE the horizon" : "outside the horizon"}<br>pixels (coarse CPU estimate, same equations): sky ${(100 * sky / tot).toFixed(0)}%, past-horizon / not-modelled region (black) ${(100 * past / tot).toFixed(0)}%, unresolved (magenta) ${(100 * unres / tot).toFixed(0)}%<br>look: yaw ${(this.yaw * 180 / Math.PI).toFixed(0)}\xB0 (0 = toward the hole, 180 = outward), pitch ${(this.pitch * 180 / Math.PI).toFixed(0)}\xB0, FOV ${this.fov}\xB0, ${this.software ? "software GL (low quality)" : "GPU"}` + (inside ? `<br>inside r_s the exterior universe (region I) occupies a cone of half-angle ${skyCone.toFixed(1)}\xB0 around the OUTWARD direction (rays with positive Killing energy); the rest of the sky is the other horizon / collapsing-matter region \u2014 not modelled, shown black` : "");
+      if (this._gpuActive()) {
+        if (restart) {
+          const { F, R, U } = cameraAxes(this.yaw, this.pitch);
+          const tanH = Math.tan(this.fov * Math.PI / 360);
+          this.cam = { F, R, U, tanH, tanV: tanH * this.gpu.canvas.height / this.gpu.canvas.width };
+          this.gpu.render(this.obs, this.cam, this.M);
+          this._updateText();
+        }
+        this.gpu.canvas.style.display = "";
+        this.canvas.style.display = "none";
+        return;
+      }
+      if (this.gpu) {
+        this.gpu.canvas.style.display = "none";
+      }
+      this.canvas.style.display = "";
+      if (restart) {
+        this.phase = this.table.done ? "render" : "coarse";
+        this._startRender(this.phase === "coarse" ? { maxLevel: 0 } : {});
+      }
+      const t0 = performance.now();
+      let changed = false;
+      while (performance.now() - t0 < BUDGET_MS && this.phase !== "idle") {
+        const left = BUDGET_MS - (performance.now() - t0);
+        if (this.phase === "coarse") {
+          changed = this.cpu.step(left) || changed;
+          if (this.cpu.done) this.phase = "table";
+        } else if (this.phase === "table") {
+          if (this.table.refine(left)) {
+            this.phase = "render";
+            this._startRender({ startLevel: 1 });
+            this.cpu.step(0);
+          }
+        } else if (this.phase === "render") {
+          changed = this.cpu.step(left) || changed;
+          if (this.cpu.done) this.phase = "idle";
+        }
+      }
+      if (changed || restart) {
+        this.ctx.putImageData(this.imageData, 0, 0);
+        this._updateText();
+      }
+    }
+    _updateText() {
+      const smp = this.sample, o = this.obs, fr = this.fractions;
+      const inside = o.r < 2;
+      const gpu = this._gpuActive();
+      const lvlC = this.cpu.levelCounts;
+      const tot = lvlC ? lvlC[0] + lvlC[1] + lvlC[2] : 0;
+      const pc = (v) => (100 * v).toFixed(v < 1e-3 && v > 0 ? 4 : 1);
+      const coneDeg = inside && !isNaN(fr.dnMinSky) ? Math.acos(Math.max(-1, Math.min(1, fr.dnMinSky))) * 180 / Math.PI : null;
+      const coneStr = coneDeg === null ? "" : Math.abs(fr.dnMinSky) < 1e-6 ? `90\xB0 + ${fmt.sci(Math.asin(-fr.dnMinSky), 3)} rad` : `${coneDeg.toFixed(3)}\xB0`;
+      this._captionLine = `r = ${fmt.sci(smp.r_m, 3)} m = ${fmt.sci(smp.r_over_rs, 3)} r_s (${inside ? "inside" : "outside"} the horizon) \u2014 ${gpu ? "GPU float32" : "CPU double precision"}; sky: ${this.background === "stars" ? "Earth J2000 bright stars" : "RA/Dec grid"} at infinity, hole placed toward Sgr A* (ILLUSTRATIVE)` + (this.layer === "gmap" ? "; false colour = log10 g" : "; colours qualitative");
+      this.banner.innerHTML = `<b>${this.data.raw.banner_firstperson}</b><br>Each pixel's past light ray is followed exactly (Schwarzschild null geodesic from the falling observer's own frame: aberration, lensing and the frequency ratio g = \u03BD_seen/\u03BD_emitted-at-infinity included; the picture is symmetric about the radial direction, so one exact 1D table of sky angles serves all pixels). Backdrop: ${gpu ? "RA/Dec grid every 15\xB0 (GPU float32 mode: no star catalogue, sky angle taken at r = 400 M)" : this.background === "stars" ? STAR_ATTRIBUTION : "RA/Dec grid every 15\xB0"}; the hole is placed in the direction of ${HOLE_DIRECTION.label} \u2014 green ring = 2.5\xB0 around the hole's direction, gold ring = 2.5\xB0 around the opposite direction. ${this.layer === "gmap" ? "Hatched grey" : "Dark red"} = rays ending on the past horizon (not modelled), magenta = unresolved.` + (this.layer === "gmap" ? ` False colour: log10 g (red = redshift, blue = blueshift), scale at right.` : ` Colour tint is qualitative.`) + (this.engine === "gpu" && !gpu ? `<br><span style="color:#ffb454">GPU float32 cannot represent the ray state below r = ${fmt.sci(R_MIN_GPU / 2, 1)} r_s: showing the double-precision CPU renderer instead (LABELLED LIMIT).</span>` : "");
+      const tableState = this.table.done ? `${this.table.p.length} samples` : `refining (${this.table.p.length} samples)`;
+      this.stats.innerHTML = `r = ${fmt.sci(smp.r_m, 3)} m = ${fmt.sci(smp.r_over_rs, 3)} r_s = ${fmt.sci(o.r, 3)} GM/c\xB2 \u2014 ${inside ? "INSIDE the horizon" : "outside the horizon"}<br>all directions (exact): exterior sky ${pc(fr.sky)} %, past horizon / not modelled ${pc(fr.past)} %` + (tot ? `; this image: sky ${pc(lvlC[KIND_SKY] / tot)} %, past ${pc(lvlC[KIND_PAST] / tot)} %, unresolved ${pc(lvlC[KIND_UNRESOLVED] / tot)} %` : "") + "<br>" + (gpu ? `GPU float32 shader` : `CPU: table ${tableState}, image ${this.phase === "idle" ? "complete" : "refining"}${this.background === "stars" ? `, ${this.cpu.starCount} star images drawn` : ""}`) + `; look: yaw ${(this.yaw * 180 / Math.PI).toFixed(0)}\xB0 (0 = toward the hole, 180 = outward), pitch ${(this.pitch * 180 / Math.PI).toFixed(0)}\xB0, FOV ${this.fov}\xB0` + (inside ? `<br>Inside r_s the exterior universe is seen only along rays whose photons have positive Killing energy AND impact parameter b < 3\u221A3 GM/c\xB2: a cone of half-angle ${coneStr} around the OUTWARD direction. All other directions (${this.layer === "gmap" ? "hatched grey" : "dark red"}) show light that left the past horizon (the white-hole / other-universe region of the eternal solution; for a real hole, the collapsing star) \u2014 not modelled.` : "") + (o.r < 1e-6 ? `<br>Deep inside, the whole exterior sky except a tiny patch around the outward direction is squeezed into an unresolvably thin, strongly blueshifted ring at the edge of this cone; the rest of the outward view is a hugely magnified, strongly redshifted image of that patch (see docs: first-person camera near r_QG).` : "");
+      if (this.layer === "gmap" && !gpu) {
+        this.scale.style.display = "";
+        const x = this.scaleCanvas.getContext("2d");
+        const h = this.scaleCanvas.height;
+        for (let i = 0; i < h; i++) {
+          const c = gColor(this.gRange * (1 - 2 * i / (h - 1)), this.gRange);
+          x.fillStyle = `rgb(${255 * c[0] | 0},${255 * c[1] | 0},${255 * c[2] | 0})`;
+          x.fillRect(0, i, 18, 1);
+        }
+        this.scaleLabel.innerHTML = `log10 g<br>+${fmt.sci(this.gRange, 3)} (blue)<br>`;
+        this.scaleLabel.appendChild(this.scaleCanvas);
+        this.scaleLabel.insertAdjacentHTML("beforeend", `<br>\u2212${fmt.sci(this.gRange, 3)} (red)<br><span class="note">g = \u03BD_seen / \u03BD_emitted at \u221E</span>`);
+      } else this.scale.style.display = "none";
     }
     resize() {
-      if (!this.ready) return;
       const w = this.container.clientWidth || 800, h = this.container.clientHeight || 600;
-      this.renderer.setSize(w, h, false);
-      this.target.setSize(Math.max(16, Math.round(w * this.quality)), Math.max(16, Math.round(h * this.quality)));
+      const W = Math.max(32, Math.round(w * this.quality)), H = Math.max(32, Math.round(h * this.quality));
+      if (this.canvas.width !== W || this.canvas.height !== H) {
+        this.canvas.width = W;
+        this.canvas.height = H;
+      }
+      if (this.gpu) this.gpu.setSize(Math.max(16, Math.round(w * Math.min(this.quality, 0.35))), Math.max(16, Math.round(h * Math.min(this.quality, 0.35))));
       this.dirty = true;
     }
     setMode() {
     }
     dispose() {
-      this.renderer?.dispose();
+      window.removeEventListener("pointermove", this._onMove);
+      window.removeEventListener("pointerup", this._onUp);
+      this.gpu?.dispose();
     }
   };
 
@@ -23131,9 +25831,9 @@ void main() {
     views[state.view].update(smp, state);
   }
   var last = performance.now();
-  function loop(now) {
-    const dt = (now - last) / 1e3;
-    last = now;
+  function loop(now2) {
+    const dt = (now2 - last) / 1e3;
+    last = now2;
     if (state.playing) {
       if (state.axis === "logr") state.logr -= state.speedDecPerS * dt;
       else {
