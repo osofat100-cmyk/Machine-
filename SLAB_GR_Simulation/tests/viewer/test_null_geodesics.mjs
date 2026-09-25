@@ -1,6 +1,7 @@
-// CPU validation of the first-person ray tracer equations (shared with the GLSL shader).
+// Validation of the first-person null-geodesic equations (EF integration in firstperson_core.js; the optional GLSL
+// shader in firstperson_gpu.js uses the same equations in float32).  See also tests/viewer/test_firstperson.mjs.
 // Run: node tests/viewer/test_null_geodesics.mjs
-import { traceRay, traceForward, fOf, classify } from '../../renders/src/firstperson_core.js';
+import { traceRay, traceForward, fOf, classify, observerState, psiInfExact } from '../../renders/src/firstperson_core.js';
 
 let fails = 0;
 const report = (name, ok, detail) => { console.log(`${ok ? 'PASS' : 'FAIL'}  ${name}  ${detail}`); if (!ok) fails++; };
@@ -42,17 +43,19 @@ const report = (name, ok, detail) => { console.log(`${ok ? 'PASS' : 'FAIL'}  ${n
   const res3 = traceRay(r0, uv, ur, E, -1.0, 0.0, { maxSteps: 4000, ch: 0.02 });
   report('(d3) looking straight inward from inside: ray traced to the past horizon (not-modelled region)', res3.kind === 'past', `kind ${res3.kind} steps ${res3.steps}`);
 }
-// (e) exterior static-like observer far away sees the shadow with angular radius ~ 3sqrt3 M / r
+// (e) infalling (E = 1) observer at r = 200 M: shadow edge by bisection on EF-integrated rays equals the
+//     static-observer shadow sin(a_s) = (3 sqrt3 M/r) sqrt(1 - 2M/r) aberrated by v = sqrt(2M/r) toward the hole:
+//     cos(a') = (cos a_s + v)/(1 + v cos a_s)   (0.1 %)
 {
   const r0 = 200, E = 1; const x = Math.sqrt(r0 / 2); const uv = x / (1 + x), ur = -Math.sqrt(2 / r0);
-  // scan angles from the hole direction (-n): d_n = -cos a, d_perp = sin a
-  let edge = null;
-  for (let a = 0.005; a < 0.2; a += 0.0025) { const res = traceRay(r0, uv, ur, E, -Math.cos(a), Math.sin(a), { maxSteps: 4000, ch: 0.02 }); if (res.kind === 'sky') { edge = a; break; } }
-  const expected = Math.asin(3 * Math.sqrt(3) / r0);   // static observer estimate; infalling observer sees it slightly aberrated (smaller)
-  report('(e) shadow edge angle from r = 200M within 25 % of asin(3sqrt3 M/r)', edge !== null && Math.abs(edge / expected - 1) < 0.25, `edge ${edge?.toFixed(4)} rad, static estimate ${expected.toFixed(4)} rad`);
+  const kindAt = a => traceRay(r0, uv, ur, E, -Math.cos(a), Math.sin(a), { classify: false, maxSteps: 60000 }).kind;
+  let lo = 0.001, hi = 0.2;                       // lo: past (shadow), hi: sky
+  const k0 = kindAt(lo), k1 = kindAt(hi);
+  for (let i = 0; i < 30; i++) { const m = 0.5 * (lo + hi); if (kindAt(m) === 'sky') hi = m; else lo = m; }
+  const v = Math.sqrt(2 / r0), sS = 3 * Math.sqrt(3) / r0 * Math.sqrt(1 - 2 / r0), cS = Math.sqrt(1 - sS * sS);
+  const expected = Math.acos((cS + v) / (1 + v * cS));
+  report('(e) shadow edge (unconditioned EF integration) from r = 200M = aberrated static shadow (0.1 %)', k0 === 'past' && k1 === 'sky' && Math.abs(hi / expected - 1) < 1e-3, `edge ${hi.toFixed(6)} rad, analytic ${expected.toFixed(6)} rad`);
 }
-console.log(fails ? `${fails} FAILED` : 'ALL PASSED');
-process.exit(fails ? 1 : 0);
 
 // (f) exact classifier vs numerical integration for exterior inward rays around the capture threshold
 {
@@ -65,3 +68,20 @@ process.exit(fails ? 1 : 0);
   }
   report('(f) exact impact-parameter classification agrees with integration', ok, detail.join(' '));
 }
+// (g) the conserved-quantity quadrature (psiInfExact) agrees with the EF integration for a sample of rays
+{
+  let worst = 0, n = 0;
+  for (const r0 of [30, 6, 2.2, 0.5]) {
+    const o = observerState(r0, 1);
+    for (const dn of [-0.4, 0.0, 0.35, 0.8]) {
+      const dp = Math.sqrt(1 - dn * dn);
+      const q = psiInfExact(o, dn, dp);
+      if (q.kind !== 'sky') continue;
+      const t = traceRay(r0, o.uv, o.ur, 1, dn, dp, {});
+      n++; worst = Math.max(worst, Math.abs(t.psiInf - q.psi));
+    }
+  }
+  report('(g) orbit-integral quadrature = EF integration (|dpsi| < 1e-8 rad)', n > 10 && worst < 1e-8, `${n} rays, worst ${worst.toExponential(2)} rad`);
+}
+console.log(fails ? `${fails} FAILED` : 'ALL PASSED');
+process.exit(fails ? 1 : 0);
