@@ -1,6 +1,6 @@
 # SLAB_GR_Simulation — validation report
 
-Generated: 2026-09-25T15:33:17.373049+00:00  ·  status: **VALIDATED**  ·  9/9 tests passed  ·  wall time 6.0 s
+Generated: 2026-09-25T15:35:58.000828+00:00  ·  status: **VALIDATED**  ·  9/9 tests passed  ·  wall time 4.2 s
 
 Every number below is computed by `src/slab/validation.py` from the constants in `src/slab/constants.py`; nothing is typed in by hand. Tags: **EXACT GR RESULT** (closed-form consequence of the Schwarzschild solution), **NUMERICAL** (integrated/rooted value with the quoted error), **BRIEF** (value quoted in the project brief, used only as a comparison target).
 
@@ -143,8 +143,8 @@ Reference: Henry 2000, ApJ 535, 350; MTW ex. 31.1
 | log10 K at r_s [m^-4] | -84.8020722 | — | — | — | ok | informational |
 | tidal eigenvalues (-2M/r^3, M/r^3, M/r^3) [r = 10 .. 1e-30] and radial tetrad vector vs closed form | 3.750000e-16 | — | 3.750000e-16 | 1.000000e-09 | ok | comoving frame built from the Killing energy (well conditioned); plain Gram–Schmidt checked for r >= M |
 | radial tidal eigenvalue at r_QG vs -2M/r^3 (explicit contraction) | -2.409663e+111 | -2.409663e+111 | 2.216064e-16 | 1.000000e-09 | ok |  |
-| radial tidal eigenvalue at r_QG vs -2M/r^3 (boost-invariant frame method used in outputs) | -2.409663e+111 | -2.409663e+111 | 0 | 1.000000e-09 | ok |  |
-| orbital tidal eigenvalues: theta eigenvalue (M/r^3)(1+3L^2/r^2), traceless, independent of radial velocity | 7.455749e-09 | — | 7.455749e-09 | 1.000000e-08 | ok |  |
+| radial tidal eigenvalue at r_QG vs -2M/r^3 (closed form used in outputs) | -2.409663e+111 | -2.409663e+111 | 0 | 1.000000e-12 | ok |  |
+| orbital-motion tidal eigenvalues: closed form -(2+3L^2/r^2), 1+3L^2/r^2, 1 (x M/r^3) vs explicit contraction | 1.193437e-15 | — | 1.193437e-15 | 1.000000e-09 | ok |  |
 
 ### TEST 6 — Quantum-curvature radius  ·  **PASS**
 
@@ -201,10 +201,10 @@ Convergence with tolerance (step cap lifted so that the error controller alone s
 
 | rtol | steps | rel. err τ(h→r_QG) | rel. err Δv(h→r_QG) | max rel. err u^r | wall [s] |
 |---|---|---|---|---|---|
-| 1e-06 | 258 | 1.001206e-07 | 5.003674e-07 | 1.789952e-04 | 0.15 |
-| 1e-08 | 538 | 1.067406e-09 | 1.363904e-09 | 8.782141e-07 | 0.27 |
-| 1e-10 | 1246 | 1.318762e-11 | 3.391979e-12 | 4.380234e-09 | 0.80 |
-| 1e-12 | 3041 | 2.273182e-13 | 1.480972e-13 | 2.366860e-11 | 1.93 |
+| 1e-06 | 258 | 1.001206e-07 | 5.003674e-07 | 1.789952e-04 | 0.12 |
+| 1e-08 | 538 | 1.067406e-09 | 1.363904e-09 | 8.782141e-07 | 0.24 |
+| 1e-10 | 1246 | 1.318762e-11 | 3.391979e-12 | 4.380234e-09 | 0.50 |
+| 1e-12 | 3041 | 2.273182e-13 | 1.480972e-13 | 2.366860e-11 | 1.24 |
 
 ## 4. Benchmark run summary
 
@@ -217,7 +217,7 @@ Convergence with tolerance (step cap lifted so that the error controller alone s
 * max_E_drift_conditioned: `2.648724e-12`
 * max_abs_E_drift_where_well_conditioned: `1.013056e-11`
 * max_abs_L_drift: `0`
-* max_tidal_closed_form_reldiff: `3.828812e-16`
+* max_tidal_closed_form_reldiff: `3.749397e-16`
 * tau_total_years_at_end: `2.081121e+08`
 * tau_since_horizon_years_at_end: `2.081121e+05`
 

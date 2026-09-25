@@ -1,7 +1,7 @@
 {
   "metadata": {
     "project": "SLAB_GR_Simulation",
-    "generated_utc": "2026-09-25T15:33:09.849104+00:00",
+    "generated_utc": "2026-09-25T15:35:52.421132+00:00",
     "metric": "Schwarzschild",
     "metric_established_physics": true,
     "coordinate_system": "ingoing Eddington\u2013Finkelstein (v, r, theta, phi)",
@@ -184,7 +184,7 @@
     "max_abs_norm_residual": 4.73374672793625e-11,
     "max_abs_norm_residual_conditioned": 2.3668733638499086e-11,
     "max_abs_norm_residual_where_well_conditioned": 4.73374672793625e-11,
-    "max_tidal_closed_form_reldiff": 3.828812495438708e-16,
+    "max_tidal_closed_form_reldiff": 3.7493968545568332e-16,
     "tau_total_years_at_end": 208112146.0001261,
     "tau_since_horizon_years_at_end": 208112.14600011488,
     "segments": [
@@ -636,11 +636,11 @@
         "curvature_length_m": 1.5867848492196936e+18,
         "tidal_eigenvalues_SI_per_m": [
           -1.030420979895597e-20,
-          5.1521048994779854e-21,
-          5.1521048994779854e-21
+          5.152104899477985e-21,
+          5.152104899477985e-21
         ],
         "radial_stretch_accel_m_s2": 2.060841959791194e-20,
-        "transverse_compress_accel_m_s2": -1.0304209798955971e-20,
+        "transverse_compress_accel_m_s2": -1.030420979895597e-20,
         "t_schwarzschild_geo": 1163.7417602994833,
         "kruskal": {
           "U": 4.449721755842095e-127,
@@ -942,11 +942,11 @@
         "curvature_length_m": 9.886623827605875e-12,
         "tidal_eigenvalues_SI_per_m": [
           -2.654329064199999e+38,
-          1.3271645321000001e+38,
-          1.3271645321000001e+38
+          1.3271645320999998e+38,
+          1.3271645320999998e+38
         ],
         "radial_stretch_accel_m_s2": 5.308658128399998e+38,
-        "transverse_compress_accel_m_s2": -2.6543290642000003e+38,
+        "transverse_compress_accel_m_s2": -2.6543290641999995e+38,
         "t_schwarzschild_geo": 1163.7417522418923,
         "kruskal": {
           "U": 4.449842711266784e-127,
@@ -1541,11 +1541,11 @@
       "curvature_length_m": 1.5867848492196936e+18,
       "tidal_eigenvalues_SI_per_m": [
         -1.030420979895597e-20,
-        5.1521048994779854e-21,
-        5.1521048994779854e-21
+        5.152104899477985e-21,
+        5.152104899477985e-21
       ],
       "radial_stretch_accel_m_s2": 2.060841959791194e-20,
-      "transverse_compress_accel_m_s2": -1.0304209798955971e-20,
+      "transverse_compress_accel_m_s2": -1.030420979895597e-20,
       "t_schwarzschild_geo": 1163.7417602994833,
       "kruskal": {
         "U": 4.449721755842095e-127,
@@ -1847,11 +1847,11 @@
       "curvature_length_m": 9.886623827605875e-12,
       "tidal_eigenvalues_SI_per_m": [
         -2.654329064199999e+38,
-        1.3271645321000001e+38,
-        1.3271645321000001e+38
+        1.3271645320999998e+38,
+        1.3271645320999998e+38
       ],
       "radial_stretch_accel_m_s2": 5.308658128399998e+38,
-      "transverse_compress_accel_m_s2": -2.6543290642000003e+38,
+      "transverse_compress_accel_m_s2": -2.6543290641999995e+38,
       "t_schwarzschild_geo": 1163.7417522418923,
       "kruskal": {
         "U": 4.449842711266784e-127,

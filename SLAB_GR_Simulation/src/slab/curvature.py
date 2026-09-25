@@ -153,8 +153,33 @@ def reference_radial_frame(metric: StaticSphericalMetric, r: float) -> tuple[np.
     return np.array([uv, ur, 0.0, 0.0]), np.array([uv, 1.0, 0.0, 0.0])
 
 
-def tidal_eigenvalues_frame(metric: StaticSphericalMetric, r: float, theta: float, u: np.ndarray) -> np.ndarray:
-    """Tidal eigenvalues for an ARBITRARY 4-velocity without catastrophic cancellation.
+def tidal_eigenvalues_exact(metric: StaticSphericalMetric, r: float, theta: float, u: np.ndarray) -> np.ndarray:
+    """EXACT tidal eigenvalues for an arbitrary 4-velocity (ascending order).
+
+    In the frame of any radially moving observer the curvature 2-form of
+    ds^2 = -f dv^2 + 2 dv dr + r^2 dOmega^2 is diagonal with
+        A = R_0101 = f''/2,   B = R_0202 = R_0303 = f'/(2r),   C = R_2323 = (1-f)/r^2,   R_1212 = R_1313 = -B,
+    and these components are invariant under radial boosts (because R_1212 = -R_0202).  Boosting
+    the frame radially to remove the observer's radial velocity leaves only the transverse
+    rapidity t^2 = r^2 [(u^theta)^2 + sin^2 theta (u^phi)^2] (= L^2/r^2 for equatorial motion) and
+    the tidal matrix E_ab = R_acbd u^c u^d becomes block diagonal with eigenvalues
+        lambda_radial            = A (1 + t^2) - B t^2
+        lambda_transverse_perp   = B (1 + t^2) + C t^2      (transverse direction orthogonal to the motion)
+        lambda_transverse_par    = B                        (along the transverse velocity)
+    For Schwarzschild: -(M/r^3)(2 + 3 t^2),  (M/r^3)(1 + 3 t^2),  M/r^3   (traceless; reduces to
+    (-2M/r^3, M/r^3, M/r^3) for radial motion).  Derivation: physics_notes.md §8; verified in
+    tests/test_physics.py against the explicit contraction, a static-frame boost and the
+    numeric 4x4 frame matrix (tidal_eigenvalues_frame_matrix).
+    """
+    f, fp, fpp = metric.f(r), metric.df(r), metric.d2f(r)
+    A, B, C = 0.5 * fpp, 0.5 * fp / r, (1.0 - f) / (r * r)
+    t2 = r * r * (u[TH] ** 2 + math.sin(theta) ** 2 * u[PH] ** 2)
+    lam = np.array([A * (1.0 + t2) - B * t2, B * (1.0 + t2) + C * t2, B])
+    return np.sort(lam)
+
+
+def tidal_eigenvalues_frame_matrix(metric: StaticSphericalMetric, r: float, theta: float, u: np.ndarray) -> np.ndarray:
+    """Numeric cross-check of :func:`tidal_eigenvalues_exact` (accurate for moderate boosts only).
 
     The curvature 2-form of any metric ds^2 = -f dv^2 + 2 dv dr + r^2 dOmega^2 is diagonal in
     the bivector basis of every radially boosted orthonormal frame (0 = radial observer,
@@ -195,6 +220,9 @@ def tidal_eigenvalues_frame(metric: StaticSphericalMetric, r: float, theta: floa
     w = np.sort(w)
     i0 = int(np.argmin(np.abs(w)))       # E u = 0: discard the null eigenvalue
     return np.delete(w, i0) * scale
+
+
+tidal_eigenvalues_frame = tidal_eigenvalues_exact   # name used by the trajectory post-processing
 
 
 def tidal_eigenvalues_radial_closed_form(M: float, r: float) -> tuple[float, float, float]:

@@ -203,19 +203,17 @@ def test5_kretschmann(sim: Simulation) -> dict:
     lam = tidal_tensor(m, r_qg, math.pi / 2, uvec, E=1.0)["eigenvalues"]
     t.check("radial tidal eigenvalue at r_QG vs -2M/r^3 (explicit contraction)", float(lam[0]), -2.0 / r_qg**3, 1e-9)
     lam_f = tidal_eigenvalues_frame(m, r_qg, math.pi / 2, uvec)
-    t.check("radial tidal eigenvalue at r_QG vs -2M/r^3 (boost-invariant frame method used in outputs)", float(lam_f[0]), -2.0 / r_qg**3, 1e-9)
-    # orbital motion: theta eigenvalue (M/r^3)(1 + 3L^2/r^2), tracelessness and boost invariance
+    t.check("radial tidal eigenvalue at r_QG vs -2M/r^3 (closed form used in outputs)", float(lam_f[0]), -2.0 / r_qg**3, 1e-12)
+    # orbital motion: closed form (-(2+3t^2), 1+3t^2, 1) M/r^3 vs explicit contraction (exterior, well conditioned)
+    from .geodesic import initial_state_radial as _isr
     worst_o = 0.0
     for L in (2.5, 3.9):
-        for r in (10.0, 2.0, 0.5, 1e-6, 1e-30):
-            from .geodesic import initial_state_radial as _isr
-            y1 = _isr(m, r, 1.0, L); y2 = _isr(m, r, 1.7, L)
-            l1 = np.sort(tidal_eigenvalues_frame(m, r, math.pi / 2, y1[IUV:IUV + 4]))
-            l2 = np.sort(tidal_eigenvalues_frame(m, r, math.pi / 2, y2[IUV:IUV + 4]))
-            lth = (1.0 + 3.0 * (L / r) ** 2) / r**3
-            worst_o = max(worst_o, float(np.min(np.abs(l1 - lth)) / lth), float(abs(l1.sum()) / np.max(np.abs(l1))),
-                          float(np.max(np.abs(l1 - l2) / np.max(np.abs(l1)))))
-    t.check("orbital tidal eigenvalues: theta eigenvalue (M/r^3)(1+3L^2/r^2), traceless, independent of radial velocity", worst_o, None, 1e-8, kind="abs")
+        for r in (10.0, 3.0, 2.0, 1.0):
+            y1 = _isr(m, r, 1.0, L)
+            l1 = tidal_eigenvalues_frame(m, r, math.pi / 2, y1[IUV:IUV + 4])
+            lc = np.sort(tidal_tensor(m, r, math.pi / 2, y1[IUV:IUV + 4], E=y1[IEK])["eigenvalues"])
+            worst_o = max(worst_o, float(np.max(np.abs(l1 - lc) / np.max(np.abs(l1)))))
+    t.check("orbital-motion tidal eigenvalues: closed form -(2+3L^2/r^2), 1+3L^2/r^2, 1 (x M/r^3) vs explicit contraction", worst_o, None, 1e-9, kind="abs")
     return t.d
 
 

@@ -162,27 +162,25 @@ def _static_frame_tidal_eigenvalues(r, uv, ur, uph):
 
 
 @pytest.mark.parametrize("L", [0.0, 2.5, 3.9])
-def test_tidal_frame_method_vs_contraction_and_static_boost(L):
-    from slab.curvature import tidal_eigenvalues_frame
+def test_tidal_exact_eigenvalues_vs_independent_methods(L):
+    from slab.curvature import tidal_eigenvalues_exact, tidal_eigenvalues_frame_matrix
     m = Schwarzschild()
     for r in (30.0, 8.0, 3.2, 2.2, 2.0, 1.0, 0.1, 1e-3, 1e-10, 1e-30):
         y = initial_state_radial(m, r, 1.0, L)
-        lam_f = np.sort(tidal_eigenvalues_frame(m, r, math.pi / 2, y[IUV:IUV + 4]))
+        lam = tidal_eigenvalues_exact(m, r, math.pi / 2, y[IUV:IUV + 4])
         s2 = (L / r) ** 2
-        # exact: the theta-direction decouples for equatorial motion with eigenvalue (M/r^3)(1 + 3 L^2/r^2)
-        lam_th = (1.0 + 3.0 * s2) / r**3
-        assert np.min(np.abs(lam_f - lam_th)) < 1e-9 * lam_th, (L, r, lam_f, lam_th)
-        assert abs(lam_f.sum()) < 1e-9 * np.max(np.abs(lam_f))          # vacuum: traceless
-        # boost invariance: eigenvalues independent of the radial velocity (same r, same L, different E)
-        y2 = initial_state_radial(m, r, 1.7, L)
-        lam2 = np.sort(tidal_eigenvalues_frame(m, r, math.pi / 2, y2[IUV:IUV + 4]))
-        assert np.allclose(lam_f, lam2, rtol=1e-8), (L, r, lam_f, lam2)
-        if r >= 1.0:   # explicit index contraction is only well conditioned here for L != 0
+        assert np.allclose(lam, np.sort([-(2 + 3 * s2) / r**3, (1 + 3 * s2) / r**3, 1 / r**3]), rtol=1e-12)
+        assert abs(lam.sum()) < 1e-12 * np.max(np.abs(lam))          # vacuum: traceless
+        # numeric 4x4 frame-matrix route (independent of the closed form) where its eigen-solver is well conditioned
+        if L == 0.0 or r >= 0.1:
+            lam_m = tidal_eigenvalues_frame_matrix(m, r, math.pi / 2, y[IUV:IUV + 4])
+            assert np.allclose(lam, lam_m, rtol=1e-7), (L, r, lam, lam_m)
+        if L == 0.0 or r >= 1.0:   # explicit index contraction of the EF Riemann tensor (well conditioned here)
             lam_c = np.sort(tidal_tensor(m, r, math.pi / 2, y[IUV:IUV + 4], E=y[IEK])["eigenvalues"])
-            assert np.allclose(lam_f, lam_c, rtol=1e-8), (L, r, lam_f, lam_c)
-        if r > 2.0:
+            assert np.allclose(lam, lam_c, rtol=1e-8), (L, r, lam, lam_c)
+        if r > 2.0:                # static orthonormal frame + Lorentz boost (exterior only)
             ref = np.sort(_static_frame_tidal_eigenvalues(r, y[IUV], y[IUV + 1], y[IUV + 3]))
-            assert np.allclose(lam_f, ref, rtol=1e-9), (L, r, lam_f, ref)
+            assert np.allclose(lam, ref, rtol=1e-9), (L, r, lam, ref)
 
 
 @pytest.mark.parametrize("L", [0.0, 2.5, 3.9])

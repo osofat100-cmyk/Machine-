@@ -1,7 +1,7 @@
 {
   "metadata": {
     "project": "SLAB_GR_Simulation",
-    "generated_utc": "2026-09-25T15:33:07.330810+00:00",
+    "generated_utc": "2026-09-25T15:35:49.456742+00:00",
     "metric": "Schwarzschild",
     "metric_established_physics": true,
     "coordinate_system": "ingoing Eddington\u2013Finkelstein (v, r, theta, phi)",
@@ -184,7 +184,7 @@
     "max_abs_norm_residual": 6.307231823716537e+61,
     "max_abs_norm_residual_conditioned": 7.106537580625627e-13,
     "max_abs_norm_residual_where_well_conditioned": 7.183142969324763e-13,
-    "max_tidal_closed_form_reldiff": 0.5775650604522877,
+    "max_tidal_closed_form_reldiff": 0.577565060452288,
     "tau_total_years_at_end": 217305521.04976642,
     "tau_since_horizon_years_at_end": 106859.89330956533,
     "segments": [
@@ -196,7 +196,7 @@
         "steps": 448,
         "rhs_evals": 2720,
         "status": "event",
-        "wall_time_s": 0.1486952304840088,
+        "wall_time_s": 0.13849472999572754,
         "min_h": 0.00016479470381033324,
         "max_h": 10.037564295820149
       },
@@ -208,7 +208,7 @@
         "steps": 137,
         "rhs_evals": 866,
         "status": "event",
-        "wall_time_s": 0.0289156436920166,
+        "wall_time_s": 0.0236361026763916,
         "min_h": 0.00018315931300084726,
         "max_h": 0.10782827860715938
       },
@@ -220,7 +220,7 @@
         "steps": 92,
         "rhs_evals": 608,
         "status": "event",
-        "wall_time_s": 0.03345680236816406,
+        "wall_time_s": 0.01721644401550293,
         "min_h": 0.000138379523952928,
         "max_h": 0.02468137129433001
       },
@@ -232,7 +232,7 @@
         "steps": 297,
         "rhs_evals": 2080,
         "status": "reached_x_end",
-        "wall_time_s": 0.10322761535644531,
+        "wall_time_s": 0.07821106910705566,
         "min_h": 5.8180805529555584e-05,
         "max_h": 0.008236799327728203
       },
@@ -244,7 +244,7 @@
         "steps": 280,
         "rhs_evals": 1961,
         "status": "reached_x_end",
-        "wall_time_s": 0.09591937065124512,
+        "wall_time_s": 0.06558108329772949,
         "min_h": 0.006878192712951758,
         "max_h": 0.008251314207753399
       },
@@ -256,7 +256,7 @@
         "steps": 975,
         "rhs_evals": 6832,
         "status": "reached_x_end",
-        "wall_time_s": 0.3333446979522705,
+        "wall_time_s": 0.25896430015563965,
         "min_h": 0.008160876485378665,
         "max_h": 0.008257183325473835
       },
@@ -268,7 +268,7 @@
         "steps": 142,
         "rhs_evals": 1001,
         "status": "reached_x_end",
-        "wall_time_s": 0.04836392402648926,
+        "wall_time_s": 0.034386634826660156,
         "min_h": 0.0005780074668546575,
         "max_h": 0.00825856479134731
       },
@@ -280,7 +280,7 @@
         "steps": 1199,
         "rhs_evals": 8400,
         "status": "reached_x_end",
-        "wall_time_s": 0.4302213191986084,
+        "wall_time_s": 0.4321103096008301,
         "min_h": 0.0037685689764437313,
         "max_h": 0.008258564835849561
       },
@@ -292,7 +292,7 @@
         "steps": 327,
         "rhs_evals": 2296,
         "status": "reached_x_end",
-        "wall_time_s": 0.05722522735595703,
+        "wall_time_s": 0.09945940971374512,
         "min_h": 0.007381595819882847,
         "max_h": 0.008258566011862919
       },
@@ -304,7 +304,7 @@
         "steps": 1954,
         "rhs_evals": 13685,
         "status": "reached_x_end",
-        "wall_time_s": 0.42516040802001953,
+        "wall_time_s": 0.5665638446807861,
         "min_h": 0.008189149766607784,
         "max_h": 0.008258564645191922
       },
@@ -316,7 +316,7 @@
         "steps": 838,
         "rhs_evals": 5873,
         "status": "reached_x_end",
-        "wall_time_s": 0.16800713539123535,
+        "wall_time_s": 0.3095417022705078,
         "min_h": 0.0002484298258025319,
         "max_h": 0.008258567276974063
       },
@@ -328,7 +328,7 @@
         "steps": 2791,
         "rhs_evals": 19544,
         "status": "reached_x_end",
-        "wall_time_s": 0.6765530109405518,
+        "wall_time_s": 0.7531280517578125,
         "min_h": 0.000842050442230402,
         "max_h": 0.008258567225442076
       },
@@ -340,7 +340,7 @@
         "steps": 1396,
         "rhs_evals": 9779,
         "status": "reached_x_end",
-        "wall_time_s": 0.3035707473754883,
+        "wall_time_s": 0.39046239852905273,
         "min_h": 0.00041804972337899926,
         "max_h": 0.00825856720071364
       },
@@ -352,7 +352,7 @@
         "steps": 240,
         "rhs_evals": 1687,
         "status": "reached_x_end",
-        "wall_time_s": 0.07546353340148926,
+        "wall_time_s": 0.07204842567443848,
         "min_h": 0.002510388696435939,
         "max_h": 0.00825856706694812
       }
@@ -381,11 +381,11 @@
         "curvature_length_m": 1.5867848492196932e+24,
         "tidal_eigenvalues_SI_per_m": [
           -1.0308943295332364e-32,
-          5.152104899477982e-33,
-          5.15683839585438e-33
+          5.152104899477985e-33,
+          5.1568383958543805e-33
         ],
         "radial_stretch_accel_m_s2": 2.0617886590664728e-32,
-        "transverse_compress_accel_m_s2": -1.031367679170876e-32,
+        "transverse_compress_accel_m_s2": -1.0313676791708761e-32,
         "t_schwarzschild_geo": -209.1902397002692,
         "kruskal": {
           "U": -2.6612359703979857e+45,
@@ -431,11 +431,11 @@
         "log10_K_over_K_planck": -226.83076018321137,
         "curvature_length_m": 8.245175938587088e+21,
         "tidal_eigenvalues_SI_per_m": [
-          -5.764314895261025e-28,
-          1.9081869998066612e-28,
+          -5.764314895261028e-28,
+          1.908186999806661e-28,
           3.8561278954543665e-28
         ],
-        "radial_stretch_accel_m_s2": 1.152862979052205e-27,
+        "radial_stretch_accel_m_s2": 1.1528629790522056e-27,
         "transverse_compress_accel_m_s2": -7.712255790908733e-28,
         "t_schwarzschild_geo": 1211.5513255001176,
         "kruskal": {
@@ -482,12 +482,12 @@
         "log10_K_over_K_planck": -225.02458020922748,
         "curvature_length_m": 2.915109909125543e+21,
         "tidal_eigenvalues_SI_per_m": [
-          -9.286510065765392e-27,
-          1.526549599845329e-27,
-          7.759960465920067e-27
+          -9.286510065765395e-27,
+          1.5265495998453288e-27,
+          7.759960465920066e-27
         ],
-        "radial_stretch_accel_m_s2": 1.8573020131530784e-26,
-        "transverse_compress_accel_m_s2": -1.5519920931840135e-26,
+        "radial_stretch_accel_m_s2": 1.857302013153079e-26,
+        "transverse_compress_accel_m_s2": -1.5519920931840132e-26,
         "t_schwarzschild_geo": 1228.031104439193,
         "kruskal": {
           "U": -6.973050295628314e-134,
@@ -533,12 +533,12 @@
         "log10_K_over_K_planck": -223.9680326548934,
         "curvature_length_m": 1.5867848492196936e+21,
         "tidal_eigenvalues_SI_per_m": [
-          -5.763917356318613e-26,
-          5.152104899478009e-27,
-          5.248706866370811e-26
+          -5.76391735631861e-26,
+          5.152104899477985e-27,
+          5.248706866370812e-26
         ],
-        "radial_stretch_accel_m_s2": 1.1527834712637225e-25,
-        "transverse_compress_accel_m_s2": -1.0497413732741622e-25,
+        "radial_stretch_accel_m_s2": 1.152783471263722e-25,
+        "transverse_compress_accel_m_s2": -1.0497413732741624e-25,
         "t_schwarzschild_geo": Infinity,
         "kruskal": {
           "U": 0.0,
@@ -584,12 +584,12 @@
         "log10_K_over_K_planck": -217.9680326548934,
         "curvature_length_m": 5.017854280181086e+19,
         "tidal_eigenvalues_SI_per_m": [
-          -4.743800586234371e-21,
-          5.1521048995081946e-24,
-          4.738648481334892e-21
+          -4.7438005862343695e-21,
+          5.152104899477986e-24,
+          4.73864848133489e-21
         ],
-        "radial_stretch_accel_m_s2": 9.487601172468742e-21,
-        "transverse_compress_accel_m_s2": -9.477296962669784e-21,
+        "radial_stretch_accel_m_s2": 9.487601172468739e-21,
+        "transverse_compress_accel_m_s2": -9.47729696266978e-21,
         "t_schwarzschild_geo": 1234.113206566959,
         "kruskal": {
           "U": 1.0155400720095078e-134,
@@ -636,11 +636,11 @@
         "curvature_length_m": 1.5867848492196936e+18,
         "tidal_eigenvalues_SI_per_m": [
           -4.733599418547568e-16,
-          5.152101392622407e-21,
-          4.733547897498574e-16
+          5.152104899477985e-21,
+          4.733547897498573e-16
         ],
         "radial_stretch_accel_m_s2": 9.467198837095136e-16,
-        "transverse_compress_accel_m_s2": -9.467095794997149e-16,
+        "transverse_compress_accel_m_s2": -9.467095794997145e-16,
         "t_schwarzschild_geo": 1234.1130900620335,
         "kruskal": {
           "U": 1.0182696628219671e-134,
@@ -686,11 +686,11 @@
         "log10_K_over_K_planck": -191.00170053509208,
         "curvature_length_m": 9097771297041.055,
         "tidal_eigenvalues_SI_per_m": [
-          -140.32190828165122,
-          7.833520987848748e-11,
+          -140.32190828165125,
+          1.567295031375759e-10,
           140.32190828149453
         ],
-        "radial_stretch_accel_m_s2": 280.64381656330244,
+        "radial_stretch_accel_m_s2": 280.6438165633025,
         "transverse_compress_accel_m_s2": -280.64381656298906,
         "t_schwarzschild_geo": 1234.1130900289959,
         "kruskal": {
@@ -737,11 +737,11 @@
         "log10_K_over_K_planck": -187.9680326548934,
         "curvature_length_m": 1586784849219.6934,
         "tidal_eigenvalues_SI_per_m": [
-          -47334.963765082124,
-          2.5798353815462584e-09,
+          -47334.96376508211,
+          5.1521048994779844e-09,
           47334.96376507696
         ],
-        "radial_stretch_accel_m_s2": 94669.92753016425,
+        "radial_stretch_accel_m_s2": 94669.92753016422,
         "transverse_compress_accel_m_s2": -94669.92753015392,
         "t_schwarzschild_geo": 1234.1130900289959,
         "kruskal": {
@@ -788,11 +788,11 @@
         "log10_K_over_K_planck": -162.19570498728723,
         "curvature_length_m": 572052.8165558435,
         "tidal_eigenvalues_SI_per_m": [
-          -1.4194554676101588e+26,
-          -1.2847401045979126e+18,
+          -1.4194554676101583e+26,
+          39641.35863361939,
           1.4194554676101583e+26
         ],
-        "radial_stretch_accel_m_s2": 2.8389109352203175e+26,
+        "radial_stretch_accel_m_s2": 2.8389109352203165e+26,
         "transverse_compress_accel_m_s2": -2.8389109352203165e+26,
         "t_schwarzschild_geo": 1234.1130900289959,
         "kruskal": {
@@ -839,11 +839,11 @@
         "log10_K_over_K_planck": -155.1659604743542,
         "curvature_length_m": 9999.99999999998,
         "tidal_eigenvalues_SI_per_m": [
-          -1.0238638264485735e+32,
-          1.024977092933886e+16,
+          -1.0238638264485733e+32,
+          129724136.09481849,
           1.0238638264485731e+32
         ],
-        "radial_stretch_accel_m_s2": 2.047727652897147e+32,
+        "radial_stretch_accel_m_s2": 2.0477276528971466e+32,
         "transverse_compress_accel_m_s2": -2.0477276528971462e+32,
         "t_schwarzschild_geo": 1234.1130900289959,
         "kruskal": {
@@ -891,11 +891,11 @@
         "curvature_length_m": 3.1264249664526454e-07,
         "tidal_eigenvalues_SI_per_m": [
           -1.0635277648776772e+67,
-          3.9099317097739897e+49,
-          1.0635277648776773e+67
+          1.3271645321000003e+29,
+          1.0635277648776772e+67
         ],
         "radial_stretch_accel_m_s2": 2.1270555297553543e+67,
-        "transverse_compress_accel_m_s2": -2.1270555297553546e+67,
+        "transverse_compress_accel_m_s2": -2.1270555297553543e+67,
         "t_schwarzschild_geo": 1234.1130900289959,
         "kruskal": {
           "U": 1.018295299291283e-134,
@@ -942,11 +942,11 @@
         "curvature_length_m": 9.886623827605875e-12,
         "tidal_eigenvalues_SI_per_m": [
           -1.06352776488742e+82,
-          5.1452718665314295e+73,
-          1.0635277648874198e+82
+          1.3271645320999998e+38,
+          1.06352776488742e+82
         ],
         "radial_stretch_accel_m_s2": 2.12705552977484e+82,
-        "transverse_compress_accel_m_s2": -2.1270555297748395e+82,
+        "transverse_compress_accel_m_s2": -2.12705552977484e+82,
         "t_schwarzschild_geo": 1234.1130900289959,
         "kruskal": {
           "U": 1.018295299291283e-134,
@@ -993,11 +993,11 @@
         "curvature_length_m": 9.886623827605878e-27,
         "tidal_eigenvalues_SI_per_m": [
           -1.0635277649180864e+132,
-          -1.8191283197935015e+123,
-          1.0635277649180867e+132
+          1.3271645320999993e+68,
+          1.0635277649180864e+132
         ],
         "radial_stretch_accel_m_s2": 2.1270555298361727e+132,
-        "transverse_compress_accel_m_s2": -2.1270555298361734e+132,
+        "transverse_compress_accel_m_s2": -2.1270555298361727e+132,
         "t_schwarzschild_geo": 1234.1130900289959,
         "kruskal": {
           "U": 1.018295299291283e-134,
@@ -1043,11 +1043,11 @@
         "log10_K_over_K_planck": -5.146152515013162,
         "curvature_length_m": 3.1264249664526458e-34,
         "tidal_eigenvalues_SI_per_m": [
-          -1.0635277649343739e+157,
-          3.1508226144006146e+148,
+          -1.063527764934374e+157,
+          1.3271645320999995e+83,
           1.063527764934374e+157
         ],
-        "radial_stretch_accel_m_s2": 2.1270555298687478e+157,
+        "radial_stretch_accel_m_s2": 2.127055529868748e+157,
         "transverse_compress_accel_m_s2": -2.127055529868748e+157,
         "t_schwarzschild_geo": 1234.1130900289959,
         "kruskal": {
@@ -1095,11 +1095,11 @@
         "curvature_length_m": 1.616255000000005e-35,
         "tidal_eigenvalues_SI_per_m": [
           -2.0663755831380127e+161,
-          7.401860034860468e+144,
-          2.066375583138013e+161
+          4.965934927351667e+85,
+          2.0663755831380127e+161
         ],
         "radial_stretch_accel_m_s2": 4.1327511662760253e+161,
-        "transverse_compress_accel_m_s2": -4.132751166276026e+161,
+        "transverse_compress_accel_m_s2": -4.1327511662760253e+161,
         "t_schwarzschild_geo": 1234.1130900289959,
         "kruskal": {
           "U": 1.018295299291283e-134,
@@ -1286,11 +1286,11 @@
       "curvature_length_m": 1.5867848492196932e+24,
       "tidal_eigenvalues_SI_per_m": [
         -1.0308943295332364e-32,
-        5.152104899477982e-33,
-        5.15683839585438e-33
+        5.152104899477985e-33,
+        5.1568383958543805e-33
       ],
       "radial_stretch_accel_m_s2": 2.0617886590664728e-32,
-      "transverse_compress_accel_m_s2": -1.031367679170876e-32,
+      "transverse_compress_accel_m_s2": -1.0313676791708761e-32,
       "t_schwarzschild_geo": -209.1902397002692,
       "kruskal": {
         "U": -2.6612359703979857e+45,
@@ -1336,11 +1336,11 @@
       "log10_K_over_K_planck": -226.83076018321137,
       "curvature_length_m": 8.245175938587088e+21,
       "tidal_eigenvalues_SI_per_m": [
-        -5.764314895261025e-28,
-        1.9081869998066612e-28,
+        -5.764314895261028e-28,
+        1.908186999806661e-28,
         3.8561278954543665e-28
       ],
-      "radial_stretch_accel_m_s2": 1.152862979052205e-27,
+      "radial_stretch_accel_m_s2": 1.1528629790522056e-27,
       "transverse_compress_accel_m_s2": -7.712255790908733e-28,
       "t_schwarzschild_geo": 1211.5513255001176,
       "kruskal": {
@@ -1387,12 +1387,12 @@
       "log10_K_over_K_planck": -225.02458020922748,
       "curvature_length_m": 2.915109909125543e+21,
       "tidal_eigenvalues_SI_per_m": [
-        -9.286510065765392e-27,
-        1.526549599845329e-27,
-        7.759960465920067e-27
+        -9.286510065765395e-27,
+        1.5265495998453288e-27,
+        7.759960465920066e-27
       ],
-      "radial_stretch_accel_m_s2": 1.8573020131530784e-26,
-      "transverse_compress_accel_m_s2": -1.5519920931840135e-26,
+      "radial_stretch_accel_m_s2": 1.857302013153079e-26,
+      "transverse_compress_accel_m_s2": -1.5519920931840132e-26,
       "t_schwarzschild_geo": 1228.031104439193,
       "kruskal": {
         "U": -6.973050295628314e-134,
@@ -1438,12 +1438,12 @@
       "log10_K_over_K_planck": -223.9680326548934,
       "curvature_length_m": 1.5867848492196936e+21,
       "tidal_eigenvalues_SI_per_m": [
-        -5.763917356318613e-26,
-        5.152104899478009e-27,
-        5.248706866370811e-26
+        -5.76391735631861e-26,
+        5.152104899477985e-27,
+        5.248706866370812e-26
       ],
-      "radial_stretch_accel_m_s2": 1.1527834712637225e-25,
-      "transverse_compress_accel_m_s2": -1.0497413732741622e-25,
+      "radial_stretch_accel_m_s2": 1.152783471263722e-25,
+      "transverse_compress_accel_m_s2": -1.0497413732741624e-25,
       "t_schwarzschild_geo": Infinity,
       "kruskal": {
         "U": 0.0,
@@ -1489,12 +1489,12 @@
       "log10_K_over_K_planck": -217.9680326548934,
       "curvature_length_m": 5.017854280181086e+19,
       "tidal_eigenvalues_SI_per_m": [
-        -4.743800586234371e-21,
-        5.1521048995081946e-24,
-        4.738648481334892e-21
+        -4.7438005862343695e-21,
+        5.152104899477986e-24,
+        4.73864848133489e-21
       ],
-      "radial_stretch_accel_m_s2": 9.487601172468742e-21,
-      "transverse_compress_accel_m_s2": -9.477296962669784e-21,
+      "radial_stretch_accel_m_s2": 9.487601172468739e-21,
+      "transverse_compress_accel_m_s2": -9.47729696266978e-21,
       "t_schwarzschild_geo": 1234.113206566959,
       "kruskal": {
         "U": 1.0155400720095078e-134,
@@ -1541,11 +1541,11 @@
       "curvature_length_m": 1.5867848492196936e+18,
       "tidal_eigenvalues_SI_per_m": [
         -4.733599418547568e-16,
-        5.152101392622407e-21,
-        4.733547897498574e-16
+        5.152104899477985e-21,
+        4.733547897498573e-16
       ],
       "radial_stretch_accel_m_s2": 9.467198837095136e-16,
-      "transverse_compress_accel_m_s2": -9.467095794997149e-16,
+      "transverse_compress_accel_m_s2": -9.467095794997145e-16,
       "t_schwarzschild_geo": 1234.1130900620335,
       "kruskal": {
         "U": 1.0182696628219671e-134,
@@ -1591,11 +1591,11 @@
       "log10_K_over_K_planck": -191.00170053509208,
       "curvature_length_m": 9097771297041.055,
       "tidal_eigenvalues_SI_per_m": [
-        -140.32190828165122,
-        7.833520987848748e-11,
+        -140.32190828165125,
+        1.567295031375759e-10,
         140.32190828149453
       ],
-      "radial_stretch_accel_m_s2": 280.64381656330244,
+      "radial_stretch_accel_m_s2": 280.6438165633025,
       "transverse_compress_accel_m_s2": -280.64381656298906,
       "t_schwarzschild_geo": 1234.1130900289959,
       "kruskal": {
@@ -1642,11 +1642,11 @@
       "log10_K_over_K_planck": -187.9680326548934,
       "curvature_length_m": 1586784849219.6934,
       "tidal_eigenvalues_SI_per_m": [
-        -47334.963765082124,
-        2.5798353815462584e-09,
+        -47334.96376508211,
+        5.1521048994779844e-09,
         47334.96376507696
       ],
-      "radial_stretch_accel_m_s2": 94669.92753016425,
+      "radial_stretch_accel_m_s2": 94669.92753016422,
       "transverse_compress_accel_m_s2": -94669.92753015392,
       "t_schwarzschild_geo": 1234.1130900289959,
       "kruskal": {
@@ -1693,11 +1693,11 @@
       "log10_K_over_K_planck": -162.19570498728723,
       "curvature_length_m": 572052.8165558435,
       "tidal_eigenvalues_SI_per_m": [
-        -1.4194554676101588e+26,
-        -1.2847401045979126e+18,
+        -1.4194554676101583e+26,
+        39641.35863361939,
         1.4194554676101583e+26
       ],
-      "radial_stretch_accel_m_s2": 2.8389109352203175e+26,
+      "radial_stretch_accel_m_s2": 2.8389109352203165e+26,
       "transverse_compress_accel_m_s2": -2.8389109352203165e+26,
       "t_schwarzschild_geo": 1234.1130900289959,
       "kruskal": {
@@ -1744,11 +1744,11 @@
       "log10_K_over_K_planck": -155.1659604743542,
       "curvature_length_m": 9999.99999999998,
       "tidal_eigenvalues_SI_per_m": [
-        -1.0238638264485735e+32,
-        1.024977092933886e+16,
+        -1.0238638264485733e+32,
+        129724136.09481849,
         1.0238638264485731e+32
       ],
-      "radial_stretch_accel_m_s2": 2.047727652897147e+32,
+      "radial_stretch_accel_m_s2": 2.0477276528971466e+32,
       "transverse_compress_accel_m_s2": -2.0477276528971462e+32,
       "t_schwarzschild_geo": 1234.1130900289959,
       "kruskal": {
@@ -1796,11 +1796,11 @@
       "curvature_length_m": 3.1264249664526454e-07,
       "tidal_eigenvalues_SI_per_m": [
         -1.0635277648776772e+67,
-        3.9099317097739897e+49,
-        1.0635277648776773e+67
+        1.3271645321000003e+29,
+        1.0635277648776772e+67
       ],
       "radial_stretch_accel_m_s2": 2.1270555297553543e+67,
-      "transverse_compress_accel_m_s2": -2.1270555297553546e+67,
+      "transverse_compress_accel_m_s2": -2.1270555297553543e+67,
       "t_schwarzschild_geo": 1234.1130900289959,
       "kruskal": {
         "U": 1.018295299291283e-134,
@@ -1847,11 +1847,11 @@
       "curvature_length_m": 9.886623827605875e-12,
       "tidal_eigenvalues_SI_per_m": [
         -1.06352776488742e+82,
-        5.1452718665314295e+73,
-        1.0635277648874198e+82
+        1.3271645320999998e+38,
+        1.06352776488742e+82
       ],
       "radial_stretch_accel_m_s2": 2.12705552977484e+82,
-      "transverse_compress_accel_m_s2": -2.1270555297748395e+82,
+      "transverse_compress_accel_m_s2": -2.12705552977484e+82,
       "t_schwarzschild_geo": 1234.1130900289959,
       "kruskal": {
         "U": 1.018295299291283e-134,
@@ -1898,11 +1898,11 @@
       "curvature_length_m": 9.886623827605878e-27,
       "tidal_eigenvalues_SI_per_m": [
         -1.0635277649180864e+132,
-        -1.8191283197935015e+123,
-        1.0635277649180867e+132
+        1.3271645320999993e+68,
+        1.0635277649180864e+132
       ],
       "radial_stretch_accel_m_s2": 2.1270555298361727e+132,
-      "transverse_compress_accel_m_s2": -2.1270555298361734e+132,
+      "transverse_compress_accel_m_s2": -2.1270555298361727e+132,
       "t_schwarzschild_geo": 1234.1130900289959,
       "kruskal": {
         "U": 1.018295299291283e-134,
@@ -1948,11 +1948,11 @@
       "log10_K_over_K_planck": -5.146152515013162,
       "curvature_length_m": 3.1264249664526458e-34,
       "tidal_eigenvalues_SI_per_m": [
-        -1.0635277649343739e+157,
-        3.1508226144006146e+148,
+        -1.063527764934374e+157,
+        1.3271645320999995e+83,
         1.063527764934374e+157
       ],
-      "radial_stretch_accel_m_s2": 2.1270555298687478e+157,
+      "radial_stretch_accel_m_s2": 2.127055529868748e+157,
       "transverse_compress_accel_m_s2": -2.127055529868748e+157,
       "t_schwarzschild_geo": 1234.1130900289959,
       "kruskal": {
@@ -2000,11 +2000,11 @@
       "curvature_length_m": 1.616255000000005e-35,
       "tidal_eigenvalues_SI_per_m": [
         -2.0663755831380127e+161,
-        7.401860034860468e+144,
-        2.066375583138013e+161
+        4.965934927351667e+85,
+        2.0663755831380127e+161
       ],
       "radial_stretch_accel_m_s2": 4.1327511662760253e+161,
-      "transverse_compress_accel_m_s2": -4.132751166276026e+161,
+      "transverse_compress_accel_m_s2": -4.1327511662760253e+161,
       "t_schwarzschild_geo": 1234.1130900289959,
       "kruskal": {
         "U": 1.018295299291283e-134,
@@ -2030,20 +2030,20 @@
     }
   },
   "checkpoints": [
-    "checkpoints/ckpt_00_start_v006.json",
-    "checkpoints/ckpt_01_isco_v006.json",
-    "checkpoints/ckpt_02_photon_sphere_v006.json",
-    "checkpoints/ckpt_03_horizon_v006.json",
-    "checkpoints/ckpt_04_0.1rs_v006.json",
-    "checkpoints/ckpt_05_0.01rs_v006.json",
-    "checkpoints/ckpt_06_1ly_v006.json",
-    "checkpoints/ckpt_07_1e-6rs_v006.json",
-    "checkpoints/ckpt_08_1au_v006.json",
-    "checkpoints/ckpt_09_extreme_curvature_v006.json",
-    "checkpoints/ckpt_10_1km_v006.json",
-    "checkpoints/ckpt_11_1m_v006.json",
-    "checkpoints/ckpt_12_atomic_v006.json",
-    "checkpoints/ckpt_13_nuclear_v006.json",
-    "checkpoints/ckpt_14_r_QG_v006.json"
+    "checkpoints/ckpt_00_start_v007.json",
+    "checkpoints/ckpt_01_isco_v007.json",
+    "checkpoints/ckpt_02_photon_sphere_v007.json",
+    "checkpoints/ckpt_03_horizon_v007.json",
+    "checkpoints/ckpt_04_0.1rs_v007.json",
+    "checkpoints/ckpt_05_0.01rs_v007.json",
+    "checkpoints/ckpt_06_1ly_v007.json",
+    "checkpoints/ckpt_07_1e-6rs_v007.json",
+    "checkpoints/ckpt_08_1au_v007.json",
+    "checkpoints/ckpt_09_extreme_curvature_v007.json",
+    "checkpoints/ckpt_10_1km_v007.json",
+    "checkpoints/ckpt_11_1m_v007.json",
+    "checkpoints/ckpt_12_atomic_v007.json",
+    "checkpoints/ckpt_13_nuclear_v007.json",
+    "checkpoints/ckpt_14_r_QG_v007.json"
   ]
 }

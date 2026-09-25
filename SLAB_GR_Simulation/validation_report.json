@@ -1,7 +1,7 @@
 {
   "project": "SLAB_GR_Simulation",
-  "generated_utc": "2026-09-25T15:33:17.373049+00:00",
-  "wall_time_s": 6.032646894454956,
+  "generated_utc": "2026-09-25T15:35:58.000828+00:00",
+  "wall_time_s": 4.245372295379639,
   "benchmark_configuration": {
     "M_solar": 1e+18,
     "r0_over_rs": 100.0,
@@ -649,21 +649,21 @@
           "note": ""
         },
         {
-          "label": "radial tidal eigenvalue at r_QG vs -2M/r^3 (boost-invariant frame method used in outputs)",
+          "label": "radial tidal eigenvalue at r_QG vs -2M/r^3 (closed form used in outputs)",
           "value": -2.409663149451217e+111,
           "expected": -2.409663149451217e+111,
           "error": 0.0,
-          "tolerance": 1e-09,
+          "tolerance": 1e-12,
           "error_kind": "rel",
           "passed": true,
           "note": ""
         },
         {
-          "label": "orbital tidal eigenvalues: theta eigenvalue (M/r^3)(1+3L^2/r^2), traceless, independent of radial velocity",
-          "value": 7.45574947694918e-09,
+          "label": "orbital-motion tidal eigenvalues: closed form -(2+3L^2/r^2), 1+3L^2/r^2, 1 (x M/r^3) vs explicit contraction",
+          "value": 1.193437305496704e-15,
           "expected": null,
-          "error": 7.45574947694918e-09,
-          "tolerance": 1e-08,
+          "error": 1.193437305496704e-15,
+          "tolerance": 1e-09,
           "error_kind": "abs",
           "passed": true,
           "note": ""
@@ -892,7 +892,7 @@
           "err_tau_h_to_QG": 1.0012058732078444e-07,
           "err_dv_h_to_QG": 5.003674485325183e-07,
           "max_err_ur": 0.00017899515813735422,
-          "wall_s": 0.14584970474243164
+          "wall_s": 0.1227579116821289
         },
         {
           "rtol": 1e-08,
@@ -900,7 +900,7 @@
           "err_tau_h_to_QG": 1.0674056638571017e-09,
           "err_dv_h_to_QG": 1.3639043236051623e-09,
           "max_err_ur": 8.782141465891705e-07,
-          "wall_s": 0.26777052879333496
+          "wall_s": 0.2375502586364746
         },
         {
           "rtol": 1e-10,
@@ -908,7 +908,7 @@
           "err_tau_h_to_QG": 1.3187617664556228e-11,
           "err_dv_h_to_QG": 3.391979250729691e-12,
           "max_err_ur": 4.380233717600034e-09,
-          "wall_s": 0.8008308410644531
+          "wall_s": 0.49802637100219727
         },
         {
           "rtol": 1e-12,
@@ -916,7 +916,7 @@
           "err_tau_h_to_QG": 2.273181642920008e-13,
           "err_dv_h_to_QG": 1.4809715617241473e-13,
           "max_err_ur": 2.366860008437376e-11,
-          "wall_s": 1.9337444305419922
+          "wall_s": 1.2363145351409912
         }
       ]
     }
@@ -934,7 +934,7 @@
     "max_abs_norm_residual": 4.73374672793625e-11,
     "max_abs_norm_residual_conditioned": 2.3668733638499086e-11,
     "max_abs_norm_residual_where_well_conditioned": 4.73374672793625e-11,
-    "max_tidal_closed_form_reldiff": 3.828812495438708e-16,
+    "max_tidal_closed_form_reldiff": 3.7493968545568332e-16,
     "tau_total_years_at_end": 208112146.0001261,
     "tau_since_horizon_years_at_end": 208112.14600011488,
     "segments": [
@@ -946,7 +946,7 @@
         "steps": 120,
         "rhs_evals": 841,
         "status": "reached_x_end",
-        "wall_time_s": 0.02415633201599121,
+        "wall_time_s": 0.03810310363769531,
         "min_h": 8.246004037490264e-08,
         "max_h": 0.03634900782193962
       },
@@ -958,7 +958,7 @@
         "steps": 30,
         "rhs_evals": 211,
         "status": "reached_x_end",
-        "wall_time_s": 0.0063288211822509766,
+        "wall_time_s": 0.008379936218261719,
         "min_h": 1.8113514624035705e-05,
         "max_h": 0.030700431391929947
       },
@@ -970,7 +970,7 @@
         "steps": 24,
         "rhs_evals": 169,
         "status": "reached_x_end",
-        "wall_time_s": 0.0048029422760009766,
+        "wall_time_s": 0.008179664611816406,
         "min_h": 5.314054901503262e-05,
         "max_h": 0.024521492119932174
       },
@@ -982,7 +982,7 @@
         "steps": 87,
         "rhs_evals": 610,
         "status": "reached_x_end",
-        "wall_time_s": 0.029692649841308594,
+        "wall_time_s": 0.029369831085205078,
         "min_h": 9.967501007971053e-05,
         "max_h": 0.0363446730514656
       },
@@ -994,7 +994,7 @@
         "steps": 84,
         "rhs_evals": 589,
         "status": "reached_x_end",
-        "wall_time_s": 0.026134967803955078,
+        "wall_time_s": 0.028632640838623047,
         "min_h": 0.003371479656130409,
         "max_h": 0.03632655304776287
       },
@@ -1006,7 +1006,7 @@
         "steps": 257,
         "rhs_evals": 1800,
         "status": "reached_x_end",
-        "wall_time_s": 0.08014512062072754,
+        "wall_time_s": 0.08190250396728516,
         "min_h": 0.018216900324879486,
         "max_h": 0.033928099347201215
       },
@@ -1018,7 +1018,7 @@
         "steps": 39,
         "rhs_evals": 274,
         "status": "reached_x_end",
-        "wall_time_s": 0.013205528259277344,
+        "wall_time_s": 0.013392210006713867,
         "min_h": 0.01820373911352653,
         "max_h": 0.030337810305262496
       },
@@ -1030,7 +1030,7 @@
         "steps": 329,
         "rhs_evals": 2304,
         "status": "reached_x_end",
-        "wall_time_s": 0.10540223121643066,
+        "wall_time_s": 0.10789847373962402,
         "min_h": 0.008274775148020552,
         "max_h": 0.030293178314501394
       },
@@ -1042,7 +1042,7 @@
         "steps": 90,
         "rhs_evals": 631,
         "status": "reached_x_end",
-        "wall_time_s": 0.02032637596130371,
+        "wall_time_s": 0.03074932098388672,
         "min_h": 0.018198344248178032,
         "max_h": 0.030237175116847845
       },
@@ -1054,7 +1054,7 @@
         "steps": 536,
         "rhs_evals": 3753,
         "status": "reached_x_end",
-        "wall_time_s": 0.15893054008483887,
+        "wall_time_s": 0.111083984375,
         "min_h": 0.005385550000227113,
         "max_h": 0.030236930545161078
       },
@@ -1066,7 +1066,7 @@
         "steps": 230,
         "rhs_evals": 1611,
         "status": "reached_x_end",
-        "wall_time_s": 0.04346966743469238,
+        "wall_time_s": 0.04646468162536621,
         "min_h": 0.014453108661072633,
         "max_h": 0.03023678957491095
       },
@@ -1078,7 +1078,7 @@
         "steps": 765,
         "rhs_evals": 5356,
         "status": "reached_x_end",
-        "wall_time_s": 0.19668102264404297,
+        "wall_time_s": 0.13305997848510742,
         "min_h": 0.0003710375417256273,
         "max_h": 0.030236841039568686
       },
@@ -1090,7 +1090,7 @@
         "steps": 383,
         "rhs_evals": 2682,
         "status": "reached_x_end",
-        "wall_time_s": 0.0947268009185791,
+        "wall_time_s": 0.06501030921936035,
         "min_h": 0.006122485984619175,
         "max_h": 0.030236879097265922
       },
@@ -1102,7 +1102,7 @@
         "steps": 66,
         "rhs_evals": 463,
         "status": "reached_x_end",
-        "wall_time_s": 0.015405654907226562,
+        "wall_time_s": 0.012535810470581055,
         "min_h": 0.018198322661675915,
         "max_h": 0.030236882623942498
       }
@@ -1386,11 +1386,11 @@
         "curvature_length_m": 1.5867848492196936e+18,
         "tidal_eigenvalues_SI_per_m": [
           -1.030420979895597e-20,
-          5.1521048994779854e-21,
-          5.1521048994779854e-21
+          5.152104899477985e-21,
+          5.152104899477985e-21
         ],
         "radial_stretch_accel_m_s2": 2.060841959791194e-20,
-        "transverse_compress_accel_m_s2": -1.0304209798955971e-20,
+        "transverse_compress_accel_m_s2": -1.030420979895597e-20,
         "t_schwarzschild_geo": 1163.7417602994833,
         "kruskal": {
           "U": 4.449721755842095e-127,
@@ -1692,11 +1692,11 @@
         "curvature_length_m": 9.886623827605875e-12,
         "tidal_eigenvalues_SI_per_m": [
           -2.654329064199999e+38,
-          1.3271645321000001e+38,
-          1.3271645321000001e+38
+          1.3271645320999998e+38,
+          1.3271645320999998e+38
         ],
         "radial_stretch_accel_m_s2": 5.308658128399998e+38,
-        "transverse_compress_accel_m_s2": -2.6543290642000003e+38,
+        "transverse_compress_accel_m_s2": -2.6543290641999995e+38,
         "t_schwarzschild_geo": 1163.7417522418923,
         "kruskal": {
           "U": 4.449842711266784e-127,
