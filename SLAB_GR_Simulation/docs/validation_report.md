@@ -1,6 +1,6 @@
 # SLAB_GR_Simulation — validation report
 
-Generated: 2026-09-25T22:40:46.227081+00:00  ·  status: **VALIDATED**  ·  11/11 tests passed  ·  wall time 12.9 s
+Generated: 2026-09-25T22:53:24.800816+00:00  ·  status: **VALIDATED**  ·  11/11 tests passed  ·  wall time 12.7 s
 
 Every number below is computed by `src/slab/validation.py` from the constants in `src/slab/constants.py`; nothing is typed in by hand. Tags: **EXACT GR RESULT** (closed-form consequence of the Schwarzschild solution), **NUMERICAL** (integrated/rooted value with the quoted error), **BRIEF** (value quoted in the project brief, used only as a comparison target).
 
@@ -8,13 +8,13 @@ Every number below is computed by `src/slab/validation.py` from the constants in
 
 | symbol | value | unit | source | verification status |
 |---|---|---|---|---|
-| G | 6.6743e-11 | m^3 kg^-1 s^-2 | CODATA 2018 recommended value (Tiesinga, Mohr, Newell & Taylor, Rev. Mod. Phys. 93, 025010 (2021)); NIST Reference on Constants, https://physics.nist.gov/cuu/Constants/ ; unchanged in CODATA 2022 at this precision | TRANSCRIBED — NOT RE-VERIFIED ONLINE IN THIS SESSION (network egress blocked) |
-| c | 299792458.0 | m s^-1 | SI Brochure 9th ed. (BIPM 2019); CODATA | EXACT BY DEFINITION |
-| hbar | 1.054571817e-34 | J s | CODATA 2018; h = 6.62607015e-34 J s exact (SI 2019) | EXACT (derived from exact h; rounded to 10 significant digits) |
-| l_P | 1.616255e-35 | m | CODATA 2018 recommended value; NIST Reference on Constants | TRANSCRIBED — cross-checked internally against sqrt(hbar G/c^3) (see validation TEST 0) |
-| M_sun | 1.98847e+30 | kg | Value specified in the project brief, (1.98847 +/- 0.00007)e30 kg. NOTE: the IAU 2015 nominal solar mass parameter GM_sun = 1.3271244e20 m^3 s^-2 divided by CODATA G gives 1.98841e30 kg; the 3e-5 relative difference is far below every other uncertainty in this project and is documented rather than hidden. | AS SPECIFIED IN BRIEF — NOT RE-VERIFIED ONLINE IN THIS SESSION |
-| year_julian | 31557600.0 | s | IAU; used for all year conversions in this project | EXACT BY CONVENTION |
-| au | 149597870700.0 | m | IAU 2012 Resolution B2 | EXACT BY DEFINITION (transcribed) |
+| G | 6.6743e-11 | m^3 kg^-1 s^-2 | CODATA 2022 recommended value, 6.67430(15)e-11 (P. J. Mohr, D. B. Newell, B. N. Taylor & E. Tiesinga, Rev. Mod. Phys. 97, 025002 (2025), doi:10.1103/RevModPhys.97.025002); NIST Reference on Constants, https://physics.nist.gov/cuu/Constants/ ; identical to the CODATA 2018 value (Tiesinga et al., Rev. Mod. Phys. 93, 025010 (2021)) | VERIFIED VIA WEB SEARCH (2026-09-25): value and standard uncertainty are CODATA 2022 (https://physics.nist.gov/cgi-bin/cuu/Value?bg ; https://physics.nist.gov/cuu/pdf/wallet_2022.pdf) |
+| c | 299792458.0 | m s^-1 | SI Brochure 9th ed. (BIPM 2019): defining constant c = 299 792 458 m/s, exact since 20 May 2019 | EXACT BY DEFINITION — VERIFIED VIA WEB SEARCH (2026-09-25) (https://www.bipm.org/documents/20126/41483022/SI-Brochure-9-EN.pdf ; https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.330-2019.pdf) |
+| hbar | 1.054571817e-34 | J s | h = 6.62607015e-34 J s exact (SI Brochure 9th ed., BIPM 2019); hbar = h/(2 pi) = 1.054571817...e-34 J s, listed as exact in CODATA 2022 (Mohr et al., Rev. Mod. Phys. 97, 025002 (2025)) and CODATA 2018 | EXACT (derived from exact h; the 10 digits printed by CODATA, 1.054 571 817..., i.e. truncated, 7e-10 relative below h/(2 pi)) — VERIFIED VIA WEB SEARCH (2026-09-25) (https://physics.nist.gov/cgi-bin/cuu/Value?hbar) |
+| l_P | 1.616255e-35 | m | CODATA 2022 recommended value, 1.616255(18)e-35 m, relative standard uncertainty 1.1e-5 (Mohr et al., Rev. Mod. Phys. 97, 025002 (2025)); identical to CODATA 2018; NIST Reference on Constants | VERIFIED VIA WEB SEARCH (2026-09-25) (https://physics.nist.gov/cgi-bin/cuu/Value?plkl); also cross-checked internally against sqrt(hbar G/c^3) (validation TEST 0). CORRECTED 2026-09-25: standard uncertainty was stored as 1.8e-41 m (factor 10 too small), now 1.8e-40 m; central value unchanged |
+| M_sun | 1.98847e+30 | kg | Value specified in the project brief, (1.98847 +/- 0.00007)e30 kg. It equals the IAU 2015 Resolution B3 nominal solar mass parameter (GM)_sun = 1.3271244e20 m^3 s^-2 (exact; Prsa et al., Astron. J. 152, 41 (2016)) divided by the CODATA 2014 G = 6.67408e-11 (1.988475e30 kg). IAU 2015 B3 defines no solar mass in kg and recommends quoting (GM)/G with the adopted G. NOTE: divided by the CODATA 2022 G the same GM_sun gives 1.98841e30 kg; the 3.0e-5 relative difference is far below every other uncertainty in this project and is documented rather than hidden. | PARTIALLY VERIFIED (2026-09-25): GM_sun value and the CODATA 2014 G confirmed by web search (https://iopscience.iop.org/article/10.3847/0004-6256/152/2/41 ; https://arxiv.org/pdf/1507.07956); primary source of the brief's value and of its +/- 7e25 kg uncertainty: INSUFFICIENT DATA TO VERIFY. Kept as specified in the brief |
+| year_julian | 31557600.0 | s | IAU convention: Julian year = 365.25 days of 86400 s, the year in the IAU definition of the light-year (c x Julian year = 9 460 730 472 580 800 m); used for all year conversions in this project | EXACT BY CONVENTION — VERIFIED VIA WEB SEARCH (2026-09-25) (https://iauarchive.eso.org/public/themes/measuring/) |
+| au | 149597870700.0 | m | IAU 2012 Resolution B2 (XXVIII General Assembly, Beijing): au = 149 597 870 700 m exactly | EXACT BY DEFINITION — VERIFIED VIA WEB SEARCH (2026-09-25) (https://observatoiredeparis.psl.eu/the-new-definition-of-the-astronomical-unit.html) |
 
 ## 2. Derived quantities (computed at run time)
 
@@ -38,7 +38,7 @@ Every number below is computed by `src/slab/validation.py` from the constants in
 | r_photon_sphere_m | 4.430009e+21 |
 | r_isco_m | 8.860018e+21 |
 | l_P_from_hbar_G_c | 1.616255e-35 |
-| relative_uncertainties | {'G': 2.2474266964325848e-05, 'M_sun': 3.5202944977797e-05, 'l_P': 1.1136856498510445e-06, 'M_kg': 3.5202944977797e-05, 'GM_and_all_lengths_and_times_in_SI (r_s, GM/c^3, tau, K^-1/4)': 4.1765296726990835e-05, 'K_SI (∝ M^2)': 8.353059345398167e-05, 'K_planck (∝ l_P^-4)': 4.454742599404178e-06, 'r_QG (∝ (G M)^(1/3) l_P^(2/3))': 1.3941549386238436e-05, 'tidal_SI (∝ G M / r^3 at fixed r)': 4.1765296726990835e-05, 'note': 'geometrized results (in units of GM/c^2, GM/c^3) carry no constant uncertainty at all'} |
+| relative_uncertainties | {'G': 2.2474266964325848e-05, 'M_sun': 3.5202944977797e-05, 'l_P': 1.1136856498510445e-05, 'M_kg': 3.5202944977797e-05, 'GM_and_all_lengths_and_times_in_SI (r_s, GM/c^3, tau, K^-1/4)': 4.1765296726990835e-05, 'K_SI (∝ M^2)': 8.353059345398167e-05, 'K_planck (∝ l_P^-4)': 4.454742599404178e-05, 'r_QG (∝ (G M)^(1/3) l_P^(2/3))': 1.577782656968404e-05, 'tidal_SI (∝ G M / r^3 at fixed r)': 4.1765296726990835e-05, 'note': 'geometrized results (in units of GM/c^2, GM/c^3) carry no constant uncertainty at all'} |
 
 Brief expectations (comparison targets only): M_kg = 1.98847e+48, r_s_m = 2.95334e+21, r_s_ly = 312168.0, GM_over_c3_years = 156084.0, tau_horizon_to_singularity_years = 208112.0, r_QG_m = 1.39e-16
 
@@ -47,11 +47,11 @@ Brief expectations (comparison targets only): M_kg = 1.98847e+48, r_s_m = 2.9533
 ### TEST 0 — Constant provenance and internal consistency  ·  **PASS**
 
 Equation(s): `l_P = sqrt(hbar G / c^3);  M = 1e18 M_sun`  
-Reference: CODATA 2018 (Tiesinga et al. 2021)
+Reference: CODATA 2022 (Mohr, Newell, Taylor & Tiesinga, Rev. Mod. Phys. 97, 025002 (2025)); G and l_P unchanged from CODATA 2018
 
 | check | value | expected | error | tolerance | result | note |
 |---|---|---|---|---|---|---|
-| l_P (CODATA) vs sqrt(hbar G/c^3) | 1.616255e-35 | 1.616255e-35 | 1.480493e-08 | 1.000000e-06 | ok | consistency of transcribed constants |
+| l_P (CODATA) vs sqrt(hbar G/c^3) | 1.616255e-35 | 1.616255e-35 | 1.480493e-08 | 1.000000e-06 | ok | internal consistency of the CODATA constants |
 | M [kg] vs brief 1.98847e48 | 1.988470e+48 | 1.988470e+48 | 0 | 1.000000e-05 | ok |  |
 
 ### TEST 1 — Schwarzschild radius  ·  **PASS**
@@ -96,7 +96,7 @@ Reference: Eddington 1924; Finkelstein 1958; MTW Box 31.2; Wald §6.4
 ### TEST 3 — Radial E = 1 geodesic vs analytic solution  ·  **PASS**
 
 Equation(s): `dr/dtau = -c sqrt(r_s/r) ;  u^v = x/(1+x), x = sqrt(r/2M) ; v(r) = -4M[x^3/3 - x^2/2 + x - ln(1+x)] + C`  
-Reference: MTW §25.5 & Box 31.2; Wald problem 6.4
+Reference: Taylor & Wheeler, Exploring Black Holes (2000) ch. 3; MTW (1973) ch. 25 and ch. 31 (section numbers from memory — INSUFFICIENT DATA TO VERIFY)
 
 | check | value | expected | error | tolerance | result | note |
 |---|---|---|---|---|---|---|
@@ -139,7 +139,7 @@ Reference: MTW §25.5 eq. (25.38) (cycloid solution); Taylor & Wheeler 'Explorin
 ### TEST 5 — Kretschmann scalar  ·  **PASS**
 
 Equation(s): `K = R_abcd R^abcd = 48 G^2 M^2/(c^4 r^6)  (contraction of the EF Riemann tensor vs closed form)`  
-Reference: Henry 2000, ApJ 535, 350; MTW ex. 31.1
+Reference: Henry 2000, ApJ 535, 350, doi:10.1086/308819
 
 | check | value | expected | error | tolerance | result | note |
 |---|---|---|---|---|---|---|
@@ -154,7 +154,7 @@ Reference: Henry 2000, ApJ 535, 350; MTW ex. 31.1
 ### TEST 6 — Quantum-curvature radius  ·  **PASS**
 
 Equation(s): `48 G^2 M^2/(c^4 r_QG^6) = 1/l_P^4  ->  r_QG = (48 G^2 M^2 l_P^4/c^4)^(1/6)`  
-Reference: definition; Planck length CODATA 2018
+Reference: definition; Planck length CODATA 2022
 
 | check | value | expected | error | tolerance | result | note |
 |---|---|---|---|---|---|---|
@@ -220,19 +220,19 @@ Convergence with tolerance (step cap lifted so that the error controller alone s
 
 | rtol | steps | rel. err τ(h→r_QG) | rel. err Δv(h→r_QG) | max rel. err u^r | wall [s] |
 |---|---|---|---|---|---|
-| 1e-06 | 258 | 7.536573e-08 | 2.181327e-07 | 1.059515e-04 | 0.07 |
+| 1e-06 | 258 | 7.536573e-08 | 2.181327e-07 | 1.059515e-04 | 0.05 |
 | 1e-08 | 585 | 8.286633e-10 | 7.581093e-10 | 5.443173e-07 | 0.11 |
 | 1e-10 | 1411 | 9.606482e-12 | 2.986494e-12 | 2.747224e-09 | 0.26 |
-| 1e-12 | 3471 | 2.273182e-13 | 1.480972e-13 | 1.500350e-11 | 0.66 |
+| 1e-12 | 3471 | 2.273182e-13 | 1.480972e-13 | 1.500350e-11 | 0.65 |
 
 1 g rocket (no closed form) vs 35-digit mpmath quadrature reference, milestone segments r0 -> r_QG, step cap lifted:
 
 | max_rel_err_dtau_per_segment | max_rel_err_dv_per_segment | max_rel_err_u_r_at_milestones | max_rel_err_E_at_milestones | rtol | steps | wall_s |
 |---|---|---|---|---|---|---|
-| 6.679433e-05 | 1.977293e-06 | 6.748448e-05 | 1.583673e-08 | 1.000000e-06 | 295 | 1.11615968 |
-| 3.360052e-07 | 1.985345e-08 | 3.397616e-07 | 4.572552e-10 | 1.000000e-08 | 651 | 0.0915677547 |
-| 1.521405e-09 | 3.792195e-10 | 1.534429e-09 | 7.251584e-12 | 1.000000e-10 | 1539 | 0.219495296 |
-| 6.456496e-12 | 5.818694e-12 | 6.475131e-12 | 9.765081e-14 | 1.000000e-12 | 3769 | 0.527907848 |
+| 6.679433e-05 | 1.977293e-06 | 6.748448e-05 | 1.583673e-08 | 1.000000e-06 | 295 | 1.14424229 |
+| 3.360052e-07 | 1.985345e-08 | 3.397616e-07 | 4.572552e-10 | 1.000000e-08 | 651 | 0.0913236141 |
+| 1.521405e-09 | 3.792195e-10 | 1.534429e-09 | 7.251584e-12 | 1.000000e-10 | 1539 | 0.210634232 |
+| 6.456496e-12 | 5.818694e-12 | 6.475131e-12 | 9.765081e-14 | 1.000000e-12 | 3769 | 0.509701729 |
 
 Reference used for the 1 g rocket:
 
@@ -245,9 +245,9 @@ L = 3.5 GM/c plunge vs 35-digit mpmath quadrature reference (r0 = 100 r_s -> r_Q
 
 | max_rel_err_dtau_per_segment | max_rel_err_dv_per_segment | max_rel_err_u_r_at_milestones | max_rel_err_phi_at_milestones | rtol | steps | wall_s |
 |---|---|---|---|---|---|---|
-| 4.214268e-07 | 1.349589e-07 | 4.239610e-07 | 8.036501e-08 | 1.000000e-08 | 1895 | 1.3098104 |
-| 4.330802e-09 | 9.094475e-10 | 4.364546e-09 | 5.604537e-10 | 1.000000e-10 | 4749 | 0.632978916 |
-| 4.292783e-11 | 6.852962e-12 | 4.331629e-11 | 4.289672e-12 | 1.000000e-12 | 11968 | 1.51939154 |
+| 4.214268e-07 | 1.349589e-07 | 4.239610e-07 | 8.036501e-08 | 1.000000e-08 | 1895 | 1.21598268 |
+| 4.330802e-09 | 9.094475e-10 | 4.364546e-09 | 5.604537e-10 | 1.000000e-10 | 4749 | 0.600439548 |
+| 4.292783e-11 | 6.852962e-12 | 4.331629e-11 | 4.289672e-12 | 1.000000e-12 | 11968 | 1.55404472 |
 
 ### TEST 9 — Accelerated observer's proper reference frame: inertial (Rindler-type) differential term  ·  **PASS**
 
@@ -429,7 +429,7 @@ Late-time received-signal behaviour, L = 3.5 plunge:
 
 ## 5. Verification caveats
 
-* Constant values transcribed from CODATA 2018; no network access to NIST in the build session (INSUFFICIENT DATA TO RE-VERIFY ONLINE).
+* Constants checked against CODATA 2022 (Rev. Mod. Phys. 97, 025002 (2025)) by web search on 2026-09-25; NIST pages themselves could not be fetched from the build environment (see references.md).
 * M_sun = 1.98847e30 kg as specified in the brief; IAU 2015 nominal GM_sun/G gives 1.98841e30 kg (3e-5 relative).
 * All 'years' are Julian years (365.25 d).
 

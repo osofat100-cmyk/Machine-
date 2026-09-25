@@ -1,7 +1,7 @@
 {
   "project": "SLAB_GR_Simulation",
-  "generated_utc": "2026-09-25T22:40:46.227081+00:00",
-  "wall_time_s": 12.930305480957031,
+  "generated_utc": "2026-09-25T22:53:24.800816+00:00",
+  "wall_time_s": 12.740804195404053,
   "benchmark_configuration": {
     "M_solar": 1e+18,
     "r0_over_rs": 100.0,
@@ -30,56 +30,56 @@
       "uncertainty": 1.5e-15,
       "unit": "m^3 kg^-1 s^-2",
       "description": "Newtonian constant of gravitation",
-      "source": "CODATA 2018 recommended value (Tiesinga, Mohr, Newell & Taylor, Rev. Mod. Phys. 93, 025010 (2021)); NIST Reference on Constants, https://physics.nist.gov/cuu/Constants/ ; unchanged in CODATA 2022 at this precision",
-      "verification": "TRANSCRIBED \u2014 NOT RE-VERIFIED ONLINE IN THIS SESSION (network egress blocked)"
+      "source": "CODATA 2022 recommended value, 6.67430(15)e-11 (P. J. Mohr, D. B. Newell, B. N. Taylor & E. Tiesinga, Rev. Mod. Phys. 97, 025002 (2025), doi:10.1103/RevModPhys.97.025002); NIST Reference on Constants, https://physics.nist.gov/cuu/Constants/ ; identical to the CODATA 2018 value (Tiesinga et al., Rev. Mod. Phys. 93, 025010 (2021))",
+      "verification": "VERIFIED VIA WEB SEARCH (2026-09-25): value and standard uncertainty are CODATA 2022 (https://physics.nist.gov/cgi-bin/cuu/Value?bg ; https://physics.nist.gov/cuu/pdf/wallet_2022.pdf)"
     },
     "c": {
       "value": 299792458.0,
       "uncertainty": 0.0,
       "unit": "m s^-1",
       "description": "speed of light in vacuum (exact by definition of the SI metre)",
-      "source": "SI Brochure 9th ed. (BIPM 2019); CODATA",
-      "verification": "EXACT BY DEFINITION"
+      "source": "SI Brochure 9th ed. (BIPM 2019): defining constant c = 299 792 458 m/s, exact since 20 May 2019",
+      "verification": "EXACT BY DEFINITION \u2014 VERIFIED VIA WEB SEARCH (2026-09-25) (https://www.bipm.org/documents/20126/41483022/SI-Brochure-9-EN.pdf ; https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.330-2019.pdf)"
     },
     "hbar": {
       "value": 1.054571817e-34,
       "uncertainty": 0.0,
       "unit": "J s",
       "description": "reduced Planck constant h/(2 pi); h is exact in the 2019 SI, hbar quoted to 10 digits",
-      "source": "CODATA 2018; h = 6.62607015e-34 J s exact (SI 2019)",
-      "verification": "EXACT (derived from exact h; rounded to 10 significant digits)"
+      "source": "h = 6.62607015e-34 J s exact (SI Brochure 9th ed., BIPM 2019); hbar = h/(2 pi) = 1.054571817...e-34 J s, listed as exact in CODATA 2022 (Mohr et al., Rev. Mod. Phys. 97, 025002 (2025)) and CODATA 2018",
+      "verification": "EXACT (derived from exact h; the 10 digits printed by CODATA, 1.054 571 817..., i.e. truncated, 7e-10 relative below h/(2 pi)) \u2014 VERIFIED VIA WEB SEARCH (2026-09-25) (https://physics.nist.gov/cgi-bin/cuu/Value?hbar)"
     },
     "l_P": {
       "value": 1.616255e-35,
-      "uncertainty": 1.8e-41,
+      "uncertainty": 1.8e-40,
       "unit": "m",
       "description": "Planck length sqrt(hbar G / c^3)",
-      "source": "CODATA 2018 recommended value; NIST Reference on Constants",
-      "verification": "TRANSCRIBED \u2014 cross-checked internally against sqrt(hbar G/c^3) (see validation TEST 0)"
+      "source": "CODATA 2022 recommended value, 1.616255(18)e-35 m, relative standard uncertainty 1.1e-5 (Mohr et al., Rev. Mod. Phys. 97, 025002 (2025)); identical to CODATA 2018; NIST Reference on Constants",
+      "verification": "VERIFIED VIA WEB SEARCH (2026-09-25) (https://physics.nist.gov/cgi-bin/cuu/Value?plkl); also cross-checked internally against sqrt(hbar G/c^3) (validation TEST 0). CORRECTED 2026-09-25: standard uncertainty was stored as 1.8e-41 m (factor 10 too small), now 1.8e-40 m; central value unchanged"
     },
     "M_sun": {
       "value": 1.98847e+30,
       "uncertainty": 7e+25,
       "unit": "kg",
       "description": "solar mass",
-      "source": "Value specified in the project brief, (1.98847 +/- 0.00007)e30 kg. NOTE: the IAU 2015 nominal solar mass parameter GM_sun = 1.3271244e20 m^3 s^-2 divided by CODATA G gives 1.98841e30 kg; the 3e-5 relative difference is far below every other uncertainty in this project and is documented rather than hidden.",
-      "verification": "AS SPECIFIED IN BRIEF \u2014 NOT RE-VERIFIED ONLINE IN THIS SESSION"
+      "source": "Value specified in the project brief, (1.98847 +/- 0.00007)e30 kg. It equals the IAU 2015 Resolution B3 nominal solar mass parameter (GM)_sun = 1.3271244e20 m^3 s^-2 (exact; Prsa et al., Astron. J. 152, 41 (2016)) divided by the CODATA 2014 G = 6.67408e-11 (1.988475e30 kg). IAU 2015 B3 defines no solar mass in kg and recommends quoting (GM)/G with the adopted G. NOTE: divided by the CODATA 2022 G the same GM_sun gives 1.98841e30 kg; the 3.0e-5 relative difference is far below every other uncertainty in this project and is documented rather than hidden.",
+      "verification": "PARTIALLY VERIFIED (2026-09-25): GM_sun value and the CODATA 2014 G confirmed by web search (https://iopscience.iop.org/article/10.3847/0004-6256/152/2/41 ; https://arxiv.org/pdf/1507.07956); primary source of the brief's value and of its +/- 7e25 kg uncertainty: INSUFFICIENT DATA TO VERIFY. Kept as specified in the brief"
     },
     "year_julian": {
       "value": 31557600.0,
       "uncertainty": 0.0,
       "unit": "s",
       "description": "Julian year (exact, IAU convention used for the light-year)",
-      "source": "IAU; used for all year conversions in this project",
-      "verification": "EXACT BY CONVENTION"
+      "source": "IAU convention: Julian year = 365.25 days of 86400 s, the year in the IAU definition of the light-year (c x Julian year = 9 460 730 472 580 800 m); used for all year conversions in this project",
+      "verification": "EXACT BY CONVENTION \u2014 VERIFIED VIA WEB SEARCH (2026-09-25) (https://iauarchive.eso.org/public/themes/measuring/)"
     },
     "au": {
       "value": 149597870700.0,
       "uncertainty": 0.0,
       "unit": "m",
       "description": "astronomical unit (exact since IAU 2012 Resolution B2)",
-      "source": "IAU 2012 Resolution B2",
-      "verification": "EXACT BY DEFINITION (transcribed)"
+      "source": "IAU 2012 Resolution B2 (XXVIII General Assembly, Beijing): au = 149 597 870 700 m exactly",
+      "verification": "EXACT BY DEFINITION \u2014 VERIFIED VIA WEB SEARCH (2026-09-25) (https://observatoiredeparis.psl.eu/the-new-definition-of-the-astronomical-unit.html)"
     }
   },
   "derived_quantities": {
@@ -104,12 +104,12 @@
     "relative_uncertainties": {
       "G": 2.2474266964325848e-05,
       "M_sun": 3.5202944977797e-05,
-      "l_P": 1.1136856498510445e-06,
+      "l_P": 1.1136856498510445e-05,
       "M_kg": 3.5202944977797e-05,
       "GM_and_all_lengths_and_times_in_SI (r_s, GM/c^3, tau, K^-1/4)": 4.1765296726990835e-05,
       "K_SI (\u221d M^2)": 8.353059345398167e-05,
-      "K_planck (\u221d l_P^-4)": 4.454742599404178e-06,
-      "r_QG (\u221d (G M)^(1/3) l_P^(2/3))": 1.3941549386238436e-05,
+      "K_planck (\u221d l_P^-4)": 4.454742599404178e-05,
+      "r_QG (\u221d (G M)^(1/3) l_P^(2/3))": 1.577782656968404e-05,
       "tidal_SI (\u221d G M / r^3 at fixed r)": 4.1765296726990835e-05,
       "note": "geometrized results (in units of GM/c^2, GM/c^3) carry no constant uncertainty at all"
     }
@@ -131,7 +131,7 @@
       "id": "TEST 0",
       "name": "Constant provenance and internal consistency",
       "equation": "l_P = sqrt(hbar G / c^3);  M = 1e18 M_sun",
-      "reference": "CODATA 2018 (Tiesinga et al. 2021)",
+      "reference": "CODATA 2022 (Mohr, Newell, Taylor & Tiesinga, Rev. Mod. Phys. 97, 025002 (2025)); G and l_P unchanged from CODATA 2018",
       "checks": [
         {
           "label": "l_P (CODATA) vs sqrt(hbar G/c^3)",
@@ -141,7 +141,7 @@
           "tolerance": 1e-06,
           "error_kind": "rel",
           "passed": true,
-          "note": "consistency of transcribed constants"
+          "note": "internal consistency of the CODATA constants"
         },
         {
           "label": "M [kg] vs brief 1.98847e48",
@@ -408,7 +408,7 @@
       "id": "TEST 3",
       "name": "Radial E = 1 geodesic vs analytic solution",
       "equation": "dr/dtau = -c sqrt(r_s/r) ;  u^v = x/(1+x), x = sqrt(r/2M) ; v(r) = -4M[x^3/3 - x^2/2 + x - ln(1+x)] + C",
-      "reference": "MTW \u00a725.5 & Box 31.2; Wald problem 6.4",
+      "reference": "Taylor & Wheeler, Exploring Black Holes (2000) ch. 3; MTW (1973) ch. 25 and ch. 31 (section numbers from memory \u2014 INSUFFICIENT DATA TO VERIFY)",
       "checks": [
         {
           "label": "max |u^r/u^r_analytic - 1| over all steps",
@@ -648,7 +648,7 @@
       "id": "TEST 5",
       "name": "Kretschmann scalar",
       "equation": "K = R_abcd R^abcd = 48 G^2 M^2/(c^4 r^6)  (contraction of the EF Riemann tensor vs closed form)",
-      "reference": "Henry 2000, ApJ 535, 350; MTW ex. 31.1",
+      "reference": "Henry 2000, ApJ 535, 350, doi:10.1086/308819",
       "checks": [
         {
           "label": "max rel diff: einsum contraction vs 48M^2/r^6 over r in {100..r_QG} incl. r = 2M",
@@ -727,7 +727,7 @@
       "id": "TEST 6",
       "name": "Quantum-curvature radius",
       "equation": "48 G^2 M^2/(c^4 r_QG^6) = 1/l_P^4  ->  r_QG = (48 G^2 M^2 l_P^4/c^4)^(1/6)",
-      "reference": "definition; Planck length CODATA 2018",
+      "reference": "definition; Planck length CODATA 2022",
       "checks": [
         {
           "label": "r_QG numerical root (log-space brentq) vs closed form",
@@ -1084,7 +1084,7 @@
           "err_tau_h_to_QG": 7.536573315425343e-08,
           "err_dv_h_to_QG": 2.1813267592503878e-07,
           "max_err_ur": 0.00010595152826281818,
-          "wall_s": 0.07323670387268066
+          "wall_s": 0.05005478858947754
         },
         {
           "rtol": 1e-08,
@@ -1092,7 +1092,7 @@
           "err_tau_h_to_QG": 8.28663304641708e-10,
           "err_dv_h_to_QG": 7.581093424465909e-10,
           "max_err_ur": 5.443173457802745e-07,
-          "wall_s": 0.11332297325134277
+          "wall_s": 0.11241698265075684
         },
         {
           "rtol": 1e-10,
@@ -1100,7 +1100,7 @@
           "err_tau_h_to_QG": 9.606482276325323e-12,
           "err_dv_h_to_QG": 2.9864939889100315e-12,
           "max_err_ur": 2.747223505966006e-09,
-          "wall_s": 0.2618370056152344
+          "wall_s": 0.2599167823791504
         },
         {
           "rtol": 1e-12,
@@ -1108,7 +1108,7 @@
           "err_tau_h_to_QG": 2.273181642920008e-13,
           "err_dv_h_to_QG": 1.4809715617241473e-13,
           "max_err_ur": 1.500349826879171e-11,
-          "wall_s": 0.6640753746032715
+          "wall_s": 0.646728515625
         }
       ],
       "convergence_table_thrust_1g_vs_mpmath": [
@@ -1119,7 +1119,7 @@
           "max_rel_err_E_at_milestones": 1.5836728441233456e-08,
           "rtol": 1e-06,
           "steps": 295,
-          "wall_s": 1.1161596775054932
+          "wall_s": 1.144242286682129
         },
         {
           "max_rel_err_dtau_per_segment": 3.3600524492983217e-07,
@@ -1128,7 +1128,7 @@
           "max_rel_err_E_at_milestones": 4.5725518506722966e-10,
           "rtol": 1e-08,
           "steps": 651,
-          "wall_s": 0.0915677547454834
+          "wall_s": 0.0913236141204834
         },
         {
           "max_rel_err_dtau_per_segment": 1.521405445520574e-09,
@@ -1137,7 +1137,7 @@
           "max_rel_err_E_at_milestones": 7.251584036699175e-12,
           "rtol": 1e-10,
           "steps": 1539,
-          "wall_s": 0.21949529647827148
+          "wall_s": 0.2106342315673828
         },
         {
           "max_rel_err_dtau_per_segment": 6.45649581312587e-12,
@@ -1146,7 +1146,7 @@
           "max_rel_err_E_at_milestones": 9.76508119480163e-14,
           "rtol": 1e-12,
           "steps": 3769,
-          "wall_s": 0.5279078483581543
+          "wall_s": 0.5097017288208008
         }
       ],
       "thrust_1g_reference": {
@@ -1163,7 +1163,7 @@
           "max_rel_err_phi_at_milestones": 8.03650092195796e-08,
           "rtol": 1e-08,
           "steps": 1895,
-          "wall_s": 1.3098104000091553
+          "wall_s": 1.2159826755523682
         },
         {
           "max_rel_err_dtau_per_segment": 4.330802399946263e-09,
@@ -1172,7 +1172,7 @@
           "max_rel_err_phi_at_milestones": 5.604537043630502e-10,
           "rtol": 1e-10,
           "steps": 4749,
-          "wall_s": 0.6329789161682129
+          "wall_s": 0.6004395484924316
         },
         {
           "max_rel_err_dtau_per_segment": 4.292783027757339e-11,
@@ -1181,7 +1181,7 @@
           "max_rel_err_phi_at_milestones": 4.289671879904845e-12,
           "rtol": 1e-12,
           "steps": 11968,
-          "wall_s": 1.5193915367126465
+          "wall_s": 1.5540447235107422
         }
       ]
     },
@@ -1858,7 +1858,7 @@
         "steps": 119,
         "rhs_evals": 721,
         "status": "reached_x_end",
-        "wall_time_s": 0.015972375869750977,
+        "wall_time_s": 0.0159299373626709,
         "min_h": 0.007956822093323268,
         "max_h": 0.03483346279894883
       },
@@ -1870,7 +1870,7 @@
         "steps": 29,
         "rhs_evals": 175,
         "status": "reached_x_end",
-        "wall_time_s": 0.0055997371673583984,
+        "wall_time_s": 0.0036678314208984375,
         "min_h": 0.01012923808941868,
         "max_h": 0.029050147873570742
       },
@@ -1882,7 +1882,7 @@
         "steps": 22,
         "rhs_evals": 139,
         "status": "reached_x_end",
-        "wall_time_s": 0.003072023391723633,
+        "wall_time_s": 0.0031354427337646484,
         "min_h": 0.008870247744473536,
         "max_h": 0.022835487153052725
       },
@@ -1894,7 +1894,7 @@
         "steps": 90,
         "rhs_evals": 553,
         "status": "reached_x_end",
-        "wall_time_s": 0.011646747589111328,
+        "wall_time_s": 0.011477947235107422,
         "min_h": 0.007832786648512613,
         "max_h": 0.03468910467834707
       },
@@ -1906,7 +1906,7 @@
         "steps": 101,
         "rhs_evals": 619,
         "status": "reached_x_end",
-        "wall_time_s": 0.015371084213256836,
+        "wall_time_s": 0.014439582824707031,
         "min_h": 0.005919976465360355,
         "max_h": 0.03407155105363602
       },
@@ -1918,7 +1918,7 @@
         "steps": 304,
         "rhs_evals": 1837,
         "status": "reached_x_end",
-        "wall_time_s": 0.040404558181762695,
+        "wall_time_s": 0.03859663009643555,
         "min_h": 0.00546867112598548,
         "max_h": 0.030117351857207986
       },
@@ -1930,7 +1930,7 @@
         "steps": 68,
         "rhs_evals": 421,
         "status": "reached_x_end",
-        "wall_time_s": 0.008600711822509766,
+        "wall_time_s": 0.008481502532958984,
         "min_h": 0.005298296504548716,
         "max_h": 0.024185121007873178
       },
@@ -1942,7 +1942,7 @@
         "steps": 376,
         "rhs_evals": 2269,
         "status": "reached_x_end",
-        "wall_time_s": 0.04853105545043945,
+        "wall_time_s": 0.04828667640686035,
         "min_h": 0.005300326812438527,
         "max_h": 0.02856774272199658
       },
@@ -1954,7 +1954,7 @@
         "steps": 124,
         "rhs_evals": 757,
         "status": "reached_x_end",
-        "wall_time_s": 0.016849040985107422,
+        "wall_time_s": 0.015809297561645508,
         "min_h": 0.005278866736610155,
         "max_h": 0.028510784697839853
       },
@@ -1966,7 +1966,7 @@
         "steps": 595,
         "rhs_evals": 3583,
         "status": "reached_x_end",
-        "wall_time_s": 0.0745091438293457,
+        "wall_time_s": 0.07723879814147949,
         "min_h": 0.0005876545756180462,
         "max_h": 0.028560810127835623
       },
@@ -1978,7 +1978,7 @@
         "steps": 274,
         "rhs_evals": 1645,
         "status": "reached_x_end",
-        "wall_time_s": 0.03866720199584961,
+        "wall_time_s": 0.03488039970397949,
         "min_h": 0.0005876545756180462,
         "max_h": 0.02856080577139153
       },
@@ -1990,7 +1990,7 @@
         "steps": 836,
         "rhs_evals": 5029,
         "status": "reached_x_end",
-        "wall_time_s": 0.10421538352966309,
+        "wall_time_s": 0.1054086685180664,
         "min_h": 0.00529703399437409,
         "max_h": 0.028560818707234148
       },
@@ -2002,7 +2002,7 @@
         "steps": 433,
         "rhs_evals": 2611,
         "status": "reached_x_end",
-        "wall_time_s": 0.0597531795501709,
+        "wall_time_s": 0.05505108833312988,
         "min_h": 0.005277313670916328,
         "max_h": 0.02856081758230289
       },
@@ -2014,7 +2014,7 @@
         "steps": 99,
         "rhs_evals": 607,
         "status": "reached_x_end",
-        "wall_time_s": 0.01572871208190918,
+        "wall_time_s": 0.013293981552124023,
         "min_h": 0.005267269024528787,
         "max_h": 0.028052312072190944
       }
@@ -2788,7 +2788,7 @@
     ]
   },
   "verification_caveats": [
-    "Constant values transcribed from CODATA 2018; no network access to NIST in the build session (INSUFFICIENT DATA TO RE-VERIFY ONLINE).",
+    "Constants checked against CODATA 2022 (Rev. Mod. Phys. 97, 025002 (2025)) by web search on 2026-09-25; NIST pages themselves could not be fetched from the build environment (see references.md).",
     "M_sun = 1.98847e30 kg as specified in the brief; IAU 2015 nominal GM_sun/G gives 1.98841e30 kg (3e-5 relative).",
     "All 'years' are Julian years (365.25 d)."
   ]

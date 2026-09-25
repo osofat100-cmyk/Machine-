@@ -214,7 +214,7 @@ class DormandPrince54:
         nfev += 1
         ev_prev = event(x, y) if event is not None else None
 
-        # initial step guess (Hairer et al. I.4)
+        # initial step guess (Hairer, Nørsett & Wanner I, §II.4)
         if h0 is None:
             sc = self._scale(y, y)
             # components with relative-only control that start at exactly zero have no scale yet:

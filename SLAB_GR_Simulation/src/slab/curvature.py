@@ -24,7 +24,7 @@ Tidal tensor: E_{mu nu} = R_{mu alpha nu beta} u^alpha u^beta projected on
 an orthonormal comoving tetrad gives the 3x3 symmetric matrix E_ij whose
 eigenvalues lambda_i give the geodesic-deviation (tidal) accelerations
     D^2 xi^i / dtau^2 = - E_ij xi^j
-(MTW §31.2, eq. 31.6; Wald §3.3).  For radial motion in Schwarzschild the
+(MTW §31.2, eq. 31.6 — numbers from memory, INSUFFICIENT DATA TO VERIFY; Wald §3.3, section verified).  For radial motion in Schwarzschild the
 eigenvalues are (-2M/r^3, +M/r^3, +M/r^3): radial stretching 2M L/r^3 and
 transverse compression M L/r^3 for a body of proper length L.  This holds
 for ANY radial 4-velocity because the Schwarzschild Riemann tensor is

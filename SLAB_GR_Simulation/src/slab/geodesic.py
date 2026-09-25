@@ -278,7 +278,7 @@ def proper_time_to_center(metric: StaticSphericalMetric, r: float, E: float, L: 
 # Analytic reference solution: Schwarzschild, E = 1, L = 0 (radial free fall from rest at infinity)
 # ---------------------------------------------------------------------------
 class RadialInfallE1:
-    """Closed-form E = 1 radial geodesic (EXACT GR RESULT; MTW §25.5, Box 25.6 analogue).
+    """Closed-form E = 1 radial geodesic (EXACT GR RESULT; MTW ch. 25 radial geodesics — section/box numbers from memory, INSUFFICIENT DATA TO VERIFY; Taylor & Wheeler 2000 ch. 3).
 
     With x = sqrt(r/2M):
         dr/dtau = -sqrt(2M/r)                 tau(r) = -(4M/3) x^3 + C_tau

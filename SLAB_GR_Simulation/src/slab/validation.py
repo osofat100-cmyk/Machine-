@@ -68,8 +68,8 @@ class Test:
 # ---------------------------------------------------------------------------
 def test0_constants(dq: DerivedQuantities) -> dict:
     t = Test("TEST 0", "Constant provenance and internal consistency",
-             "l_P = sqrt(hbar G / c^3);  M = 1e18 M_sun", "CODATA 2018 (Tiesinga et al. 2021)")
-    t.check("l_P (CODATA) vs sqrt(hbar G/c^3)", dq.l_P_from_hbar_G_c, C.l_P, 1e-6, note="consistency of transcribed constants")
+             "l_P = sqrt(hbar G / c^3);  M = 1e18 M_sun", "CODATA 2022 (Mohr, Newell, Taylor & Tiesinga, Rev. Mod. Phys. 97, 025002 (2025)); G and l_P unchanged from CODATA 2018")
+    t.check("l_P (CODATA) vs sqrt(hbar G/c^3)", dq.l_P_from_hbar_G_c, C.l_P, 1e-6, note="internal consistency of the CODATA constants")
     t.check("M [kg] vs brief 1.98847e48", dq.M_kg, BRIEF_EXPECTATIONS["M_kg"], 1e-5)
     return t.d
 
@@ -133,7 +133,7 @@ def test2_horizon_regularity(sim: Simulation) -> dict:
 def test3_radial_geodesic(sim: Simulation) -> dict:
     t = Test("TEST 3", "Radial E = 1 geodesic vs analytic solution",
              "dr/dtau = -c sqrt(r_s/r) ;  u^v = x/(1+x), x = sqrt(r/2M) ; v(r) = -4M[x^3/3 - x^2/2 + x - ln(1+x)] + C",
-             "MTW §25.5 & Box 31.2; Wald problem 6.4")
+             "Taylor & Wheeler, Exploring Black Holes (2000) ch. 3; MTW (1973) ch. 25 and ch. 31 (section numbers from memory — INSUFFICIENT DATA TO VERIFY)")
     cols = sim.columns
     t.check("max |u^r/u^r_analytic - 1| over all steps", float(np.nanmax(np.abs(cols["ur_reldiff_E1"]))), None, 1e-9, kind="abs")
     t.check("max |u^v/u^v_analytic - 1| over all steps", float(np.nanmax(np.abs(cols["uv_reldiff_E1"]))), None, 1e-9, kind="abs")
@@ -181,7 +181,7 @@ def test4_proper_time_benchmark(sim: Simulation) -> dict:
 
 def test5_kretschmann(sim: Simulation) -> dict:
     t = Test("TEST 5", "Kretschmann scalar", "K = R_abcd R^abcd = 48 G^2 M^2/(c^4 r^6)  (contraction of the EF Riemann tensor vs closed form)",
-             "Henry 2000, ApJ 535, 350; MTW ex. 31.1")
+             "Henry 2000, ApJ 535, 350, doi:10.1086/308819")
     m, u, dq = sim.metric, sim.units, sim.dq
     worst = 0.0
     for r in [100.0, 10.0, 3.0, 2.0, 1.0, 0.1, 1e-3, 1e-10, 1e-20, sim.milestones[-1].r_geo]:
@@ -228,7 +228,7 @@ def test5_kretschmann(sim: Simulation) -> dict:
 
 def test6_rqg(dq: DerivedQuantities) -> dict:
     t = Test("TEST 6", "Quantum-curvature radius", "48 G^2 M^2/(c^4 r_QG^6) = 1/l_P^4  ->  r_QG = (48 G^2 M^2 l_P^4/c^4)^(1/6)",
-             "definition; Planck length CODATA 2018")
+             "definition; Planck length CODATA 2022")
     from scipy.optimize import brentq
     import mpmath as mp
 
@@ -593,7 +593,7 @@ def run_all_tests(cfg: SimulationConfig, root: Path) -> dict:
         "tests": tests,
         "benchmark_summary": sim.summary(),
         "verification_caveats": [
-            "Constant values transcribed from CODATA 2018; no network access to NIST in the build session (INSUFFICIENT DATA TO RE-VERIFY ONLINE).",
+            "Constants checked against CODATA 2022 (Rev. Mod. Phys. 97, 025002 (2025)) by web search on 2026-09-25; NIST pages themselves could not be fetched from the build environment (see references.md).",
             "M_sun = 1.98847e30 kg as specified in the brief; IAU 2015 nominal GM_sun/G gives 1.98841e30 kg (3e-5 relative).",
             "All 'years' are Julian years (365.25 d).",
         ],

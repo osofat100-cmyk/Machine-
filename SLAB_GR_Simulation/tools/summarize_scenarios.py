@@ -31,7 +31,7 @@ def main() -> None:
         out.append(f"| {r['tag']} | {r['E']} | {r['L']} | {r['thrust']} | {r['r0']} | {r['tau_r0_to_horizon_yr']:.6e} | {r['E_at_horizon']:.6e} | "
                    f"{r['tau_horizon_to_rQG_yr']:.6e} | {r['steps']} | {r['norm_resid_cond']:.1e} |")
     out.append("\nReference (E = 1, L = 0, no thrust): τ(r_s→r_QG) = 4GM/(3c³) = 208,112 yr.  "
-               "Inward thrust makes the interior proper time SHORTER (the geodesic maximizes it; Lewis & Kwan 2007), "
+               "Inward thrust (the only kind implemented) makes the interior proper time SHORTER; from the horizon no observer can have more than piGM/c^3, reached on the E = 0 free-fall path, and suitably directed thrust can lengthen the time of an observer who entered from outside only up to that maximum (Lewis & Kwan 2007), "
                "angular momentum also shortens it.  Run new scenarios with `python run_simulation.py --skip-validation --thrust <m/s^2> | --L <GM/c> | --E <E> --r0 <r/r_s> [--tag name]`.\n")
     (ROOT / "data" / "scenarios" / "README.md").write_text("\n".join(out))
     print("\n".join(out))

@@ -16,6 +16,8 @@ References (see references.md):
   * Eddington 1924 (Nature 113, 192); Finkelstein 1958 (Phys. Rev. 110, 965)
   * Misner, Thorne & Wheeler, "Gravitation" (1973), §31.4, Box 31.2
   * Wald, "General Relativity" (1984), §6.4
+  Textbook section, box and equation numbers here are from memory unless references.md marks them
+  verified (INSUFFICIENT DATA TO VERIFY otherwise).
   * Kruskal 1960 (Phys. Rev. 119, 1743); Szekeres 1960 (Publ. Math. Debrecen 7, 285)
 
 Coordinate index convention: 0 = v, 1 = r, 2 = theta, 3 = phi.
