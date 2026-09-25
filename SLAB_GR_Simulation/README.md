@@ -29,35 +29,89 @@ trajectories and never integrates the observer's motion itself.
   (`src/slab/speculative/`, `data/speculative/`) are kept visually and numerically separate and
   carry the permanent banner "SPECULATIVE MODEL — NOT experimentally established."
 
-## Quick start
+## Installation
+
+Requirements: Python ≥ 3.11 (tested with 3.11); for the viewer toolchain and its tests Node 22 (tested; `engines` allows ≥ 18).
+No GPU is needed anywhere: the headless viewer tests use Chromium's SwiftShader software GL.
 
 ```bash
 cd SLAB_GR_Simulation
-pip install -r requirements.txt            # numpy scipy h5py mpmath sympy pytest
-python run_simulation.py --speculative     # validation gate (TESTS 0–8) -> simulation -> data -> render export
-python -m pytest tests -q                  # 26 physics/numerics/IO tests incl. CLI checkpoint/resume
+python -m venv .venv && . .venv/bin/activate    # optional but recommended
+pip install -e ".[test,tools]"                  # package `slab` (src layout) + console command `slab-sim`
+                                                # extras: test = pytest, tools = sympy (tools/derive_ef_curvature.py)
+```
+
+Runtime dependencies (declared in `pyproject.toml`): numpy, scipy, h5py, mpmath. `requirements.txt` holds the same
+list plus the extras for a no-install setup (`pip install -r requirements.txt`, then use `python run_simulation.py`).
+
+Viewer toolchain (only needed to rebuild `renders/viewer.bundle.js` or run the headless tests; the committed
+bundle runs as is):
+
+```bash
+cd renders/build && npm ci                      # exact versions from package-lock.json: esbuild, three, playwright-core
+npm run browser:install                         # only if no Chromium is available: Chromium pinned to playwright-core's version
+```
+
+## Quick start
+
+```bash
+slab-sim --speculative                     # validation gate (TESTS 0–8) -> simulation -> data -> render export
+python -m pytest tests -q                  # physics/numerics/IO tests incl. CLI checkpoint/resume and packaging checks
 # open renders/viewer.html in a browser (works from file://; no network needed)
 node tests/viewer/test_null_geodesics.mjs  # first-person ray-tracer physics checks (CPU replica of the shader)
-node tests/viewer/check_viewer.mjs         # headless viewer smoke test + screenshots (needs Chromium)
+node tests/viewer/check_viewer.mjs         # headless viewer smoke test + screenshots (needs Chromium, see below)
 ```
+
+`slab-sim` and `python run_simulation.py` run the same pipeline (`src/slab/cli.py`) with the same flags;
+`run_simulation.py` needs no installation and always uses its own directory as the project directory.
+`slab-sim` finds the project directory (the one holding `simulation_config.json`, `checkpoints/`, `data/`,
+`renders/`) in this order: `--project-dir DIR`, the environment variable `SLAB_PROJECT_DIR`, the current directory
+or a parent of it (also looking into a `SLAB_GR_Simulation/` subdirectory, so it works from the repository root),
+the source checkout of an editable install. Run anywhere inside this repository it therefore uses exactly the
+directory `run_simulation.py` uses. It prints the directory it picked; `slab-sim --help` lists all flags.
 
 Useful options: `--resume` (continue from the newest checkpoint in `simulation_state.json`),
 `--stop-after-milestone horizon`, `--thrust 9.81` (1 g inward rocket), `--E 0.95 --r0 10`
 (fall from rest at finite radius), `--L 3.5` (equatorial plunge with angular momentum),
-`--validate-only`. Scenario runs are written to `data/scenarios/<tag>/`.
+`--validate-only`, `--out-dir DIR`, `--project-dir DIR` (`slab-sim` only). Scenario runs are written to
+`data/scenarios/<tag>/`. After `--stop-after-milestone`, `slab-sim` prints the complete resume command (with the
+`--project-dir`, `--out-dir`/`--tag` and `--skip-validation` it needs); `run_simulation.py` keeps its historic hint.
+
+Headless viewer tests find the browser via `CHROMIUM_PATH`, else `/opt/pw-browsers/chromium` if it exists, else
+playwright-core's own Chromium (`npm run browser:install`). From `renders/build`: `npm run build` (= `build.sh`),
+`npm test` (= `npm run test:physics` for every Node-only `tests/viewer/test_*.mjs`, then `npm run test:viewer` for
+the headless browser tests).
+
+## Continuous integration
+
+`.github/workflows/slab-gr-simulation.yml` (repository root) runs on every push and pull request that touches
+`SLAB_GR_Simulation/**` (or the workflow itself), and on manual dispatch:
+
+* **Python 3.11 job:** `pip install -e SLAB_GR_Simulation[test,tools]`; `python -m pytest tests -q`;
+  `python run_simulation.py --validate-only`; the sympy re-derivation `tools/derive_ef_curvature.py` (fails on any
+  mismatch); a `slab-sim` smoke run from the repository root (short `--E 0.95 --r0 10` scenario that must end with
+  the Planck-threshold message). The validation report is uploaded as a build artifact.
+* **Node 22 job:** `npm ci` in `renders/build`; `build.sh`; a warning (not a failure) if the committed
+  `viewer.bundle.js` differs from the fresh build; `npm run test:physics`; Chromium installed with
+  `npx playwright@<playwright-core version> install --with-deps chromium`; `npm run test:viewer` (zero console
+  errors required) with SwiftShader software GL, since the runners have no GPU. Screenshots are uploaded as an artifact.
 
 ## Layout
 
 ```
 src/slab/            physics engine (constants, metric, curvature, geodesic, integrators, trajectory, io, validation)
+src/slab/cli.py      command-line pipeline behind `slab-sim` and run_simulation.py (project-directory discovery)
 src/slab/speculative toy models (NOT established physics)
 tools/               symbolic re-derivation of the EF curvature (sympy)
 tests/               pytest suite; tests/viewer: headless viewer tests and null-geodesic checks
 data/                trajectory.csv, trajectory.h5, trajectory_metadata.json, segments/, speculative/, scenarios/
 checkpoints/         versioned checkpoints (never overwritten): ckpt_<index>_<milestone>_v<version>.json
 renders/             viewer.html + viewer.bundle.js + trajectory_data.js (+ src/, build/, screenshots/)
+renders/build/       viewer toolchain: package.json (slab-viewer-build; exact versions), package-lock.json, build.sh
 docs/                viewer architecture and drafts
 references/          reference notes
+pyproject.toml       packaging (pip install -e .; console command slab-sim; extras test, tools)
+run_simulation.py    thin wrapper around slab.cli.main (works without installation)
 simulation_config.json / simulation_state.json / validation_report.json
 README.md / physics_notes.md / references.md / PROJECT_STATE.md
 ```
@@ -88,7 +142,8 @@ trajectory calculations remain relativistic."; disabled and labelled below r = 1
 floats fail), and the separate **SPECULATIVE QUANTUM-GRAVITY TOY MODELS — NOT ESTABLISHED PHYSICS** menu.
 Playback runs along log10(r/r_s) (proper time is useless as an axis: 99.9999 % of it is spent outside
 0.1 r_s); the dashboard shows all quantities of the brief in real time. Rebuild after editing
-`renders/src/*.js` with `renders/build/build.sh` (esbuild + vendored three.js, no network needed).
+`renders/src/*.js` with `renders/build/build.sh` (esbuild + three.js from `renders/build/node_modules`, installed
+once with `npm ci`; no network needed afterwards).
 
 ## Validation (automated, must pass before the simulation is marked validated)
 
