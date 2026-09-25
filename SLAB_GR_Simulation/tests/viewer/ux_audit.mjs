@@ -9,7 +9,7 @@ import fs from 'node:fs';
 const ROOT = path.resolve(new URL('.', import.meta.url).pathname, '../..');
 const require = createRequire(path.join(ROOT, 'renders/build/package.json'));
 const { chromium } = require('playwright-core');
-const exe = process.env.CHROMIUM_PATH || (fs.existsSync('/opt/pw-browsers/chromium') ? '/opt/pw-browsers/chromium' : undefined);
+const exe = process.env.CHROMIUM_PATH || (fs.existsSync('/opt/pw-browsers/chromium') ? '/opt/pw-browsers/chromium' : chromium.executablePath());
 const url = 'file://' + path.join(ROOT, 'renders/viewer.html');
 const shots = path.join(ROOT, 'renders/screenshots/ux');
 fs.mkdirSync(shots, { recursive: true });

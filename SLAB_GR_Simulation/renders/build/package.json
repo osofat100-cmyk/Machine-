@@ -6,8 +6,8 @@
   "scripts": {
     "build": "NODE_PATH=\"$PWD/node_modules\" esbuild ../src/main.js --bundle --format=iife --target=es2020 --outfile=../viewer.bundle.js --log-level=warning",
     "test": "npm run --silent test:physics && npm run --silent test:viewer",
-    "test:physics": "for f in ../../tests/viewer/test_*.mjs; do echo \"== node $f\"; node \"$f\" || exit 1; done",
-    "test:viewer": "node ../../tests/viewer/check_viewer.mjs && node ../../tests/viewer/causal_check.mjs",
+    "test:physics": "for f in ../../tests/viewer/test_*.mjs; do case \"$f\" in *_browser.mjs) continue;; esac; echo \"== node $f\"; node \"$f\" || exit 1; done",
+    "test:viewer": "node ../../tests/viewer/check_viewer.mjs && node ../../tests/viewer/causal_check.mjs && for f in ../../tests/viewer/*_browser.mjs; do [ -e \"$f\" ] || continue; echo \"== node $f\"; node \"$f\" || exit 1; done",
     "browser:install": "npx --yes playwright@$(node -p \"require('playwright-core/package.json').version\") install --with-deps chromium"
   },
   "engines": {

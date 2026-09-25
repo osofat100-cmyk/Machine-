@@ -48,7 +48,7 @@ jobs:
       - name: pytest (physics, numerics, IO, CLI checkpoint/resume, packaging)
         run: python -m pytest tests -q
 
-      - name: Validation gate (TESTS 0-8)
+      - name: Validation gate (TESTS 0-10)
         run: python run_simulation.py --validate-only
 
       - name: Symbolic re-derivation of the EF Christoffel/Riemann components (sympy)
@@ -102,7 +102,7 @@ jobs:
           git diff --quiet -- ../viewer.bundle.js \
             || echo "::warning file=SLAB_GR_Simulation/renders/viewer.bundle.js::committed bundle differs from a fresh build (run renders/build/build.sh and commit the bundle)"
 
-      - name: First-person ray-tracer physics checks (node tests/viewer/test_null_geodesics.mjs)
+      - name: Viewer physics checks without a browser (tests/viewer/test_*.mjs except *_browser.mjs)
         run: npm run test:physics
 
       - name: Install Chromium pinned to the playwright-core version
