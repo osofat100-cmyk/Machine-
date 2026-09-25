@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>SLAB GR Simulation — interactive viewer</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root { --bg:#0b0e14; --panel:#131824; --fg:#d8dee9; --dim:#8892a6; --accent:#7ab7ff; --warn:#ffb454; --bad:#ff6b6b; --ok:#6ee7a0; --spec:#d98cff; }
+  * { box-sizing: border-box; }
+  html, body { margin:0; height:100%; background:var(--bg); color:var(--fg); font: 13px/1.4 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  #app { display:grid; grid-template-columns: 360px 1fr; grid-template-rows: auto 1fr auto; height:100%; }
+  header { grid-column: 1 / 3; display:flex; align-items:center; gap:16px; padding:8px 12px; background:var(--panel); border-bottom:1px solid #222a3a; }
+  header h1 { font-size:15px; margin:0; font-weight:600; }
+  header .tabs button { background:#1b2233; color:var(--fg); border:1px solid #2b3549; padding:6px 10px; margin-right:4px; cursor:pointer; border-radius:4px; }
+  header .tabs button.active { background:var(--accent); color:#000; border-color:var(--accent); }
+  header .tabs button.spec { border-color: var(--spec); color: var(--spec); }
+  header .tabs button.spec.active { background: var(--spec); color:#000; }
+  #sidebar { overflow-y:auto; background:var(--panel); border-right:1px solid #222a3a; padding:10px 12px; }
+  #main { position:relative; overflow:hidden; }
+  .view { position:absolute; inset:0; display:none; }
+  .view.active { display:block; }
+  #banner { position:absolute; top:8px; left:50%; transform:translateX(-50%); background:rgba(255,180,84,.15); border:1px solid var(--warn); color:var(--warn); padding:4px 10px; border-radius:4px; font-weight:600; letter-spacing:.3px; pointer-events:none; z-index:5; }
+  #banner.hidden { display:none; }
+  #planck { position:absolute; bottom:16px; left:50%; transform:translateX(-50%); background:rgba(255,107,107,.12); border:1px solid var(--bad); color:var(--bad); padding:8px 14px; border-radius:6px; white-space:pre-line; text-align:center; font-weight:600; z-index:5; }
+  #planck.hidden { display:none; }
+  #spec-banner { position:absolute; top:8px; left:50%; transform:translateX(-50%); background:rgba(217,140,255,.15); border:1px solid var(--spec); color:var(--spec); padding:4px 10px; border-radius:4px; font-weight:700; z-index:6; }
+  #spec-banner.hidden { display:none; }
+  footer { grid-column: 1 / 3; background:var(--panel); border-top:1px solid #222a3a; padding:8px 12px; display:flex; align-items:center; gap:10px; }
+  footer input[type=range] { flex:1; }
+  footer button, footer select { background:#1b2233; color:var(--fg); border:1px solid #2b3549; padding:4px 8px; border-radius:4px; cursor:pointer; }
+  .kv { display:grid; grid-template-columns: 1fr auto; gap:2px 8px; margin-bottom:8px; }
+  .kv .k { color:var(--dim); }
+  .kv .v { text-align:right; font-variant-numeric: tabular-nums; font-family: ui-monospace, Menlo, Consolas, monospace; }
+  .section { font-weight:600; color:var(--accent); margin:10px 0 4px; border-bottom:1px solid #222a3a; padding-bottom:2px; }
+  .regime { padding:6px 8px; border-radius:4px; font-weight:700; text-align:center; margin:6px 0; }
+  .regime.r0 { background:rgba(110,231,160,.15); color:var(--ok); border:1px solid var(--ok); }
+  .regime.r1 { background:rgba(255,180,84,.15); color:var(--warn); border:1px solid var(--warn); }
+  .regime.r2 { background:rgba(255,107,107,.15); color:var(--bad); border:1px solid var(--bad); }
+  .regime.r3 { background:rgba(217,140,255,.15); color:var(--spec); border:1px solid var(--spec); }
+  .controls label { display:block; margin:4px 0; color:var(--dim); }
+  .controls select, .controls input { width:100%; background:#1b2233; color:var(--fg); border:1px solid #2b3549; padding:3px 6px; border-radius:4px; }
+  .note { color:var(--dim); font-size:12px; }
+  canvas { display:block; }
+  #view-causal canvas, #view-fp canvas { width:100%; height:100%; }
+  .overlay { position:absolute; left:10px; bottom:10px; background:rgba(0,0,0,.55); padding:6px 8px; border-radius:4px; font-family: ui-monospace, Menlo, Consolas, monospace; font-size:12px; pointer-events:none; }
+</style>
+</head>
+<body>
+<div id="app">
+  <header>
+    <h1>SLAB GR Simulation — M = 10<sup>18</sup> M<sub>☉</sub> Schwarzschild infall</h1>
+    <div class="tabs">
+      <button data-view="scene" class="active">3D view</button>
+      <button data-view="causal">Causal / Kruskal diagram</button>
+      <button data-view="fp">First-person camera</button>
+      <button data-view="spec" class="spec">SPECULATIVE QUANTUM-GRAVITY TOY MODELS — NOT ESTABLISHED PHYSICS</button>
+    </div>
+  </header>
+  <aside id="sidebar">
+    <div id="dashboard"></div>
+    <div class="section">View controls</div>
+    <div class="controls" id="controls"></div>
+    <div class="section">Validation</div>
+    <div id="validation" class="note"></div>
+  </aside>
+  <div id="main">
+    <div id="banner">LOGARITHMIC VISUALIZATION — NOT TO SCALE</div>
+    <div id="spec-banner" class="hidden">SPECULATIVE MODEL — NOT experimentally established.</div>
+    <div id="planck" class="hidden"></div>
+    <div id="view-scene" class="view active"></div>
+    <div id="view-causal" class="view"></div>
+    <div id="view-fp" class="view"></div>
+    <div id="view-spec" class="view"></div>
+  </div>
+  <footer>
+    <button id="play">▶ Play</button>
+    <label>speed <select id="speed"><option value="0.5">0.5 dec/s</option><option value="2" selected>2 dec/s</option><option value="8">8 dec/s</option></select></label>
+    <label>axis <select id="axis"><option value="logr" selected>log10(r / r_s)</option><option value="tau">proper time (exterior)</option></select></label>
+    <input type="range" id="slider" min="0" max="1" step="0.0001" value="0">
+    <span id="pos" style="min-width:260px;text-align:right;font-family:ui-monospace,Menlo,monospace"></span>
+  </footer>
+</div>
+<script src="trajectory_data.js"></script>
+<script src="viewer.bundle.js"></script>
+</body>
+</html>

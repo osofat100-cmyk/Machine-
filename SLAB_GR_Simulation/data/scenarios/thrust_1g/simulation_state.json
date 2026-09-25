@@ -1,0 +1,15 @@
+{
+  "project": "SLAB_GR_Simulation",
+  "status": "complete",
+  "latest_checkpoint": "checkpoints/ckpt_14_r_QG_v001.json",
+  "milestone_index": 14,
+  "milestone_slug": "r_QG",
+  "n_milestones": 15,
+  "config_hash": "68d7fc70d939a54b",
+  "regime": "PLANCK-CURVATURE BOUNDARY",
+  "r_m": 1.387739385393499e-16,
+  "r_over_rs": 4.698882200332483e-38,
+  "tau_total_years": 17.320938506618294,
+  "how_to_resume": "python run_simulation.py --resume [--tag <tag> | --out-dir <dir>]   (config is taken from the checkpoint)",
+  "updated_utc": "2026-09-25T20:15:59.367854+00:00"
+}
