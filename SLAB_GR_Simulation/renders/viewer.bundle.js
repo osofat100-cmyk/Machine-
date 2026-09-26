@@ -1,5 +1,33 @@
 (() => {
   // ../src/data.js
+  var isNum = (v) => typeof v === "number" && Number.isFinite(v);
+  var GEOMETRIC_COLUMNS = ["tau_to_center_est_years", "tau_to_center_est_geo"];
+  var AXES = {
+    logr: {
+      label: "log10(r / r_s)",
+      unit: "dec/s",
+      rate: (v) => v,
+      step: 0.25,
+      fine: 0.01,
+      help: "constant rate in decades of radius (default)"
+    },
+    logtau: {
+      label: "log10 \u03C4 remaining (classical-GR extrapolation)",
+      unit: "dec/s",
+      rate: (v) => v,
+      step: 0.25,
+      fine: 0.01,
+      help: "constant rate in decades of the classical proper time remaining to r = 0 (column tau_to_center_est_years, a classical-GR extrapolation)"
+    },
+    tau: {
+      label: "proper time \u03C4 (linear; exterior)",
+      unit: "% \u03C4/s",
+      rate: (v) => 0.02 * v,
+      step: 0.01,
+      fine: 1e-3,
+      help: "linear in proper time: 99.9 % of \u03C4 is spent outside 0.1 r_s, the last 30 decades of r pass in one frame"
+    }
+  };
   var TrajectoryData = class {
     constructor(raw2) {
       this.raw = raw2;
@@ -13,6 +41,10 @@
       this.logrMin = this.logr[this.N - 1];
       this.columns = Object.keys(this.s);
       this.horizonIndex = this._firstIndexBelow(0);
+      this._geometric = GEOMETRIC_COLUMNS.filter((k) => this.s[k]);
+      this._axes = {};
+      this._signal = void 0;
+      this._u0 = void 0;
     }
     _firstIndexBelow(logr) {
       for (let i = 0; i < this.N; i++) if (this.logr[i] <= logr) return i;
@@ -44,7 +76,17 @@
         if (a === null || b === null || a === void 0 || b === void 0 || typeof a === "string" || typeof b === "string") out[k] = t < 0.5 ? a : b;
         else out[k] = a + (b - a) * t;
       }
-      if (out.regime_code !== null) out.regime_code = Math.round(out.regime_code);
+      if (out.regime_code !== null && out.regime_code !== void 0) out.regime_code = Math.round(out.regime_code);
+      if (isNum(out.log10_r_over_rs)) {
+        const x = Math.pow(10, out.log10_r_over_rs);
+        if ("r_over_rs" in out) out.r_over_rs = x;
+        if ("r_geo" in out) out.r_geo = 2 * x;
+        if ("r_m" in out && isNum(this.derived.r_s_m)) out.r_m = x * this.derived.r_s_m;
+      }
+      for (const k of this._geometric) {
+        const a = this.s[k][i], b = this.s[k][i + 1];
+        if (isNum(a) && isNum(b) && a > 0 && b > 0) out[k] = a * Math.pow(b / a, t);
+      }
       return out;
     }
     at(logr) {
@@ -53,15 +95,180 @@
     milestone(slug) {
       return this.milestones.find((m) => m.slug === slug);
     }
-    // proper-time axis helper (exterior only): logr as a function of tau fraction
-    logrForTauFraction(f) {
-      const tau = this.s.tau_years;
-      const target = f * tau[this.N - 1];
-      for (let i = 0; i < this.N - 1; i++) if (tau[i + 1] >= target) {
-        const t = (target - tau[i]) / Math.max(1e-300, tau[i + 1] - tau[i]);
-        return this.logr[i] + (this.logr[i + 1] - this.logr[i]) * t;
+    // ------------------------------------------------------------------ milestones navigation
+    // dir = +1: next milestone deeper in (smaller r); dir = -1: previous milestone (larger r).  null if none.
+    nextMilestone(logr, dir) {
+      const tol = 1e-9;
+      const ms = this.milestones.filter((m) => isNum(m.log10_r_over_rs)).slice().sort((a, b) => b.log10_r_over_rs - a.log10_r_over_rs);
+      if (dir > 0) return ms.find((m) => this.clampLogR(m.log10_r_over_rs) < logr - tol) || null;
+      for (let i = ms.length - 1; i >= 0; i--) if (this.clampLogR(ms[i].log10_r_over_rs) > logr + tol) return ms[i];
+      return null;
+    }
+    // ------------------------------------------------------------------ playback axes
+    // Monotone progress coordinate per sample: nulls filled by linear interpolation in the index (clamped at the ends),
+    // then made strictly increasing (cumulative max plus a tiny increment) so that playback can never stall.
+    _monotone(vals, eps) {
+      const N = this.N, idx = [];
+      for (let i = 0; i < N; i++) if (isNum(vals[i])) idx.push(i);
+      if (idx.length < 2) return null;
+      const s = new Float64Array(N);
+      let j = 0;
+      for (let i = 0; i < N; i++) {
+        if (i <= idx[0]) {
+          s[i] = vals[idx[0]];
+          continue;
+        }
+        if (i >= idx[idx.length - 1]) {
+          s[i] = vals[idx[idx.length - 1]];
+          continue;
+        }
+        while (idx[j + 1] < i) j++;
+        const a = idx[j], b = idx[j + 1];
+        s[i] = vals[a] + (vals[b] - vals[a]) * (i - a) / (b - a);
       }
-      return this.logrMin;
+      for (let i = 1; i < N; i++) if (!(s[i] > s[i - 1])) s[i] = s[i - 1] + eps;
+      return s;
+    }
+    axis(name) {
+      if (this._axes[name] !== void 0) return this._axes[name];
+      let s = null;
+      if (name === "logr") s = Float64Array.from(this.logr, (x) => -x);
+      else if (name === "logtau") {
+        const c = this.s.tau_to_center_est_years;
+        if (c) s = this._monotone(c.map((v) => isNum(v) && v > 0 ? -Math.log10(v) : null), 1e-9);
+      } else if (name === "tau") {
+        const c = this.s.tau_years;
+        if (c) {
+          let end = -Infinity;
+          for (const v of c) if (isNum(v) && v > end) end = v;
+          if (end > 0) s = this._monotone(c.map((v) => isNum(v) ? v / end : null), 1e-13);
+        }
+      }
+      this._axes[name] = s;
+      return s;
+    }
+    axisAvailable(name) {
+      return !!AXES[name] && !!this.axis(name);
+    }
+    axisRange(name) {
+      const s = this.axis(name);
+      return s ? [s[0], s[this.N - 1]] : [0, 1];
+    }
+    // progress coordinate s of the axis at a given log10(r/r_s)
+    axisAt(name, logr) {
+      const s = this.axis(name);
+      if (!s) return NaN;
+      const p = this.indexOf(logr), i = Math.max(0, Math.min(this.N - 2, Math.floor(p))), t = Math.max(0, Math.min(1, p - i));
+      return s[i] + (s[i + 1] - s[i]) * t;
+    }
+    // inverse: log10(r/r_s) at progress coordinate v (clamped to the data range)
+    logrAtAxis(name, v) {
+      const s = this.axis(name);
+      if (!s) return this.logrMax;
+      if (!(v > s[0])) return this.logrMax;
+      if (v >= s[this.N - 1]) return this.logrMin;
+      let lo = 0, hi = this.N - 1;
+      while (hi - lo > 1) {
+        const mid = lo + hi >> 1;
+        if (s[mid] <= v) lo = mid;
+        else hi = mid;
+      }
+      const t = (v - s[lo]) / (s[hi] - s[lo]);
+      return this.logr[lo] + (this.logr[hi] - this.logr[lo]) * t;
+    }
+    // backwards-compatible helper (linear proper-time axis)
+    logrForTauFraction(f) {
+      const [a, b] = this.axisRange("tau");
+      return this.logrAtAxis("tau", a + f * (b - a));
+    }
+    // ------------------------------------------------------------------ distant observer: retarded time and received signal
+    // Retarded (outgoing Eddington–Finkelstein) time u = v - 2 r_*(r), r_* = r + 2M ln|r/2M - 1| (G = c = M = 1).
+    // Exterior only (null inside the horizon).  Uses the engine's u_ret_geo column when present.
+    retardedTimeGeo(rec) {
+      if (!rec) return null;
+      if (isNum(rec.u_ret_geo)) return rec.u_ret_geo;
+      const r = isNum(rec.r_geo) ? rec.r_geo : isNum(rec.log10_r_over_rs) ? 2 * Math.pow(10, rec.log10_r_over_rs) : NaN;
+      if (!(r > 2) || !isNum(rec.v_geo)) return null;
+      return rec.v_geo - 2 * (r + 2 * Math.log(r / 2 - 1));
+    }
+    _row(i) {
+      const s = this.s, g = (k) => s[k] ? s[k][i] : void 0;
+      return {
+        v_geo: g("v_geo"),
+        r_geo: g("r_geo"),
+        log10_r_over_rs: this.logr[i],
+        u_ret_geo: g("u_ret_geo"),
+        t_receive_years: g("t_receive_years"),
+        redshift_1pz_to_infinity: g("redshift_1pz_to_infinity"),
+        u_v: g("u_v"),
+        u_r: g("u_r"),
+        tau_years: g("tau_years"),
+        r_over_rs: g("r_over_rs")
+      };
+    }
+    _uStart() {
+      if (this._u0 === void 0) {
+        const u = this.retardedTimeGeo(this._row(0));
+        this._u0 = isNum(u) ? u : null;
+      }
+      return this._u0;
+    }
+    // reception time [Julian years] at a distant static observer of the radial signal emitted at this event, counted from
+    // the reception of the signal emitted at the start; null inside the horizon (the signal never arrives)
+    tReceiveYears(rec) {
+      if (!rec) return null;
+      if (isNum(rec.t_receive_years)) return rec.t_receive_years;
+      const u = this.retardedTimeGeo(rec), u0 = this._uStart();
+      if (!isNum(u) || !isNum(u0)) return null;
+      return (u - u0) * this.derived.GM_over_c3_years;
+    }
+    // 1 + z of a radially outgoing photon received at infinity (exterior only, null inside).  Evaluated with the engine's
+    // closed form 1 + z = u^v - 2 u^r / f (physics_notes §11) on the exported 4-velocity at the exact r of the record;
+    // the redshift_1pz_to_infinity column is used only when the 4-velocity is missing.  Reason: the render export
+    // interpolates every column linearly between engine steps, which is accurate for the smooth u^v, u^r (2e-5 at the
+    // samples of the default run) but not for the steep 1 + z column near r_s (up to 2 % there).
+    onePlusZ(rec) {
+      if (!rec) return null;
+      const r = isNum(rec.r_geo) ? rec.r_geo : isNum(rec.log10_r_over_rs) ? 2 * Math.pow(10, rec.log10_r_over_rs) : NaN;
+      if (!(r > 2)) return null;
+      if (isNum(rec.u_v) && isNum(rec.u_r)) {
+        const z = rec.u_v - 2 * rec.u_r / (1 - 2 / r);
+        if (isNum(z) && z > 0) return z;
+      }
+      return isNum(rec.redshift_1pz_to_infinity) ? rec.redshift_1pz_to_infinity : null;
+    }
+    // Received-signal timeline {source, note, efoldYears, points: [{t, y = log10(1+z), tau, rOverRs}]} sorted by t.
+    signalTimeline() {
+      if (this._signal !== void 0) return this._signal;
+      const efoldDefault = 4 * this.derived.GM_over_c3_years;
+      const st = this.raw.signal_timeline;
+      let res = null;
+      if (st && Array.isArray(st.t_receive_years) && Array.isArray(st.one_plus_z)) {
+        const pts = [];
+        for (let i = 0; i < st.t_receive_years.length; i++) {
+          const t = st.t_receive_years[i], z = st.one_plus_z[i];
+          if (isNum(t) && isNum(z) && z > 0) pts.push({ t, y: Math.log10(z), tau: st.tau_years ? st.tau_years[i] : null, rOverRs: st.r_over_rs ? st.r_over_rs[i] : null });
+        }
+        pts.sort((a, b) => a.t - b.t);
+        if (pts.length >= 2) res = { source: "engine", note: st.note || "", efoldYears: isNum(st.late_time_efold_years) ? st.late_time_efold_years : efoldDefault, points: pts };
+      }
+      if (!res) {
+        const pts = [];
+        for (let i = 0; i < this.N; i++) {
+          const row = this._row(i);
+          const t = this.tReceiveYears(row), z = this.onePlusZ(row);
+          if (isNum(t) && isNum(z)) pts.push({ t, y: Math.log10(z), tau: row.tau_years, rOverRs: Math.pow(10, row.log10_r_over_rs) });
+        }
+        pts.sort((a, b) => a.t - b.t);
+        res = {
+          source: "samples",
+          note: "computed in the viewer from the exported samples: u = v_geo \u2212 2 r_*(r_geo), 1 + z = u^v \u2212 2u^r/f (same closed form as the engine column redshift_1pz_to_infinity)",
+          efoldYears: efoldDefault,
+          points: pts
+        };
+      }
+      this._signal = res;
+      return res;
     }
   };
   var fmt = {
@@ -85,14 +292,13 @@
       if (x >= 1e-14) return `${fmt.sci(x)} m (${fmt.sci(x * 1e10, 3)} \xC5)`;
       return `${fmt.sci(x)} m (${fmt.sci(x * 1e15, 3)} fm)`;
     },
-    years(x) {
+    years(x, d = 4) {
       if (x === null || x === void 0) return "\u2014";
       if (typeof x === "string") return x;
       if (!isFinite(x)) return x > 0 ? "+\u221E" : "\u2212\u221E";
       const s = x * 365.25 * 86400;
-      if (Math.abs(x) >= 1) return `${fmt.sci(x)} yr`;
-      if (Math.abs(s) >= 1) return `${fmt.sci(s)} s`;
-      return `${fmt.sci(s)} s`;
+      if (Math.abs(x) >= 1) return `${fmt.sci(x, d)} yr`;
+      return `${fmt.sci(s, d)} s`;
     },
     log10(x) {
       if (x === null || x === void 0) return "\u2014";
@@ -102,10 +308,14 @@
 
   // ../src/dashboard.js
   var REGIMES = ["CLASSICAL GR \u2014 VALIDATED", "CLASSICAL GR \u2014 EXTREME CURVATURE", "PLANCK-CURVATURE BOUNDARY", "SPECULATIVE QUANTUM MODEL"];
+  var REGIME_COLORS = ["#6ee7a0", "#ffb454", "#ff6b6b", "#d98cff"];
+  var isNum2 = (v) => typeof v === "number" && Number.isFinite(v);
   var Dashboard = class {
     constructor(el, data2) {
       this.el = el;
       this.data = data2;
+      const col = (k) => data2.s[k];
+      this.hasInertial = !!col("inertial_diff_radial_m_s2") && col("inertial_diff_radial_m_s2").some((v) => isNum2(v) && v !== 0);
       const d = data2.derived, cfg = data2.meta.config;
       this.static = {
         "Black-hole mass": `${fmt.sci(cfg.M_solar, 3)} M\u2609 = ${fmt.sci(d.M_kg)} kg`,
@@ -148,6 +358,10 @@
         ["Curvature length K^(-1/4)", fmt.metres(smp.curvature_length_m)],
         ["Radial tidal acceleration", `${fmt.sci(smp.radial_stretch_m_s2, 3)} m/s\xB2 across ${this.data.meta.config.body_length_m} m (stretch)`],
         ["Transverse tidal acceleration", `${fmt.sci(smp.transverse_compress_m_s2, 3)} m/s\xB2 (compress)`],
+        ...this.hasInertial ? [
+          ["Inertial (thrust) differential", isNum2(smp.inertial_diff_radial_m_s2) ? smp.inertial_diff_radial_m_s2 === 0 ? "0 (engine off here)" : `${fmt.sci(smp.inertial_diff_radial_m_s2, 3)} m/s\xB2 across ${this.data.meta.config.body_length_m} m` : "\u2014"],
+          ["Radial total (tidal + inertial)", isNum2(smp.radial_total_diff_m_s2) ? `${fmt.sci(smp.radial_total_diff_m_s2, 3)} m/s\xB2 (+ = separation)` : "\u2014"]
+        ] : [],
         ["Tidal eigenvalues", `${fmt.sci(smp.tidal_radial_SI_per_m, 3)} / ${fmt.sci(smp.tidal_transverse_SI_per_m, 3)} s\u207B\xB2 per m`],
         ["4-velocity (u^v, u^r)", `${fmt.sci(smp.u_v, 5)}, ${fmt.sci(smp.u_r, 5)}`],
         ["Killing energy E", fmt.sci(smp.E_killing, 6)],
@@ -165,7 +379,11 @@
       ] : [
         ["Schwarzschild time t", fmt.years(smp.t_schw_years)],
         ["Coordinate velocity dr/dt", `${fmt.sci(smp.dr_dt_schw, 4)} c (\u2192 0 at r_s: apparent freezing)`],
-        ["Redshift 1+z of infaller's light", fmt.sci(smp.redshift_1pz_to_infinity, 4)]
+        ["Redshift 1+z of infaller's light", fmt.sci(this.data.onePlusZ ? this.data.onePlusZ(smp) : smp.redshift_1pz_to_infinity, 4)],
+        ["Signal received at t_receive", (() => {
+          const t = this.data.tReceiveYears ? this.data.tReceiveYears(smp) : null;
+          return isNum2(t) ? `${fmt.years(t)} after the start signal (radial light, distant static observer)` : "\u2014";
+        })()]
       ];
       this.distant.innerHTML = '<div class="section">Distant observer (Schwarzschild coordinates)</div><div class="kv">' + dist.map(([k, v]) => `<div class="k">${k}</div><div class="v" style="white-space:normal;text-align:left">${v}</div>`).join("") + "</div>";
     }
@@ -2338,10 +2556,10 @@
     angleTo(q) {
       return 2 * Math.acos(Math.abs(clamp(this.dot(q), -1, 1)));
     }
-    rotateTowards(q, step) {
+    rotateTowards(q, step2) {
       const angle = this.angleTo(q);
       if (angle === 0) return this;
-      const t = Math.min(1, step / angle);
+      const t = Math.min(1, step2 / angle);
       this.slerp(q, t);
       return this;
     }
@@ -18997,14 +19215,14 @@ void main() {
       _ray$1.copy(raycaster.ray).applyMatrix4(_inverseMatrix$1);
       const localThreshold = threshold / ((this.scale.x + this.scale.y + this.scale.z) / 3);
       const localThresholdSq = localThreshold * localThreshold;
-      const step = this.isLineSegments ? 2 : 1;
+      const step2 = this.isLineSegments ? 2 : 1;
       const index = geometry.index;
       const attributes = geometry.attributes;
       const positionAttribute = attributes.position;
       if (index !== null) {
         const start = Math.max(0, drawRange.start);
         const end = Math.min(index.count, drawRange.start + drawRange.count);
-        for (let i = start, l = end - 1; i < l; i += step) {
+        for (let i = start, l = end - 1; i < l; i += step2) {
           const a = index.getX(i);
           const b = index.getX(i + 1);
           const intersect = checkIntersection(this, raycaster, _ray$1, localThresholdSq, a, b);
@@ -19023,7 +19241,7 @@ void main() {
       } else {
         const start = Math.max(0, drawRange.start);
         const end = Math.min(positionAttribute.count, drawRange.start + drawRange.count);
-        for (let i = start, l = end - 1; i < l; i += step) {
+        for (let i = start, l = end - 1; i < l; i += step2) {
           const intersect = checkIntersection(this, raycaster, _ray$1, localThresholdSq, i, i + 1);
           if (intersect) {
             intersects.push(intersect);
@@ -21522,20 +21740,23 @@ void main() {
   };
   function drawConeInset(canvas, smp) {
     const ctx = canvas.getContext("2d");
-    if (!ctx) return;
+    if (!ctx) return null;
     const dpr = Math.min(2, window.devicePixelRatio || 1);
     const W = canvas.clientWidth || 260, H = canvas.clientHeight || 200;
-    if (canvas.width !== W * dpr || canvas.height !== H * dpr) {
-      canvas.width = W * dpr;
-      canvas.height = H * dpr;
+    if (canvas.width !== Math.round(W * dpr) || canvas.height !== Math.round(H * dpr)) {
+      canvas.width = Math.round(W * dpr);
+      canvas.height = Math.round(H * dpr);
     }
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.clearRect(0, 0, W, H);
     ctx.fillStyle = "rgba(11,14,20,0.85)";
     ctx.fillRect(0, 0, W, H);
-    const ox = W * 0.5, oy = H * 0.72, sc = Math.min(W, H) * 0.32;
+    const ox = Math.round(W * 0.5), oy = Math.round(H * 0.72), sc = Math.min(W, H) * 0.32;
     const rOverRs = smp.r_over_rs, f = 1 - 1 / rOverRs;
-    const so = smp.lc_out_drdtEF ?? f / (2 - f), si = smp.lc_in_drdtEF ?? -1, sw = smp.worldline_drdtEF ?? 0;
+    const fin = (v) => typeof v === "number" && Number.isFinite(v);
+    const so = fin(f) ? f / (2 - f) : smp.lc_out_drdtEF ?? 0;
+    const si = -1;
+    const sw = smp.worldline_drdtEF ?? 0;
     ctx.strokeStyle = "#3a4560";
     ctx.lineWidth = 1;
     ctx.beginPath();
@@ -21547,7 +21768,21 @@ void main() {
     ctx.fillStyle = "#8892a6";
     ctx.font = "11px system-ui, sans-serif";
     ctx.fillText("r \u2192", W - 30, oy - 4);
-    ctx.fillText("t_EF \u2191", ox + 4, 18);
+    ctx.fillText("t_EF \u2191", ox + 4, 26);
+    if (Math.abs(rOverRs - 1) < 0.5) {
+      const drWin = 1.6;
+      const xh = ox + (1 - rOverRs) / 0.5 * drWin * 0.5 * sc;
+      ctx.strokeStyle = "#ff8c42";
+      ctx.lineWidth = 1;
+      ctx.setLineDash([4, 3]);
+      ctx.beginPath();
+      ctx.moveTo(xh, 12);
+      ctx.lineTo(xh, H - 8);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillStyle = "#ff8c42";
+      ctx.fillText("r = r_s", xh + 3, 40);
+    }
     const T = sc;
     ctx.fillStyle = f > 0.02 ? "rgba(255,209,102,0.25)" : f > -0.02 ? "rgba(255,140,66,0.3)" : "rgba(255,107,107,0.3)";
     ctx.beginPath();
@@ -21564,20 +21799,6 @@ void main() {
     ctx.moveTo(ox, oy);
     ctx.lineTo(ox + si * T, oy - T);
     ctx.stroke();
-    const drWin = 1.6;
-    const rsPos = (1 - rOverRs) / Math.max(1e-300, rOverRs);
-    if (Math.abs(rOverRs - 1) < 0.5) {
-      const xh = ox + (1 - rOverRs) / 0.5 * drWin * 0.5 * sc;
-      ctx.strokeStyle = "#ff8c42";
-      ctx.setLineDash([4, 3]);
-      ctx.beginPath();
-      ctx.moveTo(xh, 12);
-      ctx.lineTo(xh, H - 8);
-      ctx.stroke();
-      ctx.setLineDash([]);
-      ctx.fillStyle = "#ff8c42";
-      ctx.fillText("r = r_s", xh + 3, 30);
-    }
     ctx.strokeStyle = "#7ab7ff";
     ctx.lineWidth = 2.5;
     ctx.beginPath();
@@ -21591,16 +21812,25 @@ void main() {
     ctx.fillStyle = "#d8dee9";
     ctx.font = "12px system-ui, sans-serif";
     ctx.fillText("local future light cone (ingoing EF time)", 8, 14);
-    ctx.font = "11px ui-monospace, monospace";
+    const fit = (text, x, y, px, family) => {
+      let size = px;
+      ctx.font = `${size}px ${family}`;
+      while (size > 8 && ctx.measureText(text).width > W - x - 4) {
+        size -= 0.5;
+        ctx.font = `${size}px ${family}`;
+      }
+      ctx.fillText(text, x, y);
+    };
     ctx.fillStyle = "#c8d0e0";
-    ctx.fillText(`dr/dt_EF: out ${so.toFixed(3)}  in ${si.toFixed(1)}  worldline ${sw.toFixed(3)}`, 8, H - 22);
-    const where = rOverRs > 1.001 ? "outside r_s: cone straddles increasing and decreasing r" : rOverRs > 0.999 ? "AT r_s: outgoing generator is vertical (lies on the horizon)" : "inside r_s: every future direction has dr < 0";
+    fit(`dr/dt_EF: out ${so.toFixed(3)}  in ${si.toFixed(1)}  worldline ${sw.toFixed(3)}`, 8, H - 22, 11, "ui-monospace, monospace");
+    const where = rOverRs > 1.001 ? "outside r_s: cone reaches larger and smaller r" : rOverRs > 0.999 ? "AT r_s: outgoing generator vertical (on the horizon)" : "inside r_s: every future direction has dr < 0";
     ctx.fillStyle = f > 0.02 ? "#ffd166" : f > -0.02 ? "#ff8c42" : "#ff6b6b";
-    ctx.fillText(where, 8, H - 8);
+    fit(where, 8, H - 8, 11, "system-ui, sans-serif");
+    return { ox, oy, T, W, H, dpr, so, si, sw };
   }
 
   // ../src/scene3d.js
-  var REGIME_COLORS = [7268256, 16757844, 16739179];
+  var REGIME_COLORS2 = [7268256, 16757844, 16739179];
   var SHORT = {
     isco: "ISCO 3 r_s",
     photon_sphere: "photon sphere 1.5 r_s",
@@ -21671,6 +21901,7 @@ void main() {
       this.renderer = new WebGLRenderer({ antialias: false, alpha: false, powerPreference: "low-power" });
       this.renderer.setPixelRatio(Math.min(1.5, window.devicePixelRatio || 1));
       this.renderer.setClearColor(724500);
+      this.renderer.domElement.style.cssText += "position:absolute;left:0;top:0;width:100%;height:100%;display:block;";
       this.container.appendChild(this.renderer.domElement);
       this.scene = new Scene();
       this.camera = new PerspectiveCamera(50, 1, 0.01, 5e3);
@@ -21678,6 +21909,7 @@ void main() {
       this.controls = new OrbitControls(this.camera, this.renderer.domElement);
       this.controls.enableDamping = true;
       this.controls.dampingFactor = 0.1;
+      this.controls.touches = { ONE: TOUCH.ROTATE, TWO: TOUCH.DOLLY_PAN };
       this.scene.add(new AmbientLight(16777215, 0.7));
       const dl = new DirectionalLight(16777215, 0.6);
       dl.position.set(1, 2, 1);
@@ -21692,7 +21924,7 @@ void main() {
       this.overlay.style.maxWidth = "60%";
       this.container.appendChild(this.overlay);
       this.inset = document.createElement("canvas");
-      this.inset.style.cssText = "position:absolute;right:10px;bottom:10px;width:280px;height:190px;border:1px solid #2b3549;border-radius:4px;";
+      this.inset.style.cssText = "position:absolute;right:10px;bottom:10px;width:280px;height:190px;border:1px solid #2b3549;border-radius:4px;pointer-events:none;";
       this.container.appendChild(this.inset);
       this.legend = document.createElement("div");
       this.legend.className = "overlay";
@@ -21830,7 +22062,7 @@ void main() {
         if (mode === "horizon" && (r < 0.84 || r > 1.16)) continue;
         const ph = d.s.phi ? d.s.phi[i] ?? 0 : 0;
         pts.push(R * Math.cos(ph), 0, R * Math.sin(ph));
-        const c = new Color(REGIME_COLORS[d.s.regime_code[i] ?? 0]);
+        const c = new Color(REGIME_COLORS2[d.s.regime_code[i] ?? 0]);
         cols.push(c.r, c.g, c.b);
       }
       const g = new BufferGeometry();
@@ -21884,19 +22116,48 @@ void main() {
       this.coneLabel.visible = visible && this.showLabels;
       if (visible) {
         this.marker.position.set(R * Math.cos(ph), 0, R * Math.sin(ph));
-        this.marker.material.emissive.set(REGIME_COLORS[state2?.speculative ? 2 : smp.regime_code ?? 0]);
+        this.marker.material.emissive.set(REGIME_COLORS2[state2?.speculative ? 2 : smp.regime_code ?? 0]);
         this.cone.group.position.copy(this.marker.position);
         this.cone.group.rotation.y = -ph;
         const f = 1 - 1 / r;
-        this.cone.update(f, smp.lc_out_drdtEF ?? f / (2 - f), smp.lc_in_drdtEF ?? -1, smp.worldline_drdtEF ?? 0);
+        this.cone.update(f, Number.isFinite(f) ? f / (2 - f) : smp.lc_out_drdtEF ?? 0, -1, smp.worldline_drdtEF ?? 0);
         this.coneLabel.position.set(this.marker.position.x + 1.5, 3.4, this.marker.position.z + 1.5);
         if (this.follow) this.controls.target.lerp(this.marker.position, 0.2);
       }
-      const inside = r <= 1;
-      this.overlay.innerHTML = `<b>${MODE_LABEL[this.mode]}</b><br>true radius r = ${fmt.metres(smp.r_m)}  \xB7  r/r_s = ${fmt.sci(r, 5)}  \xB7  ${inside ? "INSIDE the horizon" : "outside the horizon"}` + (this.mode === "deep" && !isFinite(R) ? "<br>(observer still outside the deep-interior window r \u2264 10\u207B\u2076 r_s)" : "") + (this.mode === "horizon" && (r < 0.84 || r > 1.16) ? "<br>(observer outside the 0.85\u20131.15 r_s window)" : "");
-      drawConeInset(this.inset, smp);
+      const where = Math.abs(r - 1) < 1e-12 ? "AT the horizon (r = r_s)" : r < 1 ? "INSIDE the horizon" : "outside the horizon";
+      this.overlay.innerHTML = `<b>${MODE_LABEL[this.mode]}</b><br>true radius r = ${fmt.metres(smp.r_m)}  \xB7  r/r_s = ${fmt.sci(r, 5)}  \xB7  ${where}` + (this.mode === "deep" && !isFinite(R) ? "<br>(observer still outside the deep-interior window r \u2264 10\u207B\u2076 r_s)" : "") + (this.mode === "horizon" && (r < 0.84 || r > 1.16) ? "<br>(observer outside the 0.85\u20131.15 r_s window)" : "");
+      this._lastSmp = smp;
+      this.insetGeom = drawConeInset(this.inset, smp);
       this.controls.update();
       this.renderer.render(this.scene, this.camera);
+    }
+    modeLabel() {
+      return MODE_LABEL[this.mode] || MODE_LABEL.log;
+    }
+    // Render now (in the caller's task) so that the WebGL drawing buffer is valid for an immediate drawImage/toBlob
+    // (render-then-capture; the renderer does not need preserveDrawingBuffer).
+    renderNow() {
+      if (!this.ready) return;
+      if (this._lastSmp) this.insetGeom = drawConeInset(this.inset, this._lastSmp);
+      this.controls.update();
+      this.renderer.render(this.scene, this.camera);
+    }
+    // Layers for the PNG export, positioned in CSS pixels relative to the view container.  Must be composited in the
+    // same task (the WebGL buffer is cleared after the next compositing).
+    captureLayers() {
+      if (!this.ready) return { width: this.container.clientWidth, height: this.container.clientHeight, layers: [] };
+      this.renderNow();
+      const box = this.container.getBoundingClientRect();
+      const rel = (el) => {
+        const b = el.getBoundingClientRect();
+        return { x: b.left - box.left, y: b.top - box.top, w: b.width, h: b.height };
+      };
+      return {
+        width: box.width,
+        height: box.height,
+        background: "#0b0e14",
+        layers: [{ canvas: this.renderer.domElement, ...rel(this.renderer.domElement) }, { canvas: this.inset, ...rel(this.inset) }]
+      };
     }
     resize() {
       if (!this.ready) return;
@@ -21917,6 +22178,8 @@ void main() {
   var PI = Math.PI;
   var PI2 = PI / 2;
   var PI4 = PI / 4;
+  var LOG10E = Math.LOG10E;
+  var PANEL_MODES = { both: "all panels", kruskal: "Kruskal only", penrose: "Penrose only", signal: "signal timeline only" };
   var COL = {
     bg: "#0b0e14",
     panel: "#10151f",
@@ -21932,12 +22195,14 @@ void main() {
     regionII: "rgba(255,107,107,0.08)",
     regionX: "rgba(0,0,0,0.35)",
     regime: ["#6ee7a0", "#ffb454", "#ff6b6b", "#d98cff"],
-    accent: "#7ab7ff"
+    accent: "#7ab7ff",
+    warn: "#ffb454",
+    grid: "#1e2638"
   };
   var REGIME_NAMES = ["CLASSICAL GR \u2014 VALIDATED", "CLASSICAL GR \u2014 EXTREME CURVATURE", "PLANCK-CURVATURE BOUNDARY", "SPECULATIVE QUANTUM MODEL"];
   var FONT = (px, weight = 400) => `${weight} ${px}px system-ui, -apple-system, "Segoe UI", Roboto, sans-serif`;
   var cOfR = (r) => (1 - r / (2 * M)) * Math.exp(r / (2 * M));
-  var isNum = (v) => typeof v === "number" && Number.isFinite(v);
+  var isNum3 = (v) => typeof v === "number" && Number.isFinite(v);
   function clipSegment(x0, y0, x1, y1, xmin, xmax, ymin, ymax) {
     let t0 = 0, t1 = 1;
     const dx = x1 - x0, dy = y1 - y0;
@@ -21957,6 +22222,14 @@ void main() {
       }
     }
     return [x0 + t0 * dx, y0 + t0 * dy, x0 + t1 * dx, y0 + t1 * dy];
+  }
+  function niceTicks(a, b, n) {
+    if (!(b > a) || !(n >= 1)) return [];
+    const raw2 = (b - a) / n, p = Math.pow(10, Math.floor(Math.log10(raw2))), m = raw2 / p;
+    const step2 = (m <= 1 ? 1 : m <= 2 ? 2 : m <= 5 ? 5 : 10) * p;
+    const out = [];
+    for (let v = Math.ceil(a / step2) * step2; v <= b + 1e-9 * step2; v += step2) out.push(Math.abs(v) < 1e-12 * step2 ? 0 : v);
+    return out.map((v) => ({ v, step: step2 }));
   }
   function compactify(U, V) {
     const Ut = Math.atan(U), Vt = Math.atan(V);
@@ -21986,17 +22259,30 @@ void main() {
       root.style.cssText = "position:absolute;inset:0;display:flex;flex-direction:column;background:" + COL.bg + ";overflow:hidden;";
       this.root = root;
       const panels = document.createElement("div");
-      panels.style.cssText = "flex:1 1 auto;display:flex;flex-direction:row;min-height:0;gap:2px;padding:2px;";
+      panels.style.cssText = "flex:1 1 auto;display:grid;min-height:0;gap:2px;padding:2px;overflow-y:auto;";
       this.panels = panels;
       this.kruskal = this._makePanel("kruskal");
       this.penrose = this._makePanel("penrose");
+      this.signal = this._makePanel("signal");
+      this.kruskal.wrap.style.gridArea = "k";
+      this.penrose.wrap.style.gridArea = "p";
+      this.signal.wrap.style.gridArea = "s";
       panels.appendChild(this.kruskal.wrap);
       panels.appendChild(this.penrose.wrap);
+      panels.appendChild(this.signal.wrap);
       const cap = document.createElement("div");
       cap.style.cssText = "flex:0 0 auto;background:#131824;border-bottom:1px solid #222a3a;padding:6px 10px;font-size:12px;line-height:1.35;color:" + COL.text + ";display:grid;grid-template-columns:auto 1fr;gap:2px 14px;max-height:34%;overflow:auto;";
       this.caption = cap;
       root.appendChild(cap);
       root.appendChild(panels);
+      const sel = document.createElement("select");
+      sel.id = "causal-panels";
+      sel.title = "Panels shown in the causal tab";
+      sel.style.cssText = "position:absolute;top:4px;right:8px;z-index:2;background:#1b2233;color:" + COL.text + ";border:1px solid #2b3549;border-radius:4px;padding:3px 6px;font-size:12px;min-height:28px;";
+      sel.innerHTML = Object.entries(PANEL_MODES).map(([k, v]) => `<option value="${k}">${v}</option>`).join("");
+      sel.addEventListener("change", (e) => this.setMode(e.target.value));
+      this.modeSelect = sel;
+      root.appendChild(sel);
       this.container.appendChild(root);
       try {
         if (typeof ResizeObserver !== "undefined") {
@@ -22025,7 +22311,7 @@ void main() {
         msg.textContent = `2D canvas unavailable: the ${name} diagram cannot be drawn in this browser.`;
         wrap.appendChild(msg);
       }
-      return { name, wrap, canvas, ctx, w: 0, h: 0, dpr: 1 };
+      return { name, wrap, canvas, ctx, w: 0, h: 0, dpr: 1, map: null, marker: null };
     }
     _fail(msg) {
       try {
@@ -22046,7 +22332,7 @@ void main() {
         let skipped = 0;
         for (let i = 0; i < N; i++) {
           const x = X[i], t = T[i];
-          if (isNum(x) && isNum(t)) {
+          if (isNum3(x) && isNum3(t)) {
             if (!cur) {
               cur = [];
               lines.push(cur);
@@ -22078,11 +22364,39 @@ void main() {
       try {
         const W = this.root.clientWidth, H = this.root.clientHeight;
         if (W === 0 || H === 0) return;
-        const stacked = this.mode === "both" && (W < 820 || W < 1.1 * H);
-        this.panels.style.flexDirection = stacked ? "column" : "row";
-        this.kruskal.wrap.style.display = this.mode === "penrose" ? "none" : "";
-        this.penrose.wrap.style.display = this.mode === "kruskal" ? "none" : "";
-        for (const p of [this.kruskal, this.penrose]) {
+        const mode = this.mode, ps = this.panels.style;
+        const show = { k: mode === "both" || mode === "kruskal", p: mode === "both" || mode === "penrose", s: mode === "both" || mode === "signal" };
+        this.kruskal.wrap.style.display = show.k ? "" : "none";
+        this.penrose.wrap.style.display = show.p ? "" : "none";
+        this.signal.wrap.style.display = show.s ? "" : "none";
+        if (mode === "both") {
+          const stacked = W < 820 || W < 1.1 * H;
+          this.stacked = stacked;
+          if (stacked) {
+            ps.gridTemplateColumns = "1fr";
+            ps.gridTemplateRows = "minmax(340px, 1.25fr) minmax(280px, 1fr) minmax(250px, 0.9fr)";
+            ps.gridTemplateAreas = '"k" "p" "s"';
+          } else {
+            ps.gridTemplateColumns = "1fr 1fr";
+            ps.gridTemplateRows = "minmax(260px, 1.1fr) minmax(230px, 1fr)";
+            ps.gridTemplateAreas = '"k p" "k s"';
+          }
+        } else {
+          this.stacked = false;
+          ps.gridTemplateColumns = "1fr";
+          ps.gridTemplateRows = "1fr";
+          ps.gridTemplateAreas = mode === "kruskal" ? '"k"' : mode === "penrose" ? '"p"' : '"s"';
+        }
+        for (const p of [this.kruskal, this.penrose, this.signal]) {
+          if (p.wrap.style.display === "none") {
+            p.w = 0;
+            p.h = 0;
+            p.marker = null;
+            p.map = null;
+            p.plots = [];
+            p.markerAll = [];
+            continue;
+          }
           const w = p.wrap.clientWidth, h = p.wrap.clientHeight;
           const dpr = Math.min(2, Math.max(1, window.devicePixelRatio || 1));
           p.w = w;
@@ -22099,8 +22413,26 @@ void main() {
       }
     }
     setMode(mode) {
-      this.mode = mode === "kruskal" || mode === "penrose" ? mode : "both";
+      this.mode = PANEL_MODES[mode] ? mode : "both";
+      if (this.modeSelect && this.modeSelect.value !== this.mode) this.modeSelect.value = this.mode;
       this.resize();
+    }
+    // Layers for the PNG export (CSS pixels relative to the panel area; 2D canvases keep their content).
+    captureLayers() {
+      const box = this.panels.getBoundingClientRect(), layers = [];
+      for (const p of [this.kruskal, this.penrose, this.signal]) {
+        if (p.wrap.style.display === "none" || !p.w) continue;
+        const b = p.canvas.getBoundingClientRect();
+        layers.push({ canvas: p.canvas, x: b.left - box.left, y: b.top - box.top, w: b.width, h: b.height });
+      }
+      return { width: box.width, height: box.height, background: COL.bg, layers };
+    }
+    // extra caption-strip lines for the PNG export (the DOM caption is not part of the canvases)
+    captionExtra() {
+      const s = this.sample;
+      if (!s) return [];
+      const v = (x, d = 4) => isNum3(x) ? fmt.sci(x, d) : "exp overflow";
+      return [`Kruskal (T, X) = (${v(s.kruskal_T)}, ${v(s.kruskal_X)})   compactified (T\u0303, X\u0303) = (${v(s.penrose_T)}, ${v(s.penrose_X)})   exact Schwarzschild coordinate maps, angular directions suppressed; worldline precomputed by the engine (stops at r_QG)`];
     }
     dispose() {
       try {
@@ -22126,14 +22458,15 @@ void main() {
     _regimeIndex() {
       const s = this.sample;
       if (this.state && this.state.speculative) return 3;
-      const c = s && isNum(s.regime_code) ? Math.round(s.regime_code) : 0;
+      const c = s && isNum3(s.regime_code) ? Math.round(s.regime_code) : 0;
       return Math.max(0, Math.min(3, c));
     }
     _draw() {
       if (!this.ok) return;
-      if (this.kruskal.w === 0 && this.penrose.w === 0) return;
-      if (this.mode !== "penrose") this._drawKruskal(this.kruskal);
-      if (this.mode !== "kruskal") this._drawPenrose(this.penrose);
+      if (this.kruskal.w === 0 && this.penrose.w === 0 && this.signal.w === 0) return;
+      if (this.kruskal.w) this._drawKruskal(this.kruskal);
+      if (this.penrose.w) this._drawPenrose(this.penrose);
+      if (this.signal.w) this._drawSignal(this.signal);
       this._drawCaption();
     }
     _wrap(ctx, text, maxW) {
@@ -22258,7 +22591,7 @@ void main() {
       const reg = this._regimeIndex(), col = COL.regime[reg];
       const X = s ? s.kruskal_X : null, T = s ? s.kruskal_T : null;
       let status, onChart = false;
-      if (!isNum(X) || !isNum(T)) status = "observer: Kruskal coordinates undefined (exp overflow) \xB7 " + REGIME_NAMES[reg];
+      if (!isNum3(X) || !isNum3(T)) status = "observer: Kruskal coordinates undefined (exp overflow) \xB7 " + REGIME_NAMES[reg];
       else if (Math.abs(X) > KWIN || Math.abs(T) > KWIN) status = `observer off-chart: X = ${fmt.sci(X, 3)}, T = ${fmt.sci(T, 3)} (early exterior: exponentially large coordinates) \xB7 ${REGIME_NAMES[reg]}`;
       else {
         onChart = true;
@@ -22269,6 +22602,8 @@ void main() {
         "The worldline is not integrated in the browser. Regions III/IV (maximal extension) are not covered by the ingoing EF chart of the simulation. Time origin: horizon crossing at V = 1 (T = X = 1/2); early exterior points have exponentially large X." + (this.wlK.skipped ? ` ${this.wlK.skipped} samples without finite Kruskal coordinates skipped.` : "")
       ];
       const m = this._frame(p, "Kruskal\u2013Szekeres diagram (T vertical, X horizontal)", `G = c = M = 1, r_s = 2M; window |T|, |X| \u2264 ${KWIN}`, status, col, box, notes);
+      p.map = { ox: m.ox, oy: m.oy, scale: m.scale, xmin: m.xmin, ymax: m.ymax, pw: m.pw, ph: m.ph };
+      p.marker = onChart ? { x: m.x(X), y: m.y(T), color: col } : null;
       ctx.save();
       ctx.beginPath();
       ctx.rect(m.ox, m.oy, m.pw, m.ph);
@@ -22413,13 +22748,15 @@ void main() {
       const box = [-PI4 - padX, PI2 + padX, -PI4 - padT, PI4 + padT];
       const reg = this._regimeIndex(), col = COL.regime[reg];
       const X = s ? s.penrose_X : null, T = s ? s.penrose_T : null;
-      const onChart = isNum(X) && isNum(T);
+      const onChart = isNum3(X) && isNum3(T);
       const status = onChart ? `observer: X\u0303 = ${X.toFixed(3)}, T\u0303 = ${T.toFixed(3)} \xB7 ${REGIME_NAMES[reg]} \xB7 synchronized with the Kruskal diagram` : "observer: compactified coordinates undefined (exp overflow) \xB7 " + REGIME_NAMES[reg];
       const notes = [
         "\u0168 = atan U, \u1E7C = atan V, T\u0303 = (\u1E7C + \u0168)/2, X\u0303 = (\u1E7C \u2212 \u0168)/2: conformal compactification of Kruskal; only the region covered by the ingoing EF chart (I \u222A II, V > 0) is drawn. Light cones are always at 45\xB0 \u2014 this is the point of the diagram.",
         "Angular directions suppressed (each point is a 2-sphere). White line: precomputed radial infall; r_QG (end of the validated run) is indistinguishable from r = 0 at this resolution." + (this.wlP.skipped ? ` ${this.wlP.skipped} samples without finite coordinates skipped.` : "")
       ];
       const m = this._frame(p, "Compactified (Penrose-type) diagram (T\u0303 vertical, X\u0303 horizontal)", "Schwarzschild, regions I and II (ingoing Eddington\u2013Finkelstein chart)", status, col, box, notes);
+      p.map = { ox: m.ox, oy: m.oy, scale: m.scale, xmin: m.xmin, ymax: m.ymax, pw: m.pw, ph: m.ph };
+      p.marker = onChart ? { x: m.x(X), y: m.y(T), color: col } : null;
       ctx.save();
       ctx.beginPath();
       ctx.rect(m.ox, m.oy, m.pw, m.ph);
@@ -22522,8 +22859,11 @@ void main() {
       this._label(ctx, cp ? "\u{1D4D8}\u207B (\u0168 = \u2212\u03C0/2)" : "\u{1D4D8}\u207B  past null infinity (\u0168 = \u2212\u03C0/2)", m.x(PI2 - PI4 / 2) + 12, m.y(-PI4 / 2) + 12, COL.accent, { align: "center", angle: -PI4, font: FONT(10) });
       this._label(ctx, cp ? "r = r_s horizon" : "r = r_s future horizon (\u0168 = 0)", m.x(0.5), m.y(0.5) + 13, COL.horizon, { align: "center", angle: -PI4, font: FONT(10, 600) });
       this._label(ctx, cp ? "past horizon \u1E7C = 0 (not covered)" : "past horizon \u1E7C = 0 (not covered by ingoing EF chart)", m.x(-0.2), m.y(0.2) + 13, COL.horizon, { align: "center", angle: PI4, font: FONT(9.5) });
-      this._label(ctx, "r = 0 (classical singularity)", m.x(0), m.y(PI4) - 20, COL.sing, { align: "center", font: FONT(10.5, 600) });
-      this._label(ctx, "GR invalid before this: r_QG", m.x(0), m.y(PI4) - 7, COL.sing, { align: "center", font: FONT(10.5, 600) });
+      if (m.compact) this._label(ctx, "r = 0 singularity \xB7 GR invalid before: r_QG", m.x(0), m.y(PI4) - 6, COL.sing, { align: "center", font: FONT(9.5, 600) });
+      else {
+        this._label(ctx, "r = 0 (classical singularity)", m.x(0), m.y(PI4) - 20, COL.sing, { align: "center", font: FONT(10.5, 600) });
+        this._label(ctx, "GR invalid before this: r_QG", m.x(0), m.y(PI4) - 7, COL.sing, { align: "center", font: FONT(10.5, 600) });
+      }
       this._label(ctx, "I  (exterior)", m.x(0.72), m.y(0.16), COL.text, { align: "center", font: FONT(12, 600) });
       this._label(ctx, "II  (interior)", m.x(-0.02), m.y(0.35), COL.text, { align: "center", font: FONT(12, 600) });
       if (!cp) this._label(ctx, "III / IV: not covered", m.x(-0.55), m.y(-0.15), COL.dim, { align: "center", font: FONT(10) });
@@ -22534,10 +22874,207 @@ void main() {
       }
       ctx.restore();
     }
+    // ---------------------------------------------------------------- received-signal timeline (distant static observer)
+    _drawSignal(p) {
+      if (!p.ctx || p.w === 0) return;
+      const { ctx, w, h, dpr } = p, s = this.sample, d = this.data;
+      const tl = typeof d.signalTimeline === "function" ? d.signalTimeline() : null;
+      const reg = this._regimeIndex(), col = COL.regime[reg];
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.clearRect(0, 0, w, h);
+      ctx.fillStyle = COL.panel;
+      ctx.fillRect(0, 0, w, h);
+      ctx.textBaseline = "alphabetic";
+      ctx.textAlign = "left";
+      ctx.fillStyle = COL.text;
+      ctx.font = FONT(13, 600);
+      ctx.fillText("Received-signal timeline \u2014 distant static observer", 10, 17);
+      const src = tl ? tl.source === "engine" ? "engine signal_timeline export" : "computed from the exported samples" : "unavailable";
+      ctx.fillStyle = COL.dim;
+      ctx.font = FONT(11);
+      ctx.fillText(this._wrap(ctx, `log10(1+z) of the infaller's radially outgoing light vs reception time t_receive [yr] \xB7 source: ${src}`, w - 20)[0], 10, 31);
+      const efold = tl ? tl.efoldYears : 4 * d.derived.GM_over_c3_years;
+      let status, statusColor = col, marker = null;
+      const inside = s && isNum3(s.log10_r_over_rs) && s.log10_r_over_rs <= 0;
+      if (!s || !isNum3(s.log10_r_over_rs)) status = "current emission: \u2014";
+      else if (inside) {
+        status = `current event inside r_s (\u03C4 since horizon ${fmt.years(s.tau_since_horizon_years)}): its light never reaches the distant observer`;
+        statusColor = COL.sing;
+      } else {
+        const t = d.tReceiveYears(s), z = d.onePlusZ(s);
+        if (isNum3(t) && isNum3(z)) {
+          marker = { t, y: Math.log10(z) };
+          status = `current emission at r = ${fmt.sci(s.r_over_rs, 4)} r_s, \u03C4 = ${fmt.years(s.tau_years)} \u2192 received at t_receive = ${fmt.years(t)} with 1+z = ${fmt.sci(z, 4)}`;
+        } else status = "current emission: reception time undefined for this sample";
+      }
+      ctx.fillStyle = statusColor;
+      ctx.font = FONT(11, 600);
+      const stLines = this._wrap(ctx, status, w - 20).slice(0, 2);
+      stLines.forEach((n, i) => ctx.fillText(n, 10, 45 + 13 * i));
+      const hz = d.milestone ? d.milestone("horizon") : null, end = d.milestone ? d.milestone("r_QG") : null;
+      const tauH = hz && isNum3(hz.tau_years) ? hz.tau_years : null;
+      const inner = end && hz && isNum3(end.tau_years) && isNum3(hz.tau_years) ? end.tau_years - hz.tau_years : d.derived.tau_horizon_to_singularity_years;
+      const notes = [
+        `Light emitted at or after the horizon crossing never reaches the distant observer (t_receive \u2192 \u221E as emission \u2192 r_s); the infaller crosses r_s in finite proper time (\u03C4 = ${tauH !== null ? fmt.years(tauH) : "\u2014"}) and reaches r_QG ${fmt.years(inner)} later.`,
+        `Dashed: exact late-time asymptote 1+z \u221D exp(t_receive/(4GM/c\xB3)), slope 1/(4GM/c\xB3) in ln(1+z), e-folding time 4GM/c\xB3 = ${fmt.years(efold)}. Radial photons, static observer far away; t_receive = 0 for the signal emitted at the start. ` + (tl && tl.source === "samples" ? "Fallback: u = v \u2212 2r_*(r) and 1+z = u^v \u2212 2u^r/f from the exported samples (they end one sample outside r_s); the engine export signal_timeline extends to r/r_s \u2212 1 \u2248 1e-12." : tl && tl.note ? tl.note : "")
+      ];
+      const compact = h < 300 || w < 420;
+      ctx.fillStyle = COL.dim;
+      ctx.font = FONT(10.5);
+      const lines = [];
+      for (const n of compact ? notes.slice(0, 1) : notes) lines.push(...this._wrap(ctx, n, w - 20));
+      const noteH = 13 * lines.length + 6;
+      lines.forEach((n, i) => ctx.fillText(n, 10, h - noteH + 12 + 13 * i));
+      const top = 40 + 13 * stLines.length + 2, bottom = noteH + 2;
+      p.plots = [];
+      p.marker = null;
+      p.map = null;
+      if (!tl || tl.points.length < 2) {
+        ctx.fillStyle = COL.dim;
+        ctx.font = FONT(12);
+        ctx.fillText("No exterior samples: the received-signal timeline is undefined for this export.", 12, top + 20);
+        return;
+      }
+      const pts = tl.points, last2 = pts[pts.length - 1], first = pts[0];
+      const avail = { x: 6, y: top, w: w - 12, h: h - top - bottom };
+      if (avail.h < 50 || avail.w < 120) return;
+      const ymin = Math.min(0, ...pts.map((q) => q.y));
+      const full = { x0: first.t, x1: last2.t + 0.04 * (last2.t - first.t), y0: ymin, y1: last2.y + 0.12 * (last2.y - ymin) + 0.25 };
+      let iLo = pts.findIndex((q) => q.y >= Math.log10(2));
+      if (iLo < 0) iLo = 0;
+      let tLo = Math.min(pts[iLo].t, last2.t - 3 * efold);
+      tLo = Math.max(tLo, last2.t - 40 * efold, first.t);
+      const lateY = pts.filter((q) => q.t >= tLo).map((q) => q.y);
+      const ly0 = Math.floor(Math.min(...lateY) * 2) / 2;
+      const late = { x0: tLo, x1: last2.t + 0.14 * (last2.t - tLo), y0: ly0, y1: last2.y + 0.15 * (last2.y - ly0) + 0.3 };
+      const two = avail.w >= 440;
+      const boxes = two ? [{ ...avail, w: avail.w * 0.45 }, { ...avail, x: avail.x + avail.w * 0.45 + 4, w: avail.w * 0.55 - 4 }] : [avail];
+      const specs = two ? [[full, "(a) whole exterior fall", false], [late, "(b) approach to r_s (late time)", true]] : [[late, "approach to r_s (late time)", true]];
+      boxes.forEach((bx, k) => {
+        const plot = this._signalPlot(ctx, bx, pts, specs[k][0], specs[k][1], efold, marker, col, last2, specs[k][2]);
+        if (plot) {
+          p.plots.push(plot);
+          if (plot.markerPx && !p.marker) p.marker = { x: plot.markerPx[0], y: plot.markerPx[1], color: col };
+        }
+      });
+      p.map = p.plots[p.plots.length - 1] || null;
+      p.markerAll = p.plots.filter((q) => q.markerPx).map((q) => ({ x: q.markerPx[0], y: q.markerPx[1], color: col }));
+    }
+    _signalPlot(ctx, box, pts, rng, title, efold, marker, col, last2, legend) {
+      const L = 46, R = 8, Tm = 16, Bm = 26;
+      const px0 = box.x + L, px1 = box.x + box.w - R, py0 = box.y + Tm, py1 = box.y + box.h - Bm;
+      if (px1 - px0 < 40 || py1 - py0 < 24) return null;
+      const X = (t) => px0 + (t - rng.x0) / (rng.x1 - rng.x0) * (px1 - px0);
+      const Y = (y) => py1 - (y - rng.y0) / (rng.y1 - rng.y0) * (py1 - py0);
+      ctx.fillStyle = COL.text;
+      ctx.font = FONT(10.5, 600);
+      ctx.textAlign = "left";
+      ctx.fillText(title, px0, box.y + 11);
+      ctx.fillStyle = COL.bg;
+      ctx.fillRect(px0, py0, px1 - px0, py1 - py0);
+      ctx.font = FONT(9.5);
+      ctx.lineWidth = 1;
+      ctx.setLineDash([]);
+      const xt = niceTicks(rng.x0, rng.x1, Math.max(2, Math.floor((px1 - px0) / 85)));
+      for (const { v, step: step2 } of xt) {
+        const x = X(v);
+        if (x < px0 - 0.5 || x > px1 + 0.5) continue;
+        ctx.strokeStyle = COL.grid;
+        ctx.beginPath();
+        ctx.moveTo(x, py0);
+        ctx.lineTo(x, py1);
+        ctx.stroke();
+        const digits = v === 0 ? 1 : Math.max(2, Math.ceil(Math.log10(Math.abs(v) / step2)) + 1);
+        ctx.fillStyle = COL.dim;
+        ctx.textAlign = "center";
+        ctx.fillText(v === 0 ? "0" : fmt.sci(v, digits), x, py1 + 11);
+      }
+      const yt = niceTicks(rng.y0, rng.y1, Math.max(2, Math.floor((py1 - py0) / 26)));
+      for (const { v, step: step2 } of yt) {
+        const y = Y(v);
+        if (y < py0 - 0.5 || y > py1 + 0.5) continue;
+        ctx.strokeStyle = COL.grid;
+        ctx.beginPath();
+        ctx.moveTo(px0, y);
+        ctx.lineTo(px1, y);
+        ctx.stroke();
+        ctx.fillStyle = COL.dim;
+        ctx.textAlign = "right";
+        ctx.fillText(step2 < 1 ? v.toFixed(1) : v.toFixed(0), px0 - 4, y + 3);
+      }
+      ctx.strokeStyle = COL.axis;
+      ctx.strokeRect(px0, py0, px1 - px0, py1 - py0);
+      ctx.fillStyle = COL.dim;
+      ctx.textAlign = "right";
+      ctx.fillText("t_receive [yr]", px1, py1 + 22);
+      ctx.save();
+      ctx.translate(box.x + 9, (py0 + py1) / 2);
+      ctx.rotate(-PI2);
+      ctx.textAlign = "center";
+      ctx.fillText("log10(1+z)", 0, 0);
+      ctx.restore();
+      ctx.save();
+      ctx.beginPath();
+      ctx.rect(px0, py0, px1 - px0, py1 - py0);
+      ctx.clip();
+      ctx.strokeStyle = COL.warn;
+      ctx.lineWidth = 1.3;
+      ctx.setLineDash([6, 4]);
+      const ya = (t) => last2.y + LOG10E * (t - last2.t) / efold;
+      const ta = Math.max(rng.x0, last2.t + (rng.y0 - last2.y) * efold / LOG10E);
+      ctx.beginPath();
+      ctx.moveTo(X(ta), Y(ya(ta)));
+      ctx.lineTo(X(rng.x1), Y(ya(rng.x1)));
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.strokeStyle = COL.accent;
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      let pen = false;
+      for (const q of pts) {
+        if (q.t < rng.x0 - (rng.x1 - rng.x0) || q.t > rng.x1 + (rng.x1 - rng.x0)) {
+          pen = false;
+          continue;
+        }
+        const x = X(q.t), y = Y(q.y);
+        if (!pen) {
+          ctx.moveTo(x, y);
+          pen = true;
+        } else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+      if (legend) {
+        ctx.fillStyle = COL.warn;
+        ctx.font = FONT(9.5);
+        ctx.textAlign = "left";
+        ctx.fillText("dashed: slope 1/(4GM/c\xB3) in ln(1+z)", px0 + 4, py0 + 11);
+        ctx.fillStyle = COL.sing;
+        ctx.font = FONT(9.5, 600);
+        ctx.textAlign = "right";
+        ctx.fillText("emission r \u2192 r_s: t_receive \u2192 \u221E", px1 - 4, py1 - 5);
+      }
+      let markerPx = null;
+      if (marker && marker.t >= rng.x0 && marker.t <= rng.x1 && marker.y >= rng.y0 && marker.y <= rng.y1) {
+        const mx = X(marker.t), my = Y(marker.y);
+        ctx.strokeStyle = col;
+        ctx.lineWidth = 1;
+        ctx.setLineDash([2, 3]);
+        ctx.beginPath();
+        ctx.moveTo(mx, py0);
+        ctx.lineTo(mx, py1);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        this._currentPoint(ctx, { x: (t) => t, y: (y) => y }, mx, my, col);
+        markerPx = [mx, my];
+      }
+      ctx.restore();
+      ctx.textAlign = "left";
+      return { px0, px1, py0, py1, x0: rng.x0, x1: rng.x1, y0: rng.y0, y1: rng.y1, title, markerPx, asymptote: { tEnd: last2.t, yEnd: last2.y, slopePerYear: LOG10E / efold } };
+    }
     // ---------------------------------------------------------------- caption
     _drawCaption() {
       const s = this.sample, reg = this._regimeIndex(), col = COL.regime[reg];
-      const v = (x, d = 4) => isNum(x) ? fmt.sci(x, d) : "exp overflow";
+      const v = (x, d = 4) => isNum3(x) ? fmt.sci(x, d) : "exp overflow";
       const rows = s ? [
         ["Kruskal (U, V)", `${v(s.kruskal_U)}, ${v(s.kruskal_V)}`],
         ["Kruskal (T, X)", `${v(s.kruskal_T)}, ${v(s.kruskal_X)}`],
@@ -23203,14 +23740,14 @@ void main() {
   }
   var HOLE_VEC = raDecToVec(HOLE_DIRECTION.ra_deg, HOLE_DIRECTION.dec_deg);
   function gridShade(S, stepDeg, pixSky, out = [0, 0]) {
-    const step = stepDeg * D2R, base = 45e-4;
+    const step2 = stepDeg * D2R, base = 45e-4;
     const dec = Math.asin(Math.max(-1, Math.min(1, S[2]))), ra = Math.atan2(S[1], S[0]);
     const hw = Math.max(base, 0.6 * pixSky);
     let I = 0;
-    if (hw > 0.5 * step) I = Math.min(1, 2 * base / step * 2);
+    if (hw > 0.5 * step2) I = Math.min(1, 2 * base / step2 * 2);
     else {
-      const dd = Math.abs(dec - Math.round(dec / step) * step);
-      const dr = Math.abs(ra - Math.round(ra / step) * step) * Math.cos(dec);
+      const dd = Math.abs(dec - Math.round(dec / step2) * step2);
+      const dr = Math.abs(ra - Math.round(ra / step2) * step2) * Math.cos(dec);
       const w = base / hw;
       I = Math.max(0, 1 - dd / hw) * w + Math.max(0, 1 - dr / hw) * w;
       if (Math.abs(dec) < hw) I += 0.6 * (1 - Math.abs(dec) / hw) * w;
@@ -25764,6 +26301,24 @@ void main() {
         if (this.container.classList.contains("active")) this._draw();
       }
     }
+    // Layers for the PNG export: the two comparison plots side by side (their on-screen position depends on scrolling),
+    // each with its on-screen title.  The caption strip adds the menu title and the permanent banner.
+    captureLayers() {
+      const texts = [], layers = [];
+      const items = [this.kCanvas, this.fCanvas].filter(Boolean);
+      if (!items.length) return { width: 640, height: 60, background: "#12101a", layers, texts: [{ text: "No toy-model data in this export.", x: 12, y: 30, color: "#d98cff" }] };
+      this._draw();
+      let x = 0, hMax = 0;
+      for (const c of items) {
+        const w = c.clientWidth || 600, h = c.clientHeight || 340;
+        const title = c.previousElementSibling && c.previousElementSibling.textContent || "";
+        texts.push({ text: title, x: x + 4, y: 15, color: "#d98cff", maxW: w - 8 });
+        layers.push({ canvas: c, x, y: 22, w, h });
+        x += w + 12;
+        hMax = Math.max(hMax, h);
+      }
+      return { width: x - 12, height: hMax + 22, background: "#12101a", layers, texts };
+    }
     resize() {
       this._draw();
     }
@@ -25777,18 +26332,30 @@ void main() {
   var raw = window.SLAB_DATA;
   var data = new TrajectoryData(raw);
   var $ = (id) => document.getElementById(id);
+  var isNum4 = (v) => typeof v === "number" && Number.isFinite(v);
+  var SPEEDS = [0.1, 0.25, 0.5, 1, 2, 4, 8, 16];
+  var VIEW_NAMES = ["scene", "causal", "fp", "spec"];
+  var VIEW_TITLES = {
+    scene: "3D view",
+    causal: "Causal / Kruskal diagram",
+    fp: "First-person camera",
+    spec: "SPECULATIVE QUANTUM-GRAVITY TOY MODELS \u2014 NOT ESTABLISHED PHYSICS"
+  };
   var state = {
     logr: data.logrMax,
-    // current position: log10(r / r_s)
+    // current position: log10(r / r_s)  (the playback axes are all re-parametrizations of it)
     playing: false,
-    speedDecPerS: 2,
+    speedIndex: 4,
+    speedDecPerS: SPEEDS[4],
     axis: "logr",
+    // logr | logtau | tau   (see data.js AXES)
     view: "scene",
     sceneMode: "log",
     // log | linear | horizon | deep | curvature
     camera: "third",
     // third | first
     speculative: false,
+    help: false,
     sample: null
   };
   var dashboard = new Dashboard($("dashboard"), data);
@@ -25799,6 +26366,7 @@ void main() {
     spec: new SpeculativeView($("view-spec"), data, {})
   };
   function setView(name) {
+    if (!views[name]) return;
     state.view = name;
     state.speculative = name === "spec";
     document.querySelectorAll("header .tabs button").forEach((b) => b.classList.toggle("active", b.dataset.view === name));
@@ -25808,23 +26376,110 @@ void main() {
     views[name].resize();
     render(true);
   }
-  function setLogR(x) {
-    state.logr = data.clampLogR(x);
-    render(true);
-  }
   function setSceneMode(mode) {
     state.sceneMode = mode;
     views.scene.setMode(mode);
     $("banner").classList.toggle("hidden", !(state.view === "scene" && mode !== "linear" && mode !== "horizon"));
     render(true);
   }
+  function setLogR(x) {
+    state.logr = data.clampLogR(x);
+    render(true);
+  }
+  function pause() {
+    if (state.playing) {
+      state.playing = false;
+      updatePlayButton();
+    }
+  }
+  function updatePlayButton() {
+    $("play").textContent = state.playing ? "\u275A\u275A Pause" : "\u25B6 Play";
+  }
+  function togglePlay(force) {
+    state.playing = typeof force === "boolean" ? force : !state.playing;
+    if (state.playing && state.logr <= data.logrMin) state.logr = data.logrMax;
+    updatePlayButton();
+  }
+  function axisRate(axis) {
+    return AXES[axis].rate(state.speedDecPerS);
+  }
+  function setAxis(axis) {
+    if (!data.axisAvailable(axis)) return false;
+    state.axis = axis;
+    $("axis").value = axis;
+    fillSpeedOptions();
+    render(true);
+    return true;
+  }
+  function advance(dt, opts = {}) {
+    const ax = state.axis, [, s1] = data.axisRange(ax);
+    const s = data.axisAt(ax, state.logr) + axisRate(ax) * dt;
+    if (s >= s1) {
+      state.logr = data.logrMin;
+      if (state.playing) {
+        state.playing = false;
+        updatePlayButton();
+      }
+    } else state.logr = data.logrAtAxis(ax, s);
+    if (!opts.noRender) render(false);
+  }
+  function step(dir, fine) {
+    pause();
+    const ax = state.axis, A = AXES[ax];
+    setLogR(data.logrAtAxis(ax, data.axisAt(ax, state.logr) + dir * (fine ? A.fine : A.step)));
+  }
+  function goStart() {
+    pause();
+    setLogR(data.logrMax);
+  }
+  function goEnd() {
+    pause();
+    setLogR(data.logrMin);
+  }
+  function milestone(dir) {
+    pause();
+    const m = data.nextMilestone(state.logr, dir);
+    if (m) setLogR(m.log10_r_over_rs);
+    return m ? m.slug : null;
+  }
+  function setSpeedIndex(i) {
+    state.speedIndex = Math.max(0, Math.min(SPEEDS.length - 1, i));
+    state.speedDecPerS = SPEEDS[state.speedIndex];
+    $("speed").value = String(state.speedIndex);
+  }
+  function speed(dir) {
+    setSpeedIndex(state.speedIndex + dir);
+  }
+  function fillSpeedOptions() {
+    const A = AXES[state.axis];
+    $("speed").innerHTML = SPEEDS.map((v, i) => {
+      const r = A.rate(v);
+      const lbl = A.unit === "dec/s" ? `${v} dec/s` : `${+(100 * r).toPrecision(3)} % \u03C4/s`;
+      return `<option value="${i}"${i === state.speedIndex ? " selected" : ""}>${lbl}</option>`;
+    }).join("");
+  }
+  function sliderFraction() {
+    const [a, b] = data.axisRange(state.axis);
+    return b > a ? (data.axisAt(state.axis, state.logr) - a) / (b - a) : 0;
+  }
+  function readout(smp) {
+    const rem = isNum4(smp.tau_to_center_est_years) ? fmt.years(smp.tau_to_center_est_years) : "\u2014";
+    return {
+      line1: `r = ${fmt.sci(smp.r_m, 4)} m   r/r_s = ${fmt.sci(smp.r_over_rs, 4)}`,
+      line2: `\u03C4 = ${fmt.years(smp.tau_years)}   \u03C4 remaining \u2248 ${rem}`,
+      rem
+    };
+  }
   function render(force) {
     const smp = data.at(state.logr);
     state.sample = smp;
     dashboard.update(smp, state);
-    const frac = (data.logrMax - state.logr) / (data.logrMax - data.logrMin);
-    $("slider").value = String(frac);
-    $("pos").textContent = `log10(r/r_s) = ${state.logr.toFixed(3)}   r = ${fmt.sci(smp.r_m, 3)} m`;
+    $("slider").value = String(sliderFraction());
+    const ro = readout(smp);
+    const pos = $("pos");
+    pos.innerHTML = `${ro.line1}
+${ro.line2.replace(/τ remaining ≈ .*$/, (m) => `<span class="rem" title="classical proper time remaining to r = 0: a classical-GR extrapolation (the validated run stops at r_QG)">${m} (GR extrap.)</span>`)}`;
+    $("slider").setAttribute("aria-valuetext", `${ro.line1}; ${ro.line2}`);
     const atEnd = state.logr <= data.logrMin + 1e-9;
     $("planck").classList.toggle("hidden", !(atEnd && !state.speculative));
     $("planck").textContent = raw.planck_message;
@@ -25832,58 +26487,246 @@ void main() {
   }
   var last = performance.now();
   function loop(now2) {
-    const dt = (now2 - last) / 1e3;
+    const dt = Math.min(0.25, (now2 - last) / 1e3);
     last = now2;
-    if (state.playing) {
-      if (state.axis === "logr") state.logr -= state.speedDecPerS * dt;
-      else {
-        const frac = (data.logrMax - state.logr) / (data.logrMax - data.logrMin);
-        const tau = data.at(state.logr).tau_years, tauEnd = data.s.tau_years[data.N - 1];
-        const f = Math.min(1, tau / tauEnd + 0.02 * state.speedDecPerS * dt);
-        state.logr = data.logrForTauFraction(f);
-      }
-      if (state.logr <= data.logrMin) {
-        state.logr = data.logrMin;
-        state.playing = false;
-        $("play").textContent = "\u25B6 Play";
-      }
-      render(false);
-    } else if (state.view === "scene" || state.view === "fp") {
-      views[state.view].update(state.sample || data.at(state.logr), state);
-    }
+    if (state.playing) advance(dt);
+    else if (state.view === "scene" || state.view === "fp") views[state.view].update(state.sample || data.at(state.logr), state);
     requestAnimationFrame(loop);
   }
+  function toggleHelp(force) {
+    state.help = typeof force === "boolean" ? force : !state.help;
+    $("help").classList.toggle("hidden", !state.help);
+    if (state.help) $("help-close").focus({ preventScroll: true });
+  }
+  function bannersFor(viewName) {
+    const out = [];
+    if (viewName === "scene") {
+      const lbl = views.scene.modeLabel ? views.scene.modeLabel() : raw.banner_log;
+      out.push({ text: lbl, color: "#ffb454" });
+      if (!/NOT TO SCALE/.test(lbl) && state.sceneMode !== "linear" && state.sceneMode !== "horizon") out.push({ text: raw.banner_log, color: "#ffb454" });
+    } else if (viewName === "fp") out.push({ text: raw.banner_firstperson, color: "#ffb454" });
+    else if (viewName === "spec") {
+      const sp = raw.speculative || {};
+      out.push({ text: sp.menu_title || VIEW_TITLES.spec, color: "#d98cff" });
+      out.push({ text: sp.banner || "SPECULATIVE MODEL \u2014 NOT experimentally established.", color: "#d98cff" });
+    } else if (viewName === "causal") out.push({ text: "Exact Schwarzschild coordinate maps (G = c = M = 1); angular directions suppressed; worldline precomputed by the engine, stops at r_QG.", color: "#8892a6" });
+    return out;
+  }
+  function captionLines() {
+    const smp = state.sample || data.at(state.logr);
+    const reg = state.speculative ? 3 : Math.max(0, Math.min(2, smp.regime_code ?? 0));
+    const who = state.view === "spec" ? "validated-run observer: " : "";
+    const lines = [
+      { text: `SLAB GR Simulation \u2014 M = 10^18 M\u2609 Schwarzschild infall \u2014 ${VIEW_TITLES[state.view]}`, color: "#d8dee9", bold: true },
+      { text: `${who}r = ${fmt.metres(smp.r_m)}   r/r_s = ${fmt.sci(smp.r_over_rs, 6)}   log10(r/r_s) = ${isNum4(smp.log10_r_over_rs) ? smp.log10_r_over_rs.toFixed(4) : "\u2014"}`, color: "#d8dee9" },
+      { text: `proper time \u03C4 = ${fmt.years(smp.tau_years, 6)}   \u03C4 since horizon = ${smp.log10_r_over_rs <= 0 ? fmt.years(smp.tau_since_horizon_years) : "not yet crossed"}   classical \u03C4 remaining to r = 0 \u2248 ${fmt.years(smp.tau_to_center_est_years)} (classical-GR extrapolation)`, color: "#d8dee9" },
+      { text: `Regime: ${REGIMES[reg]}`, color: REGIME_COLORS[reg], bold: true },
+      ...bannersFor(state.view).map((b) => ({ ...b, bold: true }))
+    ];
+    const extra = views[state.view].captionExtra ? views[state.view].captionExtra() : [];
+    for (const t of extra) lines.push({ text: t, color: "#8892a6" });
+    if (state.logr <= data.logrMin + 1e-9 && !state.speculative) for (const t of String(raw.planck_message).split("\n")) lines.push({ text: t, color: "#ff6b6b", bold: true });
+    return lines;
+  }
+  function wrapText(ctx, text, maxW) {
+    const words = String(text).split(" "), out = [];
+    let cur = "";
+    for (const w of words) {
+      const t = cur ? cur + " " + w : w;
+      if (ctx.measureText(t).width > maxW && cur) {
+        out.push(cur);
+        cur = w;
+      } else cur = t;
+    }
+    if (cur) out.push(cur);
+    return out;
+  }
+  function capture() {
+    const name = state.view, view = views[name], container = $(`view-${name}`);
+    let spec;
+    if (typeof view.captureLayers === "function") spec = view.captureLayers();
+    else {
+      try {
+        if (typeof view.renderNow === "function") view.renderNow();
+        else {
+          view.dirty = true;
+          view.update(state.sample || data.at(state.logr), state);
+        }
+      } catch (e) {
+      }
+      const c = typeof view.getCanvas === "function" && view.getCanvas() || container.querySelector("canvas");
+      const box = container.getBoundingClientRect();
+      const layers = [];
+      if (c) {
+        const b = c.getBoundingClientRect();
+        layers.push(b.width > 0 ? { canvas: c, x: b.left - box.left, y: b.top - box.top, w: b.width, h: b.height } : { canvas: c, x: 0, y: 0, w: box.width, h: box.height });
+      }
+      spec = { width: box.width, height: box.height, background: "#000", layers };
+    }
+    const W = Math.max(320, Math.round(spec.width || 800)), H = Math.max(40, Math.round(spec.height || 600));
+    const scale = Math.min(2, Math.max(1, window.devicePixelRatio || 1));
+    const meas = document.createElement("canvas").getContext("2d");
+    const LINE = 17, PAD = 8;
+    const wrapped = [];
+    for (const ln of captionLines()) {
+      meas.font = `${ln.bold ? 600 : 400} 12.5px system-ui, -apple-system, "Segoe UI", Roboto, sans-serif`;
+      for (const t of wrapText(meas, ln.text, W - 2 * PAD)) wrapped.push({ ...ln, text: t });
+    }
+    const capH = wrapped.length * LINE + 2 * PAD;
+    const out = document.createElement("canvas");
+    out.width = Math.round(W * scale);
+    out.height = Math.round((H + capH) * scale);
+    const ctx = out.getContext("2d");
+    ctx.setTransform(scale, 0, 0, scale, 0, 0);
+    ctx.fillStyle = spec.background || "#0b0e14";
+    ctx.fillRect(0, 0, W, H);
+    for (const L of spec.layers || []) {
+      try {
+        ctx.drawImage(L.canvas, L.x, L.y, L.w, L.h);
+      } catch (e) {
+      }
+    }
+    for (const t of spec.texts || []) {
+      ctx.font = "600 12px system-ui, sans-serif";
+      ctx.fillStyle = t.color || "#d8dee9";
+      ctx.fillText(wrapText(ctx, t.text, t.maxW || W)[0] || "", t.x, t.y);
+    }
+    ctx.fillStyle = "#131824";
+    ctx.fillRect(0, H, W, capH);
+    ctx.fillStyle = "#2b3549";
+    ctx.fillRect(0, H, W, 1);
+    ctx.textBaseline = "alphabetic";
+    wrapped.forEach((ln, i) => {
+      ctx.font = `${ln.bold ? 600 : 400} 12.5px system-ui, -apple-system, "Segoe UI", Roboto, sans-serif`;
+      ctx.fillStyle = ln.color || "#d8dee9";
+      ctx.fillText(ln.text, PAD, H + PAD + 13 + i * LINE);
+    });
+    out.dataset.imageHeight = String(H);
+    out.dataset.captionHeight = String(capH);
+    out.dataset.scale = String(scale);
+    return out;
+  }
+  function pngName() {
+    return `slab_${state.view}_log10r_${state.logr.toFixed(3)}.png`;
+  }
+  function savePNG() {
+    const c = capture(), name = pngName();
+    return new Promise((resolve, reject) => {
+      c.toBlob((blob) => {
+        if (!blob) {
+          reject(new Error("PNG encoding failed"));
+          return;
+        }
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = name;
+        a.style.display = "none";
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        setTimeout(() => URL.revokeObjectURL(url), 1e4);
+        resolve(name);
+      }, "image/png");
+    });
+  }
   document.querySelectorAll("header .tabs button").forEach((b) => b.addEventListener("click", () => setView(b.dataset.view)));
-  $("play").addEventListener("click", () => {
-    state.playing = !state.playing;
-    $("play").textContent = state.playing ? "\u275A\u275A Pause" : "\u25B6 Play";
-    if (state.playing && state.logr <= data.logrMin) state.logr = data.logrMax;
+  $("play").addEventListener("click", () => togglePlay());
+  $("btn-start").addEventListener("click", goStart);
+  $("btn-end").addEventListener("click", goEnd);
+  $("btn-back").addEventListener("click", (e) => step(-1, e.shiftKey));
+  $("btn-fwd").addEventListener("click", (e) => step(1, e.shiftKey));
+  $("btn-prev-ms").addEventListener("click", () => milestone(-1));
+  $("btn-next-ms").addEventListener("click", () => milestone(1));
+  $("btn-png").addEventListener("click", () => {
+    savePNG().catch((e) => console.warn("PNG export failed:", e));
   });
-  $("speed").addEventListener("change", (e) => {
-    state.speedDecPerS = parseFloat(e.target.value);
-  });
+  $("btn-help").addEventListener("click", () => toggleHelp());
+  $("help-close").addEventListener("click", () => toggleHelp(false));
+  $("speed").addEventListener("change", (e) => setSpeedIndex(parseInt(e.target.value, 10)));
   $("axis").addEventListener("change", (e) => {
-    state.axis = e.target.value;
+    if (!setAxis(e.target.value)) e.target.value = state.axis;
   });
   $("slider").addEventListener("input", (e) => {
-    const f = parseFloat(e.target.value);
-    state.playing = false;
-    $("play").textContent = "\u25B6 Play";
-    setLogR(data.logrMax - f * (data.logrMax - data.logrMin));
+    const f = parseFloat(e.target.value), [a, b] = data.axisRange(state.axis);
+    pause();
+    setLogR(data.logrAtAxis(state.axis, a + f * (b - a)));
   });
   window.addEventListener("resize", () => {
     Object.values(views).forEach((v) => v.resize());
     render(true);
   });
-  window.addEventListener("keydown", (e) => {
-    if (e.key === " ") {
-      $("play").click();
-      e.preventDefault();
+  function onKey(e) {
+    if (e.ctrlKey || e.metaKey || e.altKey) return;
+    const t = e.target, tag = t && t.tagName ? t.tagName : "";
+    if (tag === "SELECT" || tag === "TEXTAREA" || t && t.isContentEditable) return;
+    if (tag === "INPUT" && !["range", "checkbox", "radio", "button"].includes(t.type)) return;
+    const other = tag === "INPUT" && t.type === "range" && t.id !== "slider";
+    let handled = true;
+    switch (e.key) {
+      case " ":
+      case "Spacebar":
+        togglePlay();
+        break;
+      case "ArrowRight":
+        if (other) return;
+        step(1, e.shiftKey);
+        break;
+      case "ArrowLeft":
+        if (other) return;
+        step(-1, e.shiftKey);
+        break;
+      case "Home":
+        if (other) return;
+        goStart();
+        break;
+      case "End":
+        if (other) return;
+        goEnd();
+        break;
+      case "]":
+        milestone(1);
+        break;
+      case "[":
+        milestone(-1);
+        break;
+      case "+":
+      case "=":
+        speed(1);
+        break;
+      case "-":
+      case "_":
+        speed(-1);
+        break;
+      case "1":
+      case "2":
+      case "3":
+      case "4":
+        setView(VIEW_NAMES[parseInt(e.key, 10) - 1]);
+        break;
+      case "?":
+        toggleHelp();
+        break;
+      case "Escape":
+        if (state.help) toggleHelp(false);
+        else handled = false;
+        break;
+      default:
+        handled = false;
     }
-    if (e.key === "ArrowRight") setLogR(state.logr - 0.25);
-    if (e.key === "ArrowLeft") setLogR(state.logr + 0.25);
-    if (e.key >= "1" && e.key <= "4") setView(["scene", "causal", "fp", "spec"][parseInt(e.key) - 1]);
-  });
+    if (handled) {
+      e.preventDefault();
+      if (tag === "BUTTON" || tag === "INPUT") t.blur();
+    }
+  }
+  window.addEventListener("keydown", onKey);
+  for (const opt of $("axis").options) {
+    if (!data.axisAvailable(opt.value)) {
+      opt.disabled = true;
+      opt.textContent += " \u2014 unavailable in this export";
+    }
+  }
+  fillSpeedOptions();
   {
     const s = raw.summary;
     $("validation").innerHTML = `steps ${s.n_steps_total}, RHS evals ${s.n_rhs_evals_total}, rejected ${s.n_rejected_total}<br>max |g(u,u)+1| = ${fmt.sci(s.max_abs_norm_residual, 2)}; max conditioned E drift = ${fmt.sci(s.max_E_drift_conditioned, 2)}<br>\u03C4(horizon\u2192r_QG) = ${fmt.years(s.tau_since_horizon_years_at_end)} (analytic 4GM/3c\xB3 = ${fmt.years(data.derived.tau_horizon_to_singularity_years)})<br>See validation_report.json for TESTS 0\u20138.`;
@@ -25891,11 +26734,27 @@ void main() {
   window.SLAB_APP = {
     state,
     data,
+    views,
     setView,
     setLogR,
     setSceneMode,
-    views,
     render,
+    setAxis,
+    advance,
+    step,
+    milestone,
+    speed,
+    setSpeedIndex,
+    togglePlay,
+    toggleHelp,
+    goStart,
+    goEnd,
+    capture,
+    savePNG,
+    captionLines,
+    readout: () => readout(state.sample || data.at(state.logr)),
+    sliderFraction,
+    speeds: SPEEDS,
     setCamera(c) {
       state.camera = c;
       render(true);

@@ -1,6 +1,6 @@
 # SLAB_GR_Simulation — validation report
 
-Generated: 2026-09-25T22:53:24.800816+00:00  ·  status: **VALIDATED**  ·  11/11 tests passed  ·  wall time 12.7 s
+Generated: 2026-09-26T23:54:56.923585+00:00  ·  status: **VALIDATED**  ·  11/11 tests passed  ·  wall time 15.0 s
 
 Every number below is computed by `src/slab/validation.py` from the constants in `src/slab/constants.py`; nothing is typed in by hand. Tags: **EXACT GR RESULT** (closed-form consequence of the Schwarzschild solution), **NUMERICAL** (integrated/rooted value with the quoted error), **BRIEF** (value quoted in the project brief, used only as a comparison target).
 
@@ -220,19 +220,19 @@ Convergence with tolerance (step cap lifted so that the error controller alone s
 
 | rtol | steps | rel. err τ(h→r_QG) | rel. err Δv(h→r_QG) | max rel. err u^r | wall [s] |
 |---|---|---|---|---|---|
-| 1e-06 | 258 | 7.536573e-08 | 2.181327e-07 | 1.059515e-04 | 0.05 |
-| 1e-08 | 585 | 8.286633e-10 | 7.581093e-10 | 5.443173e-07 | 0.11 |
-| 1e-10 | 1411 | 9.606482e-12 | 2.986494e-12 | 2.747224e-09 | 0.26 |
-| 1e-12 | 3471 | 2.273182e-13 | 1.480972e-13 | 1.500350e-11 | 0.65 |
+| 1e-06 | 258 | 7.536573e-08 | 2.181327e-07 | 1.059515e-04 | 0.04 |
+| 1e-08 | 585 | 8.286633e-10 | 7.581093e-10 | 5.443173e-07 | 0.09 |
+| 1e-10 | 1411 | 9.606482e-12 | 2.986494e-12 | 2.747224e-09 | 0.21 |
+| 1e-12 | 3471 | 2.273182e-13 | 1.480972e-13 | 1.500350e-11 | 0.59 |
 
 1 g rocket (no closed form) vs 35-digit mpmath quadrature reference, milestone segments r0 -> r_QG, step cap lifted:
 
 | max_rel_err_dtau_per_segment | max_rel_err_dv_per_segment | max_rel_err_u_r_at_milestones | max_rel_err_E_at_milestones | rtol | steps | wall_s |
 |---|---|---|---|---|---|---|
-| 6.679433e-05 | 1.977293e-06 | 6.748448e-05 | 1.583673e-08 | 1.000000e-06 | 295 | 1.14424229 |
-| 3.360052e-07 | 1.985345e-08 | 3.397616e-07 | 4.572552e-10 | 1.000000e-08 | 651 | 0.0913236141 |
-| 1.521405e-09 | 3.792195e-10 | 1.534429e-09 | 7.251584e-12 | 1.000000e-10 | 1539 | 0.210634232 |
-| 6.456496e-12 | 5.818694e-12 | 6.475131e-12 | 9.765081e-14 | 1.000000e-12 | 3769 | 0.509701729 |
+| 6.679433e-05 | 1.977293e-06 | 6.748448e-05 | 1.583673e-08 | 1.000000e-06 | 295 | 0.913551092 |
+| 3.360052e-07 | 1.985345e-08 | 3.397616e-07 | 4.572552e-10 | 1.000000e-08 | 651 | 0.0620651245 |
+| 1.521405e-09 | 3.792195e-10 | 1.534429e-09 | 7.251584e-12 | 1.000000e-10 | 1539 | 0.159128428 |
+| 6.456496e-12 | 5.818694e-12 | 6.475131e-12 | 9.765081e-14 | 1.000000e-12 | 3769 | 0.387536287 |
 
 Reference used for the 1 g rocket:
 
@@ -245,9 +245,9 @@ L = 3.5 GM/c plunge vs 35-digit mpmath quadrature reference (r0 = 100 r_s -> r_Q
 
 | max_rel_err_dtau_per_segment | max_rel_err_dv_per_segment | max_rel_err_u_r_at_milestones | max_rel_err_phi_at_milestones | rtol | steps | wall_s |
 |---|---|---|---|---|---|---|
-| 4.214268e-07 | 1.349589e-07 | 4.239610e-07 | 8.036501e-08 | 1.000000e-08 | 1895 | 1.21598268 |
-| 4.330802e-09 | 9.094475e-10 | 4.364546e-09 | 5.604537e-10 | 1.000000e-10 | 4749 | 0.600439548 |
-| 4.292783e-11 | 6.852962e-12 | 4.331629e-11 | 4.289672e-12 | 1.000000e-12 | 11968 | 1.55404472 |
+| 4.214268e-07 | 1.349589e-07 | 4.239610e-07 | 8.036501e-08 | 1.000000e-08 | 1895 | 0.931175232 |
+| 4.330802e-09 | 9.094475e-10 | 4.364546e-09 | 5.604537e-10 | 1.000000e-10 | 4749 | 0.400175571 |
+| 4.292783e-11 | 6.852962e-12 | 4.331629e-11 | 4.289672e-12 | 1.000000e-12 | 11968 | 0.965811729 |
 
 ### TEST 9 — Accelerated observer's proper reference frame: inertial (Rindler-type) differential term  ·  **PASS**
 

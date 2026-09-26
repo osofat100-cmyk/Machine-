@@ -152,7 +152,8 @@ export async function runPixelChecks(page, report, opts = {}) {
     report('(B1) start (X ~ 1e171): no Kruskal marker (off-chart, labelled), compactified marker present', st.k === null && st.p !== null, `kruskal_X = ${st.X}`);
   }
   // ---------------------------------------------------------------- (C)
-  await checkSignal(page, report, 'samples', shots);
+  // the committed export carries the engine's signal_timeline; older exports fall back to the samples
+  await checkSignal(page, report, await page.evaluate(() => (window.SLAB_DATA.signal_timeline ? 'engine' : 'samples')), shots);
   // ---------------------------------------------------------------- (D)
   await checkPlayback(page, report);
 }

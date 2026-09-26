@@ -18,6 +18,13 @@ function loadRaw() {
 }
 const raw = loadRaw();
 const data = new TrajectoryData(raw);
+// A 'legacy' export without the engine's signal-timeline keys, to exercise the viewer's fallback path
+// regardless of whether the committed export already carries them.
+const legacyRaw = JSON.parse(JSON.stringify(raw));
+delete legacyRaw.signal_timeline;
+delete legacyRaw.samples.u_ret_geo;
+delete legacyRaw.samples.t_receive_years;
+const legacy = new TrajectoryData(legacyRaw);
 const N = data.N, GMyr = data.derived.GM_over_c3_years;
 
 // ---------------------------------------------------------------------------------------------- analytic E = 1 fall
@@ -104,7 +111,7 @@ for (const name of Object.keys(AXES)) {
 
 // ---------------------------------------------------------------------------------------------- (4) received-signal timeline (fallback)
 {
-  const tl = data.signalTimeline();
+  const tl = legacy.signalTimeline();
   const pts = tl.points;
   let mono = pts.length > 10;
   for (let i = 1; i < pts.length; i++) if (!(pts[i].t > pts[i - 1].t && pts[i].y > pts[i - 1].y)) mono = false;
@@ -131,9 +138,16 @@ for (const name of Object.keys(AXES)) {
       `worst rel ${worstZ.toExponential(2)} (the linearly resampled redshift column itself: ${worstCol.toExponential(2)})`);
   }
   // current-point helpers: outside -> finite, inside -> null (signal never arrives)
-  const out = data.at(0.3), ins = data.at(-0.3);
-  report('(4e) t_receive and 1+z defined outside, null inside the horizon', Number.isFinite(data.tReceiveYears(out)) && Number.isFinite(data.onePlusZ(out)) && data.tReceiveYears(ins) === null && data.onePlusZ(ins) === null,
-    `outside t = ${data.tReceiveYears(out).toExponential(4)} yr, 1+z = ${data.onePlusZ(out).toPrecision(5)}`);
+  for (const [name, d] of [['legacy export', legacy], ['current export', data]]) {
+    const out = d.at(0.3), ins = d.at(-0.3);
+    report(`(4e) ${name}: t_receive and 1+z defined outside, null inside the horizon`, Number.isFinite(d.tReceiveYears(out)) && Number.isFinite(d.onePlusZ(out)) && d.tReceiveYears(ins) === null && d.onePlusZ(ins) === null,
+      `outside t = ${d.tReceiveYears(out).toExponential(4)} yr, 1+z = ${d.onePlusZ(out).toPrecision(5)}`);
+  }
+  if (raw.signal_timeline) {
+    const te = data.signalTimeline();
+    report('(4f) current export: the engine timeline is used and reaches r/r_s - 1 <= 1e-11', te.source === 'engine' && Math.min(...raw.signal_timeline.eps) <= 1e-11,
+      `${te.points.length} points, max 1+z ${Math.pow(10, te.points[te.points.length - 1].y).toExponential(3)}`);
+  }
 }
 
 // ---------------------------------------------------------------------------------------------- (5) late-time asymptote (analytic)
@@ -164,8 +178,7 @@ for (const name of Object.keys(AXES)) {
     `max log10(1+z) ${tl.points[200].y.toFixed(3)}`);
   const smp = d2.atIndex(10);
   report('(6b) per-sample t_receive_years column is used when present', d2.tReceiveYears(smp) === 12355, `${d2.tReceiveYears(smp)}`);
-  const d3 = new TrajectoryData(raw);
-  report('(6c) without the new keys the viewer falls back to the samples', d3.signalTimeline().source === 'samples' && raw.signal_timeline === undefined);
+  report('(6c) without the new keys the viewer falls back to the samples', legacy.signalTimeline().source === 'samples' && legacyRaw.signal_timeline === undefined);
 }
 
 console.log(fails ? `${fails} FAILED` : 'ALL PASSED');
