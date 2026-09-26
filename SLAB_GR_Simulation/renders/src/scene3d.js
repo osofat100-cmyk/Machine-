@@ -51,12 +51,17 @@ export class Scene3dView {
     this.renderer = new THREE.WebGLRenderer({ antialias: false, alpha: false, powerPreference: 'low-power' });
     this.renderer.setPixelRatio(Math.min(1.5, window.devicePixelRatio || 1));
     this.renderer.setClearColor(0x0b0e14);
+    // CSS size = container size (the drawing buffer is container size x pixel ratio); without this the canvas is shown at
+    // its buffer size on HiDPI screens and cropped by the container
+    this.renderer.domElement.style.cssText += 'position:absolute;left:0;top:0;width:100%;height:100%;display:block;';
     this.container.appendChild(this.renderer.domElement);
     this.scene = new THREE.Scene();
     this.camera = new THREE.PerspectiveCamera(50, 1, 0.01, 5000);
     this.camera.position.set(52, 30, 58);
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
     this.controls.enableDamping = true; this.controls.dampingFactor = 0.1;
+    // touch: one finger orbits, two fingers pinch-zoom and pan (OrbitControls sets touch-action: none on the canvas)
+    this.controls.touches = { ONE: THREE.TOUCH.ROTATE, TWO: THREE.TOUCH.DOLLY_PAN };
     this.scene.add(new THREE.AmbientLight(0xffffff, 0.7));
     const dl = new THREE.DirectionalLight(0xffffff, 0.6); dl.position.set(1, 2, 1); this.scene.add(dl);
     this.group = new THREE.Group(); this.scene.add(this.group);
@@ -64,7 +69,7 @@ export class Scene3dView {
     // overlays
     this.overlay = document.createElement('div'); this.overlay.className = 'overlay'; this.overlay.style.top = '48px'; this.overlay.style.bottom = 'auto'; this.overlay.style.maxWidth = '60%';
     this.container.appendChild(this.overlay);
-    this.inset = document.createElement('canvas'); this.inset.style.cssText = 'position:absolute;right:10px;bottom:10px;width:280px;height:190px;border:1px solid #2b3549;border-radius:4px;';
+    this.inset = document.createElement('canvas'); this.inset.style.cssText = 'position:absolute;right:10px;bottom:10px;width:280px;height:190px;border:1px solid #2b3549;border-radius:4px;pointer-events:none;';
     this.container.appendChild(this.inset);
     this.legend = document.createElement('div'); this.legend.className = 'overlay'; this.legend.style.cssText += 'right:10px;left:auto;top:100px;bottom:auto;display:none;max-height:45%;overflow:auto;pointer-events:auto;';
     this.container.appendChild(this.legend);
@@ -191,18 +196,38 @@ export class Scene3dView {
       this.marker.material.emissive.set(REGIME_COLORS[state?.speculative ? 2 : (smp.regime_code ?? 0)]);
       this.cone.group.position.copy(this.marker.position);
       this.cone.group.rotation.y = -ph;   // local radial axis = outward direction at the observer
-      const f = 1 - 1 / r;
-      this.cone.update(f, smp.lc_out_drdtEF ?? f / (2 - f), smp.lc_in_drdtEF ?? -1, smp.worldline_drdtEF ?? 0);
+      const f = 1 - 1 / r;   // exact null directions at the displayed r (same closed form as the exported lc_* columns)
+      this.cone.update(f, Number.isFinite(f) ? f / (2 - f) : (smp.lc_out_drdtEF ?? 0), -1, smp.worldline_drdtEF ?? 0);
       this.coneLabel.position.set(this.marker.position.x + 1.5, 3.4, this.marker.position.z + 1.5);
       if (this.follow) this.controls.target.lerp(this.marker.position, 0.2);
     }
-    const inside = r <= 1;
-    this.overlay.innerHTML = `<b>${MODE_LABEL[this.mode]}</b><br>true radius r = ${fmt.metres(smp.r_m)}  ·  r/r_s = ${fmt.sci(r, 5)}  ·  ${inside ? 'INSIDE the horizon' : 'outside the horizon'}` +
+    const where = Math.abs(r - 1) < 1e-12 ? 'AT the horizon (r = r_s)' : (r < 1 ? 'INSIDE the horizon' : 'outside the horizon');
+    this.overlay.innerHTML = `<b>${MODE_LABEL[this.mode]}</b><br>true radius r = ${fmt.metres(smp.r_m)}  ·  r/r_s = ${fmt.sci(r, 5)}  ·  ${where}` +
       (this.mode === 'deep' && !isFinite(R) ? '<br>(observer still outside the deep-interior window r ≤ 10⁻⁶ r_s)' : '') +
       (this.mode === 'horizon' && (r < 0.84 || r > 1.16) ? '<br>(observer outside the 0.85–1.15 r_s window)' : '');
-    drawConeInset(this.inset, smp);
+    this._lastSmp = smp;
+    this.insetGeom = drawConeInset(this.inset, smp);
     this.controls.update();
     this.renderer.render(this.scene, this.camera);
+  }
+  modeLabel() { return MODE_LABEL[this.mode] || MODE_LABEL.log; }
+  // Render now (in the caller's task) so that the WebGL drawing buffer is valid for an immediate drawImage/toBlob
+  // (render-then-capture; the renderer does not need preserveDrawingBuffer).
+  renderNow() {
+    if (!this.ready) return;
+    if (this._lastSmp) this.insetGeom = drawConeInset(this.inset, this._lastSmp);
+    this.controls.update();
+    this.renderer.render(this.scene, this.camera);
+  }
+  // Layers for the PNG export, positioned in CSS pixels relative to the view container.  Must be composited in the
+  // same task (the WebGL buffer is cleared after the next compositing).
+  captureLayers() {
+    if (!this.ready) return { width: this.container.clientWidth, height: this.container.clientHeight, layers: [] };
+    this.renderNow();
+    const box = this.container.getBoundingClientRect();
+    const rel = el => { const b = el.getBoundingClientRect(); return { x: b.left - box.left, y: b.top - box.top, w: b.width, h: b.height }; };
+    return { width: box.width, height: box.height, background: '#0b0e14',
+      layers: [{ canvas: this.renderer.domElement, ...rel(this.renderer.domElement) }, { canvas: this.inset, ...rel(this.inset) }] };
   }
   resize() {
     if (!this.ready) return;

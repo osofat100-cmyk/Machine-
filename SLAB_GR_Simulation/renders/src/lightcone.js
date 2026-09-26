@@ -60,46 +60,60 @@ export class LightCone {
 }
 
 // 2D inset: the (t_EF, r) plane with the two null generators, the shaded future cone and the worldline tangent.
+// Generator slopes are the EXACT null directions dr/dt_EF = f/(2 - f) (outgoing) and -1 (ingoing) evaluated at the displayed
+// radius (the same closed form the engine exports as lc_out_drdtEF / lc_in_drdtEF; evaluating it at the record's exact r
+// avoids interpolating a nonlinear function between samples).  The worldline slope is the observer's state (data column).
+// Scale: one unit of t_EF (vertical) and one unit of r (horizontal) are both T pixels, so a slope s is drawn as dx = s * T.
+// Returns the drawing geometry (CSS pixels) so that tests can read the pixels back: {ox, oy, T, W, H, dpr, so, si, sw}.
 export function drawConeInset(canvas, smp) {
-  const ctx = canvas.getContext('2d'); if (!ctx) return;
+  const ctx = canvas.getContext('2d'); if (!ctx) return null;
   const dpr = Math.min(2, window.devicePixelRatio || 1);
   const W = canvas.clientWidth || 260, H = canvas.clientHeight || 200;
-  if (canvas.width !== W * dpr || canvas.height !== H * dpr) { canvas.width = W * dpr; canvas.height = H * dpr; }
+  if (canvas.width !== Math.round(W * dpr) || canvas.height !== Math.round(H * dpr)) { canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr); }
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   ctx.clearRect(0, 0, W, H);
   ctx.fillStyle = 'rgba(11,14,20,0.85)'; ctx.fillRect(0, 0, W, H);
-  const ox = W * 0.5, oy = H * 0.72, sc = Math.min(W, H) * 0.32;
+  const ox = Math.round(W * 0.5), oy = Math.round(H * 0.72), sc = Math.min(W, H) * 0.32;
   const rOverRs = smp.r_over_rs, f = 1 - 1 / rOverRs;
-  const so = smp.lc_out_drdtEF ?? f / (2 - f), si = smp.lc_in_drdtEF ?? -1, sw = smp.worldline_drdtEF ?? 0;
+  const fin = v => typeof v === 'number' && Number.isFinite(v);
+  const so = fin(f) ? f / (2 - f) : (smp.lc_out_drdtEF ?? 0);
+  const si = -1;
+  const sw = smp.worldline_drdtEF ?? 0;
   // axes: r to the right, t_EF up
   ctx.strokeStyle = '#3a4560'; ctx.lineWidth = 1;
   ctx.beginPath(); ctx.moveTo(10, oy); ctx.lineTo(W - 10, oy); ctx.moveTo(ox, H - 8); ctx.lineTo(ox, 12); ctx.stroke();
   ctx.fillStyle = '#8892a6'; ctx.font = '11px system-ui, sans-serif';
-  ctx.fillText('r →', W - 30, oy - 4); ctx.fillText('t_EF ↑', ox + 4, 18);
+  ctx.fillText('r →', W - 30, oy - 4); ctx.fillText('t_EF ↑', ox + 4, 26);
+  // horizon line r = r_s (vertical, dashed) when within the window — drawn BEFORE the generators so that at r = r_s the
+  // outgoing generator (which lies on the horizon) stays visible on top of it.  Its horizontal offset is schematic.
+  if (Math.abs(rOverRs - 1) < 0.5) {
+    const drWin = 1.6;
+    const xh = ox + ((1 - rOverRs) / 0.5) * drWin * 0.5 * sc;
+    ctx.strokeStyle = '#ff8c42'; ctx.lineWidth = 1; ctx.setLineDash([4, 3]); ctx.beginPath(); ctx.moveTo(xh, 12); ctx.lineTo(xh, H - 8); ctx.stroke(); ctx.setLineDash([]);
+    ctx.fillStyle = '#ff8c42'; ctx.fillText('r = r_s', xh + 3, 40);
+  }
   // shaded cone between the generators (dt = 1 -> dr = slope)
   const T = sc;
   ctx.fillStyle = f > 0.02 ? 'rgba(255,209,102,0.25)' : (f > -0.02 ? 'rgba(255,140,66,0.3)' : 'rgba(255,107,107,0.3)');
   ctx.beginPath(); ctx.moveTo(ox, oy); ctx.lineTo(ox + so * T, oy - T); ctx.lineTo(ox + si * T, oy - T); ctx.closePath(); ctx.fill();
   ctx.strokeStyle = '#ffd166'; ctx.lineWidth = 2;
   ctx.beginPath(); ctx.moveTo(ox, oy); ctx.lineTo(ox + so * T, oy - T); ctx.moveTo(ox, oy); ctx.lineTo(ox + si * T, oy - T); ctx.stroke();
-  // horizon line r = r_s (vertical) when within the window
-  const drWin = 1.6;   // window half-width in units of the cone scale (dr per dt = 1)
-  const rsPos = (1 - rOverRs) / Math.max(1e-300, rOverRs); // (r_s - r)/r in units of r... only meaningful near horizon
-  if (Math.abs(rOverRs - 1) < 0.5) {
-    // place the horizon at horizontal offset proportional to (r_s - r)/r_s relative to the cone scale (schematic)
-    const xh = ox + ((1 - rOverRs) / 0.5) * drWin * 0.5 * sc;
-    ctx.strokeStyle = '#ff8c42'; ctx.setLineDash([4, 3]); ctx.beginPath(); ctx.moveTo(xh, 12); ctx.lineTo(xh, H - 8); ctx.stroke(); ctx.setLineDash([]);
-    ctx.fillStyle = '#ff8c42'; ctx.fillText('r = r_s', xh + 3, 30);
-  }
   // worldline tangent
   ctx.strokeStyle = '#7ab7ff'; ctx.lineWidth = 2.5;
   ctx.beginPath(); ctx.moveTo(ox, oy); ctx.lineTo(ox + sw * T, oy - T); ctx.stroke();
   ctx.fillStyle = '#7ab7ff'; ctx.beginPath(); ctx.arc(ox + sw * T, oy - T, 3.5, 0, 2 * Math.PI); ctx.fill();
   ctx.fillStyle = '#d8dee9'; ctx.font = '12px system-ui, sans-serif';
   ctx.fillText('local future light cone (ingoing EF time)', 8, 14);
-  ctx.font = '11px ui-monospace, monospace'; ctx.fillStyle = '#c8d0e0';
-  ctx.fillText(`dr/dt_EF: out ${so.toFixed(3)}  in ${si.toFixed(1)}  worldline ${sw.toFixed(3)}`, 8, H - 22);
-  const where = rOverRs > 1.001 ? 'outside r_s: cone straddles increasing and decreasing r' : (rOverRs > 0.999 ? 'AT r_s: outgoing generator is vertical (lies on the horizon)' : 'inside r_s: every future direction has dr < 0');
+  // text lines shrink to fit the inset width
+  const fit = (text, x, y, px, family) => {
+    let size = px; ctx.font = `${size}px ${family}`;
+    while (size > 8 && ctx.measureText(text).width > W - x - 4) { size -= 0.5; ctx.font = `${size}px ${family}`; }
+    ctx.fillText(text, x, y);
+  };
+  ctx.fillStyle = '#c8d0e0';
+  fit(`dr/dt_EF: out ${so.toFixed(3)}  in ${si.toFixed(1)}  worldline ${sw.toFixed(3)}`, 8, H - 22, 11, 'ui-monospace, monospace');
+  const where = rOverRs > 1.001 ? 'outside r_s: cone reaches larger and smaller r' : (rOverRs > 0.999 ? 'AT r_s: outgoing generator vertical (on the horizon)' : 'inside r_s: every future direction has dr < 0');
   ctx.fillStyle = f > 0.02 ? '#ffd166' : (f > -0.02 ? '#ff8c42' : '#ff6b6b');
-  ctx.fillText(where, 8, H - 8);
+  fit(where, 8, H - 8, 11, 'system-ui, sans-serif');
+  return { ox, oy, T, W, H, dpr, so, si, sw };
 }

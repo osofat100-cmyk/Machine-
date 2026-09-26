@@ -25,9 +25,30 @@
   #planck.hidden { display:none; }
   #spec-banner { position:absolute; top:8px; left:50%; transform:translateX(-50%); background:rgba(217,140,255,.15); border:1px solid var(--spec); color:var(--spec); padding:4px 10px; border-radius:4px; font-weight:700; z-index:6; }
   #spec-banner.hidden { display:none; }
-  footer { grid-column: 1 / 3; background:var(--panel); border-top:1px solid #222a3a; padding:8px 12px; display:flex; align-items:center; gap:10px; }
-  footer input[type=range] { flex:1; }
-  footer button, footer select { background:#1b2233; color:var(--fg); border:1px solid #2b3549; padding:4px 8px; border-radius:4px; cursor:pointer; }
+  footer { grid-column: 1 / 3; background:var(--panel); border-top:1px solid #222a3a; padding:6px 12px; display:flex; align-items:center; gap:8px; flex-wrap:wrap; row-gap:6px; }
+  footer input[type=range] { flex:1 1 160px; min-width:120px; min-height:28px; }
+  footer button, footer select { background:#1b2233; color:var(--fg); border:1px solid #2b3549; padding:4px 8px; border-radius:4px; cursor:pointer; min-height:32px; }
+  footer button { min-width:34px; font-size:14px; line-height:1; }
+  footer button:hover, footer button:focus-visible { border-color:var(--accent); }
+  footer button.primary { min-width:84px; }
+  footer .grp { display:flex; gap:3px; }
+  footer label { color:var(--dim); white-space:nowrap; }
+  #pos { min-width:270px; text-align:left; font:11.5px/1.35 ui-monospace, Menlo, Consolas, monospace; white-space:pre; }
+  #axis { max-width:220px; }
+  #pos .rem { color:var(--warn); }
+  #help { position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); width:min(680px, calc(100vw - 24px)); max-height:calc(100vh - 40px); overflow:auto;
+          background:#131824; border:1px solid var(--accent); border-radius:8px; padding:14px 18px; z-index:50; box-shadow:0 8px 40px rgba(0,0,0,.6); }
+  #help.hidden { display:none; }
+  #help h2 { margin:0 0 8px; font-size:15px; color:var(--accent); }
+  #help table { border-collapse:collapse; width:100%; margin-bottom:8px; }
+  #help td { padding:3px 6px; vertical-align:top; border-top:1px solid #222a3a; }
+  #help td:first-child { white-space:nowrap; font-family:ui-monospace, Menlo, Consolas, monospace; color:var(--warn); }
+  #help-close { position:absolute; top:8px; right:8px; min-width:40px; min-height:40px; background:#1b2233; color:var(--fg); border:1px solid #2b3549; border-radius:6px; font-size:18px; cursor:pointer; }
+  #view-fp canvas, #view-scene canvas { touch-action:none; }
+  @media (pointer: coarse) {
+    footer button, footer select, header .tabs button { min-height:44px; min-width:44px; }
+    footer input[type=range] { min-height:40px; }
+  }
   .kv { display:grid; grid-template-columns: 1fr auto; gap:2px 8px; margin-bottom:8px; }
   .kv .k { color:var(--dim); }
   .kv .v { text-align:right; font-variant-numeric: tabular-nums; font-family: ui-monospace, Menlo, Consolas, monospace; }
@@ -72,13 +93,53 @@
     <div id="view-fp" class="view"></div>
     <div id="view-spec" class="view"></div>
   </div>
-  <footer>
-    <button id="play">▶ Play</button>
-    <label>speed <select id="speed"><option value="0.5">0.5 dec/s</option><option value="2" selected>2 dec/s</option><option value="8">8 dec/s</option></select></label>
-    <label>axis <select id="axis"><option value="logr" selected>log10(r / r_s)</option><option value="tau">proper time (exterior)</option></select></label>
-    <input type="range" id="slider" min="0" max="1" step="0.0001" value="0">
-    <span id="pos" style="min-width:260px;text-align:right;font-family:ui-monospace,Menlo,monospace"></span>
+  <footer id="toolbar" role="toolbar" aria-label="Playback">
+    <div class="grp">
+      <button id="btn-start" title="Go to the start, 100 r_s (Home)" aria-label="Go to start">⇤</button>
+      <button id="btn-prev-ms" title="Previous milestone ([)" aria-label="Previous milestone">«</button>
+      <button id="btn-back" title="Step back along the playback axis (←; Shift: fine step)" aria-label="Step back">‹</button>
+      <button id="play" class="primary" title="Play / pause (Space)">▶ Play</button>
+      <button id="btn-fwd" title="Step forward along the playback axis (→; Shift: fine step)" aria-label="Step forward">›</button>
+      <button id="btn-next-ms" title="Next milestone (])" aria-label="Next milestone">»</button>
+      <button id="btn-end" title="Go to r_QG, where the validated run stops (End)" aria-label="Go to end">⇥</button>
+    </div>
+    <label>speed <select id="speed" title="Playback speed (+ / −)"></select></label>
+    <label>axis <select id="axis" title="Playback axis">
+      <option value="logr" selected>log10(r / r_s)</option>
+      <option value="logtau" title="constant rate in decades of the classical proper time remaining to r = 0 (classical-GR extrapolation)">log10 τ remaining (GR extrap.)</option>
+      <option value="tau" title="linear in proper time; useful only outside ~0.1 r_s">τ linear (exterior)</option>
+    </select></label>
+    <input type="range" id="slider" min="0" max="1" step="0.0001" value="0" aria-label="Position along the playback axis">
+    <div id="pos" aria-live="off"></div>
+    <div class="grp">
+      <button id="btn-png" title="Save a PNG of the current view with a caption strip (r, τ, remaining time, regime, banners)">PNG</button>
+      <button id="btn-help" title="Keyboard and touch controls (?)" aria-label="Help">?</button>
+    </div>
   </footer>
+</div>
+<div id="help" class="hidden" role="dialog" aria-modal="false" aria-labelledby="help-title">
+  <button id="help-close" aria-label="Close help" title="Close (Esc)">×</button>
+  <h2 id="help-title">Controls</h2>
+  <table>
+    <tr><td>Space</td><td>play / pause</td></tr>
+    <tr><td>← / →</td><td>step back / forward along the playback axis (Shift: fine step)</td></tr>
+    <tr><td>Home / End</td><td>start (100 r_s) / r_QG, where the validated classical-GR run stops</td></tr>
+    <tr><td>[ / ]</td><td>previous / next milestone (ISCO, photon sphere, horizon, …)</td></tr>
+    <tr><td>+ / −</td><td>faster / slower playback</td></tr>
+    <tr><td>1 2 3 4</td><td>3D view · causal / Kruskal diagram · first-person camera · speculative toy-model menu</td></tr>
+    <tr><td>?  /  Esc</td><td>show / close this help</td></tr>
+  </table>
+  <table>
+    <tr><td>3D view</td><td>one finger or left mouse: orbit · two-finger pinch or wheel: zoom · two-finger drag or right mouse: pan</td></tr>
+    <tr><td>first person</td><td>drag to look around</td></tr>
+    <tr><td>slider</td><td>scrub along the current playback axis; the readout always shows the true r, τ and the classical τ remaining</td></tr>
+    <tr><td>PNG</td><td>saves the current view with a caption strip (r, r/r_s, τ, remaining time, regime and the required banners)</td></tr>
+  </table>
+  <div class="note">Playback axes: <b>log10(r / r_s)</b> (default) plays at a constant rate in decades of radius.
+    <b>log10 τ remaining</b> plays at a constant rate in decades of the classical proper time remaining to r = 0
+    (column <code>tau_to_center_est_years</code>) — a classical-GR extrapolation: the validated run stops at r_QG and nothing
+    beyond it is computed; this axis makes both the 2×10⁸-year exterior fall and the last 10⁻⁴³ s watchable.
+    <b>proper time τ (linear)</b> is useful only outside ~0.1 r_s (99.9 % of τ is spent there).</div>
 </div>
 <script src="trajectory_data.js"></script>
 <script src="viewer.bundle.js"></script>

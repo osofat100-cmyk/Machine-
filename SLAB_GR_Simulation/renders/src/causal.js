@@ -1,21 +1,25 @@
-// Causal-structure view: Kruskal–Szekeres diagram and compactified (Penrose-type) diagram,
-// drawn on two synchronized 2D canvases.  No physics is integrated here: the observer's
+// Causal-structure view: Kruskal–Szekeres diagram, compactified (Penrose-type) diagram and the received-signal
+// timeline of a distant static observer, drawn on three synchronized 2D canvases.  No physics is integrated here: the observer's
 // worldline is the precomputed radial geodesic (columns kruskal_T/X, penrose_T/X of the data
 // file); the coordinate curves (r = const, t = const, horizon, singularity) are the exact
 // analytic Kruskal relations for the Schwarzschild metric in geometrized units G = c = M = 1
-// (r_s = 2).  Every visual simplification is labelled on screen.
+// (r_s = 2).  The signal timeline plots log10(1+z) against the reception time at a distant static observer, from the
+// engine's signal_timeline export when present, otherwise from the samples (see data.js::signalTimeline).
+// Every visual simplification is labelled on screen.
 import { fmt } from './data.js';
 
 const M = 1;                 // geometrized mass; r_s = 2M = 2
 const RS = 2 * M;
 const KWIN = 2.6;            // Kruskal window: |T|, |X| <= KWIN
 const PI = Math.PI, PI2 = PI / 2, PI4 = PI / 4;
+const LOG10E = Math.LOG10E;
+const PANEL_MODES = { both: 'all panels', kruskal: 'Kruskal only', penrose: 'Penrose only', signal: 'signal timeline only' };
 
 const COL = {
   bg: '#0b0e14', panel: '#10151f', axis: '#3a4560', text: '#d8dee9', dim: '#8892a6',
   horizon: '#7ab7ff', sing: '#ff6b6b', rconst: '#6b7ea3', tconst: '#4b8a76', world: '#f0f0f6',
   regionI: 'rgba(122,183,255,0.06)', regionII: 'rgba(255,107,107,0.08)', regionX: 'rgba(0,0,0,0.35)',
-  regime: ['#6ee7a0', '#ffb454', '#ff6b6b', '#d98cff'], accent: '#7ab7ff',
+  regime: ['#6ee7a0', '#ffb454', '#ff6b6b', '#d98cff'], accent: '#7ab7ff', warn: '#ffb454', grid: '#1e2638',
 };
 const REGIME_NAMES = ['CLASSICAL GR — VALIDATED', 'CLASSICAL GR — EXTREME CURVATURE', 'PLANCK-CURVATURE BOUNDARY', 'SPECULATIVE QUANTUM MODEL'];
 const FONT = (px, weight = 400) => `${weight} ${px}px system-ui, -apple-system, "Segoe UI", Roboto, sans-serif`;
@@ -36,6 +40,15 @@ function clipSegment(x0, y0, x1, y1, xmin, xmax, ymin, ymax) {
     else { if (r < t0) return null; if (r < t1) t1 = r; }
   }
   return [x0 + t0 * dx, y0 + t0 * dy, x0 + t1 * dx, y0 + t1 * dy];
+}
+
+// 'nice' tick positions (1, 2, 5 x 10^k) covering [a, b] with about n ticks
+function niceTicks(a, b, n) {
+  if (!(b > a) || !(n >= 1)) return [];
+  const raw = (b - a) / n, p = Math.pow(10, Math.floor(Math.log10(raw))), m = raw / p;
+  const step = (m <= 1 ? 1 : m <= 2 ? 2 : m <= 5 ? 5 : 10) * p;
+  const out = []; for (let v = Math.ceil(a / step) * step; v <= b + 1e-9 * step; v += step) out.push(Math.abs(v) < 1e-12 * step ? 0 : v);
+  return out.map(v => ({ v, step }));
 }
 
 // compactified coordinates (T~, X~) of the Kruskal point (U, V)
@@ -62,17 +75,27 @@ export class CausalView {
     root.style.cssText = 'position:absolute;inset:0;display:flex;flex-direction:column;background:' + COL.bg + ';overflow:hidden;';
     this.root = root;
     const panels = document.createElement('div');
-    panels.style.cssText = 'flex:1 1 auto;display:flex;flex-direction:row;min-height:0;gap:2px;padding:2px;';
+    panels.style.cssText = 'flex:1 1 auto;display:grid;min-height:0;gap:2px;padding:2px;overflow-y:auto;';
     this.panels = panels;
     this.kruskal = this._makePanel('kruskal');
     this.penrose = this._makePanel('penrose');
-    panels.appendChild(this.kruskal.wrap); panels.appendChild(this.penrose.wrap);
+    this.signal = this._makePanel('signal');
+    this.kruskal.wrap.style.gridArea = 'k'; this.penrose.wrap.style.gridArea = 'p'; this.signal.wrap.style.gridArea = 's';
+    panels.appendChild(this.kruskal.wrap); panels.appendChild(this.penrose.wrap); panels.appendChild(this.signal.wrap);
     const cap = document.createElement('div');
     cap.style.cssText = 'flex:0 0 auto;background:#131824;border-bottom:1px solid #222a3a;padding:6px 10px;font-size:12px;line-height:1.35;color:' + COL.text +
       ';display:grid;grid-template-columns:auto 1fr;gap:2px 14px;max-height:34%;overflow:auto;';
     this.caption = cap;
     root.appendChild(cap);          // caption panel on top (the app's Planck banner overlays the bottom of the view)
     root.appendChild(panels);
+    // compact panel selector (top-right corner of the caption)
+    const sel = document.createElement('select');
+    sel.id = 'causal-panels'; sel.title = 'Panels shown in the causal tab';
+    sel.style.cssText = 'position:absolute;top:4px;right:8px;z-index:2;background:#1b2233;color:' + COL.text + ';border:1px solid #2b3549;border-radius:4px;padding:3px 6px;font-size:12px;min-height:28px;';
+    sel.innerHTML = Object.entries(PANEL_MODES).map(([k, v]) => `<option value="${k}">${v}</option>`).join('');
+    sel.addEventListener('change', e => this.setMode(e.target.value));
+    this.modeSelect = sel;
+    root.appendChild(sel);
     this.container.appendChild(root);
     try {
       if (typeof ResizeObserver !== 'undefined') { this.ro = new ResizeObserver(() => this.resize()); this.ro.observe(root); }
@@ -92,7 +115,7 @@ export class CausalView {
       msg.textContent = `2D canvas unavailable: the ${name} diagram cannot be drawn in this browser.`;
       wrap.appendChild(msg);
     }
-    return { name, wrap, canvas, ctx, w: 0, h: 0, dpr: 1 };
+    return { name, wrap, canvas, ctx, w: 0, h: 0, dpr: 1, map: null, marker: null };
   }
   _fail(msg) {
     try {
@@ -132,11 +155,25 @@ export class CausalView {
     try {
       const W = this.root.clientWidth, H = this.root.clientHeight;
       if (W === 0 || H === 0) return;   // hidden (display:none): nothing to lay out
-      const stacked = this.mode === 'both' && (W < 820 || W < 1.1 * H);
-      this.panels.style.flexDirection = stacked ? 'column' : 'row';
-      this.kruskal.wrap.style.display = (this.mode === 'penrose') ? 'none' : '';
-      this.penrose.wrap.style.display = (this.mode === 'kruskal') ? 'none' : '';
-      for (const p of [this.kruskal, this.penrose]) {
+      const mode = this.mode, ps = this.panels.style;
+      const show = { k: mode === 'both' || mode === 'kruskal', p: mode === 'both' || mode === 'penrose', s: mode === 'both' || mode === 'signal' };
+      this.kruskal.wrap.style.display = show.k ? '' : 'none';
+      this.penrose.wrap.style.display = show.p ? '' : 'none';
+      this.signal.wrap.style.display = show.s ? '' : 'none';
+      if (mode === 'both') {
+        const stacked = W < 820 || W < 1.1 * H;
+        this.stacked = stacked;
+        // wide: Kruskal on the left at full height, Penrose above the signal timeline on the right; narrow: one column.
+        // Rows have minimum heights: on small screens the panel area scrolls instead of shrinking the diagrams.
+        if (stacked) { ps.gridTemplateColumns = '1fr'; ps.gridTemplateRows = 'minmax(340px, 1.25fr) minmax(280px, 1fr) minmax(250px, 0.9fr)'; ps.gridTemplateAreas = '"k" "p" "s"'; }
+        else { ps.gridTemplateColumns = '1fr 1fr'; ps.gridTemplateRows = 'minmax(260px, 1.1fr) minmax(230px, 1fr)'; ps.gridTemplateAreas = '"k p" "k s"'; }
+      } else {
+        this.stacked = false;
+        ps.gridTemplateColumns = '1fr'; ps.gridTemplateRows = '1fr';
+        ps.gridTemplateAreas = mode === 'kruskal' ? '"k"' : (mode === 'penrose' ? '"p"' : '"s"');
+      }
+      for (const p of [this.kruskal, this.penrose, this.signal]) {
+        if (p.wrap.style.display === 'none') { p.w = 0; p.h = 0; p.marker = null; p.map = null; p.plots = []; p.markerAll = []; continue; }
         const w = p.wrap.clientWidth, h = p.wrap.clientHeight;
         const dpr = Math.min(2, Math.max(1, window.devicePixelRatio || 1));
         p.w = w; p.h = h; p.dpr = dpr;
@@ -148,8 +185,26 @@ export class CausalView {
     } catch (e) { this._logOnce(e); }
   }
   setMode(mode) {
-    this.mode = (mode === 'kruskal' || mode === 'penrose') ? mode : 'both';
+    this.mode = PANEL_MODES[mode] ? mode : 'both';
+    if (this.modeSelect && this.modeSelect.value !== this.mode) this.modeSelect.value = this.mode;
     this.resize();
+  }
+  // Layers for the PNG export (CSS pixels relative to the panel area; 2D canvases keep their content).
+  captureLayers() {
+    const box = this.panels.getBoundingClientRect(), layers = [];
+    for (const p of [this.kruskal, this.penrose, this.signal]) {
+      if (p.wrap.style.display === 'none' || !p.w) continue;
+      const b = p.canvas.getBoundingClientRect();
+      layers.push({ canvas: p.canvas, x: b.left - box.left, y: b.top - box.top, w: b.width, h: b.height });
+    }
+    return { width: box.width, height: box.height, background: COL.bg, layers };
+  }
+  // extra caption-strip lines for the PNG export (the DOM caption is not part of the canvases)
+  captionExtra() {
+    const s = this.sample; if (!s) return [];
+    const v = (x, d = 4) => (isNum(x) ? fmt.sci(x, d) : 'exp overflow');
+    return [`Kruskal (T, X) = (${v(s.kruskal_T)}, ${v(s.kruskal_X)})   compactified (T̃, X̃) = (${v(s.penrose_T)}, ${v(s.penrose_X)})   ` +
+      'exact Schwarzschild coordinate maps, angular directions suppressed; worldline precomputed by the engine (stops at r_QG)'];
   }
   dispose() {
     try { if (this.ro) this.ro.disconnect(); } catch (e) { /* ignore */ }
@@ -171,9 +226,10 @@ export class CausalView {
   }
   _draw() {
     if (!this.ok) return;
-    if (this.kruskal.w === 0 && this.penrose.w === 0) return;
-    if (this.mode !== 'penrose') this._drawKruskal(this.kruskal);
-    if (this.mode !== 'kruskal') this._drawPenrose(this.penrose);
+    if (this.kruskal.w === 0 && this.penrose.w === 0 && this.signal.w === 0) return;
+    if (this.kruskal.w) this._drawKruskal(this.kruskal);
+    if (this.penrose.w) this._drawPenrose(this.penrose);
+    if (this.signal.w) this._drawSignal(this.signal);
     this._drawCaption();
   }
   _wrap(ctx, text, maxW) {
@@ -277,6 +333,8 @@ export class CausalView {
       (this.wlK.skipped ? ` ${this.wlK.skipped} samples without finite Kruskal coordinates skipped.` : ''),
     ];
     const m = this._frame(p, 'Kruskal–Szekeres diagram (T vertical, X horizontal)', `G = c = M = 1, r_s = 2M; window |T|, |X| ≤ ${KWIN}`, status, col, box, notes);
+    p.map = { ox: m.ox, oy: m.oy, scale: m.scale, xmin: m.xmin, ymax: m.ymax, pw: m.pw, ph: m.ph };
+    p.marker = onChart ? { x: m.x(X), y: m.y(T), color: col } : null;
     ctx.save();
     ctx.beginPath(); ctx.rect(m.ox, m.oy, m.pw, m.ph); ctx.clip();
     ctx.fillStyle = COL.bg; ctx.fillRect(m.ox, m.oy, m.pw, m.ph);
@@ -377,6 +435,8 @@ export class CausalView {
       'is indistinguishable from r = 0 at this resolution.' + (this.wlP.skipped ? ` ${this.wlP.skipped} samples without finite coordinates skipped.` : ''),
     ];
     const m = this._frame(p, 'Compactified (Penrose-type) diagram (T̃ vertical, X̃ horizontal)', 'Schwarzschild, regions I and II (ingoing Eddington–Finkelstein chart)', status, col, box, notes);
+    p.map = { ox: m.ox, oy: m.oy, scale: m.scale, xmin: m.xmin, ymax: m.ymax, pw: m.pw, ph: m.ph };
+    p.marker = onChart ? { x: m.x(X), y: m.y(T), color: col } : null;
     ctx.save();
     ctx.beginPath(); ctx.rect(m.ox, m.oy, m.pw, m.ph); ctx.clip();
     ctx.fillStyle = COL.bg; ctx.fillRect(m.ox, m.oy, m.pw, m.ph);
@@ -425,8 +485,11 @@ export class CausalView {
     this._label(ctx, cp ? '𝓘⁻ (Ũ = −π/2)' : '𝓘⁻  past null infinity (Ũ = −π/2)', m.x(PI2 - PI4 / 2) + 12, m.y(-PI4 / 2) + 12, COL.accent, { align: 'center', angle: -PI4, font: FONT(10) });
     this._label(ctx, cp ? 'r = r_s horizon' : 'r = r_s future horizon (Ũ = 0)', m.x(0.5), m.y(0.5) + 13, COL.horizon, { align: 'center', angle: -PI4, font: FONT(10, 600) });
     this._label(ctx, cp ? 'past horizon Ṽ = 0 (not covered)' : 'past horizon Ṽ = 0 (not covered by ingoing EF chart)', m.x(-0.2), m.y(0.2) + 13, COL.horizon, { align: 'center', angle: PI4, font: FONT(9.5) });
-    this._label(ctx, 'r = 0 (classical singularity)', m.x(0), m.y(PI4) - 20, COL.sing, { align: 'center', font: FONT(10.5, 600) });
-    this._label(ctx, 'GR invalid before this: r_QG', m.x(0), m.y(PI4) - 7, COL.sing, { align: 'center', font: FONT(10.5, 600) });
+    if (m.compact) this._label(ctx, 'r = 0 singularity · GR invalid before: r_QG', m.x(0), m.y(PI4) - 6, COL.sing, { align: 'center', font: FONT(9.5, 600) });
+    else {
+      this._label(ctx, 'r = 0 (classical singularity)', m.x(0), m.y(PI4) - 20, COL.sing, { align: 'center', font: FONT(10.5, 600) });
+      this._label(ctx, 'GR invalid before this: r_QG', m.x(0), m.y(PI4) - 7, COL.sing, { align: 'center', font: FONT(10.5, 600) });
+    }
     this._label(ctx, 'I  (exterior)', m.x(0.72), m.y(0.16), COL.text, { align: 'center', font: FONT(12, 600) });
     this._label(ctx, 'II  (interior)', m.x(-0.02), m.y(0.35), COL.text, { align: 'center', font: FONT(12, 600) });
     if (!cp) this._label(ctx, 'III / IV: not covered', m.x(-0.55), m.y(-0.15), COL.dim, { align: 'center', font: FONT(10) });
@@ -435,6 +498,144 @@ export class CausalView {
     this._worldline(ctx, m, this.wlP, box);
     if (onChart) { this._cone(ctx, m, X, T, 0.13, col); this._currentPoint(ctx, m, X, T, col); }
     ctx.restore();
+  }
+
+
+  // ---------------------------------------------------------------- received-signal timeline (distant static observer)
+  _drawSignal(p) {
+    if (!p.ctx || p.w === 0) return;
+    const { ctx, w, h, dpr } = p, s = this.sample, d = this.data;
+    const tl = typeof d.signalTimeline === 'function' ? d.signalTimeline() : null;
+    const reg = this._regimeIndex(), col = COL.regime[reg];
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, w, h);
+    ctx.fillStyle = COL.panel; ctx.fillRect(0, 0, w, h);
+    ctx.textBaseline = 'alphabetic'; ctx.textAlign = 'left';
+    ctx.fillStyle = COL.text; ctx.font = FONT(13, 600); ctx.fillText('Received-signal timeline — distant static observer', 10, 17);
+    const src = tl ? (tl.source === 'engine' ? 'engine signal_timeline export' : 'computed from the exported samples') : 'unavailable';
+    ctx.fillStyle = COL.dim; ctx.font = FONT(11);
+    ctx.fillText(this._wrap(ctx, `log10(1+z) of the infaller's radially outgoing light vs reception time t_receive [yr] · source: ${src}`, w - 20)[0], 10, 31);
+    const efold = tl ? tl.efoldYears : 4 * d.derived.GM_over_c3_years;
+    // current emission event
+    let status, statusColor = col, marker = null;
+    const inside = s && isNum(s.log10_r_over_rs) && s.log10_r_over_rs <= 0;
+    if (!s || !isNum(s.log10_r_over_rs)) status = 'current emission: —';
+    else if (inside) {
+      status = `current event inside r_s (τ since horizon ${fmt.years(s.tau_since_horizon_years)}): its light never reaches the distant observer`;
+      statusColor = COL.sing;
+    } else {
+      const t = d.tReceiveYears(s), z = d.onePlusZ(s);
+      if (isNum(t) && isNum(z)) {
+        marker = { t, y: Math.log10(z) };
+        status = `current emission at r = ${fmt.sci(s.r_over_rs, 4)} r_s, τ = ${fmt.years(s.tau_years)} → received at t_receive = ${fmt.years(t)} with 1+z = ${fmt.sci(z, 4)}`;
+      } else status = 'current emission: reception time undefined for this sample';
+    }
+    ctx.fillStyle = statusColor; ctx.font = FONT(11, 600);
+    const stLines = this._wrap(ctx, status, w - 20).slice(0, 2);
+    stLines.forEach((n, i) => ctx.fillText(n, 10, 45 + 13 * i));
+    // notes
+    const hz = d.milestone ? d.milestone('horizon') : null, end = d.milestone ? d.milestone('r_QG') : null;
+    const tauH = hz && isNum(hz.tau_years) ? hz.tau_years : null;
+    const inner = end && hz && isNum(end.tau_years) && isNum(hz.tau_years) ? end.tau_years - hz.tau_years : d.derived.tau_horizon_to_singularity_years;
+    const notes = [
+      `Light emitted at or after the horizon crossing never reaches the distant observer (t_receive → ∞ as emission → r_s); ` +
+      `the infaller crosses r_s in finite proper time (τ = ${tauH !== null ? fmt.years(tauH) : '—'}) and reaches r_QG ${fmt.years(inner)} later.`,
+      `Dashed: exact late-time asymptote 1+z ∝ exp(t_receive/(4GM/c³)), slope 1/(4GM/c³) in ln(1+z), e-folding time 4GM/c³ = ${fmt.years(efold)}. ` +
+      `Radial photons, static observer far away; t_receive = 0 for the signal emitted at the start. ` +
+      (tl && tl.source === 'samples' ? 'Fallback: u = v − 2r_*(r) and 1+z = u^v − 2u^r/f from the exported samples (they end one sample outside r_s); the engine export signal_timeline extends to r/r_s − 1 ≈ 1e-12.'
+        : (tl && tl.note ? tl.note : '')),
+    ];
+    const compact = h < 300 || w < 420;
+    ctx.fillStyle = COL.dim; ctx.font = FONT(10.5);
+    const lines = [];
+    for (const n of (compact ? notes.slice(0, 1) : notes)) lines.push(...this._wrap(ctx, n, w - 20));
+    const noteH = 13 * lines.length + 6;
+    lines.forEach((n, i) => ctx.fillText(n, 10, h - noteH + 12 + 13 * i));
+    const top = 40 + 13 * stLines.length + 2, bottom = noteH + 2;
+    p.plots = []; p.marker = null; p.map = null;
+    if (!tl || tl.points.length < 2) {
+      ctx.fillStyle = COL.dim; ctx.font = FONT(12); ctx.fillText('No exterior samples: the received-signal timeline is undefined for this export.', 12, top + 20);
+      return;
+    }
+    const pts = tl.points, last = pts[pts.length - 1], first = pts[0];
+    const avail = { x: 6, y: top, w: w - 12, h: h - top - bottom };
+    if (avail.h < 50 || avail.w < 120) return;
+    const ymin = Math.min(0, ...pts.map(q => q.y));
+    const full = { x0: first.t, x1: last.t + 0.04 * (last.t - first.t), y0: ymin, y1: last.y + 0.12 * (last.y - ymin) + 0.25 };
+    // late-time window: from 1+z >= 2 (or at least 3 e-folds) up to the last point, at most 40 e-folds long
+    let iLo = pts.findIndex(q => q.y >= Math.log10(2)); if (iLo < 0) iLo = 0;
+    let tLo = Math.min(pts[iLo].t, last.t - 3 * efold);
+    tLo = Math.max(tLo, last.t - 40 * efold, first.t);
+    const lateY = pts.filter(q => q.t >= tLo).map(q => q.y);
+    const ly0 = Math.floor(Math.min(...lateY) * 2) / 2;
+    const late = { x0: tLo, x1: last.t + 0.14 * (last.t - tLo), y0: ly0, y1: last.y + 0.15 * (last.y - ly0) + 0.3 };
+    const two = avail.w >= 440;
+    const boxes = two ? [{ ...avail, w: avail.w * 0.45 }, { ...avail, x: avail.x + avail.w * 0.45 + 4, w: avail.w * 0.55 - 4 }] : [avail];
+    const specs = two ? [[full, '(a) whole exterior fall', false], [late, '(b) approach to r_s (late time)', true]] : [[late, 'approach to r_s (late time)', true]];
+    boxes.forEach((bx, k) => {
+      const plot = this._signalPlot(ctx, bx, pts, specs[k][0], specs[k][1], efold, marker, col, last, specs[k][2]);
+      if (plot) { p.plots.push(plot); if (plot.markerPx && !p.marker) p.marker = { x: plot.markerPx[0], y: plot.markerPx[1], color: col }; }
+    });
+    p.map = p.plots[p.plots.length - 1] || null;
+    p.markerAll = p.plots.filter(q => q.markerPx).map(q => ({ x: q.markerPx[0], y: q.markerPx[1], color: col }));
+  }
+  _signalPlot(ctx, box, pts, rng, title, efold, marker, col, last, legend) {
+    const L = 46, R = 8, Tm = 16, Bm = 26;
+    const px0 = box.x + L, px1 = box.x + box.w - R, py0 = box.y + Tm, py1 = box.y + box.h - Bm;
+    if (px1 - px0 < 40 || py1 - py0 < 24) return null;
+    const X = t => px0 + (t - rng.x0) / (rng.x1 - rng.x0) * (px1 - px0);
+    const Y = y => py1 - (y - rng.y0) / (rng.y1 - rng.y0) * (py1 - py0);
+    ctx.fillStyle = COL.text; ctx.font = FONT(10.5, 600); ctx.textAlign = 'left'; ctx.fillText(title, px0, box.y + 11);
+    ctx.fillStyle = COL.bg; ctx.fillRect(px0, py0, px1 - px0, py1 - py0);
+    // grid and ticks
+    ctx.font = FONT(9.5); ctx.lineWidth = 1; ctx.setLineDash([]);
+    const xt = niceTicks(rng.x0, rng.x1, Math.max(2, Math.floor((px1 - px0) / 85)));
+    for (const { v, step } of xt) {
+      const x = X(v); if (x < px0 - 0.5 || x > px1 + 0.5) continue;
+      ctx.strokeStyle = COL.grid; ctx.beginPath(); ctx.moveTo(x, py0); ctx.lineTo(x, py1); ctx.stroke();
+      const digits = v === 0 ? 1 : Math.max(2, Math.ceil(Math.log10(Math.abs(v) / step)) + 1);
+      ctx.fillStyle = COL.dim; ctx.textAlign = 'center'; ctx.fillText(v === 0 ? '0' : fmt.sci(v, digits), x, py1 + 11);
+    }
+    const yt = niceTicks(rng.y0, rng.y1, Math.max(2, Math.floor((py1 - py0) / 26)));
+    for (const { v, step } of yt) {
+      const y = Y(v); if (y < py0 - 0.5 || y > py1 + 0.5) continue;
+      ctx.strokeStyle = COL.grid; ctx.beginPath(); ctx.moveTo(px0, y); ctx.lineTo(px1, y); ctx.stroke();
+      ctx.fillStyle = COL.dim; ctx.textAlign = 'right'; ctx.fillText(step < 1 ? v.toFixed(1) : v.toFixed(0), px0 - 4, y + 3);
+    }
+    ctx.strokeStyle = COL.axis; ctx.strokeRect(px0, py0, px1 - px0, py1 - py0);
+    ctx.fillStyle = COL.dim; ctx.textAlign = 'right'; ctx.fillText('t_receive [yr]', px1, py1 + 22);
+    ctx.save(); ctx.translate(box.x + 9, (py0 + py1) / 2); ctx.rotate(-PI2); ctx.textAlign = 'center'; ctx.fillText('log10(1+z)', 0, 0); ctx.restore();
+    ctx.save();
+    ctx.beginPath(); ctx.rect(px0, py0, px1 - px0, py1 - py0); ctx.clip();
+    // late-time asymptote through the last point: log10(1+z) = y_end + log10(e) (t - t_end) / (4GM/c^3)
+    ctx.strokeStyle = COL.warn; ctx.lineWidth = 1.3; ctx.setLineDash([6, 4]);
+    const ya = t => last.y + LOG10E * (t - last.t) / efold;
+    const ta = Math.max(rng.x0, last.t + (rng.y0 - last.y) * efold / LOG10E);
+    ctx.beginPath(); ctx.moveTo(X(ta), Y(ya(ta))); ctx.lineTo(X(rng.x1), Y(ya(rng.x1))); ctx.stroke(); ctx.setLineDash([]);
+    // received-signal curve
+    ctx.strokeStyle = COL.accent; ctx.lineWidth = 2; ctx.beginPath();
+    let pen = false;
+    for (const q of pts) { if (q.t < rng.x0 - (rng.x1 - rng.x0) || q.t > rng.x1 + (rng.x1 - rng.x0)) { pen = false; continue; } const x = X(q.t), y = Y(q.y); if (!pen) { ctx.moveTo(x, y); pen = true; } else ctx.lineTo(x, y); }
+    ctx.stroke();
+    // legend (late-time plot only; the curve runs from bottom-left to top-right there, so the corners are free):
+    // signals from r -> r_s arrive ever later (t_receive -> infinity), never from r <= r_s
+    if (legend) {
+      ctx.fillStyle = COL.warn; ctx.font = FONT(9.5); ctx.textAlign = 'left';
+      ctx.fillText('dashed: slope 1/(4GM/c³) in ln(1+z)', px0 + 4, py0 + 11);
+      ctx.fillStyle = COL.sing; ctx.font = FONT(9.5, 600); ctx.textAlign = 'right';
+      ctx.fillText('emission r → r_s: t_receive → ∞', px1 - 4, py1 - 5);
+    }
+    // current emission point
+    let markerPx = null;
+    if (marker && marker.t >= rng.x0 && marker.t <= rng.x1 && marker.y >= rng.y0 && marker.y <= rng.y1) {
+      const mx = X(marker.t), my = Y(marker.y);
+      ctx.strokeStyle = col; ctx.lineWidth = 1; ctx.setLineDash([2, 3]); ctx.beginPath(); ctx.moveTo(mx, py0); ctx.lineTo(mx, py1); ctx.stroke(); ctx.setLineDash([]);
+      this._currentPoint(ctx, { x: t => t, y: y => y }, mx, my, col);
+      markerPx = [mx, my];
+    }
+    ctx.restore();
+    ctx.textAlign = 'left';
+    return { px0, px1, py0, py1, x0: rng.x0, x1: rng.x1, y0: rng.y0, y1: rng.y1, title, markerPx, asymptote: { tEnd: last.t, yEnd: last.y, slopePerYear: LOG10E / efold } };
   }
 
   // ---------------------------------------------------------------- caption
