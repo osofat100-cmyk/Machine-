@@ -1,11 +1,17 @@
 // Real-time dashboard (brief §17).  Pure DOM; no physics here.
 import { fmt } from './data.js';
 
-const REGIMES = ['CLASSICAL GR — VALIDATED', 'CLASSICAL GR — EXTREME CURVATURE', 'PLANCK-CURVATURE BOUNDARY', 'SPECULATIVE QUANTUM MODEL'];
+export const REGIMES = ['CLASSICAL GR — VALIDATED', 'CLASSICAL GR — EXTREME CURVATURE', 'PLANCK-CURVATURE BOUNDARY', 'SPECULATIVE QUANTUM MODEL'];
+export const REGIME_COLORS = ['#6ee7a0', '#ffb454', '#ff6b6b', '#d98cff'];
+const isNum = v => typeof v === 'number' && Number.isFinite(v);
 
 export class Dashboard {
   constructor(el, data) {
     this.el = el; this.data = data;
+    // optional engine columns (shared data contract): shown only when exported, and the inertial rows only when the
+    // engine was on somewhere along the run (the column is exactly 0 with the engine off)
+    const col = k => data.s[k];
+    this.hasInertial = !!col('inertial_diff_radial_m_s2') && col('inertial_diff_radial_m_s2').some(v => isNum(v) && v !== 0);
     const d = data.derived, cfg = data.meta.config;
     this.static = {
       'Black-hole mass': `${fmt.sci(cfg.M_solar, 3)} M☉ = ${fmt.sci(d.M_kg)} kg`,
@@ -48,6 +54,10 @@ export class Dashboard {
       ['Curvature length K^(-1/4)', fmt.metres(smp.curvature_length_m)],
       ['Radial tidal acceleration', `${fmt.sci(smp.radial_stretch_m_s2, 3)} m/s² across ${this.data.meta.config.body_length_m} m (stretch)`],
       ['Transverse tidal acceleration', `${fmt.sci(smp.transverse_compress_m_s2, 3)} m/s² (compress)`],
+      ...(this.hasInertial ? [
+        ['Inertial (thrust) differential', isNum(smp.inertial_diff_radial_m_s2) ? (smp.inertial_diff_radial_m_s2 === 0 ? '0 (engine off here)' : `${fmt.sci(smp.inertial_diff_radial_m_s2, 3)} m/s² across ${this.data.meta.config.body_length_m} m`) : '—'],
+        ['Radial total (tidal + inertial)', isNum(smp.radial_total_diff_m_s2) ? `${fmt.sci(smp.radial_total_diff_m_s2, 3)} m/s² (+ = separation)` : '—'],
+      ] : []),
       ['Tidal eigenvalues', `${fmt.sci(smp.tidal_radial_SI_per_m, 3)} / ${fmt.sci(smp.tidal_transverse_SI_per_m, 3)} s⁻² per m`],
       ['4-velocity (u^v, u^r)', `${fmt.sci(smp.u_v, 5)}, ${fmt.sci(smp.u_r, 5)}`],
       ['Killing energy E', fmt.sci(smp.E_killing, 6)],
@@ -63,7 +73,8 @@ export class Dashboard {
       ? [['Schwarzschild time t', '→ ∞ at the horizon (coordinate artefact)'], ['Signals to infinity', 'none: every future light cone points to smaller r'],
          ['Note', 'The distant observer never sees the crossing; the infaller crosses in finite proper time.']]
       : [['Schwarzschild time t', fmt.years(smp.t_schw_years)], ['Coordinate velocity dr/dt', `${fmt.sci(smp.dr_dt_schw, 4)} c (→ 0 at r_s: apparent freezing)`],
-         ['Redshift 1+z of infaller\'s light', fmt.sci(smp.redshift_1pz_to_infinity, 4)]];
+         ['Redshift 1+z of infaller\'s light', fmt.sci(this.data.onePlusZ ? this.data.onePlusZ(smp) : smp.redshift_1pz_to_infinity, 4)],
+         ['Signal received at t_receive', (() => { const t = this.data.tReceiveYears ? this.data.tReceiveYears(smp) : null; return isNum(t) ? `${fmt.years(t)} after the start signal (radial light, distant static observer)` : '—'; })()]];
     this.distant.innerHTML = '<div class="section">Distant observer (Schwarzschild coordinates)</div><div class="kv">' +
       dist.map(([k, v]) => `<div class="k">${k}</div><div class="v" style="white-space:normal;text-align:left">${v}</div>`).join('') + '</div>';
   }

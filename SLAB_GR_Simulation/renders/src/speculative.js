@@ -96,6 +96,23 @@ export class SpeculativeView {
     this._plot(this.fCanvas, seriesF, { xlabel: 'log10(r / r_s)', ylabel: 'f(r)', y0: Math.max(fmin, -60), y1: 2, ydigits: 0 });
   }
   update(smp, state) { if (smp) { this.currentLogr = smp.log10_r_over_rs; if (this.container.classList.contains('active')) this._draw(); } }
+  // Layers for the PNG export: the two comparison plots side by side (their on-screen position depends on scrolling),
+  // each with its on-screen title.  The caption strip adds the menu title and the permanent banner.
+  captureLayers() {
+    const texts = [], layers = [];
+    const items = [this.kCanvas, this.fCanvas].filter(Boolean);
+    if (!items.length) return { width: 640, height: 60, background: '#12101a', layers, texts: [{ text: 'No toy-model data in this export.', x: 12, y: 30, color: '#d98cff' }] };
+    this._draw();
+    let x = 0, hMax = 0;
+    for (const c of items) {
+      const w = c.clientWidth || 600, h = c.clientHeight || 340;
+      const title = (c.previousElementSibling && c.previousElementSibling.textContent) || '';
+      texts.push({ text: title, x: x + 4, y: 15, color: '#d98cff', maxW: w - 8 });
+      layers.push({ canvas: c, x, y: 22, w, h });
+      x += w + 12; hMax = Math.max(hMax, h);
+    }
+    return { width: x - 12, height: hMax + 22, background: '#12101a', layers, texts };
+  }
   resize() { this._draw(); }
   setMode() {}
   dispose() {}

@@ -25,7 +25,8 @@ async function run(viewport, steps) {
     await page.evaluate(fn);
     await page.waitForTimeout(400);
     const st = await page.evaluate(() => ({ logr: SLAB_APP.state.logr, regime: SLAB_APP.state.sample.regime_code,
-      X: SLAB_APP.state.sample.kruskal_X, T: SLAB_APP.state.sample.kruskal_T, caption: SLAB_APP.views.causal.caption.textContent.slice(0, 160) }));
+      X: SLAB_APP.state.sample.kruskal_X, T: SLAB_APP.state.sample.kruskal_T, caption: SLAB_APP.views.causal.caption.textContent.slice(0, 160),
+      mode: SLAB_APP.views.causal.mode, signalPlots: (SLAB_APP.views.causal.signal.plots || []).map(p => p.title) }));
     await page.screenshot({ path: path.join(shots, `${name}.png`) });
     results.push({ name, ...st });
   }
@@ -39,11 +40,18 @@ await run({ width: 1400, height: 900 }, [
   ['causal-rQG', () => { SLAB_APP.jumpTo('r_QG'); }],
   ['causal-mode-kruskal', () => { SLAB_APP.views.causal.setMode('kruskal'); SLAB_APP.setLogR(-0.3); }],
   ['causal-mode-penrose', () => { SLAB_APP.views.causal.setMode('penrose'); }],
+  ['causal-mode-signal', () => { SLAB_APP.views.causal.setMode('signal'); SLAB_APP.setLogR(0.2); }],
+  ['causal-mode-signal-inside', () => { SLAB_APP.setLogR(-0.2); }],
+  ['causal-mode-select', () => { const sel = document.getElementById('causal-panels'); sel.value = 'kruskal'; sel.dispatchEvent(new Event('change')); }],
   ['causal-null-sample', () => { SLAB_APP.views.causal.setMode('both'); SLAB_APP.views.causal.update({ kruskal_X: null, kruskal_T: 'inf', penrose_X: null, penrose_T: undefined, regime_code: null }, SLAB_APP.state); }],
   ['causal-no-sample', () => { SLAB_APP.views.causal.update(null, null); SLAB_APP.views.causal.resize(); }],
 ]);
 await run({ width: 900, height: 1100 }, [
   ['causal-narrow', () => { SLAB_APP.setView('causal'); SLAB_APP.setLogR(-0.2); }],
+  ['causal-narrow-outside', () => { SLAB_APP.setLogR(0.1); }],
+]);
+await run({ width: 1024, height: 700 }, [
+  ['causal-small-screen', () => { SLAB_APP.setView('causal'); SLAB_APP.setLogR(0.15); }],
 ]);
 await browser.close();
 console.log(JSON.stringify({ results, errors }, null, 2));
