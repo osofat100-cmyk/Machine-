@@ -95,7 +95,7 @@ Docs: `physics_notes.md` (§6, §10, §11, §13, §14 updated; §15 camera, §16
 
 ## Open items (not done in session 2)
 
-1. Screen redesign for newcomers — see `docs/DECLUTTER_PROMPT.md` (the next task).
+1. Screen redesign for newcomers — see `docs/DECLUTTER_PROMPT.md` (the next task; its baseline table was measured on commit `deea531`).
 2. Kerr / Reissner–Nordström generalization (optional in the upgrade prompt; not started).
 3. An independent review of the camera code by a second agent was cut off by a usage limit; the
    camera's own test suite (shadow radius vs analytic, EF integration vs quadrature to r_QG,
