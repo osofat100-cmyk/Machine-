@@ -1,8 +1,8 @@
 # SLAB_GR_Simulation — validation report
 
-Generated: 2026-09-26T23:54:56.923585+00:00  ·  status: **VALIDATED**  ·  11/11 tests passed  ·  wall time 15.0 s
+Generated: 2026-09-27T00:09:55.338024+00:00  ·  status: **VALIDATED**  ·  11/11 tests passed  ·  wall time 9.8 s
 
-Every number below is computed by `src/slab/validation.py` from the constants in `src/slab/constants.py`; nothing is typed in by hand. Tags: **EXACT GR RESULT** (closed-form consequence of the Schwarzschild solution), **NUMERICAL** (integrated/rooted value with the quoted error), **BRIEF** (value quoted in the project brief, used only as a comparison target).
+Every number below is computed by `src/slab/validation.py` from the constants in `src/slab/constants.py`; nothing is typed in by hand. Rows marked 'info' are informational (no criterion; they never affect a verdict). Tags: **EXACT GR RESULT** (closed-form consequence of the Schwarzschild solution), **NUMERICAL** (integrated/rooted value with the quoted error), **BRIEF** (value quoted in the project brief, used only as a comparison target).
 
 ## 1. Physical constants and provenance
 
@@ -85,13 +85,13 @@ Reference: Eddington 1924; Finkelstein 1958; MTW Box 31.2; Wald §6.4
 | u^v at horizon (numerical) vs 1/2 | 0.5 | 0.5 | 9.181544e-14 | 1.000000e-09 | ok |  |
 | u^r at horizon (numerical) vs -1 | -1 | -1 | 1.014744e-13 | 1.000000e-09 | ok |  |
 | rejected steps in the segment ending on the horizon, excluding the segment's first step | 0 | 0 | 0 | 0 | ok | total rejections 1 (first-step rejections are a segment-restart artefact of the carried-over step size) |
-| step-size ratio min/max in the segment ending on the horizon (no collapse) | 0.388441363 | — | — | — | ok | informational; must stay well above ~1e-3 |
+| step-size ratio min/max in the segment ending on the horizon (no collapse) | 0.388441363 | — | — | — | info | informational; must stay well above ~1e-3 |
 | no step-size collapse ending on the horizon: min step > 1e-3 x max step | 0.00257439113 | — | 0.00257439113 | 1 | ok |  |
-| max normalized error estimate in the segment ending on the horizon | 0.769536365 | — | 0.769536365 | 1 | ok |  |
+| max normalized error estimate in the segment ending on the horizon (<= 1 by construction of an accepted step) | 0.769536365 | — | — | — | info | informational |
 | rejected steps in the segment starting on the horizon, excluding the segment's first step | 0 | 0 | 0 | 0 | ok | total rejections 2 (first-step rejections are a segment-restart artefact of the carried-over step size) |
-| step-size ratio min/max in the segment starting on the horizon (no collapse) | 0.22579962 | — | — | — | ok | informational; must stay well above ~1e-3 |
+| step-size ratio min/max in the segment starting on the horizon (no collapse) | 0.22579962 | — | — | — | info | informational; must stay well above ~1e-3 |
 | no step-size collapse starting on the horizon: min step > 1e-3 x max step | 0.00442870542 | — | 0.00442870542 | 1 | ok |  |
-| max normalized error estimate in the segment starting on the horizon | 0.658815235 | — | 0.658815235 | 1 | ok |  |
+| max normalized error estimate in the segment starting on the horizon (<= 1 by construction of an accepted step) | 0.658815235 | — | — | — | info | informational |
 
 ### TEST 3 — Radial E = 1 geodesic vs analytic solution  ·  **PASS**
 
@@ -145,10 +145,10 @@ Reference: Henry 2000, ApJ 535, 350, doi:10.1086/308819
 |---|---|---|---|---|---|---|
 | max rel diff: einsum contraction vs 48M^2/r^6 over r in {100..r_QG} incl. r = 2M | 4.215378e-16 | — | 4.215378e-16 | 1.000000e-12 | ok |  |
 | SI conversion at r = r_s: 48G^2M^2/(c^4 r^6) vs geometrized/M_m^4 | 1.577349e-85 | 1.577349e-85 | 0 | 1.000000e-12 | ok |  |
-| log10 K at r_s [m^-4] | -84.8020722 | — | — | — | ok | informational |
+| log10 K at r_s [m^-4] | -84.8020722 | — | — | — | info | informational |
 | tidal eigenvalues (-2M/r^3, M/r^3, M/r^3) [r = 10 .. 1e-30] and radial tetrad vector vs closed form | 3.750000e-16 | — | 3.750000e-16 | 1.000000e-09 | ok | comoving frame built from the Killing energy (well conditioned); plain Gram–Schmidt checked for r >= M |
 | radial tidal eigenvalue at r_QG vs -2M/r^3 (explicit contraction) | -2.409663e+111 | -2.409663e+111 | 2.216064e-16 | 1.000000e-09 | ok |  |
-| radial tidal eigenvalue at r_QG vs -2M/r^3 (closed form used in outputs) | -2.409663e+111 | -2.409663e+111 | 0 | 1.000000e-12 | ok |  |
+| radial tidal eigenvalue at r_QG: closed form used in outputs vs independent numeric 4x4 frame-matrix eigen-solve | -2.409663e+111 | -2.409663e+111 | 0 | 1.000000e-09 | ok |  |
 | orbital-motion tidal eigenvalues: closed form -(2+3L^2/r^2), 1+3L^2/r^2, 1 (x M/r^3) vs explicit contraction | 1.193437e-15 | — | 1.193437e-15 | 1.000000e-09 | ok |  |
 
 ### TEST 6 — Quantum-curvature radius  ·  **PASS**
@@ -221,18 +221,18 @@ Convergence with tolerance (step cap lifted so that the error controller alone s
 | rtol | steps | rel. err τ(h→r_QG) | rel. err Δv(h→r_QG) | max rel. err u^r | wall [s] |
 |---|---|---|---|---|---|
 | 1e-06 | 258 | 7.536573e-08 | 2.181327e-07 | 1.059515e-04 | 0.04 |
-| 1e-08 | 585 | 8.286633e-10 | 7.581093e-10 | 5.443173e-07 | 0.09 |
-| 1e-10 | 1411 | 9.606482e-12 | 2.986494e-12 | 2.747224e-09 | 0.21 |
-| 1e-12 | 3471 | 2.273182e-13 | 1.480972e-13 | 1.500350e-11 | 0.59 |
+| 1e-08 | 585 | 8.286633e-10 | 7.581093e-10 | 5.443173e-07 | 0.08 |
+| 1e-10 | 1411 | 9.606482e-12 | 2.986494e-12 | 2.747224e-09 | 0.19 |
+| 1e-12 | 3471 | 2.273182e-13 | 1.480972e-13 | 1.500350e-11 | 0.48 |
 
 1 g rocket (no closed form) vs 35-digit mpmath quadrature reference, milestone segments r0 -> r_QG, step cap lifted:
 
 | max_rel_err_dtau_per_segment | max_rel_err_dv_per_segment | max_rel_err_u_r_at_milestones | max_rel_err_E_at_milestones | rtol | steps | wall_s |
 |---|---|---|---|---|---|---|
-| 6.679433e-05 | 1.977293e-06 | 6.748448e-05 | 1.583673e-08 | 1.000000e-06 | 295 | 0.913551092 |
-| 3.360052e-07 | 1.985345e-08 | 3.397616e-07 | 4.572552e-10 | 1.000000e-08 | 651 | 0.0620651245 |
-| 1.521405e-09 | 3.792195e-10 | 1.534429e-09 | 7.251584e-12 | 1.000000e-10 | 1539 | 0.159128428 |
-| 6.456496e-12 | 5.818694e-12 | 6.475131e-12 | 9.765081e-14 | 1.000000e-12 | 3769 | 0.387536287 |
+| 6.679433e-05 | 1.977293e-06 | 6.748448e-05 | 1.583673e-08 | 1.000000e-06 | 295 | 0.839538813 |
+| 3.360052e-07 | 1.985345e-08 | 3.397616e-07 | 4.572552e-10 | 1.000000e-08 | 651 | 0.0715043545 |
+| 1.521405e-09 | 3.792195e-10 | 1.534429e-09 | 7.251584e-12 | 1.000000e-10 | 1539 | 0.155835152 |
+| 6.456496e-12 | 5.818694e-12 | 6.475131e-12 | 9.765081e-14 | 1.000000e-12 | 3769 | 0.406199217 |
 
 Reference used for the 1 g rocket:
 
@@ -245,9 +245,9 @@ L = 3.5 GM/c plunge vs 35-digit mpmath quadrature reference (r0 = 100 r_s -> r_Q
 
 | max_rel_err_dtau_per_segment | max_rel_err_dv_per_segment | max_rel_err_u_r_at_milestones | max_rel_err_phi_at_milestones | rtol | steps | wall_s |
 |---|---|---|---|---|---|---|
-| 4.214268e-07 | 1.349589e-07 | 4.239610e-07 | 8.036501e-08 | 1.000000e-08 | 1895 | 0.931175232 |
-| 4.330802e-09 | 9.094475e-10 | 4.364546e-09 | 5.604537e-10 | 1.000000e-10 | 4749 | 0.400175571 |
-| 4.292783e-11 | 6.852962e-12 | 4.331629e-11 | 4.289672e-12 | 1.000000e-12 | 11968 | 0.965811729 |
+| 4.214268e-07 | 1.349589e-07 | 4.239610e-07 | 8.036501e-08 | 1.000000e-08 | 1895 | 0.92604804 |
+| 4.330802e-09 | 9.094475e-10 | 4.364546e-09 | 5.604537e-10 | 1.000000e-10 | 4749 | 0.434713125 |
+| 4.292783e-11 | 6.852962e-12 | 4.331629e-11 | 4.289672e-12 | 1.000000e-12 | 11968 | 1.08043337 |
 
 ### TEST 9 — Accelerated observer's proper reference frame: inertial (Rindler-type) differential term  ·  **PASS**
 
@@ -265,24 +265,24 @@ Reference: MTW §13.6 (proper reference frame, linear order); Ni & Zimmermann 19
 | hovering (r0 = 2 r_s, particle ahead (outward)): co-located free particle accelerates at -a | -0.0883883476 | -0.0883883476 | 4.286352e-14 | 1.000000e-06 | ok |  |
 | hovering (r0 = 2 r_s, particle ahead (outward)): measured differential acceleration vs exact lapse value | 2.343474e-05 | 2.343474e-05 | 7.513700e-10 | 1.000000e-05 | ok |  |
 | hovering (r0 = 2 r_s, particle ahead (outward)): measured vs -(lambda + a^2) L  [a^2/|lambda| = 0.250] | 2.343474e-05 | 2.343750e-05 | 1.178623e-04 | 0.02 | ok | first order in L = 1e-3 M |
-| hovering (r0 = 2 r_s, particle ahead (outward)): tidal-only prediction -lambda L would be wrong by (informational) | 0.333490502 | — | — | — | ok | shows that the inertial term is required in an accelerated frame |
+| hovering (r0 = 2 r_s, particle ahead (outward)): tidal-only prediction -lambda L would be wrong by (informational) | 0.333490502 | — | — | — | info | shows that the inertial term is required in an accelerated frame |
 | hovering observer (r0 = 1.1 r_s, particle ahead (outward)): engine thrust holds r fixed | 0 | — | 0 | 1.000000e-10 | ok |  |
 | hovering (r0 = 1.1 r_s, particle ahead (outward)): co-located free particle accelerates at -a | -0.685253056 | -0.685253056 | 2.911275e-12 | 1.000000e-06 | ok |  |
 | hovering (r0 = 1.1 r_s, particle ahead (outward)): measured differential acceleration vs exact lapse value | -2.815243e-04 | -2.815243e-04 | 9.369872e-09 | 1.000000e-05 | ok |  |
 | hovering (r0 = 1.1 r_s, particle ahead (outward)): measured vs -(lambda + a^2) L  [a^2/|lambda| = 2.500] | -2.815243e-04 | -2.817431e-04 | 7.765605e-04 | 0.02 | ok | first order in L = 1e-3 M |
-| hovering (r0 = 1.1 r_s, particle ahead (outward)): tidal-only prediction -lambda L would be wrong by (informational) | 1.66718478 | — | — | — | ok | shows that the inertial term is required in an accelerated frame |
+| hovering (r0 = 1.1 r_s, particle ahead (outward)): tidal-only prediction -lambda L would be wrong by (informational) | 1.66718478 | — | — | — | info | shows that the inertial term is required in an accelerated frame |
 | hovering observer (r0 = 1.1 r_s, particle behind (inward)): engine thrust holds r fixed | 0 | — | 0 | 1.000000e-10 | ok |  |
 | hovering (r0 = 1.1 r_s, particle behind (inward)): co-located free particle accelerates at -a | -0.685253056 | -0.685253056 | 2.911275e-12 | 1.000000e-06 | ok |  |
 | hovering (r0 = 1.1 r_s, particle behind (inward)): measured differential acceleration vs exact lapse value | -2.819619e-04 | -2.819619e-04 | 2.150412e-08 | 1.000000e-05 | ok |  |
 | hovering (r0 = 1.1 r_s, particle behind (inward)): measured vs -(lambda + a^2) L  [a^2/|lambda| = 2.500] | -2.819619e-04 | -2.817431e-04 | 7.766674e-04 | 0.02 | ok | first order in L = 1e-3 M |
-| hovering (r0 = 1.1 r_s, particle behind (inward)): tidal-only prediction -lambda L would be wrong by (informational) | 1.66614929 | — | — | — | ok | shows that the inertial term is required in an accelerated frame |
-| thrust_1g: inertial_diff_radial_m_s2 = -a^2 L/c^2 at every step (engine on) | 0 | — | 0 | 1.000000e-15 | ok | a = 9.81 m/s^2, L = 2 m: a^2 L/c^2 = 2.1415e-15 m/s^2 |
-| thrust_1g: radial_total_diff = radial_stretch + inertial_diff | 1.877572e-16 | — | 1.877572e-16 | 1.000000e-12 | ok |  |
-| free-fall benchmark: inertial_diff_radial_m_s2 exactly 0 (engine off) | 0 | 0 | 0 | 0 | ok |  |
+| hovering (r0 = 1.1 r_s, particle behind (inward)): tidal-only prediction -lambda L would be wrong by (informational) | 1.66614929 | — | — | — | info | shows that the inertial term is required in an accelerated frame |
+| thrust_1g: inertial_diff_radial_m_s2 vs -|a|^2 L/c^2 with |a| from the exported 4-acceleration (a_v, a_r) | 1.690303e-11 | — | 1.690303e-11 | 1.000000e-08 | ok | a = 9.81 m/s^2, L = 2 m: a^2 L/c^2 = 2.1415e-15 m/s^2; also checks g(a,a) = alpha^2 along the run |
+| thrust_1g: radial_total_diff = radial_stretch + inertial_diff (bookkeeping identity) | 1.877572e-16 | — | — | — | info | informational |
+| free-fall benchmark: inertial_diff_radial_m_s2 is 0 with the engine off (code-path assertion) | 0 | — | — | — | info | informational |
 | thrust_1g: carried Killing energy vs exact E(r) = 1 + alpha (r0 - r) at every step (max rel) | 3.434641e-09 | — | 3.434641e-09 | 1.000000e-08 | ok | the maximum sits in the first steps (r0 - r ~ 1e-9 M) where r = exp(ln r) is rounded to ~3e-14 and dE/dr = alpha = 1.6e5; inside the horizon max rel = 5.7e-14 (milestones: TEST 8) |
-| thrust_1g: ratio |inertial|/|tidal| at the start (100 r_s) (informational) | 1.039159e+17 | — | — | — | ok |  |
-| thrust_1g: ratio |inertial|/|tidal| at the horizon (informational) | 1.039159e+11 | — | — | — | ok |  |
-| thrust_1g: crossover radius r_x/r_s where the two are equal (informational) | 2.127025e-04 | — | — | — | ok | = 66.4 ly; below r_x the tidal (curvature) term dominates |
+| thrust_1g: ratio |inertial|/|tidal| at the start (100 r_s) (informational) | 1.039159e+17 | — | — | — | info | informational |
+| thrust_1g: ratio |inertial|/|tidal| at the horizon (informational) | 1.039159e+11 | — | — | — | info | informational |
+| thrust_1g: crossover radius r_x/r_s where the two are equal (informational) | 2.127025e-04 | — | — | — | info | = 66.4 ly; below r_x the tidal (curvature) term dominates |
 
 Flat-space (Rindler) check, engine-integrated observer and free particles (geometrized units):
 

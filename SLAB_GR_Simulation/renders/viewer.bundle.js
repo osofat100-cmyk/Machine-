@@ -26165,7 +26165,7 @@ void main() {
         <div class="note" style="margin-top:6px;color:#c8b0d8">${sp.note}</div>
       </div>
       <p style="max-width:1100px">None of these models is selected as "the answer". They are published regular ("non-singular") black-hole
-      metrics integrated with the SAME validated Eddington\u2013Finkelstein geodesic engine (only f(r) differs), shown for comparison with the
+      metrics integrated with the project's Eddington\u2013Finkelstein geodesic code in its first-integral form (only f(r) differs; these toy runs are NOT validated), shown for comparison with the
       classical Schwarzschild trajectory that ends at r_QG. The core length (${fmt.sci(sp.core_length_m, 3)} m = ${fmt.sci(sp.core_length_in_planck_lengths, 2)} Planck lengths)
       is an arbitrary choice with no observational basis; inner-horizon (mass-inflation) instabilities are ignored; these curves are NOT predictions.
       The integration of each toy model stops at r = ${fmt.sci(sp.r_stop_m, 3)} m.</p>
@@ -26729,7 +26729,7 @@ ${ro.line2.replace(/τ remaining ≈ .*$/, (m) => `<span class="rem" title="clas
   fillSpeedOptions();
   {
     const s = raw.summary;
-    $("validation").innerHTML = `steps ${s.n_steps_total}, RHS evals ${s.n_rhs_evals_total}, rejected ${s.n_rejected_total}<br>max |g(u,u)+1| = ${fmt.sci(s.max_abs_norm_residual, 2)}; max conditioned E drift = ${fmt.sci(s.max_E_drift_conditioned, 2)}<br>\u03C4(horizon\u2192r_QG) = ${fmt.years(s.tau_since_horizon_years_at_end)} (analytic 4GM/3c\xB3 = ${fmt.years(data.derived.tau_horizon_to_singularity_years)})<br>See validation_report.json for TESTS 0\u20138.`;
+    $("validation").innerHTML = `steps ${s.n_steps_total}, RHS evals ${s.n_rhs_evals_total}, rejected ${s.n_rejected_total}<br>max |g(u,u)+1| = ${fmt.sci(s.max_abs_norm_residual, 2)}; max conditioned E drift = ${fmt.sci(s.max_E_drift_conditioned, 2)}<br>\u03C4(horizon\u2192r_QG) = ${fmt.years(s.tau_since_horizon_years_at_end)} (analytic 4GM/3c\xB3 = ${fmt.years(data.derived.tau_horizon_to_singularity_years)})<br>See validation_report.json for TESTS 0\u201310.`;
   }
   window.SLAB_APP = {
     state,

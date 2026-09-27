@@ -34,7 +34,7 @@ def test_validation_suite_all_pass(report):
 @pytest.mark.parametrize("tid", ["TEST 0", "TEST 1", "TEST 2", "TEST 3", "TEST 4", "TEST 5", "TEST 6", "TEST 7", "TEST 8", "TEST 9", "TEST 10"])
 def test_each(report, tid):
     t = next(x for x in report["tests"] if x["id"] == tid)
-    bad = [c["label"] for c in t["checks"] if not c["passed"]]
+    bad = [c["label"] for c in t["checks"] if c["passed"] is False]
     assert t["passed"], bad
 
 
@@ -117,6 +117,8 @@ def test_cli_stop_and_resume_matches_full_run(tmp_path):
     subprocess.run(base + ["--stop-after-milestone", "horizon"], check=True, capture_output=True)
     st = json.loads((tmp_path / "proj" / "simulation_state.json").read_text())
     assert st["status"] == "in_progress" and st["milestone_slug"] == "horizon"
+    import hashlib
+    before_hashes = {p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in (tmp_path / "proj" / "checkpoints").glob("*.json")}
     subprocess.run(base + ["--resume"], check=True, capture_output=True)
     st = json.loads((tmp_path / "proj" / "simulation_state.json").read_text())
     assert st["status"] == "complete" and st["milestone_slug"] == "r_QG"
@@ -126,16 +128,26 @@ def test_cli_stop_and_resume_matches_full_run(tmp_path):
     a = meta_resumed["milestone_states"]["r_QG"]["tau_total_geo"]
     b = meta_full["milestone_states"]["r_QG"]["tau_total_geo"]
     assert math.isclose(a, b, rel_tol=1e-12)
-    # checkpoints are versioned, never overwritten: the resumed run re-wrote none of the first run's files
+    # the INTERIOR (re-integrated after resuming) must agree too, not just the exterior-dominated tau_total
+    for slug in ("0.1rs", "1m", "r_QG"):
+        ms_r, ms_f = meta_resumed["milestone_states"][slug], meta_full["milestone_states"][slug]
+        assert math.isclose(ms_r["dtau_segment_geo"], ms_f["dtau_segment_geo"], rel_tol=1e-9), slug
+        assert math.isclose(ms_r["u_r"], ms_f["u_r"], rel_tol=1e-9), slug
+    assert math.isclose(meta_resumed["milestone_states"]["r_QG"]["tau_total_geo"] - meta_resumed["milestone_states"]["horizon"]["tau_total_geo"],
+                        4.0 / 3.0, rel_tol=1e-9)
+    # checkpoints are versioned, never overwritten: the first run's files are byte-identical after the resume
+    assert all(before_hashes[n] == hashlib.sha256((tmp_path / "proj" / "checkpoints" / n).read_bytes()).hexdigest() for n in before_hashes)
     ck = sorted(p.name for p in (tmp_path / "proj" / "checkpoints").glob("*.json"))
     assert "ckpt_03_horizon_v001.json" in ck and "ckpt_14_r_QG_v001.json" in ck
-    # HDF5 readable and complete
+    # HDF5 readable and complete: every postprocess column, the raw segments and the signal timeline
     import h5py
+    from slab.trajectory import Simulation as _Sim, SimulationConfig as _Cfg
+    probe = _Sim(_Cfg(r0_over_rs=3.0), verbose=False); probe.run(); expected_cols = set(probe.postprocess().keys())
     with h5py.File(tmp_path / "proj" / "data" / "trajectory.h5") as h:
         keys = set(h["trajectory"].keys())
-        for k in ("tau_s", "r_m", "u_v", "u_r", "a_v", "K_SI_log10", "tidal_lambda1_geo", "lc_out_drdtEF", "step_h", "err_estimate", "kruskal_T"):
-            assert k in keys
+        assert expected_cols <= keys, sorted(expected_cols - keys)
         assert len(h["segments_raw"].keys()) == 14
+        assert "signal_timeline" in h
 
 
 def _static_frame_tidal_eigenvalues(r, uv, ur, uph):
@@ -216,6 +228,63 @@ def test_angular_momentum_plunge_conservation():
     assert s["max_abs_E_drift_where_well_conditioned"] < 1e-8
     assert sim.columns["u_phi"][-1] > 0.0
     assert np.all(sim.columns["u_theta"] == 0.0)              # equatorial plane preserved exactly
-    assert np.all(np.abs(sim.columns["r_geo"] * 0 + 1) == 1)
+    assert np.all(np.isfinite(sim.columns["r_geo"])) and np.all(sim.columns["r_geo"] > 0)
     lam = sim.columns["tidal_lambda1_geo"]
     assert np.all(np.isfinite(lam)) and lam[-1] < -2 / sim.columns["r_geo"][-1] ** 3
+
+
+
+def test_cli_rejects_unknown_milestone_and_missing_state(tmp_path):
+    import subprocess
+    run = [sys.executable, str(ROOT / "run_simulation.py"), "--skip-validation", "--out-dir", str(tmp_path / "p")]
+    r = subprocess.run(run + ["--stop-after-milestone", "horizn"], capture_output=True, text=True)
+    assert r.returncode == 2 and "valid names" in r.stdout and not (tmp_path / "p" / "checkpoints").exists()
+    r = subprocess.run(run + ["--resume"], capture_output=True, text=True)
+    assert r.returncode == 3 and "nothing to resume" in r.stdout
+
+
+def test_every_output_column_is_documented():
+    from slab import io
+    sim = Simulation(SimulationConfig(r0_over_rs=3.0, thrust_alpha_SI=1.0), verbose=False)
+    sim.run()
+    missing = [c for c in sim.postprocess() if c not in io.COLUMN_DESCRIPTIONS]
+    assert not missing, missing
+
+
+def test_committed_outputs_match_current_engine():
+    """Guard against stale exports: the committed benchmark outputs must come from the same engine
+    and configuration as the committed validation report, and carry every current column."""
+    import csv, json
+    rep = json.loads((ROOT / "validation_report.json").read_text())["benchmark_summary"]
+    meta = json.loads((ROOT / "data" / "trajectory_metadata.json").read_text())["summary"]
+    assert meta["n_steps_total"] == rep["n_steps_total"] and meta["n_rhs_evals_total"] == rep["n_rhs_evals_total"]
+    with open(ROOT / "data" / "trajectory.csv") as fh:
+        header = next(row for row in csv.reader(fh) if row and not row[0].startswith("#"))
+    sim = Simulation(SimulationConfig(r0_over_rs=3.0), verbose=False)
+    sim.run()
+    assert set(sim.postprocess().keys()) <= set(header)
+    render = json.loads((ROOT / "data" / "trajectory_render.json").read_text())
+    assert "signal_timeline" in render and render["summary"]["n_rhs_evals_total"] == rep["n_rhs_evals_total"]
+
+
+def test_dense_output_refuses_to_extrapolate():
+    from slab.integrators import DormandPrince54
+    res = DormandPrince54(rtol=1e-10, atol=1e-12).integrate(lambda x, y: -y, 0.0, np.array([1.0]), 1.0, dense_output=True)
+    assert math.isclose(float(res.dense(0.5)[0]), math.exp(-0.5), rel_tol=1e-8)
+    with pytest.raises(ValueError):
+        res.dense(1.5)
+
+
+def test_event_exactly_at_step_end_is_accepted_without_bisection():
+    from slab.integrators import DormandPrince54
+    calls = {"n": 0}
+
+    def f(x, y):
+        calls["n"] += 1
+        return np.ones(1)
+    # the event x - 0.5 = 0 is hit exactly (bitwise) by the first step h = 0.5; previously this started a
+    # ~50-iteration bisection that returned a point BEFORE the event
+    res = DormandPrince54(rtol=1e-10, atol=1e-12, max_step=0.5).integrate(f, 0.0, np.zeros(1), 10.0,
+                                                                      h0=0.5, event=lambda x, y: x - 0.5)
+    assert res.terminated_by_event and res.x[-1] == 0.5 and len(res.x) == 2
+    assert calls["n"] < 30

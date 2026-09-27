@@ -227,6 +227,9 @@ class Simulation:
                 return rhs_lnr(metric, x, y, thrust)      # uses r = exp(x); the state's r is only a diagnostic copy
 
             res = integ.integrate(fun, x0, y0, x1, h0=h_start)
+            if res.status != "reached_x_end" or res.x[-1] != x1:
+                raise RuntimeError(f"ln r segment did not reach r = {r_to}: status {res.status}, "
+                                   f"ended at r = {math.exp(res.x[-1])!r}")
             res.y[:, IR] = np.exp(res.x)   # r is the independent variable: exact
         else:
             def fun(x, y):
@@ -364,14 +367,17 @@ class Simulation:
         """All checkpoint files of this configuration present on disk (newest version per milestone)."""
         if self.project_dir is None:
             return list(self.checkpoint_paths)
-        out = []
+        newest: Dict[str, tuple] = {}
         for p in sorted((self.project_dir / "checkpoints").glob("ckpt_*_v*.json")):
             try:
-                if json.loads(p.read_text()).get("config_hash") == self.config_hash:
-                    out.append(str(p.relative_to(self.project_dir)))
+                if json.loads(p.read_text()).get("config_hash") != self.config_hash:
+                    continue
             except Exception:
                 continue
-        return out
+            stem, ver = p.stem.rsplit("_v", 1)
+            if stem not in newest or int(ver) > newest[stem][0]:
+                newest[stem] = (int(ver), str(p.relative_to(self.project_dir)))
+        return [newest[k][1] for k in sorted(newest)]
 
     def load_segments(self) -> None:
         """Reload previously integrated segments (for --resume / re-export) and rebuild the milestone table."""

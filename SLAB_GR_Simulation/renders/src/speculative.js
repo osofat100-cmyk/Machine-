@@ -36,7 +36,7 @@ export class SpeculativeView {
         <div class="note" style="margin-top:6px;color:#c8b0d8">${sp.note}</div>
       </div>
       <p style="max-width:1100px">None of these models is selected as "the answer". They are published regular ("non-singular") black-hole
-      metrics integrated with the SAME validated Eddington–Finkelstein geodesic engine (only f(r) differs), shown for comparison with the
+      metrics integrated with the project's Eddington–Finkelstein geodesic code in its first-integral form (only f(r) differs; these toy runs are NOT validated), shown for comparison with the
       classical Schwarzschild trajectory that ends at r_QG. The core length (${fmt.sci(sp.core_length_m, 3)} m = ${fmt.sci(sp.core_length_in_planck_lengths, 2)} Planck lengths)
       is an arbitrary choice with no observational basis; inner-horizon (mass-inflation) instabilities are ignored; these curves are NOT predictions.
       The integration of each toy model stops at r = ${fmt.sci(sp.r_stop_m, 3)} m.</p>

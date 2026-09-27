@@ -1,7 +1,7 @@
 {
   "project": "SLAB_GR_Simulation",
-  "generated_utc": "2026-09-26T23:54:56.923585+00:00",
-  "wall_time_s": 15.04049801826477,
+  "generated_utc": "2026-09-27T00:09:55.338024+00:00",
+  "wall_time_s": 9.786514520645142,
   "benchmark_configuration": {
     "M_solar": 1e+18,
     "r0_over_rs": 100.0,
@@ -338,7 +338,7 @@
           "error": null,
           "tolerance": null,
           "error_kind": "abs",
-          "passed": true,
+          "passed": null,
           "note": "informational; must stay well above ~1e-3"
         },
         {
@@ -352,14 +352,14 @@
           "note": ""
         },
         {
-          "label": "max normalized error estimate in the segment ending on the horizon",
+          "label": "max normalized error estimate in the segment ending on the horizon (<= 1 by construction of an accepted step)",
           "value": 0.7695363651003496,
           "expected": null,
-          "error": 0.7695363651003496,
-          "tolerance": 1.0,
+          "error": null,
+          "tolerance": null,
           "error_kind": "abs",
-          "passed": true,
-          "note": ""
+          "passed": null,
+          "note": "informational"
         },
         {
           "label": "rejected steps in the segment starting on the horizon, excluding the segment's first step",
@@ -378,7 +378,7 @@
           "error": null,
           "tolerance": null,
           "error_kind": "abs",
-          "passed": true,
+          "passed": null,
           "note": "informational; must stay well above ~1e-3"
         },
         {
@@ -392,14 +392,14 @@
           "note": ""
         },
         {
-          "label": "max normalized error estimate in the segment starting on the horizon",
+          "label": "max normalized error estimate in the segment starting on the horizon (<= 1 by construction of an accepted step)",
           "value": 0.6588152352234642,
           "expected": null,
-          "error": 0.6588152352234642,
-          "tolerance": 1.0,
+          "error": null,
+          "tolerance": null,
           "error_kind": "abs",
-          "passed": true,
-          "note": ""
+          "passed": null,
+          "note": "informational"
         }
       ],
       "passed": true
@@ -677,7 +677,7 @@
           "error": null,
           "tolerance": null,
           "error_kind": "abs",
-          "passed": true,
+          "passed": null,
           "note": "informational"
         },
         {
@@ -701,11 +701,11 @@
           "note": ""
         },
         {
-          "label": "radial tidal eigenvalue at r_QG vs -2M/r^3 (closed form used in outputs)",
+          "label": "radial tidal eigenvalue at r_QG: closed form used in outputs vs independent numeric 4x4 frame-matrix eigen-solve",
           "value": -2.409663149451217e+111,
           "expected": -2.409663149451217e+111,
           "error": 0.0,
-          "tolerance": 1e-12,
+          "tolerance": 1e-09,
           "error_kind": "rel",
           "passed": true,
           "note": ""
@@ -1084,7 +1084,7 @@
           "err_tau_h_to_QG": 7.536573315425343e-08,
           "err_dv_h_to_QG": 2.1813267592503878e-07,
           "max_err_ur": 0.00010595152826281818,
-          "wall_s": 0.03965115547180176
+          "wall_s": 0.03782320022583008
         },
         {
           "rtol": 1e-08,
@@ -1092,7 +1092,7 @@
           "err_tau_h_to_QG": 8.28663304641708e-10,
           "err_dv_h_to_QG": 7.581093424465909e-10,
           "max_err_ur": 5.443173457802745e-07,
-          "wall_s": 0.09332895278930664
+          "wall_s": 0.08166313171386719
         },
         {
           "rtol": 1e-10,
@@ -1100,7 +1100,7 @@
           "err_tau_h_to_QG": 9.606482276325323e-12,
           "err_dv_h_to_QG": 2.9864939889100315e-12,
           "max_err_ur": 2.747223505966006e-09,
-          "wall_s": 0.20815634727478027
+          "wall_s": 0.190598726272583
         },
         {
           "rtol": 1e-12,
@@ -1108,7 +1108,7 @@
           "err_tau_h_to_QG": 2.273181642920008e-13,
           "err_dv_h_to_QG": 1.4809715617241473e-13,
           "max_err_ur": 1.500349826879171e-11,
-          "wall_s": 0.5878279209136963
+          "wall_s": 0.48384666442871094
         }
       ],
       "convergence_table_thrust_1g_vs_mpmath": [
@@ -1119,7 +1119,7 @@
           "max_rel_err_E_at_milestones": 1.5836728441233456e-08,
           "rtol": 1e-06,
           "steps": 295,
-          "wall_s": 0.9135510921478271
+          "wall_s": 0.8395388126373291
         },
         {
           "max_rel_err_dtau_per_segment": 3.3600524492983217e-07,
@@ -1128,7 +1128,7 @@
           "max_rel_err_E_at_milestones": 4.5725518506722966e-10,
           "rtol": 1e-08,
           "steps": 651,
-          "wall_s": 0.06206512451171875
+          "wall_s": 0.07150435447692871
         },
         {
           "max_rel_err_dtau_per_segment": 1.521405445520574e-09,
@@ -1137,7 +1137,7 @@
           "max_rel_err_E_at_milestones": 7.251584036699175e-12,
           "rtol": 1e-10,
           "steps": 1539,
-          "wall_s": 0.15912842750549316
+          "wall_s": 0.15583515167236328
         },
         {
           "max_rel_err_dtau_per_segment": 6.45649581312587e-12,
@@ -1146,7 +1146,7 @@
           "max_rel_err_E_at_milestones": 9.76508119480163e-14,
           "rtol": 1e-12,
           "steps": 3769,
-          "wall_s": 0.38753628730773926
+          "wall_s": 0.40619921684265137
         }
       ],
       "thrust_1g_reference": {
@@ -1163,7 +1163,7 @@
           "max_rel_err_phi_at_milestones": 8.03650092195796e-08,
           "rtol": 1e-08,
           "steps": 1895,
-          "wall_s": 0.9311752319335938
+          "wall_s": 0.9260480403900146
         },
         {
           "max_rel_err_dtau_per_segment": 4.330802399946263e-09,
@@ -1172,7 +1172,7 @@
           "max_rel_err_phi_at_milestones": 5.604537043630502e-10,
           "rtol": 1e-10,
           "steps": 4749,
-          "wall_s": 0.4001755714416504
+          "wall_s": 0.43471312522888184
         },
         {
           "max_rel_err_dtau_per_segment": 4.292783027757339e-11,
@@ -1181,7 +1181,7 @@
           "max_rel_err_phi_at_milestones": 4.289671879904845e-12,
           "rtol": 1e-12,
           "steps": 11968,
-          "wall_s": 0.9658117294311523
+          "wall_s": 1.0804333686828613
         }
       ]
     },
@@ -1288,7 +1288,7 @@
           "error": null,
           "tolerance": null,
           "error_kind": "abs",
-          "passed": true,
+          "passed": null,
           "note": "shows that the inertial term is required in an accelerated frame"
         },
         {
@@ -1338,7 +1338,7 @@
           "error": null,
           "tolerance": null,
           "error_kind": "abs",
-          "passed": true,
+          "passed": null,
           "note": "shows that the inertial term is required in an accelerated frame"
         },
         {
@@ -1388,38 +1388,38 @@
           "error": null,
           "tolerance": null,
           "error_kind": "abs",
-          "passed": true,
+          "passed": null,
           "note": "shows that the inertial term is required in an accelerated frame"
         },
         {
-          "label": "thrust_1g: inertial_diff_radial_m_s2 = -a^2 L/c^2 at every step (engine on)",
-          "value": 0.0,
+          "label": "thrust_1g: inertial_diff_radial_m_s2 vs -|a|^2 L/c^2 with |a| from the exported 4-acceleration (a_v, a_r)",
+          "value": 1.6903034527615546e-11,
           "expected": null,
-          "error": 0.0,
-          "tolerance": 1e-15,
+          "error": 1.6903034527615546e-11,
+          "tolerance": 1e-08,
           "error_kind": "abs",
           "passed": true,
-          "note": "a = 9.81 m/s^2, L = 2 m: a^2 L/c^2 = 2.1415e-15 m/s^2"
+          "note": "a = 9.81 m/s^2, L = 2 m: a^2 L/c^2 = 2.1415e-15 m/s^2; also checks g(a,a) = alpha^2 along the run"
         },
         {
-          "label": "thrust_1g: radial_total_diff = radial_stretch + inertial_diff",
+          "label": "thrust_1g: radial_total_diff = radial_stretch + inertial_diff (bookkeeping identity)",
           "value": 1.877572450281413e-16,
           "expected": null,
-          "error": 1.877572450281413e-16,
-          "tolerance": 1e-12,
+          "error": null,
+          "tolerance": null,
           "error_kind": "abs",
-          "passed": true,
-          "note": ""
+          "passed": null,
+          "note": "informational"
         },
         {
-          "label": "free-fall benchmark: inertial_diff_radial_m_s2 exactly 0 (engine off)",
+          "label": "free-fall benchmark: inertial_diff_radial_m_s2 is 0 with the engine off (code-path assertion)",
           "value": 0.0,
-          "expected": 0.0,
-          "error": 0.0,
-          "tolerance": 0.0,
+          "expected": null,
+          "error": null,
+          "tolerance": null,
           "error_kind": "abs",
-          "passed": true,
-          "note": ""
+          "passed": null,
+          "note": "informational"
         },
         {
           "label": "thrust_1g: carried Killing energy vs exact E(r) = 1 + alpha (r0 - r) at every step (max rel)",
@@ -1438,8 +1438,8 @@
           "error": null,
           "tolerance": null,
           "error_kind": "abs",
-          "passed": true,
-          "note": ""
+          "passed": null,
+          "note": "informational"
         },
         {
           "label": "thrust_1g: ratio |inertial|/|tidal| at the horizon (informational)",
@@ -1448,8 +1448,8 @@
           "error": null,
           "tolerance": null,
           "error_kind": "abs",
-          "passed": true,
-          "note": ""
+          "passed": null,
+          "note": "informational"
         },
         {
           "label": "thrust_1g: crossover radius r_x/r_s where the two are equal (informational)",
@@ -1458,7 +1458,7 @@
           "error": null,
           "tolerance": null,
           "error_kind": "abs",
-          "passed": true,
+          "passed": null,
           "note": "= 66.4 ly; below r_x the tidal (curvature) term dominates"
         }
       ],
@@ -1858,7 +1858,7 @@
         "steps": 119,
         "rhs_evals": 721,
         "status": "reached_x_end",
-        "wall_time_s": 0.011763811111450195,
+        "wall_time_s": 0.011387825012207031,
         "min_h": 0.007956822093323268,
         "max_h": 0.03483346279894883
       },
@@ -1870,7 +1870,7 @@
         "steps": 29,
         "rhs_evals": 175,
         "status": "reached_x_end",
-        "wall_time_s": 0.0025298595428466797,
+        "wall_time_s": 0.002904176712036133,
         "min_h": 0.01012923808941868,
         "max_h": 0.029050147873570742
       },
@@ -1882,7 +1882,7 @@
         "steps": 22,
         "rhs_evals": 139,
         "status": "reached_x_end",
-        "wall_time_s": 0.0020952224731445312,
+        "wall_time_s": 0.0022559165954589844,
         "min_h": 0.008870247744473536,
         "max_h": 0.022835487153052725
       },
@@ -1894,7 +1894,7 @@
         "steps": 90,
         "rhs_evals": 553,
         "status": "reached_x_end",
-        "wall_time_s": 0.008437156677246094,
+        "wall_time_s": 0.008343219757080078,
         "min_h": 0.007832786648512613,
         "max_h": 0.03468910467834707
       },
@@ -1906,7 +1906,7 @@
         "steps": 101,
         "rhs_evals": 619,
         "status": "reached_x_end",
-        "wall_time_s": 0.00885152816772461,
+        "wall_time_s": 0.009403705596923828,
         "min_h": 0.005919976465360355,
         "max_h": 0.03407155105363602
       },
@@ -1918,7 +1918,7 @@
         "steps": 304,
         "rhs_evals": 1837,
         "status": "reached_x_end",
-        "wall_time_s": 0.031438589096069336,
+        "wall_time_s": 0.027966022491455078,
         "min_h": 0.00546867112598548,
         "max_h": 0.030117351857207986
       },
@@ -1930,7 +1930,7 @@
         "steps": 68,
         "rhs_evals": 421,
         "status": "reached_x_end",
-        "wall_time_s": 0.00982809066772461,
+        "wall_time_s": 0.006341457366943359,
         "min_h": 0.005298296504548716,
         "max_h": 0.024185121007873178
       },
@@ -1942,7 +1942,7 @@
         "steps": 376,
         "rhs_evals": 2269,
         "status": "reached_x_end",
-        "wall_time_s": 0.03428530693054199,
+        "wall_time_s": 0.03448009490966797,
         "min_h": 0.005300326812438527,
         "max_h": 0.02856774272199658
       },
@@ -1954,7 +1954,7 @@
         "steps": 124,
         "rhs_evals": 757,
         "status": "reached_x_end",
-        "wall_time_s": 0.00923013687133789,
+        "wall_time_s": 0.011103153228759766,
         "min_h": 0.005278866736610155,
         "max_h": 0.028510784697839853
       },
@@ -1966,7 +1966,7 @@
         "steps": 595,
         "rhs_evals": 3583,
         "status": "reached_x_end",
-        "wall_time_s": 0.05057263374328613,
+        "wall_time_s": 0.057059526443481445,
         "min_h": 0.0005876545756180462,
         "max_h": 0.028560810127835623
       },
@@ -1978,7 +1978,7 @@
         "steps": 274,
         "rhs_evals": 1645,
         "status": "reached_x_end",
-        "wall_time_s": 0.02464747428894043,
+        "wall_time_s": 0.027917146682739258,
         "min_h": 0.0005876545756180462,
         "max_h": 0.02856080577139153
       },
@@ -1990,7 +1990,7 @@
         "steps": 836,
         "rhs_evals": 5029,
         "status": "reached_x_end",
-        "wall_time_s": 0.07912445068359375,
+        "wall_time_s": 0.09492945671081543,
         "min_h": 0.00529703399437409,
         "max_h": 0.028560818707234148
       },
@@ -2002,7 +2002,7 @@
         "steps": 433,
         "rhs_evals": 2611,
         "status": "reached_x_end",
-        "wall_time_s": 0.04404926300048828,
+        "wall_time_s": 0.04103207588195801,
         "min_h": 0.005277313670916328,
         "max_h": 0.02856081758230289
       },
@@ -2014,7 +2014,7 @@
         "steps": 99,
         "rhs_evals": 607,
         "status": "reached_x_end",
-        "wall_time_s": 0.009233474731445312,
+        "wall_time_s": 0.009905576705932617,
         "min_h": 0.005267269024528787,
         "max_h": 0.028052312072190944
       }

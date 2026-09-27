@@ -23,7 +23,7 @@ interpolating the column (documented in `docs/additions/viewer.md`).
 | `renders/src/scene3d.js` | Three.js scene: log-radius / linear-local / horizon-neighbourhood / deep-interior / curvature views, third-person camera (mouse and touch), render-then-capture |
 | `renders/src/lightcone.js` | light-cone glyph (3D) and (t_EF, r) inset (2D; returns its geometry for pixel tests) |
 | `renders/src/causal.js` | Kruskal–Szekeres and compactified (Penrose) diagrams and the received-signal timeline of a distant observer, synchronized |
-| `renders/src/firstperson.js` | GPU null-geodesic ray tracer (GLSL) with observer tetrad, aberration and redshift |
+| `renders/src/firstperson.js` | first-person camera view (CPU double-precision renderer by default, optional float32 GPU mode); physics in `firstperson_core.js` / `firstperson_table.js` / `firstperson_cpu.js` / `firstperson_sky.js`, star data in `starcatalog.js` + `data/` |
 | `renders/src/speculative.js` | separate menu "SPECULATIVE QUANTUM-GRAVITY TOY MODELS — NOT ESTABLISHED PHYSICS" |
 | `renders/build/build.sh` | esbuild bundling (`three` is vendored under `renders/build/node_modules`) |
 | `renders/viewer.bundle.js` | built bundle (committed so the viewer runs from `file://` with no toolchain) |

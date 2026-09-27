@@ -199,6 +199,7 @@ def run_pipeline(args: argparse.Namespace, ROOT: Path, config_path: Path, comman
     from .checkpoints import load_checkpoint, dumps
 
     cfg = SimulationConfig.from_json(config_path)
+    cfg_file = SimulationConfig.from_json(config_path)      # unmodified: defines the validation benchmark
     scenario = False
     if args.thrust is not None:
         cfg.thrust_alpha_SI = args.thrust; scenario = True
@@ -210,13 +211,17 @@ def run_pipeline(args: argparse.Namespace, ROOT: Path, config_path: Path, comman
         cfg.r0_over_rs = args.r0; scenario = True
     tag = args.tag or (f"E{cfg.E:g}_L{cfg.L_over_M:g}_a{cfg.thrust_alpha_SI:g}_r0{cfg.r0_over_rs:g}" if scenario else None)
 
+    project_dir = Path(args.out_dir) if args.out_dir else (ROOT if tag is None else ROOT / "data" / "scenarios" / tag)
+
     # ---------------- validation gate ----------------
     if not args.skip_validation:
         from .validation import run_all_tests
-        report = run_all_tests(cfg, ROOT)
-        ROOT.mkdir(parents=True, exist_ok=True)
-        (ROOT / "validation_report.json").write_text(dumps(report))
-        print(f"validation: {report['n_passed']}/{report['n_tests']} tests passed -> validation_report.json")
+        # the benchmark comes from the configuration FILE, never from the CLI scenario overrides
+        report = run_all_tests(cfg_file, ROOT)
+        report_dir = project_dir if (args.out_dir or tag is not None) else ROOT
+        report_dir.mkdir(parents=True, exist_ok=True)
+        (report_dir / "validation_report.json").write_text(dumps(report))
+        print(f"validation: {report['n_passed']}/{report['n_tests']} tests passed -> {report_dir / 'validation_report.json'}")
         if not report["all_passed"]:
             print("VALIDATION FAILED — the main simulation is NOT marked validated. See validation_report.json")
             if not scenario:
@@ -225,15 +230,21 @@ def run_pipeline(args: argparse.Namespace, ROOT: Path, config_path: Path, comman
             return 0
 
     # ---------------- simulation ----------------
-    project_dir = Path(args.out_dir) if args.out_dir else (ROOT if tag is None else ROOT / "data" / "scenarios" / tag)
     project_dir.mkdir(parents=True, exist_ok=True)
     (project_dir / "data").mkdir(exist_ok=True)
     sim = Simulation(cfg, project_dir=project_dir)
     print(f"metric: {sim.metric.name}; coordinates: {cfg.coordinate_system}")
     print(f"M = {sim.dq.M_kg:.6e} kg; r_s = {sim.dq.r_s_m:.6e} m = {sim.dq.r_s_ly:,.1f} ly; GM/c^3 = {sim.dq.GM_over_c3_years:,.1f} yr")
     print(f"r_QG = {sim.dq.r_QG_m:.6e} m = {sim.dq.r_QG_over_rs:.6e} r_s")
+    if args.stop_after_milestone is not None and args.stop_after_milestone not in [m.slug for m in sim.milestones]:
+        print(f"unknown milestone '{args.stop_after_milestone}'; valid names: {', '.join(m.slug for m in sim.milestones)}")
+        return 2
     if args.resume:
-        state = json.loads((project_dir / "simulation_state.json").read_text())
+        state_path = project_dir / "simulation_state.json"
+        if not state_path.exists():
+            print(f"nothing to resume: {state_path} does not exist (run once without --resume first)")
+            return 3
+        state = json.loads(state_path.read_text())
         ck = load_checkpoint(project_dir / state["latest_checkpoint"])
         if ck.get("config_hash") != sim.config_hash:
             # the checkpoint carries its full configuration: use it (no need to re-type CLI overrides)

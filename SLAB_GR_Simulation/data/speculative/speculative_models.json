@@ -5,20 +5,21 @@
   "core_length_m": 1.616255e-31,
   "core_length_in_planck_lengths": 10000.0,
   "r_stop_m": 1.616255e-33,
-  "note": "Each toy model is integrated with the SAME validated EF geodesic engine, only f(r) differs. The choice of core length is arbitrary (1e4 Planck lengths here) and has NO observational basis. Inner-horizon instabilities (mass inflation) are ignored. These curves must never be read as predictions.",
+  "note": "Each toy model is integrated with the project's EF geodesic code in its first-integral (E, L) form, in units of the core length; only f(r) differs from the Schwarzschild cross-check formulation. These toy integrations are NOT validated physics. The choice of core length is arbitrary (1e4 Planck lengths here) and has NO observational basis. Inner-horizon instabilities (mass inflation) are ignored. These curves must never be read as predictions.",
   "models": {
     "hayward": {
       "banner": "SPECULATIVE MODEL \u2014 NOT experimentally established.",
       "model": "Hayward (2006) regular black hole",
       "parameters": {
         "mu = M / l": 9.13636580263287e+51,
-        "core_length_m": 1.616255e-31
+        "core_length_m": 1.616255e-31,
+        "l_m (Hayward length)": 1.616255e-31
       },
       "parameter_note": "integrated in units of the core length l; mu = M/l",
       "status": "reached_x_end",
       "n_steps": 6248,
       "formulation": "first integrals (E = 1, L = 0), ln r independent variable; see comment in run_model",
-      "max_E_drift": 0.0,
+      "max_norm_residual_conditioned": 2.3513060997606633e-16,
       "r_geo": [
         1.9999999999999898,
         1.9801007476123933,
@@ -50028,8 +50029,8 @@
         -0.009999999999999449
       ],
       "K_max_log10_SI": 124.54617171606586,
-      "r_1pct_deviation_from_schwarzschild_m": 1.9443252721862543e-13,
-      "inner_horizon_r_m": 1.6023105591738338e-31,
+      "r_1pct_deviation_from_schwarzschild_m": 1.969349383172659e-13,
+      "inner_horizon_r_m": 1.616255e-31,
       "reaches_r0_in_finite_proper_time": "no (de Sitter core: r ~ exp(-tau/l), asymptotic approach)",
       "tau_horizon_to_stop_years": 208112.14600016957,
       "docs": {
@@ -50061,13 +50062,14 @@
       "model": "Bardeen (1968) regular black hole",
       "parameters": {
         "mu = M / l": 9.13636580263287e+51,
-        "core_length_m": 1.616255e-31
+        "core_length_m": 1.616255e-31,
+        "g_m (Bardeen charge scale)": 4.257072434700973e-14
       },
       "parameter_note": "integrated in units of the core length l; mu = M/l",
       "status": "reached_x_end",
       "n_steps": 6248,
       "formulation": "first integrals (E = 1, L = 0), ln r independent variable; see comment in run_model",
-      "max_E_drift": 0.0,
+      "max_norm_residual_conditioned": 3.3306690738754696e-16,
       "r_geo": [
         1.9999999999999898,
         1.9801007476123933,
@@ -100077,8 +100079,8 @@
         -0.009999999999999449
       ],
       "K_max_log10_SI": 124.54617171606584,
-      "r_1pct_deviation_from_schwarzschild_m": 5.180569665898124e-13,
-      "inner_horizon_r_m": 1.6023105771379524e-31,
+      "r_1pct_deviation_from_schwarzschild_m": 5.192045720617636e-13,
+      "inner_horizon_r_m": 1.6162549999999946e-31,
       "reaches_r0_in_finite_proper_time": "no (de Sitter core: r ~ exp(-tau/l), asymptotic approach)",
       "tau_horizon_to_stop_years": 208112.1460001695,
       "docs": {
@@ -100110,13 +100112,14 @@
       "model": "Dymnikova (1992) regular black hole",
       "parameters": {
         "mu = M / l": 9.13636580263287e+51,
-        "core_length_m": 1.616255e-31
+        "core_length_m": 1.616255e-31,
+        "r0_m (Dymnikova core scale)": 1.616255e-31
       },
       "parameter_note": "integrated in units of the core length l; mu = M/l",
       "status": "reached_x_end",
       "n_steps": 6248,
       "formulation": "first integrals (E = 1, L = 0), ln r independent variable; see comment in run_model",
-      "max_E_drift": 0.0,
+      "max_norm_residual_conditioned": 3.3306690738754696e-16,
       "r_geo": [
         1.9999999999999898,
         1.9801007476123933,
@@ -150126,8 +150129,8 @@
         -0.009999999999999449
       ],
       "K_max_log10_SI": 124.54617171606587,
-      "r_1pct_deviation_from_schwarzschild_m": 7.011138630616053e-14,
-      "inner_horizon_r_m": 1.6023105771379524e-31,
+      "r_1pct_deviation_from_schwarzschild_m": 7.08260358006588e-14,
+      "inner_horizon_r_m": 1.6162549999999946e-31,
       "reaches_r0_in_finite_proper_time": "no (de Sitter core: r ~ exp(-tau/l), asymptotic approach)",
       "tau_horizon_to_stop_years": 208112.1460001695,
       "docs": {

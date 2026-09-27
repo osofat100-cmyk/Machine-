@@ -23,7 +23,7 @@ by the continuous equations, and g(a,a) = alpha^2.
 Two choices of independent variable are supported:
     'tau' : x = tau                (dy/dx = F(y))
     'lnr' : x = ln r               (dy/dx = F(y) * r / u^r),  valid while u^r < 0
-The 'lnr' form is what makes the 10^41-decade range in r tractable: the
+The 'lnr' form is what makes the 39-decade range in r tractable: the
 step in ln r is bounded, so the step in r (and in tau) shrinks
 automatically as the curvature K ~ r^-6 rises.
 

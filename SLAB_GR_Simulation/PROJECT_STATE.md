@@ -5,116 +5,103 @@
 ## How to continue this project in a new session
 
 1. Read this file, then `README.md`, `physics_notes.md`, `simulation_config.json`, `simulation_state.json`.
-2. `python -m pytest tests -q` must pass (≈15 s) before touching physics code.
-3. To continue an interrupted run: `python run_simulation.py --resume` (reads `simulation_state.json`,
-   loads the newest checkpoint in `checkpoints/`, reloads finished segments from `data/segments/`).
-4. Viewer: edit `renders/src/*.js`, rebuild with `renders/build/build.sh`, test with
-   `node tests/viewer/check_viewer.mjs`, look at `renders/screenshots/`.
-5. Update this file after every meaningful change.
+2. Python: `python -m pytest tests -q` (~75 tests, ~1 min) must pass before touching physics code;
+   `python run_simulation.py --validate-only` must report 11/11.
+3. Viewer: `cd renders/build && npm ci` once, then `./build.sh`, `npm run test:physics` (no browser) and
+   `npm run test:viewer` (headless Chromium, software GL). Look at `renders/screenshots/`.
+4. Continue an interrupted run with `python run_simulation.py --resume` (or `slab-sim --resume`).
+5. Next task prompts: `docs/DECLUTTER_PROMPT.md` (screen redesign, next), `docs/UPGRADE_PROMPT.md` (done in
+   session 2 except the items listed under "Open items").
+6. Update this file after every meaningful change.
 
-## Current implementation status (2026-09-25, end of session 1)
+## Current implementation status (2026-09-26, end of session 2)
 
 | component | status |
 |---|---|
-| physics engine (EF geodesics, DP5(4), ln r variable, thrust, first-integral cross-check) | done, validated |
-| validation suite TESTS 0–8 (`src/slab/validation.py`, `validation_report.json`) | all passing |
-| data output (CSV, JSON, HDF5, segment archives, render export) | done |
-| versioned checkpoints + resume (`--stop-after-milestone`, `--resume`) | done, tested (`tests/test_physics.py::test_cli_stop_and_resume_matches_full_run`) |
-| speculative toy models (Hayward, Bardeen, Dymnikova) | done, separated, banner |
-| viewer skeleton (dashboard, playback, data layer, headless test) | done |
-| viewer modules: 3D scene + light cones (`scene3d.js`, `lightcone.js`), causal diagram (`causal.js`), first-person GPU ray tracer (`firstperson.js` + CPU core `firstperson_core.js`), speculative menu (`speculative.js`) | done; headless test `tests/viewer/check_viewer.mjs` (zero console errors, screenshots in `renders/screenshots/`), `tests/viewer/test_null_geodesics.mjs` (deflection, capture, conservation, horizon crossing, shadow edge) |
-| docs: physics_notes.md, references.md, docs/validation_report.md, docs/UPGRADE_PROMPT.md | done (citations NOT re-verified online — see references.md) |
-| adversarial review of the engine (6 lenses, 33 findings) | 1 confirmed + 19 triaged by hand and fixed; the automated verification was cut short by a usage limit (see "Review findings" below) |
+| physics engine (EF geodesics, DP5(4) with PI control and dense output, ln r variable, thrust with split windows, first-integral cross-check) | done, validated |
+| accelerated-observer inertial term (`inertial_diff_radial_m_s2`, `radial_total_diff_m_s2`) | done, TEST 9 |
+| distant observer's received-signal timeline (`u_ret_geo`, `t_receive_years`, `signal_timeline` table) | done, TEST 10 |
+| high-precision (35-digit mpmath) references for scenarios without closed form | done, in TEST 8 |
+| validation suite TESTS 0–10 (`src/slab/validation.py`, `validation_report.json`, `docs/validation_report.md`) | 11/11 passing |
+| data output (CSV, JSON, HDF5, segment archives, render export) regenerated with the current engine | done; guarded by `test_committed_outputs_match_current_engine` |
+| versioned checkpoints + resume | done; interior-agreement and never-overwritten checks in the resume test |
+| speculative toy models (Hayward, Bardeen, Dymnikova), first-integral form in core units | done, separated; `tests/test_speculative_models.py` |
+| first-person camera: CPU double-precision renderer down to r_QG, star catalogue, log10 g map, optional GPU | done; `test_firstperson.mjs`, `test_firstperson_browser.mjs` |
+| viewer: log-τ playback, keyboard/touch controls, PNG export, signal-timeline plot, pixel tests | done; `test_viewer_data.mjs`, `test_pixels_browser.mjs`, `test_controls_browser.mjs` |
+| packaging: `pip install -e .` → `slab-sim`; pinned viewer toolchain; GitHub Actions CI | done; CI green on PR #3 |
+| citations and constants verified by web search (WebFetch blocked) | done; statuses in `references.md`, `docs/additions/citations.md` |
+| UX clutter audit (`tests/viewer/ux_audit.mjs`) + declutter prompt | done; redesign itself is the next task |
 
-## Equations implemented (see physics_notes.md for details and citations)
+## Equations implemented (details and citations in physics_notes.md)
 
-* Schwarzschild in ingoing EF form: ds² = −f dv² + 2 dv dr + r² dΩ², f = 1 − 2M/r.
-* Christoffel symbols of that metric (hand-derived, sympy-verified in `tools/derive_ef_curvature.py`).
-* Second-order geodesic equation with optional 4-acceleration a = −α n, n = (u^v, E, 0, 0).
-* First integrals E = f u^v − u^r, L = r² sin²θ u^φ; g(u,u) = −1.
-* Analytic E = 1 radial solution: u^r = −√(2M/r), u^v = x/(1+x), v(r) = −4M B(x), τ(r) = −(4M/3)x³ (x = √(r/2M)).
-* Riemann tensor in EF coordinates; Kretschmann K = f''² + 4f'²/r² + 4(1−f)²/r⁴ = 48M²/r⁶.
-* Tidal tensor E_ij = R_{μανβ} e_i^μ u^α e_j^ν u^β in the comoving frame. Outputs use the EXACT
-  closed form for an arbitrary 4-velocity with transverse rapidity t² = r²[(u^θ)² + sin²θ (u^φ)²]:
-  λ = (−(2+3t²), 1+3t², 1) × M/r³ (radial, transverse ⊥ motion, transverse ∥ motion); reduces to
-  (−2M/r³, M/r³, M/r³) for radial motion. Cross-checked against the explicit contraction of the
-  EF Riemann tensor, a static-frame Lorentz boost and a numeric 4×4 frame matrix
-  (`tests/test_physics.py::test_tidal_exact_eigenvalues_vs_independent_methods`).
-* Kruskal map U = −(r/2M−1) e^{r/2M} e^{−v/4M}, V = e^{v/4M}; compactified (atan) coordinates.
-* Light cones: dr/dt_EF = f/(2−f) (outgoing), −1 (ingoing).
-* Distant observer: t = v − r_*, dr/dt, 1+z = u^v − 2u^r/f.
-* r_QG = (48 G² M² l_P⁴ / c⁴)^{1/6}.
+* Schwarzschild in ingoing EF form ds² = −f dv² + 2 dv dr + r² dΩ²; Christoffel symbols (sympy-verified).
+* Geodesic equation with 4-acceleration a = −α n/|n|; first integrals E, L; radial-rocket law E(r) = E₀ + α(r₀ − r).
+* Analytic E = 1 fall (u^r = −√(2M/r), τ(r_s→0) = 4GM/3c³); cycloid for fall from rest.
+* Kruskal and compactified coordinates; light-cone slopes f/(2 − f) and −1.
+* Riemann tensor, Kretschmann 48M²/r⁶; exact tidal eigenvalues −(2+3t²), 1+3t², 1 (× M/r³).
+* Proper-reference-frame differential acceleration δa = −(E + a aᵀ)ξ.
+* Distant observer: t = v − r_*, u = v − 2r_*, 1 + z = du/dτ = u^v − 2u^r/f, late-time 1 + z ∝ e^{u/4M}.
+* r_QG = (48 G²M² l_P⁴/c⁴)^{1/6} = 1.3877e-16 m.
+* Camera: ξ = E u + a n, E_ph = E + a dₙ, b = L/E_ph, g = 1/E_ph; orbit integral for ψ_∞; b² = 27 boundary.
 
-## Tests passed / failed
+## Tests passed / failed (2026-09-26)
 
-* `validation_report.json`: 9/9 tests passed (all checks), see file for numbers.
-* pytest: see latest run in this journal's log below.
+* pytest: all pass (1 skipped: entry-point check runs only when the package is installed).
+* `run_simulation.py --validate-only`: 11/11. Informational rows are rendered as "info".
+* `npm test` in renders/build: all Node and browser suites pass, zero console errors.
+* GitHub Actions (PR #3): Python and Node jobs green on the latest pushed commit.
 
 ## Known numerical issues / caveats
 
-* E = f u^v − u^r evaluated from the 4-velocity suffers catastrophic cancellation for r ≪ M
-  (both terms ~ √(2M/r) ~ 1e19 at r_QG); the engine therefore carries the Killing energy as a
-  separate state component (E_killing) and reports the conditioned drift. This is a
-  property of the (u^v, u^r) representation, not an integration error (TEST 7).
-* Kruskal coordinates overflow double precision for |v − v_horizon| ≳ 2800 M; the export
-  stores null there and the compactified coordinates always.
-* Proper time deep inside is a converging series; τ_total is stored as a double
-  (resolution 1e-16 relative) — the per-segment increments (`dtau_segment_geo` in the
-  milestone table) keep full relative precision at every scale.
-* The τ-mode integrator (fall from rest / L ≠ 0 outside) had an FSAL aliasing bug in the
-  event-located final step (fixed 2026-09-25; regression covered by the cycloid check in
-  `tests/test_physics.py`).
-* g(u,u) + 1 is likewise cancellation-limited for L ≠ 0 deep inside (u^φ = L/r² ~ 1e74 at r_QG);
-  `norm_residual_conditioned` is the meaningful diagnostic.
-* Equatorial motion: cos(π/2) = 6e-17 in floating point seeds a spurious u^θ through the source
-  term sinθ cosθ (u^φ)²; the RHS snaps |cos θ| < 1e-14 to 0 so the plane is preserved exactly.
-* The explicit index contraction of the coordinate-basis Riemann tensor overflows/cancels for
-  L ≠ 0 deep inside (terms ~1e333); it is kept only as a cross-check where conditioned.
-* `tau_to_center_est` is exact for E = 1, L = 0 and a free-fall quadrature (thrust ignored) otherwise; labelled.
-* In ln r mode the state's r component is a passive copy (derivative 0); the driver overwrites it with e^x.
-  Diagnostics computed from a raw integrator result must use r = exp(x), never y[IR].
-* The second-order geodesic equation for u^v is exponentially UNSTABLE when integrated inward through a
-  de Sitter-like core (toy models: f' < 0 flips the Riccati term); the speculative suite therefore uses the
-  first-integral formulation. In Schwarzschild the mode decays (verified: u^v accurate to 2e-11 at r_QG).
-* Toy models are integrated in units of their core length (μ = M/l ≈ 1e52) with factored, overflow-safe
-  derivative formulas; Bardeen is parametrized by its de Sitter core radius (g = (2μ)^{1/3} core units).
+* E(u) = f u^v − u^r and g(u,u) cancel catastrophically deep inside; the engine carries E_k separately and
+  reports conditioned residuals.
+* τ_total is a double (~1333 GM/c³): interior increments are exact per segment (`dtau_segment_geo`), not in
+  τ_total's last digits. The same limits the toy models' exported τ inside their cores.
+* The render export resamples engine steps linearly (in log r); the viewer evaluates steep functions
+  (1 + z, light-cone slopes) at the displayed r instead of interpolating them.
+* The first-person GPU mode (float32) is limited to r > 1e-5 r_s; the CPU default has no such limit.
+* The ring of blueshifted sky near r_QG is far narrower than a pixel (documented in the camera notes).
 
-## Review findings (2026-09-25) and what was done
+## Review of session 2 (27 findings; verification agents were cut off by a usage limit, so each finding
+was re-checked by hand before fixing)
 
-Fixed: thrust vector not unit for L ≠ 0 (now a = −α n/|n|); comoving tetrad ill-conditioned deep inside
-(exact closed-form tidal eigenvalues); remaining-time column for L ≠ 0 / E ≠ 1 (general free-fall
-quadrature); plain-I → PI step control (Hairer DOPRI5 coefficients); FSAL no longer defeated in ln r mode
-(RHS evaluations 21294 → 20960 for more steps); per-segment clocks v_seg/τ_seg under relative-only control
-(atol = 0); initial step carried over between segments; `--resume` drops stale later segments, keeps the
-milestone record, checks segment contiguity, restores the configuration from the checkpoint; segment
-archives versioned and written before the checkpoint; strict JSON (no Infinity/NaN tokens);
-`simulation_state.json` timestamp; θ, φ exported; render r-columns exactly consistent with the log axis;
-uncertainty propagation reported (`derived_quantities.relative_uncertainties`); L ≠ 0 conservation check
-and a real convergence-ratio check in the validation suite; regime-threshold wording; "10^41" → 39 decades.
-Documented, not changed: inertial (Rindler) differential terms for thrusting observers are not displayed;
-`transverse_compress_*` columns are signed (negative = compression).
-Not verified (agents cut off): see `docs/UPGRADE_PROMPT.md` item 3.
+Fixed: ln r segments that fail now raise instead of being recorded as reached; dense output refuses to
+extrapolate; an event hit exactly at a step end is accepted without bisection; tautological validation
+checks replaced (inertial column now checked against |a| recomputed from the exported 4-acceleration;
+r_QG eigenvalue against the numeric frame matrix) or marked informational; informational rows no longer
+render as "ok"; the benchmark is pinned to the configuration file and r0 = 100 r_s (CLI overrides no
+longer leak into it) and scenario runs write their report to their own directory; unknown
+`--stop-after-milestone` names and `--resume` without state are rejected with a message;
+`checkpoint_list()` returns the newest version per milestone; every output column documented (test);
+stale committed outputs regenerated and guarded by a test; resume test checks interior agreement,
+unchanged checkpoints and all HDF5 columns; toy models: wording ("not validated"), root-found radii,
+recorded parameters, a meaningful normalization diagnostic, new tests; docs (test counts, camera text,
+inertial term, signal timeline, L ≠ 0 remaining-time asymptote, 99.997 %, fall-from-rest example,
+Regime A sentence, ~3500 steps, 39 decades).
 
-## Files changed in the last session
+## Files changed in session 2
 
-Initial creation of the whole project (see git log): src/slab/*, src/slab/speculative/*, tools/*,
-tests/*, run_simulation.py, simulation_config.json, data/*, checkpoints/*, renders/* (skeleton),
-docs/*, README.md, PROJECT_STATE.md, requirements.txt.
+Engine: `src/slab/{accelerated,signals,reference,cli}.py` (new), `integrators.py`, `trajectory.py`, `io.py`,
+`validation.py`, `geodesic.py`, `constants.py` (sources, l_P uncertainty), `speculative/models.py`,
+`metric.py`, `curvature.py` (docstrings). Viewer: `renders/src/firstperson*.js`, `starcatalog.js`, `data/*`,
+`main.js`, `data.js`, `dashboard.js`, `causal.js`, `scene3d.js`, `lightcone.js`, `speculative.js`, `viewer.html`.
+Tests: `tests/test_{accelerated_frame,dense_output,signal_timeline,packaging,citations,speculative_models}.py`,
+`tests/test_physics.py`, `tests/viewer/*`. Packaging/CI: `pyproject.toml`, `run_simulation.py`,
+`renders/build/{package.json,package-lock.json,build.sh}`, `/.github/workflows/slab-gr-simulation.yml`.
+Docs: `physics_notes.md` (§6, §10, §11, §13, §14 updated; §15 camera, §16 viewer added), `README.md`,
+`references.md`, `docs/additions/*.md` (detailed notes of each workstream), `docs/viewer_architecture.md`,
+`docs/DECLUTTER_PROMPT.md`, this file. Outputs regenerated: `data/**`, `checkpoints/*_v002.json` and (after the review fixes) `*_v003.json`,
+`renders/trajectory_data.js`, `renders/viewer.bundle.js`, `validation_report.json`, screenshots.
 
-Scenario runs available in `data/scenarios/` (see its README.md): thrust_1g (1 g inward rocket:
-reaches the horizon after 17.3 proper years with E ≈ 3.2e7 and spends only 0.0097 yr inside),
-plunge_L3.5 (equatorial plunge with L = 3.5 GM/c: interior proper time 1.07e5 yr),
-rest_at_10rs (fall from rest at 10 r_s, matches the cycloid solution to 2e-12).
+## Open items (not done in session 2)
 
-## Next technical task
-
-See `docs/UPGRADE_PROMPT.md` (priority list). First items: verify all citations online; extend the
-first-person tracer below r = 1e-5 r_s (double precision / rescaled formulation); complete the
-adversarial review.
+1. Screen redesign for newcomers — see `docs/DECLUTTER_PROMPT.md` (the next task).
+2. Kerr / Reissner–Nordström generalization (optional in the upgrade prompt; not started).
+3. An independent review of the camera code by a second agent was cut off by a usage limit; the
+   camera's own test suite (shadow radius vs analytic, EF integration vs quadrature to r_QG,
+   classifier vs integration) passes.
+4. MTW section/equation numbers remain unverified (search could not confirm them); see `references.md`.
 
 ## Last successful checkpoint
 
-`checkpoints/ckpt_14_r_QG_v001.json` (final milestone of the validated run; see `simulation_state.json`).
-Note: checkpoints and segment archives were regenerated from scratch at the end of session 1 after the
-state vector grew from 9 to 10 components (E_killing) and segment archives became versioned; earlier
-artefacts of the superseded engine were deleted before the final commit.
+`checkpoints/ckpt_14_r_QG_v003.json` (final milestone of the regenerated validated run; see `simulation_state.json`).

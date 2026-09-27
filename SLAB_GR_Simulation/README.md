@@ -20,8 +20,9 @@ trajectories and never integrates the observer's motion itself.
 ## Two strictly separated regimes
 
 * **REGIME A — classical GR (validated):** exact Schwarzschild solution, integrated in
-  horizon-regular ingoing Eddington–Finkelstein coordinates. Everything in `data/`,
-  `checkpoints/` and the main viewer tabs.
+  horizon-regular ingoing Eddington–Finkelstein coordinates. Everything in `data/` except
+  `data/speculative/` (and the `speculative` key of the render export), everything in `checkpoints/`,
+  and the main viewer tabs.
 * **REGIME B — unknown quantum-gravity region:** at r_QG the program prints
   `PLANCK-CURVATURE THRESHOLD REACHED. CLASSICAL GENERAL RELATIVITY IS NO LONGER RELIABLE.
   NO EXPERIMENTALLY VERIFIED THEORY DETERMINES THE CONTINUATION.` and stops. The optional toy
@@ -55,10 +56,10 @@ npm run browser:install                         # only if no Chromium is availab
 ## Quick start
 
 ```bash
-slab-sim --speculative                     # validation gate (TESTS 0–8) -> simulation -> data -> render export
+slab-sim --speculative                     # validation gate (TESTS 0–10) -> simulation -> data -> render export
 python -m pytest tests -q                  # physics/numerics/IO tests incl. CLI checkpoint/resume and packaging checks
 # open renders/viewer.html in a browser (works from file://; no network needed)
-node tests/viewer/test_null_geodesics.mjs  # first-person ray-tracer physics checks (CPU replica of the shader)
+(cd renders/build && npm run test:physics) # viewer physics checks without a browser (camera, null geodesics, data)
 node tests/viewer/check_viewer.mjs         # headless viewer smoke test + screenshots (needs Chromium, see below)
 ```
 
@@ -71,8 +72,8 @@ the source checkout of an editable install. Run anywhere inside this repository 
 directory `run_simulation.py` uses. It prints the directory it picked; `slab-sim --help` lists all flags.
 
 Useful options: `--resume` (continue from the newest checkpoint in `simulation_state.json`),
-`--stop-after-milestone horizon`, `--thrust 9.81` (1 g inward rocket), `--E 0.95 --r0 10`
-(fall from rest at finite radius), `--L 3.5` (equatorial plunge with angular momentum),
+`--stop-after-milestone horizon`, `--thrust 9.81` (1 g inward rocket), `--E 0.9486832980505138 --r0 10`
+(fall from rest at 10 r_s: rest requires E = √(1 − r_s/r0)), `--L 3.5` (equatorial plunge with angular momentum),
 `--validate-only`, `--out-dir DIR`, `--project-dir DIR` (`slab-sim` only). Scenario runs are written to
 `data/scenarios/<tag>/`. After `--stop-after-milestone`, `slab-sim` prints the complete resume command (with the
 `--project-dir`, `--out-dir`/`--tag` and `--skip-validation` it needs); `run_simulation.py` keeps its historic hint.
@@ -122,7 +123,7 @@ Geometrized units G = c = M = 1 (r_s = 2). The observer's worldline is integrate
 second-order geodesic equation (with an optional radial thrust 4-acceleration) in ingoing
 Eddington–Finkelstein coordinates, which are regular at r = r_s, with a Dormand–Prince RK5(4)
 adaptive integrator whose independent variable is ln r inside the hole (τ outside where a
-turning point can occur). The 39-decade range in r (r0/r_QG = 2.1e39) is therefore covered with ~3000 steps,
+turning point can occur). The 39-decade range in r (r0/r_QG = 2.1e39) is therefore covered with ~3500 steps,
 the step in r and τ shrinking automatically as the curvature K = 48G²M²/(c⁴r⁶) grows, and the
 integrator never steps through r = 0. The Killing energy is carried as an independent
 well-conditioned variable so that the comoving frame and the tidal tensor remain accurate
@@ -136,12 +137,16 @@ from the state at every step. See `physics_notes.md` for equations and citations
 Open `renders/viewer.html` (works from `file://`, no network). Tabs: **3D view** (log-radius, linear local,
 horizon neighbourhood, deep interior, curvature; third-person orbit camera; exact local light-cone glyph
 and (t_EF, r) inset), **Causal / Kruskal diagram** (Kruskal–Szekeres and compactified Penrose-type
-diagrams synchronized with the 3D position), **First-person camera** (per-pixel null geodesics on the GPU
-in EF coordinates with aberration and frequency shift; synthetic sky; labelled "Qualitative visualization —
-trajectory calculations remain relativistic."; disabled and labelled below r = 1e-5 r_s where 32-bit GPU
-floats fail), and the separate **SPECULATIVE QUANTUM-GRAVITY TOY MODELS — NOT ESTABLISHED PHYSICS** menu.
-Playback runs along log10(r/r_s) (proper time is useless as an axis: 99.9999 % of it is spent outside
-0.1 r_s); the dashboard shows all quantities of the brief in real time. Rebuild after editing
+diagrams plus the distant observer's received-signal timeline, synchronized with the 3D position),
+**First-person camera** (exact past light ray of every pixel, computed in double precision on the CPU — no
+GPU needed — all the way down to r_QG; aberration, lensing and frequency shift included; star-catalogue
+or coordinate-grid backdrop; optional false-colour map of the frequency ratio; labelled "Qualitative
+visualization — trajectory calculations remain relativistic."; an optional float32 GPU mode exists), and the
+separate **SPECULATIVE QUANTUM-GRAVITY TOY MODELS — NOT ESTABLISHED PHYSICS** menu. Playback runs along
+log10(r/r_s) by default, or along the logarithm of the classical proper time remaining (99.997 % of the proper
+time is spent outside 0.1 r_s, 99.9999 % outside 0.01 r_s). Keyboard: space play/pause, arrows step,
+[ ] milestones, 1–4 tabs, ? help; a PNG button exports the current view with a caption. The dashboard shows
+all quantities of the brief in real time. Rebuild after editing
 `renders/src/*.js` with `renders/build/build.sh` (esbuild + three.js from `renders/build/node_modules`, installed
 once with `npm ci`; no network needed afterwards).
 
@@ -150,5 +155,8 @@ once with `npm ci`; no network needed afterwards).
 TEST 0 constants · TEST 1 r_s = 2GM/c² · TEST 2 horizon regularity of the EF chart ·
 TEST 3 E = 1 geodesic vs dr/dτ = −c√(r_s/r) · TEST 4 τ(horizon→0) = 4GM/3c³ · TEST 5
 Kretschmann by explicit contraction · TEST 6 r_QG numerical root vs closed form vs mpmath ·
-TEST 7 conserved quantities · TEST 8 convergence in tolerance + SciPy DOP853 and first-integral
-cross-checks. Results: `validation_report.json`.
+TEST 7 conserved quantities · TEST 8 convergence in tolerance + SciPy DOP853, first-integral and 35-digit
+mpmath cross-checks · TEST 9 accelerated-frame inertial term (exact Rindler and hovering-observer checks) ·
+TEST 10 distant observer's received-signal timeline (closed forms and the late-time law 1 + z ∝ e^{u/4M}).
+Results: `validation_report.json` and `docs/validation_report.md` (rows marked "info" are informational).
+The citation status of every source is in `references.md` (checked by web search on 2026-09-25).

@@ -371,6 +371,27 @@ Publisher/edition data are verified; section/equation/exercise numbers are marke
   (10 Dec 2018), DOI, arXiv id. URLs: https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.121.241301 ,
   https://arxiv.org/abs/1806.00648 . Its effective metric: INSUFFICIENT DATA TO VERIFY (not used).
 
+## 6b. Sources cited by the first-person camera and the tooling (added 2026-09-26 from the agents' notes)
+
+* **J. L. Synge (1966), "The escape of photons from gravitationally intense stars", MNRAS 131, 463–466,
+  doi:10.1093/mnras/131.3.463** — the static-observer shadow formula sin α = (3√3 M/r)√(1 − 2M/r) is
+  usually attributed to this paper. Status: bibliographic data VERIFIED VIA WEB SEARCH (2026-09-25, camera
+  agent); that the formula appears in this exact form: INSUFFICIENT DATA TO VERIFY (re-derived in the code).
+* **F. J. Ballesteros (2012), "New insights into black bodies", EPL 97, 34008, arXiv:1201.1809** — colour
+  index to temperature, T = 4600 K [1/(0.92(B−V) + 1.7) + 1/(0.92(B−V) + 0.62)]. Status: formula and
+  reference VERIFIED VIA WEB SEARCH (camera agent). Used only for star colours (VISUALIZATION).
+* **CIE 1931 2° standard observer colour-matching functions** (tabulated values as shipped with the
+  colour-science Python package 0.4.7) and the **sRGB transform of IEC 61966-2-1** — used for blackbody
+  colours in `renders/src/data/blackbody_srgb.js`. Status: taken from the package tables; primary
+  publications not consulted — INSUFFICIENT DATA TO VERIFY. VISUALIZATION only.
+* **Position of Sgr A* (J2000: RA 17h45m40.0409s, Dec −29°00′28.118″)** — used only to place the
+  hypothetical hole's direction on the illustrative star backdrop. Status: VERIFIED VIA WEB SEARCH
+  (camera agent). LABELLING CONVENTION.
+* **Tooling (not physics):** setuptools development-mode documentation and PR #3488 (editable installs),
+  and the Playwright installation and release notes (Chromium pinned to playwright-core 1.49.1) — cited in
+  `docs/additions/packaging.md`. Status: VERIFIED VIA WEB SEARCH (2026-09-25, packaging agent): the pages
+  were seen in search results; not fetched.
+
 ## 7. Data files produced by this project (primary evidence for the validation claims)
 
 * `validation_report.json` / `docs/validation_report.md` — every benchmark number.

@@ -51,7 +51,7 @@ def main() -> None:
     w("# SLAB_GR_Simulation — validation report\n")
     w(f"Generated: {rep['generated_utc']}  ·  status: **{rep['validation_status']}**  ·  {rep['n_passed']}/{rep['n_tests']} tests passed  ·  wall time {rep['wall_time_s']:.1f} s\n")
     w("Every number below is computed by `src/slab/validation.py` from the constants in `src/slab/constants.py`; nothing is typed in by hand. "
-      "Tags: **EXACT GR RESULT** (closed-form consequence of the Schwarzschild solution), **NUMERICAL** (integrated/rooted value with the quoted error), "
+      "Rows marked 'info' are informational (no criterion; they never affect a verdict). Tags: **EXACT GR RESULT** (closed-form consequence of the Schwarzschild solution), **NUMERICAL** (integrated/rooted value with the quoted error), "
       "**BRIEF** (value quoted in the project brief, used only as a comparison target).\n")
     w("## 1. Physical constants and provenance\n")
     w("| symbol | value | unit | source | verification status |\n|---|---|---|---|---|")
@@ -70,7 +70,7 @@ def main() -> None:
         for c in t["checks"]:
             w(f"| {c['label']} | {fmt(c['value'])} | {fmt(c['expected']) if c['expected'] is not None else '—'} | "
               f"{fmt(c['error']) if c['error'] is not None else '—'} | {fmt(c['tolerance']) if c['tolerance'] is not None else '—'} | "
-              f"{'ok' if c['passed'] else 'FAIL'} | {c.get('note', '')} |")
+              f"{'info' if c['passed'] is None else ('ok' if c['passed'] else 'FAIL')} | {c.get('note', '')} |")
         if "calculation" in t:
             w("\nStep-by-step calculation:\n")
             for k, v in t["calculation"].items():

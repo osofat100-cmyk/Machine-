@@ -79,7 +79,7 @@ class Bardeen(StaticSphericalMetric):
     established: bool = False
     citation: str = "Bardeen (1968) GR5 Tbilisi p.174; Ayón-Beato & García, Phys. Lett. B 493, 149 (2000)"
     M: float = 1.0          # mass in core units (mu)
-    g: float = 1.0          # core length in core units
+    g: float = 1.0          # magnetic charge / length scale g in core units; de Sitter core radius = sqrt(g^3 / (2M))
 
     # overflow/underflow-safe forms with w = s^{-1/2}, p = r^2/s in [0, 1):
     #   f = 1 - 2 mu p w,  f' = -2 mu r w^3 (2 - 3p),  f'' = -2 mu w^3 (2 - 15p + 15p^2)
@@ -201,25 +201,39 @@ def run_model(model: StaticSphericalMetric, sim: Simulation, r_stop_core: float,
     to_SI_logK = None
     to_SI_logK = lambda k: (math.log10(k) - log10_l4) if (k is not None and k > 0 and math.isfinite(k)) else None
     to_years = lambda t: t * ell_m / _c / _YEAR
+    # radii refined by root finding on the model functions (the ln r grid alone is only good to ~2 %)
+    from scipy.optimize import brentq
     dev = np.abs(fvals / f_sch - 1.0)
-    idx_dev = int(np.argmax(dev > 1e-2)) if np.any(dev > 1e-2) else None
-    # inner horizon: sign change of f inside
-    inner = None
+    dev[0] = 0.0                                   # r = r_h: f_sch = 0 there, the ratio is undefined
+    r_dev = None
+    j = int(np.argmax(dev > 1e-2)) if np.any(dev > 1e-2) else None
+    if j is not None and j > 0:
+        g_dev = lambda lr: abs(model.f(math.exp(lr)) / (1.0 - 2.0 * mu / math.exp(lr)) - 1.0) - 1e-2
+        r_dev = math.exp(brentq(g_dev, math.log(r[j]), math.log(r[j - 1]), xtol=1e-12))
+    inner = None                                   # inner horizon: f changes sign from - to + going inward
     sgn = np.sign(fvals)
     for i in range(1, len(sgn)):
         if sgn[i - 1] < 0 <= sgn[i]:
-            inner = float(r[i]); break
+            inner = math.exp(brentq(lambda lr: model.f(math.exp(lr)), math.log(r[i]), math.log(r[i - 1]), xtol=1e-12))
+            break
+    # a meaningful diagnostic (E is exact by construction in this formulation): normalization of the
+    # reconstructed 4-velocity, conditioned by its largest term
+    norm_res = [abs(-model.f(ri) * uv * uv + 2.0 * uv * ur + 1.0) / max(1.0, abs(model.f(ri)) * uv * uv, abs(2.0 * uv * ur))
+                for ri, (uv, ur, _) in zip(r, vel)]
     logK_SI = [to_SI_logK(k) for k in K]
     logK_sch_SI = [float(v - log10_l4) for v in log10_K_sch]
     out = {
         "banner": BANNER,
         "model": model.name,
-        "parameters": {"mu = M / l": mu, "core_length_m": ell_m},
+        "parameters": {"mu = M / l": mu, "core_length_m": ell_m,
+                       **({"g_m (Bardeen charge scale)": model.g * ell_m} if hasattr(model, "g") else {}),
+                       **({"r0_m (Dymnikova core scale)": model.r0 * ell_m} if hasattr(model, "r0") else {}),
+                       **({"l_m (Hayward length)": model.ell * ell_m} if hasattr(model, "ell") else {})},
         "parameter_note": "integrated in units of the core length l; mu = M/l",
         "status": res.status,
         "n_steps": int(res.n_accepted),
         "formulation": "first integrals (E = 1, L = 0), ln r independent variable; see comment in run_model",
-        "max_E_drift": float(np.max(np.abs(res.y[:, 4] - 1.0))),
+        "max_norm_residual_conditioned": float(max(norm_res)),
         "r_geo": (r / mu).tolist(),                                     # in units of GM/c^2 for compatibility
         "log10_r_over_rs": np.log10(r / (2.0 * mu)).tolist(),
         "log10_K_SI": logK_SI,
@@ -229,7 +243,7 @@ def run_model(model: StaticSphericalMetric, sim: Simulation, r_stop_core: float,
         "tau_since_horizon_years": [to_years(t) for t in res.y[:, 6]],
         "u_r": vel[:, 1].tolist(),
         "K_max_log10_SI": float(max(v for v in logK_SI if v is not None)),
-        "r_1pct_deviation_from_schwarzschild_m": float(r[idx_dev] * ell_m) if idx_dev is not None else None,
+        "r_1pct_deviation_from_schwarzschild_m": float(r_dev * ell_m) if r_dev is not None else None,
         "inner_horizon_r_m": inner * ell_m if inner is not None else None,
         "reaches_r0_in_finite_proper_time": "no (de Sitter core: r ~ exp(-tau/l), asymptotic approach)" if model.f(1e-6) > 0 else "unknown",
         "tau_horizon_to_stop_years": to_years(res.y[-1, 6]),
@@ -262,7 +276,9 @@ def run_speculative_suite(sim: Simulation, out_dir: Path, core_length_over_M: fl
         "core_length_m": ell_m,
         "core_length_in_planck_lengths": ell / lP,
         "r_stop_m": r_stop * ell_m,
-        "note": ("Each toy model is integrated with the SAME validated EF geodesic engine, only f(r) differs. "
+        "note": ("Each toy model is integrated with the project's EF geodesic code in its first-integral (E, L) form, in units of "
+                 "the core length; only f(r) differs from the Schwarzschild cross-check formulation. These toy integrations are "
+                 "NOT validated physics. "
                  "The choice of core length is arbitrary (1e4 Planck lengths here) and has NO observational basis. "
                  "Inner-horizon instabilities (mass inflation) are ignored. These curves must never be read as predictions."),
         "models": results,

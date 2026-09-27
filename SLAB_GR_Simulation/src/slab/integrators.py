@@ -90,6 +90,9 @@ class DenseOutput:
 
     def __call__(self, x):
         xa = np.atleast_1d(np.asarray(x, dtype=float))
+        tol = 4.0 * np.spacing(max(abs(self.x_min), abs(self.x_max), 1e-300))
+        if np.any(xa < self.x_min - tol) or np.any(xa > self.x_max + tol):
+            raise ValueError(f"dense output requested outside the integrated range [{self.x_min!r}, {self.x_max!r}]")
         idx = np.searchsorted(self._key, self.direction * xa, side="right") - 1
         idx = np.clip(idx, 0, len(self.hd) - 1)
         out = np.array([dense_eval(self.rcont[i], self.x_old[i], self.hd[i], xv) for i, xv in zip(idx, xa)])
@@ -348,6 +351,8 @@ class DormandPrince54:
             y_hi = after_step(x + h_hi, y_hi)
         e_hi = event(x + h_hi, y_hi)
         h_best, y_best, y_raw_best, K_best = h_hi, y_hi, y_raw_hi, K_hi
+        if e_hi == 0.0:            # the full step lands exactly on the event: nothing to locate
+            return x + h_best, y_best, nf, True, h_best, y_raw_best, K_best
         for _ in range(60):
             if e_hi == e_lo:
                 break

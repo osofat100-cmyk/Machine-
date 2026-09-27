@@ -304,7 +304,7 @@ fillSpeedOptions();
   $('validation').innerHTML = `steps ${s.n_steps_total}, RHS evals ${s.n_rhs_evals_total}, rejected ${s.n_rejected_total}<br>` +
     `max |g(u,u)+1| = ${fmt.sci(s.max_abs_norm_residual, 2)}; max conditioned E drift = ${fmt.sci(s.max_E_drift_conditioned, 2)}<br>` +
     `τ(horizon→r_QG) = ${fmt.years(s.tau_since_horizon_years_at_end)} (analytic 4GM/3c³ = ${fmt.years(data.derived.tau_horizon_to_singularity_years)})<br>` +
-    `See validation_report.json for TESTS 0–8.`;
+    `See validation_report.json for TESTS 0–10.`;
 }
 
 // public API for tests / console

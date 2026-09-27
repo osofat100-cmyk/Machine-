@@ -43,6 +43,12 @@ class Test:
         self.d = {"id": tid, "name": name, "equation": equation, "reference": reference, "checks": [], "passed": True}
 
     def check(self, label: str, value, expected=None, tol=None, kind="rel", note: str = ""):
+        """Record a check.  Without a tolerance the row is INFORMATIONAL: passed = None, it never affects
+        the test verdict and the report renders it as 'info' (not 'ok')."""
+        if tol is None:
+            self.d["checks"].append({"label": label, "value": value, "expected": expected, "error": None, "tolerance": None,
+                                     "error_kind": kind, "passed": None, "note": note or "informational"})
+            return True
         ok = True
         err = None
         if expected is not None and tol is not None:
@@ -126,7 +132,7 @@ def test2_horizon_regularity(sim: Simulation) -> dict:
         t.check(f"step-size ratio min/max in the segment {which} the horizon (no collapse)", float(seg.h[1:].min() / seg.h[1:].max()), None, None, kind="abs",
                 note="informational; must stay well above ~1e-3")
         t.check(f"no step-size collapse {which} the horizon: min step > 1e-3 x max step", 1e-3 * float(seg.h[1:].max()) / float(seg.h[1:].min()), None, 1.0, kind="abs")
-        t.check(f"max normalized error estimate in the segment {which} the horizon", float(seg.err.max()), None, 1.0, kind="abs")
+        t.check(f"max normalized error estimate in the segment {which} the horizon (<= 1 by construction of an accepted step)", float(seg.err.max()), None, None, kind="abs")
     return t.d
 
 
@@ -212,7 +218,10 @@ def test5_kretschmann(sim: Simulation) -> dict:
     lam = tidal_tensor(m, r_qg, math.pi / 2, uvec, E=1.0)["eigenvalues"]
     t.check("radial tidal eigenvalue at r_QG vs -2M/r^3 (explicit contraction)", float(lam[0]), -2.0 / r_qg**3, 1e-9)
     lam_f = tidal_eigenvalues_frame(m, r_qg, math.pi / 2, uvec)
-    t.check("radial tidal eigenvalue at r_QG vs -2M/r^3 (closed form used in outputs)", float(lam_f[0]), -2.0 / r_qg**3, 1e-12)
+    from .curvature import tidal_eigenvalues_frame_matrix
+    lam_m = tidal_eigenvalues_frame_matrix(m, r_qg, math.pi / 2, uvec)
+    t.check("radial tidal eigenvalue at r_QG: closed form used in outputs vs independent numeric 4x4 frame-matrix eigen-solve",
+            float(lam_f[0]), float(np.sort(lam_m)[0]), 1e-9)
     # orbital motion: closed form (-(2+3t^2), 1+3t^2, 1) M/r^3 vs explicit contraction (exterior, well conditioned)
     from .geodesic import initial_state_radial as _isr
     worst_o = 0.0
@@ -480,13 +489,21 @@ def test9_accelerated_frame(sim: Simulation, simT: Simulation) -> dict:
     a_SI = simT.units.accel_to_SI(abs(simT.thrust.alpha))
     Lb = simT.cfg.body_length_m
     expected = inertial_diff_along_thrust_SI(a_SI, Lb)
-    t.check("thrust_1g: inertial_diff_radial_m_s2 = -a^2 L/c^2 at every step (engine on)",
-            float(np.max(np.abs(cols["inertial_diff_radial_m_s2"] - expected))) / abs(expected), None, 1e-15, kind="abs",
-            note=f"a = {a_SI:g} m/s^2, L = {Lb:g} m: a^2 L/c^2 = {abs(expected):.4e} m/s^2")
-    t.check("thrust_1g: radial_total_diff = radial_stretch + inertial_diff",
+    # independent route: proper acceleration from the EXPORTED 4-acceleration columns, |a| = sqrt(g(a,a)) with the
+    # EF metric (radial: g(a,a) = -f a_v^2 + 2 a_v a_r), converted to SI with the constants directly
+    from . import constants as _C
+    f_col = 1.0 - 2.0 / cols["r_geo"]
+    gaa = -f_col * cols["a_v"] ** 2 + 2.0 * cols["a_v"] * cols["a_r"]
+    a_SI_cols = np.sqrt(gaa) * _C.c ** 2 / simT.dq.M_m
+    inert_indep = -(a_SI_cols ** 2) * Lb / _C.c ** 2
+    t.check("thrust_1g: inertial_diff_radial_m_s2 vs -|a|^2 L/c^2 with |a| from the exported 4-acceleration (a_v, a_r)",
+            float(np.max(np.abs(cols["inertial_diff_radial_m_s2"] / inert_indep - 1.0))), None, 1e-8, kind="abs",
+            note=f"a = {a_SI:g} m/s^2, L = {Lb:g} m: a^2 L/c^2 = {abs(expected):.4e} m/s^2; also checks g(a,a) = alpha^2 along the run")
+    t.check("thrust_1g: radial_total_diff = radial_stretch + inertial_diff (bookkeeping identity)",
             float(np.max(np.abs(cols["radial_total_diff_m_s2"] - cols["radial_stretch_m_s2"] - cols["inertial_diff_radial_m_s2"])
-                         / np.abs(cols["radial_total_diff_m_s2"]).clip(1e-300))), None, 1e-12, kind="abs")
-    t.check("free-fall benchmark: inertial_diff_radial_m_s2 exactly 0 (engine off)", float(np.max(np.abs(sim.columns["inertial_diff_radial_m_s2"]))), 0.0, 0.0, kind="abs")
+                         / np.abs(cols["radial_total_diff_m_s2"]).clip(1e-300))), None, None, kind="abs")
+    t.check("free-fall benchmark: inertial_diff_radial_m_s2 is 0 with the engine off (code-path assertion)",
+            float(np.max(np.abs(sim.columns["inertial_diff_radial_m_s2"]))), None, None, kind="abs")
     r_geo = cols["r_geo"]
     E_cf = thrust_energy_closed_form(1.0, simT.thrust.alpha, r_geo[0], r_geo)
     relE = np.abs(cols["E_killing"] / E_cf - 1.0)
@@ -565,8 +582,10 @@ def test10_signal_timeline(sim: Simulation, simT: Simulation, simL: Simulation) 
 def run_all_tests(cfg: SimulationConfig, root: Path) -> dict:
     t_start = time.time()
     dq = DerivedQuantities(cfg.M_solar)
-    base = SimulationConfig(**{**cfg.to_dict(), "thrust_alpha_SI": 0.0, "E": 1.0, "L_over_M": 0.0,
-                                 "thrust_r_on_max_over_rs": math.inf})
+    # the benchmark is DEFINED as the E = 1, L = 0, unthrusted fall from r0 = 100 r_s; CLI scenario overrides
+    # (thrust, E, L, r0) never leak into it
+    base = SimulationConfig(**{**cfg.to_dict(), "thrust_alpha_SI": 0.0, "E": 1.0, "L_over_M": 0.0, "r0_over_rs": 100.0,
+                                 "thrust_r_on_min_over_rs": 0.0, "thrust_r_on_max_over_rs": math.inf})
     sim = Simulation(base, verbose=False)
     sim.run()
     sim.postprocess()

@@ -134,8 +134,9 @@ VIA WEB SEARCH: chapter title]. The series form of B(x) is used for x < 0.05 to 
 Fall from rest at r₀ (E² = f(r₀)) follows the cycloid r = (r₀/2)(1 + cos η),
 τ = √(r₀³/8M)(η + sin η) (MTW eq. 25.38 [equation number from memory — INSUFFICIENT DATA TO
 VERIFY]) — checked to 2e-12 in `tests/test_physics.py` [VERIFIED FROM CODE].
-Benchmark: numerical τ(r_s → r_QG) matches 4M/3 to 2.3e-13 (TEST 4); u^r matches −√(2M/r)
-to 2.4e-11 at every step (TEST 3).
+Benchmark (numbers regenerated with every run; see `validation_report.json` / `docs/validation_report.md`
+for the current values): numerical τ(r_s → r_QG) matches 4M/3 to ~1e-13 relative (TEST 4) and u^r
+matches −√(2M/r) to ~1e-11 at every step (TEST 3).
 
 ## 6. Propulsion — EXACT equations, NUMERICAL solution
 
@@ -161,6 +162,13 @@ which includes everyone who entered from outside. (The previous wording, "any th
 remaining proper time; the geodesic maximizes it", overstated the paper.) The 1 g
 scenario (`data/scenarios/thrust_1g`) illustrates the exterior counterpart: 17.3 proper years to
 the horizon and 0.0097 yr inside, versus 208,112 yr for free fall.
+
+Exact energy law of the radial rocket (EXACT GR RESULT, derived in `docs/additions/engine.md` §1.2):
+with L = 0, |n| = 1 and dE/dτ = −α u^r = −α dr/dτ, so **E(r) = E₀ + α (r₀ − r)** while the engine is on
+(geometrized). For 1 g, α = 1.61180e5 c⁴/(GM) and E = 3.19136e7 at the horizon; the integrated E_k
+follows this law to ~1e-13 at the milestones and ~3e-9 at every step (TEST 9). Thrust windows
+(`thrust_r_on_min/max_over_rs`) split segments at the window edges so that the right-hand side is
+smooth within each piece (a window edge inside a segment previously caused a Zeno-like stall).
 
 ## 7. Kruskal–Szekeres and compactified coordinates — EXACT GR RESULT
 
@@ -246,9 +254,31 @@ Derivation in this repository (`slab.curvature.tidal_eigenvalues_exact`), cross-
 (ii) the static-orthonormal-frame Riemann tensor boosted with the observer's velocity (exterior),
 (iii) a numeric 4×4 frame matrix (`tests/test_physics.py`). The explicit contraction is kept only
 as a cross-check because for L ≠ 0 deep inside it cancels terms of order 10³³³ (NUMERICAL note).
-SI: λ_SI [s⁻²] = λ_geo c²/M_m². For an accelerated (thrusting) observer E_ij is still the curvature
-part of the relative acceleration; the geodesic-deviation equation acquires extra terms from the
-acceleration (not displayed).
+SI: λ_SI [s⁻²] = λ_geo c²/M_m².
+
+**Accelerated (thrusting) observer — inertial term (EXACT GR RESULT to first order in the separation).**
+In the proper reference frame of an observer with proper acceleration a^i (non-rotating,
+Fermi–Walker transported axes), g₀₀ = −[(1 + a·x)² + R₀ᵢ₀ⱼ xⁱ xʲ] + O(x³); for a free particle momentarily
+at rest at ξ, d²ξⁱ/dt² = −aⁱ − aⁱ(a·ξ) − Rⁱ₀ⱼ₀ ξʲ. The differential acceleration relative to a particle
+released at the observer is therefore
+
+    δaⁱ = −[ Eⁱⱼ + aⁱ aⱼ ] ξʲ,
+
+so along the thrust axis the inertial part is −a²L (an approach, a²L/c² in SI; zero transversally and
+exactly zero with the engine off). The thrust axis is a tidal eigen-direction for every radial
+4-velocity, so the radial terms add: `radial_total_diff_m_s2` = −(λ_radial + a²) L. Outputs:
+`inertial_diff_radial_m_s2`, `radial_total_diff_m_s2`. For the 1 g rocket a²L/c² = 2.14e-15 m/s² across
+2 m; it exceeds the tidal stretch everywhere outside r_x = (2GMc²/a²)^{1/3} = 2.13e-4 r_s (66 ly) and is
+negligible inside. Validation (TEST 9, independent of the formula): exact Rindler motion in flat space
+(measured −0.09999999978 vs −a²L = −0.1) and a hovering observer in Schwarzschild, where the
+tidal-only prediction even has the wrong sign at 1.1 r_s while −(λ + a²)L matches the exact lapse value;
+the exported column is also checked against |a| recomputed from the exported 4-acceleration.
+Citations: MTW §13.6 "The proper reference frame of an accelerated observer" [VERIFIED VIA WEB SEARCH:
+section title; equation numbers INSUFFICIENT DATA TO VERIFY]; Ni & Zimmermann 1978, Phys. Rev. D 17,
+1473–1476, doi:10.1103/PhysRevD.17.1473 [VERIFIED VIA WEB SEARCH: bibliographic data; paper text not
+checked]. Limitations: first order in L, particles released at rest, no rotation terms (none arise
+for radial motion), engine switching modelled as a step. Full derivation and tables:
+`docs/additions/engine.md` §1.
 
 The traveller is indestructible by definition: tidal values are displayed (1.99e86 m/s² across 2 m
 at r_QG) but never terminate the run.
@@ -268,6 +298,20 @@ exponentially with e-folding time 4GM/c³ = 1/κ (surface gravity κ = 1/4M) —
 C. M. Hirata's Caltech Ph 236 lecture XXIV [VERIFIED VIA WEB SEARCH]; flux e-folding time ~ 1/κ in
 Ames & Thorne 1968, ApJ 151, 659 [PARTIALLY VERIFIED: abstract]; κ via Wald §12.5 [PARTIALLY
 VERIFIED].
+
+**Received-signal timeline (EXACT GR RESULT; implemented in `src/slab/signals.py`).** The retarded time
+u = t − r_* = v − 2r_*(r) is constant along outgoing radial light rays (outgoing dr/dv = f/2), so a distant
+static observer receives the signal emitted at (v, r) at t_obs = u + const; `t_receive` = (u − u_start)
+GM/c³ is the reception interval since the start signal. Along the emitter's worldline du/dτ = u^v −
+2u^r/f = 1 + z (the emitted/received frequency ratio). Near the horizon u^r → −E_h and f ≈ ε/(1 + ε),
+ε = r/r_s − 1, so 1 + z ∝ exp(u/4M): the redshift e-folds every 4GM/c³ = 624,336 yr for this hole and
+t_receive grows by 4M ln 10 per decade of ε, while the emitter's proper time converges. Outputs:
+per-sample `u_ret_geo`, `t_receive_years` (null at and inside r_s) and the `signal_timeline` table
+(ε log-spaced down to 1e-12, obtained by integrating the actual scenario — any E, L, thrust — to each
+radius) in `data/signal_timeline.csv`, HDF5 `/signal_timeline` and the render export. Validation
+(TEST 10): E = 1 closed forms to ~3e-15; 4M d ln(1+z)/du → 1 to ~2e-9 for the E = 1 fall, the 1 g
+rocket and the L = 3.5 plunge. Limitations: radial photons only (no intensity or beaming), observer
+static at infinity, ε ≳ 1e-14 in double precision. Details: `docs/additions/engine.md` §2.
 
 ## 12. Physics-regime labels — LABELLING CONVENTION
 
@@ -295,15 +339,27 @@ radius is hit exactly (event location by secant iteration on the step length, or
 of the ln r segment). v and τ are integrated per segment (v_seg, τ_seg) with offsets, so their
 relative error control stays tight at every scale. The trajectory never steps through r = 0: the
 last segment ends at r_QG > 0 by construction (test `test_never_steps_through_r_zero`).
-Convergence (TEST 8, step cap lifted): max relative error of u^r 1.8e-4 → 8.8e-7 → 4.4e-9 → 2.4e-11
-for rtol = 1e-6 … 1e-12 (steps 258 → 3041); SciPy DOP853 at rtol 1e-13 agrees with the analytic
-τ to 4e-15.
+Convergence (TEST 8, step cap lifted): the error of u^r and of τ falls monotonically with rtol from
+1e-6 to 1e-12 (the current table is in `docs/validation_report.md`); SciPy DOP853 at rtol 1e-13 agrees
+with the analytic τ to ~1e-14. For scenarios WITHOUT a closed form (1 g rocket over the whole run,
+L = 3.5 plunge) TEST 8 compares against 35-digit mpmath quadratures of the first integrals
+(`src/slab/reference.py`, sharing no code with the Runge–Kutta engine): at rtol = 1e-12 the per-segment
+Δτ, Δv and u^r agree to ~1e-11.
+
+Other numerical details (NUMERICAL APPROXIMATION): PI step control with the DOPRI5 coefficients
+(β = 0.04); steps shortened to exactly representable x_new − x; a no-progress guard; failed segments
+raise instead of being recorded as reached. **Dense output**: Hairer's 4th-order continuous extension of
+DOPRI5 (coefficients d₁, d₃…d₇ verified symbolically in `tools/verify_dopri5_dense_output.py`: end
+points, Hermite derivatives and all order-4 conditions hold exactly; error ∝ h⁵ numerically); it
+refuses to extrapolate outside the integrated range.
 
 Proper time as a double: τ_total ≈ 1333 M is stored with 1e-16 relative resolution, so the last
 30 decades of radius (Δτ < 1e-10 τ) are represented exactly in the per-segment increments
-(`dtau_segment_geo`), not in τ_total's last digits. The "classical proper time remaining to r = 0",
-(2/3)√(r³/2GM)/c, is exact for the E = 1 geodesic and the universal small-r asymptote otherwise
-(u^r → −√(2M/r) for every timelike worldline as r → 0).
+(`dtau_segment_geo`), not in τ_total's last digits. The "classical proper time remaining to r = 0"
+is a classical-GR extrapolation assuming free fall from the current (E, L): (2/3)√(r³/2GM)/c exactly
+for E = 1, L = 0 (and the small-r asymptote for any L = 0 worldline, since u^r → −√(2M/r)); for L ≠ 0
+it is the quadrature ∫₀^r dr′/√(E² − f(1 + L²/r′²)), whose small-r behaviour is ∝ r^{5/2}/L because
+(u^r)² → 2ML²/r³ there. Thrust is ignored in this estimate.
 
 ## 14. What the simulation does NOT claim
 
@@ -311,7 +367,8 @@ Proper time as a double: τ_total ≈ 1333 M is stored with 1e-16 relative resol
   "PLANCK-CURVATURE THRESHOLD REACHED. CLASSICAL GENERAL RELATIVITY IS NO LONGER RELIABLE.
   NO EXPERIMENTALLY VERIFIED THEORY DETERMINES THE CONTINUATION." and stops.
 * The toy models in `src/slab/speculative/` (Hayward 2006, Bardeen 1968, Dymnikova 1992 regular
-  black holes) are SPECULATIVE MODELS integrated with the same engine for comparison only; their
+  black holes) are SPECULATIVE MODELS integrated with the project's EF geodesic code (first-integral
+  form, core units) for comparison only — these toy runs are not validated physics; their
   core length (10⁴ l_P here) is an arbitrary choice with no observational basis; inner-horizon
   instabilities are ignored; none is selected as "the answer" (banner: "SPECULATIVE MODEL — NOT
   experimentally established."). Numerical notes: they are integrated in units of their core length
@@ -319,11 +376,66 @@ Proper time as a double: τ_total ≈ 1333 M is stored with 1e-16 relative resol
   second-order u^v equation has an exponentially growing mode (~e per e-fold of r); all three share the
   same de Sitter core radius (for Bardeen g = (2Mℓ²)^{1/3}); the E = 1 infaller approaches r = 0 only
   asymptotically (r ∝ e^{−τ/ℓ}) and the curvature saturates at the de Sitter value K = 24/ℓ⁴
-  (log10 K = 124.5 m⁻⁴ for ℓ = 10⁴ l_P, below the Planck value 139.2).
+  (log10 K = 124.5 m⁻⁴ for ℓ = 10⁴ l_P, below the Planck value 139.2). Inner-horizon and 1 %-deviation
+  radii are found by root finding on f; `tests/test_speculative_models.py` checks the metric functions
+  and derivatives against sympy (150-digit evaluation), the de Sitter core (f = 1 − r², K → 24) and
+  u^r = −r in the core. The exported proper time is accumulated from the horizon and cannot resolve
+  core-scale intervals (~ℓ) in double precision.
 * NASA Goddard visualizations (SVS 13326, 2019; SVS 14576/14585, 2024 — see references.md §1) are
   used only as a qualitative reference for the appearance of the exterior (shadow, lensed sky) and
   for visualization methodology; they are not evidence about interior quantum physics.
-* The first-person camera integrates null geodesics per pixel with the same EF equations
-  (VISUALIZATION of exact physics), but its sky is synthetic and its colour mapping of the frequency
-  shift is qualitative — it is labelled "Qualitative visualization — trajectory calculations remain
-  relativistic."
+* The first-person camera (§15) computes every pixel's past light ray exactly, but its star backdrop is
+  the Earth's sky placed around a hypothetical hole (illustrative), stars are drawn as blackbody point
+  sources, and the default colour tint is qualitative — it is labelled "Qualitative visualization —
+  trajectory calculations remain relativistic."
+
+## 15. First-person camera — EXACT ray physics, VISUALIZATION of the sky (CPU, double precision)
+
+The default renderer needs no GPU and works down to r_QG. Full derivations, tests and the table of
+the view near r_QG: `docs/additions/camera.md`; architecture: `docs/viewer_architecture.md`.
+
+* **Observer and photons (EXACT GR RESULT, derived here).** Radial observer with Killing energy E:
+  a ≡ |u^r| = √(E² − f), u^v = 1/(E + a); comoving radial axis n = (u^v, E) with g(n,n) = 1; the Killing
+  vector is ξ = ∂_v = E u + a n. A photon seen in direction d = dₙ n + d⊥ e⊥ (future momentum p = u − d,
+  observed frequency 1) has E_ph = E + a dₙ, L = r d⊥, impact parameter b = L/E_ph and frequency ratio
+  g = ν_obs/ν_∞ = 1/E_ph.
+* **Axial symmetry.** The observer moves radially, so a pixel's fate depends only on the angle to the
+  radial axis: a 1D transfer table of the asymptotic sky angle ψ_∞ (orbit integral
+  (du/dψ)² = 1/b² − u² + 2u³, adaptive Gauss–Kronrod in scale-free ln r variables; closed-form turning
+  radius r_t = (2b/√3) cos(⅓ arccos(−3√3/b))) serves every pixel (NUMERICAL APPROXIMATION: table error
+  ≤ max(2e-5 rad, 1e-4|ψ|)). Classification of a past-directed ray is exact from (E_ph, b²) with the
+  single effective-potential extremum b² = 27M² at r = 3M; inside the horizon a ray reaches the exterior
+  sky only if E_ph > 0 AND b² < 27 (this corrected an earlier classifier). The sky/past boundary
+  b² = 27 has closed-form roots; at r = 10M it equals the aberrated static shadow
+  cos α′ = (cos α_s + v)/(1 + v cos α_s), sin α_s = (3√3M/r)√(1 − 2M/r), v = √(2M/r), to 1e-12; the
+  rendered shadow at 5 r_s matches it to 0.25 % (pixel test). Static shadow formula usually
+  attributed to Synge 1966, MNRAS 131, 463 [VERIFIED VIA WEB SEARCH: bibliographic data; formula
+  re-derived here].
+* **Near r_QG (numbers from the code).** The exterior universe fills essentially the outward
+  hemisphere (half-angle 90° + √(r/2) rad); almost all of it is a hugely magnified, redshifted image
+  (g ≈ 2e-19 straight up) of a tiny patch around the anti-hole direction, while the rest of the sky
+  is squeezed into a ring at the horizontal, blueshifted by g ~ 1e36–5e37 and far narrower than a
+  pixel. The other hemisphere shows the past horizon (region III / collapsing matter — not modelled).
+  Qualitatively as described in the abstract of Hamilton & Polhemus, arXiv:0903.4717 [PARTIALLY
+  VERIFIED: abstract]; see also Hamilton & Polhemus 2010, New J. Phys. 12, 123027 [VERIFIED VIA WEB
+  SEARCH: bibliographic data].
+* **Sky and colours (VISUALIZATION APPROXIMATION / LABELLING CONVENTION).** 1627 stars with V ≤ 5
+  from the d3-celestial package (BSD-3-Clause; data from XHIP, Anderson & Francis 2012), placed with
+  the hole towards Sgr A* (illustrative); stars as blackbodies with T from B−V (Ballesteros 2012, EPL
+  97, 34008), shifted T → gT (exact for blackbodies), magnification μ = cos α |dα| / (sin ψ |dψ|);
+  optional false-colour map of log₁₀ g with a numeric colour bar. An optional float32 GPU mode
+  remains (falls back to the CPU renderer below 1e-5 r_s).
+
+## 16. Viewer conventions — LABELLING CONVENTION / VISUALIZATION APPROXIMATION
+
+Details: `docs/additions/viewer.md`. The viewer displays precomputed data and computes only
+presentation quantities:
+
+* r, r/r_s at a fractional sample position are exactly 10^log10(r/r_s); the classical time remaining is
+  interpolated geometrically (exact for the E = 1 law ∝ r^{3/2}); other columns linearly.
+* Light-cone inset slopes f/(2 − f) and −1 are evaluated at the displayed r (exactly vertical at r_s;
+  measured from pixels in `tests/viewer/test_pixels_browser.mjs`).
+* Playback axes: −log₁₀(r/r_s) (default), −log₁₀(classical τ remaining) (labelled a classical-GR
+  extrapolation), and linear τ; all are monotone reparametrizations of the same position.
+* The received-signal plot uses the engine's `signal_timeline`; for older exports it falls back to
+  u = v − 2r_* from the samples, with 1 + z = u^v − 2u^r/f evaluated at the displayed r.
