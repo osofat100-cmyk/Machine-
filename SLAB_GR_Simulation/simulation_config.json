@@ -1,0 +1,23 @@
+{
+  "_comment": "Configuration of the validated classical-GR run. All derived quantities are computed from constants at run time.",
+  "M_solar": 1e18,
+  "r0_over_rs": 100.0,
+  "E": 1.0,
+  "L_over_M": 0.0,
+  "thrust_alpha_SI": 0.0,
+  "thrust_r_on_min_over_rs": 0.0,
+  "thrust_r_on_max_over_rs": "inf",
+  "body_length_m": 2.0,
+  "rtol": 1e-12,
+  "atol": 1e-14,
+  "max_step_lnr": 0.05,
+  "max_dr_over_r_tau": 0.05,
+  "extreme_curvature_length_m": 10000.0,
+  "planck_boundary_lengths": 10.0,
+  "include_isco": true,
+  "include_photon_sphere": true,
+  "render_samples": 3000,
+  "coordinate_system": "ingoing Eddington–Finkelstein (v, r, theta, phi)",
+  "integrator": "Dormand–Prince RK5(4), adaptive, FSAL, PI step control; independent variable ln r inside (tau outside when needed)",
+  "notes": "Default scenario: radial free fall from rest at infinity (E = 1, L = 0), started numerically at r0 = 100 r_s. Validated trajectory stops at r_QG where K = 1/l_P^4."
+}
