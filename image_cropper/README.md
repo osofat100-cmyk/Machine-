@@ -13,6 +13,9 @@ python smart_collage.py crop photos/*.jpg -o cropped/ --mode auto    # blur only
 
 # All photos in one 16:9 collage (4K by default)
 python smart_collage.py collage photos/*.jpg -o collage.jpg --size 3840x2160 --gap 12
+
+# Every combination of 2-7 different photos, ranked by how much of each photo is kept
+python smart_collage.py combos photos/*.jpg -o combos/ --min 2 --max 7 --top 10
 ```
 
 ## How it works
@@ -35,13 +38,39 @@ summed-area tables:
 - `+` the subject's centroid near a rule-of-thirds line or the centre
 - `−` zooming in (keep as much of the photo as possible)
 
-**Collage:** a justified-rows layout. Every way of splitting the photos into
-rows, over many orderings, is scored on how far each cell's shape is from
-its photo's shape (the crop it needs) and on how even the tile sizes are. The
-best layout is then filled exactly, and each tile is smart-cropped to its
-cell.
+**Collage:** the photos are arranged as a *slicing tree*. Every split puts
+two groups of photos side by side or one above the other, so rows, columns
+and rows-inside-columns are all possible. At their natural shapes no photo is
+cropped, so the only crop comes from stretching the whole tree to 16:9, and
+every tile shares it equally:
 
-For the example set (one 1280×720 and six portraits of 1080×1350–1620) the
-collage comes out as two rows: the landscape photo and two portraits on top,
-four portraits below. Each tile loses only a small strip, while cropping
-every photo to 16:9 would throw away 55–63% of each portrait.
+    fit = min(tree_aspect / (16/9), (16/9) / tree_aspect)
+
+A dynamic program over subsets builds every tree for every subset at once.
+Trees with shapes within about 2% of each other are merged, keeping the one
+whose smallest tile is largest. The tree closest to 16:9 wins, as long as no
+tile is smaller than a quarter of the average tile size. Each tile is then
+smart-cropped to its cell.
+
+**Combinations:** `combos` takes a pool of photos and lays out *every*
+combination of 2-7 different photos. With 7 photos that is
+C(7,2)+...+C(7,7) = 120 collages, and the search takes under a second. It writes
+`combinations.csv`, ranking every combination by fit, and renders the top N
+plus the best collage for each image count. Collages with fewer photos have
+fewer possible layouts, so they usually can't reach as close to 100%. Each
+one still gets the closest fit its photos allow.
+
+Results for the example set (one 1280x720 and six portraits of
+1080x1350-1620):
+
+| images | combinations | best fit | worst fit |
+|-------:|-------------:|---------:|----------:|
+| 2 | 21 | 87.2% | 69.0% |
+| 3 | 35 | 88.9% | 64.8% |
+| 4 | 35 | 99.9% | 90.3% |
+| 5 | 21 | 99.6% | 80.4% |
+| 6 | 7  | 99.8% | 92.7% |
+| 7 | 1  | 99.6% | 99.6% |
+
+The layout search covers every combination for pools up to about 12 photos;
+past that, rendering the collages takes far longer than the search.

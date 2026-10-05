@@ -2,7 +2,7 @@
 """
 Smart 16:9 cropping and collage layout, in the spirit of Google Photos.
 
-Two things are done here:
+Three things are done here:
 
 1. Smart crop: every image gets a saliency map (spectral-residual saliency,
    edge energy, local colour contrast, and detected faces). A window of the
@@ -11,10 +11,14 @@ Two things are done here:
    and how well the subject sits on the rule-of-thirds grid. Summed-area
    tables make each window O(1) to score.
 
-2. Collage: images are packed into a 16:9 canvas with a justified-rows layout.
-   Every ordering/row split is scored on how much each photo has to be
-   cropped to fill its cell and how uneven the tile sizes are; the best one
-   wins and each cell is then smart-cropped to its exact shape.
+2. Collage: photos are arranged as a slicing tree (every split puts two
+   groups side by side or one above the other), searched exhaustively over
+   all trees. The tree whose shape is closest to 16:9 wins, so as much of
+   each photo as possible is kept, and each tile is then smart-cropped to
+   its exact cell.
+
+3. Combinations: given a pool of photos, every combination of 2-7 distinct
+   photos is laid out and ranked by fit (the share of each photo kept).
 
 Portraits cropped all the way down to 16:9 lose most of the frame, so the
 crop command also offers Google-Photos-style "blur" fill (the photo sits on a
@@ -23,13 +27,13 @@ blurred, dimmed copy of itself) and an "auto" mode that picks per image.
 Usage:
     python smart_collage.py crop    img1.jpg img2.jpg ... -o out_dir [--mode crop|blur|auto]
     python smart_collage.py collage img1.jpg img2.jpg ... -o collage.jpg [--size 3840x2160]
+    python smart_collage.py combos  img1.jpg ... img7.jpg -o combos/ [--min 2 --max 7 --top 10]
 """
 
 import argparse
 import itertools
 import math
 import os
-import random
 
 import cv2
 import numpy as np
@@ -304,85 +308,138 @@ def crop_retention(img: Image.Image, aspect: float) -> float:
 
 
 # ---------------------------------------------------------------------------
-# Collage layout (justified rows)
+# Collage layout (slicing trees)
 # ---------------------------------------------------------------------------
+#
+# A collage is a "slicing tree": every internal node puts its two children
+# side by side (H) or one above the other (V). Laid out at their natural
+# aspect ratios no photo is cropped at all; the only crop comes from
+# stretching the whole tree to the canvas shape, and that stretch is shared
+# evenly by every tile. So a layout's "fit" (share of each photo kept) is
+#
+#     fit = min(tree_aspect / canvas_aspect, canvas_aspect / tree_aspect)
+#
+# A dynamic program over subsets builds every tree for every subset of the
+# pool at once: a subset's trees are all ways of splitting it in two and
+# joining a tree of each half with H or V. Trees whose aspects are within
+# ~2% of each other are merged, keeping the one whose smallest tile is
+# largest, so the search stays exact up to that rounding.
 
-def _row_partitions(n, max_rows):
-    """All ways to split a sequence of n items into consecutive rows."""
-    for k in range(1, min(n, max_rows)):
-        for cuts in itertools.combinations(range(1, n), k):
-            bounds = (0,) + cuts + (n,)
-            yield [range(bounds[i], bounds[i + 1]) for i in range(len(bounds) - 1)]
-    yield [range(0, n)]
-
-
-def _evaluate_layout(aspects, rows, W, H, gap):
-    """Lay rows out to exactly fill W x H. Returns (cost, cells)."""
-    natural = []
-    for row in rows:
-        s = sum(aspects[i] for i in row)
-        natural.append((W - gap * (len(row) - 1)) / s)
-    avail_h = H - gap * (len(rows) - 1)
-    stretch = avail_h / sum(natural)  # >1 means cells get taller than the photos
-
-    cells, cost, areas = [], 0.0, []
-    y = 0.0
-    for row, nh in zip(rows, natural):
-        rh = nh * stretch
-        x = 0.0
-        for j, i in enumerate(row):
-            cw = aspects[i] * nh
-            cells.append((i, x, y, cw, rh))
-            areas.append(cw * rh)
-            # Crop cost: how far the cell aspect is from the photo's aspect.
-            cost += abs(math.log((cw / rh) / aspects[i])) * (cw * rh) / (W * H)
-            x += cw + gap
-        y += rh + gap
-
-    # Uneven tiles look messy; huge ones swamp the rest.
-    areas = np.array(areas)
-    balance = float(np.std(areas) / np.mean(areas))
-    tiny = sum(1 for (_, _, _, cw, rh) in cells if min(cw, rh) < 0.12 * min(W, H))
-    return 2.0 * cost + 0.25 * balance + 0.5 * tiny, cells
+ASPECT_BUCKET = 0.02  # log-aspect resolution when merging near-identical trees
+MAX_LOG_ASPECT = 3.0  # trees wider/taller than e^3 (~20:1) can't help
 
 
-def plan_collage(aspects, W, H, gap, tries=400, seed=0):
-    """Search orderings and row splits for the least-crop, best-balanced layout."""
+class _Trees:
+    """All (bucketed) slicing trees for one subset, as parallel arrays."""
+    __slots__ = ("aspect", "minfrac", "sumsq", "left", "li", "ri", "vert")
+
+    def __init__(self, aspect, minfrac, sumsq, left, li, ri, vert):
+        self.aspect, self.minfrac, self.sumsq = aspect, minfrac, sumsq
+        self.left, self.li, self.ri, self.vert = left, li, ri, vert
+
+
+def _combine(A, B, vert):
+    """Join every tree of A with every tree of B, horizontally or vertically."""
+    a1 = A.aspect[:, None]
+    a2 = B.aspect[None, :]
+    if vert:  # stacked: equal widths, heights (and areas) ~ 1/aspect
+        w1, w2 = 1 / a1, 1 / a2
+        aspect = 1 / (w1 + w2)
+    else:     # side by side: equal heights, widths (and areas) ~ aspect
+        w1, w2 = a1, a2
+        aspect = a1 + a2
+    f1, f2 = w1 / (w1 + w2), w2 / (w1 + w2)
+    minfrac = np.minimum(A.minfrac[:, None] * f1, B.minfrac[None, :] * f2)
+    sumsq = A.sumsq[:, None] * f1 ** 2 + B.sumsq[None, :] * f2 ** 2
+    li, ri = np.meshgrid(np.arange(len(A.aspect)), np.arange(len(B.aspect)), indexing="ij")
+    return aspect.ravel(), minfrac.ravel(), sumsq.ravel(), li.ravel(), ri.ravel()
+
+
+def build_trees(aspects, max_size=None):
+    """Slicing trees for every subset (bitmask) of `aspects` up to max_size."""
     n = len(aspects)
-    rng = random.Random(seed)
-    orders = {tuple(range(n))}
-    # Alternate wide/tall so rows mix shapes, plus random shuffles.
-    by_aspect = sorted(range(n), key=lambda i: aspects[i])
-    interleaved = [x for pair in itertools.zip_longest(by_aspect[::-1], by_aspect)
-                   for x in pair if x is not None]
-    orders.add(tuple(dict.fromkeys(interleaved)))
-    if n <= 6:
-        orders.update(itertools.permutations(range(n)))
+    max_size = max_size or n
+    table = {}
+    for i, a in enumerate(aspects):
+        table[1 << i] = _Trees(np.array([a]), np.ones(1), np.ones(1),
+                               np.array([-1]), np.zeros(1, int), np.zeros(1, int), np.zeros(1, bool))
+
+    masks = sorted((m for m in range(1, 1 << n) if 2 <= bin(m).count("1") <= max_size),
+                   key=lambda m: bin(m).count("1"))
+    for S in masks:
+        low = S & -S
+        parts = []
+        sub = (S - 1) & S
+        while sub:
+            if sub & low:  # each unordered split once: left half holds S's lowest bit
+                A, B = table[sub], table[S ^ sub]
+                for vert in (False, True):
+                    asp, mf, sq, li, ri = _combine(A, B, vert)
+                    parts.append((asp, mf, sq, np.full(len(asp), sub), li, ri, np.full(len(asp), vert)))
+            sub = (sub - 1) & S
+        asp, mf, sq, left, li, ri, vert = (np.concatenate(c) for c in zip(*parts))
+
+        logs = np.log(asp)
+        keep = np.abs(logs) <= MAX_LOG_ASPECT
+        bucket = np.round(logs / ASPECT_BUCKET).astype(np.int64)
+        # Per bucket keep the tree whose smallest tile is largest (then the
+        # most even tiles), so no photo ends up as a thumbnail.
+        order = np.lexsort((sq, -mf, bucket))
+        order = order[keep[order]]
+        first = np.ones(len(order), bool)
+        first[1:] = bucket[order][1:] != bucket[order][:-1]
+        idx = order[first]
+        table[S] = _Trees(asp[idx], mf[idx], sq[idx], left[idx], li[idx], ri[idx], vert[idx])
+    return table
+
+
+def best_tree(table, mask, canvas_aspect):
+    """Pick the tree for `mask` with the best fit, discouraging lopsided tiles.
+
+    Returns (index, fit) where fit is the share of every photo kept.
+    """
+    T = table[mask]
+    k = bin(mask).count("1")
+    fit = np.minimum(T.aspect / canvas_aspect, canvas_aspect / T.aspect)
+    imbalance = k * T.sumsq - 1  # squared coefficient of variation of tile areas
+    tiny = T.minfrac < 0.25 / k  # smallest tile under a quarter of the average
+    score = fit - 0.03 * imbalance - 1.0 * tiny
+    i = int(np.argmax(score))
+    return i, float(fit[i])
+
+
+def tree_cells(table, mask, idx, x, y, w, h, gap):
+    """Lay a tree out into the rectangle (x, y, w, h). Yields (image, x, y, w, h)."""
+    T = table[mask]
+    left = int(T.left[idx])
+    if left < 0:
+        yield (mask.bit_length() - 1, x, y, w, h)
+        return
+    right = mask ^ left
+    li, ri = int(T.li[idx]), int(T.ri[idx])
+    a1, a2 = table[left].aspect[li], table[right].aspect[ri]
+    if T.vert[idx]:
+        h1 = (h - gap) * (1 / a1) / (1 / a1 + 1 / a2)
+        yield from tree_cells(table, left, li, x, y, w, h1, gap)
+        yield from tree_cells(table, right, ri, x, y + h1 + gap, w, h - h1 - gap, gap)
     else:
-        for _ in range(tries):
-            p = list(range(n))
-            rng.shuffle(p)
-            orders.add(tuple(p))
-
-    max_rows = max(2, math.ceil(math.sqrt(n)) + 1)
-    best = (math.inf, None)
-    for order in orders:
-        ordered = [aspects[i] for i in order]
-        for rows in _row_partitions(n, max_rows):
-            cost, cells = _evaluate_layout(ordered, rows, W, H, gap)
-            if cost < best[0]:
-                best = (cost, [(order[i], x, y, w, h) for (i, x, y, w, h) in cells])
-    return best[1]
+        w1 = (w - gap) * a1 / (a1 + a2)
+        yield from tree_cells(table, left, li, x, y, w1, h, gap)
+        yield from tree_cells(table, right, ri, x + w1 + gap, y, w - w1 - gap, h, gap)
 
 
-def make_collage(paths, out_path, size=(3840, 2160), gap=12, background=(255, 255, 255)):
+def plan_collage(aspects, W, H, gap, table=None, mask=None):
+    """Best layout for the given photos. Returns (cells, fit)."""
+    table = table or build_trees(aspects)
+    mask = mask if mask is not None else (1 << len(aspects)) - 1
+    idx, fit = best_tree(table, mask, W / H)
+    return list(tree_cells(table, mask, idx, 0.0, 0.0, W, H, gap)), fit
+
+
+def render_collage(images, analyses, cells, size, out_path, background=(255, 255, 255)):
     W, H = size
-    images = [ImageOps.exif_transpose(Image.open(p)).convert("RGB") for p in paths]
-    analyses = [Analysis(im) for im in images]
-    aspects = [im.width / im.height for im in images]
-
     canvas = Image.new("RGB", (W, H), background)
-    for idx, x, y, cw, ch in plan_collage(aspects, W, H, gap):
+    for idx, x, y, cw, ch in cells:
         x0, y0 = int(round(x)), int(round(y))
         x1, y1 = int(round(x + cw)), int(round(y + ch))
         # Collage tiles are already small: keep as much of each photo as fits.
@@ -390,6 +447,82 @@ def make_collage(paths, out_path, size=(3840, 2160), gap=12, background=(255, 25
         canvas.paste(tile.resize((x1 - x0, y1 - y0), Image.LANCZOS), (x0, y0))
     canvas.save(out_path, quality=92)
     return out_path
+
+
+def _load(paths):
+    images = [ImageOps.exif_transpose(Image.open(p)).convert("RGB") for p in paths]
+    return images, [im.width / im.height for im in images]
+
+
+def make_collage(paths, out_path, size=(3840, 2160), gap=12, background=(255, 255, 255)):
+    images, aspects = _load(paths)
+    cells, fit = plan_collage(aspects, size[0], size[1], gap)
+    render_collage(images, [Analysis(im) for im in images], cells, size, out_path, background)
+    return out_path, fit
+
+
+def explore_combinations(paths, out_dir, size=(3840, 2160), gap=12, min_k=2, max_k=7,
+                         render_top=10, render_best_per_size=True):
+    """Lay out every combination of min_k..max_k distinct photos from `paths`.
+
+    Every combination gets its best layout and a fit score (share of each
+    photo kept). Results go to combinations.csv, ranked best first; the top
+    collages, and the best one for each image count, are rendered.
+    """
+    W, H = size
+    images, aspects = _load(paths)
+    n = len(images)
+    max_k = min(max_k, n)
+    if min_k > max_k:
+        raise SystemExit(f"need at least {min_k} images, got {n}")
+    total = sum(math.comb(n, k) for k in range(min_k, max_k + 1))
+    print(f"{n} photos -> {total} combinations of {min_k}-{max_k} images")
+
+    table = build_trees(aspects, max_k)
+    results = []
+    for k in range(min_k, max_k + 1):
+        for combo in itertools.combinations(range(n), k):
+            mask = sum(1 << i for i in combo)
+            idx, fit = best_tree(table, mask, W / H)
+            results.append((fit, k, combo, mask, idx))
+    results.sort(key=lambda r: (-r[0], -r[1]))
+
+    os.makedirs(out_dir, exist_ok=True)
+    names = [os.path.basename(p) for p in paths]
+    with open(os.path.join(out_dir, "combinations.csv"), "w") as f:
+        f.write("rank,num_images,fit_percent,images\n")
+        for rank, (fit, k, combo, _, _) in enumerate(results, 1):
+            f.write(f"{rank},{k},{100 * fit:.2f},{' '.join(names[i] for i in combo)}\n")
+
+    to_render = {}
+    for rank, r in enumerate(results[:render_top], 1):
+        to_render[r[3]] = f"top{rank:02d}"
+    if render_best_per_size:
+        for k in range(min_k, max_k + 1):
+            best = next(r for r in results if r[1] == k)
+            to_render.setdefault(best[3], f"best_{k}_images")
+
+    analyses = {}
+    by_mask = {r[3]: r for r in results}
+    for mask, label in to_render.items():
+        fit, k, combo, _, idx = by_mask[mask]
+        for i in combo:
+            if i not in analyses:
+                analyses[i] = Analysis(images[i])
+        cells = list(tree_cells(table, mask, idx, 0.0, 0.0, W, H, gap))
+        dest = os.path.join(out_dir, f"{label}_{k}img_{100 * fit:.1f}pct.jpg")
+        render_collage(images, analyses, cells, size, dest)
+
+    print(f"\n{'rank':>4}  {'imgs':>4}  {'fit':>7}  images")
+    for rank, (fit, k, combo, _, _) in enumerate(results[:15], 1):
+        print(f"{rank:>4}  {k:>4}  {100 * fit:6.2f}%  {', '.join(names[i] for i in combo)}")
+    print("\nBest per image count:")
+    for k in range(min_k, max_k + 1):
+        fits = [r[0] for r in results if r[1] == k]
+        print(f"  {k} images: best {100 * max(fits):6.2f}%  worst {100 * min(fits):6.2f}%  "
+              f"({len(fits)} combinations)")
+    print(f"\nFull ranking in {os.path.join(out_dir, 'combinations.csv')}")
+    return results
 
 
 # ---------------------------------------------------------------------------
@@ -435,13 +568,26 @@ def main():
     k.add_argument("--size", default="3840x2160", help="WIDTHxHEIGHT (default 3840x2160)")
     k.add_argument("--gap", type=int, default=12, help="pixels between tiles")
 
+    m = sub.add_parser("combos", help="try every combination of 2-7 images, rank by fit")
+    m.add_argument("images", nargs="+")
+    m.add_argument("-o", "--out-dir", default="combinations")
+    m.add_argument("--size", default="3840x2160", help="WIDTHxHEIGHT (default 3840x2160)")
+    m.add_argument("--gap", type=int, default=12, help="pixels between tiles")
+    m.add_argument("--min", dest="min_k", type=int, default=2, help="fewest images per collage")
+    m.add_argument("--max", dest="max_k", type=int, default=7, help="most images per collage")
+    m.add_argument("--top", type=int, default=10, help="render this many best collages")
+
     args = ap.parse_args()
     if args.cmd == "crop":
         crop_all(args.images, args.out_dir, args.mode, args.width)
+        return
+    w, h = (int(v) for v in args.size.lower().split("x"))
+    if args.cmd == "collage":
+        _, fit = make_collage(args.images, args.output, (w, h), args.gap)
+        print(f"Saved {args.output} (keeps {100 * fit:.1f}% of each photo)")
     else:
-        w, h = (int(v) for v in args.size.lower().split("x"))
-        make_collage(args.images, args.output, (w, h), args.gap)
-        print(f"Saved {args.output}")
+        explore_combinations(args.images, args.out_dir, (w, h), args.gap,
+                             args.min_k, args.max_k, args.top)
 
 
 if __name__ == "__main__":
