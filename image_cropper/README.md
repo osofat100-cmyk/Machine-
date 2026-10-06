@@ -1,5 +1,77 @@
 # Smart 16:9 cropper and collage
 
+Two programs:
+
+- **`all_layouts.py`** lists *every* possible 16:9 collage of 2–7 photos:
+  every combination of photos, every layout shape, every position and every
+  priority choice. Nothing is ranked or skipped.
+- **`smart_collage.py`** does the smart cropping and single collages.
+
+## all_layouts.py — every possibility
+
+```bash
+pip install -r requirements.txt
+python all_layouts.py count photos/*.jpg                 # how many, and disk needed
+python all_layouts.py run   photos/*.jpg -o results      # compute all of them (uses all CPU cores)
+```
+
+A possibility is made of four choices:
+
+| choice | what varies | count for k photos |
+|---|---|---|
+| photos | every combination of k different photos from the pool | C(n, k) |
+| shape | every slicing layout: each split puts two groups side by side or one above the other, mirror images included | 2, 6, 22, 90, 394, 1806 for k = 2..7 |
+| positions | which photo goes in which slot | k! |
+| priority | none, or any group of 1..k−1 photos made bigger (area × boost, default 2×; several boosts allowed: `--boost 1.5 2 3`) | 1 + (2^k − 2) × boosts |
+
+Prioritising all k photos looks exactly like prioritising none, so it is
+covered by the "none" row.
+
+For 7 photos with one boost factor:
+
+| k | combos | shapes | positions | priorities | possibilities |
+|--:|--:|--:|--:|--:|--:|
+| 2 | 21 | 2 | 2 | 3 | 252 |
+| 3 | 35 | 6 | 6 | 7 | 8,820 |
+| 4 | 35 | 22 | 24 | 15 | 277,200 |
+| 5 | 21 | 90 | 120 | 31 | 7,030,800 |
+| 6 | 7 | 394 | 720 | 63 | 125,102,880 |
+| 7 | 1 | 1,806 | 5,040 | 127 | 1,155,984,480 |
+| | | | | **total** | **1,288,404,432** |
+
+Without priorities that is 11,334,624 layouts. One CPU core computes about
+240,000 possibilities a second, so the full run is about 1.5 hours on one
+core, or roughly 15–20 minutes on 8 cores. It writes about 14 GB of gzipped
+CSV. The run shows progress with an ETA, and if stopped it resumes where it
+left off: finished files are skipped.
+
+Each result row:
+
+```
+combo_id, shape_id, perm_id, priority_mask, boost, fit_avg, fit_min, priority_share
+```
+
+- `fit_avg` / `fit_min`: share of the photo kept after cropping to its tile
+  (area-weighted average, and the worst tile)
+- `priority_share`: share of the canvas the priority photos get
+- `combos.csv`, `shapes_k*.csv` and `images.csv` decode the ids;
+  `priority_mask` bit j means image number j+1 has priority
+
+```bash
+# Explain one possibility in words (photos per slot, tile sizes, fit)
+python all_layouts.py describe results --combo 56 --shape 10 --perm 5 --priority 2 --boost 2
+
+# Draw it, or draw every row of one or more result files
+python all_layouts.py render results --combo 56 --shape 10 --perm 5 --priority 2 --boost 2
+python all_layouts.py render results --from results/k4/combo_0056/*.csv.gz --scale 0.5
+```
+
+Rendering is far slower than computing (about a quarter of a second per 4K
+image per core), so drawing all 1.29 billion would take years and petabytes. Render
+the files or rows you want to see; `--limit` and `--scale` help.
+
+## smart_collage.py — cropping and single collages
+
 Smart cropping and collage layout in the style of Google Photos, for turning a
 mix of landscape and portrait photos into 16:9 images.
 
