@@ -21,8 +21,14 @@ For each possibility the program records how much of each photo survives
 cropping to its tile (area-weighted average and the worst tile), and what
 share of the canvas the priority photos get.
 
+The canvas is always exactly 16:9. Every possibility is checked, but one is
+written only if every photo keeps at least --min-fit of itself (default
+0.95). A layout far from 16:9 would have to cut into or squeeze some photo
+badly, so it is dropped. --min-fit 0 writes everything.
+
 Commands:
     python all_layouts.py count  photos/*.jpg            # how many possibilities, disk needed
+    python all_layouts.py count  photos/*.jpg --min-fit 0.9 0.95   # how many pass each cutoff
     python all_layouts.py run    photos/*.jpg -o results # compute and write all of them
     python all_layouts.py describe results --combo 120 --shape 5 --perm 17 --priority 3 --boost 2
     python all_layouts.py render results --combo 120 --shape 5 --perm 17 --priority 3 --boost 2
@@ -264,15 +270,13 @@ def _init_worker(ctx):
     _CTX.update(ctx)
 
 
-def _task(args):
-    """Compute and write every possibility for one (combination, shape)."""
-    combo_id, combo, shape_id = args
+def _batches(combo, shape_id):
+    """Evaluate every position x priority option of one (combination, shape).
+
+    Yields (perm_ids, pool_masks, boosts, fit_avg, fit_min, share) per batch.
+    """
     c = _CTX
     k = len(combo)
-    dest = os.path.join(c["out"], f"k{k}", f"combo_{combo_id:04d}", f"shape_{shape_id:04d}.csv.gz")
-    if os.path.exists(dest):
-        return combo_id, shape_id, 0, True  # already done (resume)
-
     shape = shapes(k)[shape_id]
     aspects = np.array([c["aspects"][i] for i in combo])
     perms = np.array(list(itertools.permutations(range(k))), dtype=np.int64)
@@ -285,34 +289,100 @@ def _task(args):
     pool_masks = np.array([sum(1 << combo[j] for j in range(k) if m >> j & 1) for m in masks],
                           dtype=np.int64)
     Q = len(opts)
+    chunk = max(1, c["chunk_rows"] // Q)
+    for p0 in range(0, len(perms), chunk):
+        P = perms[p0:p0 + chunk]                                   # (p, k)
+        n_p = len(P)
+        X = np.repeat(aspects[P], Q, axis=0)                       # (p*Q, k)
+        prio = (masks[None, :, None] >> P[:, None, :]) & 1         # (p, Q, k)
+        B = np.where(prio == 1, boosts[None, :, None], 1.0).reshape(n_p * Q, k)
+        fit_avg, fit_min, share, _ = evaluate(shape, X, B, c["W"], c["H"], c["gap"])
+        yield (np.repeat(np.arange(p0, p0 + n_p), Q), np.tile(pool_masks, n_p),
+               np.tile(boosts, n_p), fit_avg, fit_min, share)
+
+
+def _task(args):
+    """Compute one (combination, shape); write the possibilities that pass min_fit."""
+    combo_id, combo, shape_id = args
+    c = _CTX
+    k = len(combo)
+    dest = os.path.join(c["out"], f"k{k}", f"combo_{combo_id:04d}", f"shape_{shape_id:04d}.csv.gz")
+    if os.path.exists(dest):
+        return combo_id, shape_id, None  # already done (resume)
 
     os.makedirs(os.path.dirname(dest), exist_ok=True)
     tmp = dest + ".tmp"
-    rows = 0
-    chunk = max(1, c["chunk_rows"] // Q)
+    kept = 0
     with gzip.open(tmp, "wt", compresslevel=1) as f:
-        for p0 in range(0, len(perms), chunk):
-            P = perms[p0:p0 + chunk]                                   # (p, k)
-            n_p = len(P)
-            X = np.repeat(aspects[P], Q, axis=0)                       # (p*Q, k)
-            prio = (masks[None, :, None] >> P[:, None, :]) & 1         # (p, Q, k)
-            B = np.where(prio == 1, boosts[None, :, None], 1.0).reshape(n_p * Q, k)
-            fit_avg, fit_min, share, _ = evaluate(shape, X, B, c["W"], c["H"], c["gap"])
+        for perm_ids, masks, boosts, fit_avg, fit_min, share in _batches(combo, shape_id):
+            # Every photo must keep at least min_fit of itself: one badly
+            # mismatched tile rules the whole collage out.
+            ok = fit_min >= c["min_fit"]
+            if not ok.any():
+                continue
             out = np.column_stack([
-                np.full(n_p * Q, combo_id),
-                np.full(n_p * Q, shape_id),
-                np.repeat(np.arange(p0, p0 + n_p), Q),
-                np.tile(pool_masks, n_p),
-                np.tile(boosts, n_p),
-                fit_avg, fit_min, share,
+                np.full(ok.sum(), combo_id), np.full(ok.sum(), shape_id),
+                perm_ids[ok], masks[ok], boosts[ok], fit_avg[ok], fit_min[ok], share[ok],
             ])
             np.savetxt(f, out, fmt="%d,%d,%d,%d,%g,%.4f,%.4f,%.4f")
-            rows += len(out)
+            kept += len(out)
     os.replace(tmp, dest)
-    return combo_id, shape_id, rows, False
+    return combo_id, shape_id, kept
 
 
-def run(paths, out, size, gap, min_k, max_k, boosts, workers, chunk_rows):
+def _count_task(args):
+    """How many possibilities of one (combination, shape) pass each threshold."""
+    combo_id, combo, shape_id = args
+    thresholds = np.array(_CTX["thresholds"])
+    counts = np.zeros(len(thresholds), dtype=np.int64)
+    for *_, fit_min, _ in _batches(combo, shape_id):
+        counts += (fit_min[None, :] >= thresholds[:, None]).sum(1)
+    return len(combo), counts
+
+
+def _make_tasks(combos):
+    # Biggest tasks first so the pool stays busy to the end.
+    tasks = [(cid, combo, sid) for cid, combo in enumerate(combos)
+             for sid in range(len(shapes(len(combo))))]
+    tasks.sort(key=lambda t: -len(t[1]))
+    return tasks
+
+
+def _ctx(info, boosts, W, H, gap, chunk_rows, **extra):
+    return dict(aspects=[iw / ih for _, iw, ih in info], boosts=list(boosts),
+                W=W, H=H, gap=gap, chunk_rows=chunk_rows, **extra)
+
+
+def count_surviving(paths, size, gap, min_k, max_k, boosts, thresholds, workers, chunk_rows):
+    """Exact number of possibilities whose every photo keeps >= each threshold."""
+    n = len(paths)
+    print_counts(n, min_k, max_k, boosts)
+    info = _load_aspects(paths)
+    combos = _all_combos(n, min_k, max_k)
+    tasks = _make_tasks(combos)
+    ctx = _ctx(info, boosts, *size, gap, chunk_rows, thresholds=list(thresholds))
+    ks = list(range(min_k, min(max_k, n) + 1))
+    per_k = {k: np.zeros(len(thresholds), dtype=np.int64) for k in ks}
+    print(f"\nChecking every possibility against min-fit {', '.join(f'{t:.0%}' for t in thresholds)} "
+          f"on {workers} processes...")
+    start, last = time.time(), 0.0
+    with mp.Pool(workers, initializer=_init_worker, initargs=(ctx,)) as pool:
+        for i, (k, counts) in enumerate(pool.imap_unordered(_count_task, tasks), 1):
+            per_k[k] += counts
+            now = time.time()
+            if now - last > 2 or i == len(tasks):
+                last = now
+                print(f"\r  {i:,}/{len(tasks):,} units  {_duration(now - start)}   ", end="", flush=True)
+    print("\n\nPossibilities kept (every photo keeps at least min-fit of itself):\n")
+    print(f"{'k':>2}" + "".join(f"{f'>= {t:.0%}':>16}" for t in thresholds))
+    for k in ks:
+        print(f"{k:>2}" + "".join(f"{v:>16,}" for v in per_k[k]))
+    totals = sum(per_k.values())
+    print(f"{'':>2}" + "".join(f"{v:>16,}" for v in totals))
+    print("\ndisk  " + "".join(f"{_human(v * BYTES_PER_ROW_GZ):>16}" for v in totals))
+
+
+def run(paths, out, size, gap, min_k, max_k, boosts, min_fit, workers, chunk_rows):
     n = len(paths)
     if n < min_k:
         sys.exit(f"need at least {min_k} photos, got {n}")
@@ -321,9 +391,16 @@ def run(paths, out, size, gap, min_k, max_k, boosts, workers, chunk_rows):
 
     info = _load_aspects(paths)
     W, H = size
-    with open(os.path.join(out, "settings.json"), "w") as f:
-        json.dump({"width": W, "height": H, "gap": gap, "min_k": min_k, "max_k": max_k,
-                   "boosts": boosts, "images": [i[0] for i in info]}, f, indent=2)
+    settings = {"width": W, "height": H, "gap": gap, "min_k": min_k, "max_k": max_k,
+                "boosts": list(boosts), "min_fit": min_fit, "images": [i[0] for i in info]}
+    settings_path = os.path.join(out, "settings.json")
+    if os.path.exists(settings_path):
+        with open(settings_path) as f:
+            if json.load(f) != settings:
+                sys.exit(f"{out}/ holds results made with different settings; "
+                         "use a new --out folder (or delete the old one)")
+    with open(settings_path, "w") as f:
+        json.dump(settings, f, indent=2)
     with open(os.path.join(out, "images.csv"), "w", newline="") as f:
         w = csv.writer(f)
         w.writerow(["image_number", "file", "width", "height"])
@@ -344,31 +421,33 @@ def run(paths, out, size, gap, min_k, max_k, boosts, workers, chunk_rows):
             for sid, s in enumerate(shapes(k)):
                 w.writerow([sid, notation(s)])
 
-    # Biggest tasks first so the pool stays busy to the end.
-    tasks = [(cid, combo, sid) for cid, combo in enumerate(combos) for sid in range(len(shapes(len(combo))))]
-    tasks.sort(key=lambda t: -len(t[1]))
-    ctx = {"out": out, "aspects": [iw / ih for _, iw, ih in info], "boosts": list(boosts),
-           "W": W, "H": H, "gap": gap, "chunk_rows": chunk_rows}
+    per_task = {k: math.factorial(k) * priority_options(k, len(boosts))
+                for k in range(min_k, min(max_k, n) + 1)}
+    tasks = _make_tasks(combos)
+    # Resume: skip units whose result file already exists.
+    todo = [t for t in tasks if not os.path.exists(os.path.join(
+        out, f"k{len(t[1])}", f"combo_{t[0]:04d}", f"shape_{t[2]:04d}.csv.gz"))]
+    if len(todo) < len(tasks):
+        print(f"\nResuming: {len(tasks) - len(todo):,} of {len(tasks):,} units already done")
+        total = sum(per_task[len(t[1])] for t in todo)
+    ctx = _ctx(info, boosts, W, H, gap, chunk_rows, out=out, min_fit=min_fit)
 
-    per_task = {}
-    for k in range(min_k, min(max_k, n) + 1):
-        per_task[k] = math.factorial(k) * priority_options(k, len(boosts))
-
-    print(f"\n{len(tasks):,} work units on {workers} processes -> {out}/")
-    start = time.time()
-    done_rows = 0
-    last = 0.0
+    print(f"\nKeeping only collages where every photo keeps >= {min_fit:.0%} of itself")
+    print(f"{len(todo):,} work units on {workers} processes -> {out}/")
+    start, last = time.time(), 0.0
+    checked = kept = 0
     with mp.Pool(workers, initializer=_init_worker, initargs=(ctx,)) as pool:
-        for i, (cid, sid, rows, skipped) in enumerate(pool.imap_unordered(_task, tasks), 1):
-            done_rows += per_task[len(combos[cid])]
+        for i, (cid, sid, rows) in enumerate(pool.imap_unordered(_task, todo), 1):
+            checked += per_task[len(combos[cid])]
+            kept += rows or 0
             now = time.time()
-            if now - last > 2 or i == len(tasks):
+            if now - last > 2 or i == len(todo):
                 last = now
-                rate = done_rows / max(now - start, 1e-9)
-                eta = (total - done_rows) / rate if rate else 0
-                print(f"\r  {i:,}/{len(tasks):,} units  {done_rows:,}/{total:,} possibilities  "
+                rate = checked / max(now - start, 1e-9)
+                eta = (total - checked) / rate if rate else 0
+                print(f"\r  {i:,}/{len(todo):,} units  checked {checked:,}/{total:,}  kept {kept:,}  "
                       f"{rate:,.0f}/s  ETA {_duration(eta)}   ", end="", flush=True)
-    print(f"\nDone in {_duration(time.time() - start)}. Results in {out}/")
+    print(f"\nDone in {_duration(time.time() - start)}. Kept {kept:,} possibilities in {out}/")
 
 
 def _duration(s):
@@ -519,6 +598,11 @@ def main():
 
     c = sub.add_parser("count", help="how many possibilities there are")
     c.add_argument("images", nargs="+")
+    c.add_argument("--min-fit", type=float, nargs="+",
+                   help="also compute exactly how many pass these thresholds, e.g. 0.9 0.95 0.98")
+    c.add_argument("--size", type=_size, default=(3840, 2160))
+    c.add_argument("--gap", type=float, default=12)
+    c.add_argument("--workers", type=int, default=os.cpu_count())
     common(c)
 
     r = sub.add_parser("run", help="compute and write every possibility")
@@ -527,6 +611,9 @@ def main():
     r.add_argument("--size", type=_size, default=(3840, 2160), help="canvas WIDTHxHEIGHT (3840x2160)")
     r.add_argument("--gap", type=float, default=12, help="pixels between tiles (12)")
     r.add_argument("--workers", type=int, default=os.cpu_count(), help="processes (all cores)")
+    r.add_argument("--min-fit", type=float, default=0.95,
+                   help="drop a collage if any photo would keep less than this share of itself "
+                        "(0.95 = at most 5%% cropped or mismatched; 0 keeps everything)")
     r.add_argument("--chunk-rows", type=int, default=400_000,
                    help="possibilities computed per batch; lower it if memory is tight")
     common(r)
@@ -552,9 +639,14 @@ def main():
 
     a = ap.parse_args()
     if a.cmd == "count":
-        print_counts(len(a.images), a.min_k, a.max_k, a.boost)
+        if a.min_fit:
+            count_surviving(a.images, a.size, a.gap, a.min_k, a.max_k, a.boost, a.min_fit,
+                            a.workers, 400_000)
+        else:
+            print_counts(len(a.images), a.min_k, a.max_k, a.boost)
     elif a.cmd == "run":
-        run(a.images, a.out, a.size, a.gap, a.min_k, a.max_k, a.boost, a.workers, a.chunk_rows)
+        run(a.images, a.out, a.size, a.gap, a.min_k, a.max_k, a.boost, a.min_fit,
+            a.workers, a.chunk_rows)
     elif a.cmd == "describe":
         describe(a.out, a.combo, a.shape, a.perm, a.priority, a.boost)
     else:

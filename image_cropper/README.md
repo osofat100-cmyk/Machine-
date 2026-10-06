@@ -12,7 +12,45 @@ Two programs:
 ```bash
 pip install -r requirements.txt
 python all_layouts.py count photos/*.jpg                 # how many, and disk needed
+python all_layouts.py count photos/*.jpg --min-fit 0.9 0.95 0.98   # exactly how many pass each cutoff
 python all_layouts.py run   photos/*.jpg -o results      # compute all of them (uses all CPU cores)
+```
+
+### Only collages that really are 16:9 (`--min-fit`)
+
+The canvas is always exactly 16:9, so a layout whose natural shape is far
+from 16:9 can only fill it by cutting into or squeezing some photos. `run`
+therefore **drops every collage in which any single photo would keep less
+than `--min-fit` of itself** (default `0.95`: no photo loses more than 5%).
+One badly mismatched tile rules out the whole collage. Every possibility is
+still checked; only the ones that pass are written.
+
+Pass `--min-fit 0.9` to allow more, `--min-fit 0.98` to allow less, or
+`--min-fit 0` to write everything. Fewer photos means fewer layouts to
+choose from, so small collages are the first to be filtered out.
+
+Exact results for the 7 example photos (one 1280x720 and six portraits of
+1080x1350-1620), out of all 1,288,404,432 possibilities:
+
+| k | >= 80% | >= 85% | >= 90% | >= 95% (default) | >= 98% |
+|--:|--:|--:|--:|--:|--:|
+| 2 | 12 | 4 | 0 | 0 | 0 |
+| 3 | 156 | 24 | 0 | 0 | 0 |
+| 4 | 2,520 | 2,208 | 1,592 | 972 | 360 |
+| 5 | 29,616 | 23,688 | 15,288 | 4,764 | 1,116 |
+| 6 | 249,456 | 195,768 | 130,656 | 60,456 | 17,640 |
+| 7 | 1,191,744 | 838,320 | 518,184 | 250,584 | 56,904 |
+| **total** | **1,473,504** | **1,060,012** | **665,720** | **316,776** | **76,020** |
+| disk | 15.5 MB | 11.1 MB | 7.0 MB | 3.3 MB | 0.8 MB |
+
+With these photos no 2- or 3-photo collage gets within 10% of 16:9. Two
+portraits side by side are still too narrow, and a portrait next to the
+landscape photo is too wide. At the default 95% the 1.29 billion
+possibilities shrink to about 317 thousand, a 3 MB result, few enough to
+render every one (about 22 CPU-hours, around 3 hours on 8 cores):
+
+```bash
+python all_layouts.py render results --from results/k*/combo_*/*.csv.gz --scale 0.5
 ```
 
 A possibility is made of four choices:
@@ -39,11 +77,13 @@ For 7 photos with one boost factor:
 | 7 | 1 | 1,806 | 5,040 | 127 | 1,155,984,480 |
 | | | | | **total** | **1,288,404,432** |
 
-Without priorities that is 11,334,624 layouts. One CPU core computes about
-240,000 possibilities a second, so the full run is about 1.5 hours on one
-core, or roughly 15–20 minutes on 8 cores. It writes about 14 GB of gzipped
-CSV. The run shows progress with an ETA, and if stopped it resumes where it
-left off: finished files are skipped.
+Without priorities that is 11,334,624 layouts. Every one of them is
+checked. With the default `--min-fit 0.95` checking all 1.29 billion took 5
+minutes on 4 cores, since only the survivors are written. With
+`--min-fit 0` (write everything) writing is the bottleneck: about 240,000
+rows a second per core and about 14 GB of gzipped CSV. The run shows
+progress with an ETA, and if stopped it resumes where it left off: finished
+files are skipped.
 
 Each result row:
 
@@ -67,8 +107,9 @@ python all_layouts.py render results --from results/k4/combo_0056/*.csv.gz --sca
 ```
 
 Rendering is far slower than computing (about a quarter of a second per 4K
-image per core), so drawing all 1.29 billion would take years and petabytes. Render
-the files or rows you want to see; `--limit` and `--scale` help.
+image per core). That is fine for the few hundred thousand collages that pass
+`--min-fit`, but drawing all 1.29 billion (`--min-fit 0`) would take years.
+`--limit` and `--scale` help.
 
 ## smart_collage.py — cropping and single collages
 
