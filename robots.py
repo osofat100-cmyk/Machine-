@@ -92,7 +92,7 @@ class HillTop:
         return float(S[i, j]), (i, j)
 
 
-def landscape_picks(m, ev, buy, sell, log=print):
+def landscape_picks(m, ev, buy, sell, log=print, robot2=True):
     """For every minute: robot 1's pick (data so far) and robot 2's pick (all data x data so far)."""
     t, sid, kind, amt = ev
     nb, ns = len(buy), len(sell)
@@ -130,9 +130,10 @@ def landscape_picks(m, ev, buy, sell, log=print):
             v1, (i, j) = top(V)
             if v1 > 1000.0:
                 PB1[end], PS1[end] = buy[j], sell[i]
-        v2, (i, j) = top(V * prior)
-        if v2 > 1000.0:
-            PB2[end], PS2[end] = buy[j], sell[i]
+        if robot2:
+            v2, (i, j) = top(V * prior)
+            if v2 > 1000.0:
+                PB2[end], PS2[end] = buy[j], sell[i]
         if end % 20000 == 0:
             log(f"  landscapes up to {m.time[end]:%b %d}  ({time.time() - t0:.0f}s)")
     return PB1, PS1, PB2, PS2

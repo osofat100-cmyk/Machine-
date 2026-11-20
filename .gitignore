@@ -5,3 +5,5 @@ __pycache__/
 bot_state.json
 dip_state.json
 machine_state.json
+robot2_state.json
+robot2_replay_state.json
