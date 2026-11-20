@@ -3,3 +3,4 @@ data/
 paper_state.json
 __pycache__/
 bot_state.json
+dip_state.json

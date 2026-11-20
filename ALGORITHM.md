@@ -1,3 +1,19 @@
+# Best rule so far: buy the crash, sell the pump (`dip_bot.py`)
+- **Buy** when PEARL has fallen 6.4%+ in the last 4 hours and is at its 4-hour low.
+- **Sell** when it is 11.4%+ above its 4-hour low and near its 4-hour high (within 1.8%).
+
+| Period | This rule | Just holding |
+|---|---|---|
+| Jul 02 – Jul 30 | $991 | $665 |
+| Jul 30 – Aug 28 | $1,498 | $920 |
+| Aug 28 – Sep 25 | $2,009 | $3,978 |
+| Sep 25 – Oct 23 | $2,325 | $1,751 |
+| Oct 23 – Nov 20 | $1,096 | $931 |
+| All 5 months | $7,297 | $4,183 |
+
+59 trades, 42 winners. Held normally 13 hours; normally 11 hours between trades.
+Best trade +39.8%, worst −19.5%.
+
 # The PEARL rule
 
 ## Normal mode
