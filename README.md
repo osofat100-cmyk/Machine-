@@ -1,28 +1,37 @@
 # Machine-
 
 Tools for watching and practice-trading PEARL on BigONE. Nothing here places real orders.
-Needs Python 3 only (no installs). See [PLAN.md](PLAN.md) for the research and the plan.
+Robot 2 needs Python 3 with numpy and pandas. The plan is in [docs/machine_math.pdf](docs/machine_math.pdf); the checks and test results are in [docs/robot2_analysis.md](docs/robot2_analysis.md).
+
+**Robot 2 (the main robot)**
 
 | File | What it does |
 |---|---|
-| `pearl_monitor.py` | Live price every second, logged to `logs/` |
-| `fetch_history.py` | Downloads past prices into `data/` |
-| `backtest.py` | Tests trading rules on past prices, with fees and spread included |
-| `volatility.py` | How much PEARL moves in 1, 5, 10 and 60 minutes, spikes and drops |
-| `paper_trader.py` | Runs the chosen rule live with fake money |
-| `pearl_bot.py` | Runs the rules in ALGORITHM.md every second with fake money |
-| `live_machine.py` | Re-picks the buy/sell % daily from fresh data, then trades fake money |
-| `landscape.py` | Fine-step settings landscape and the week-by-week fair test |
-| `dip_bot.py` | Buy the crash, sell the pump (best result so far), fake money |
-| `signals.py` | Searches history for high-odds buy and sell moments |
-| `strategy.py` | The rules (normal + spike mode) and a second-by-second tester |
-| `patterns.py` | Research: how far moves and spikes go before turning |
-| `fetch_trades.py` | Downloads trade-by-trade history from Coinbase and Gate |
+| `engine.py` | Robot 2 itself: settings landscape, pick, update intervals, trajectory watcher, library |
+| `live_machine.py` | Runs the engine on live BigONE minutes with practice money |
+| `checks.py` | Structural checks of the engine (cost, no look-ahead, restart, ...) |
+| `traj_sweep.py` | Chooses the watcher's sensitivity on early data, checks it on unseen data |
+| `robustness.py` | Changes one assumption at a time to show how fragile the result is |
+| `trajectories.py` | Chart of where the watcher splits the price history |
+| `fetch_history.py` | Downloads minute prices into `data/` |
+| `docs/machine_math.pdf` | The plan and its math |
+| `docs/robot2_analysis.md` | What the checks found and the test results |
 
-    python3 pearl_monitor.py                 # watch PEARL-USDC live
-    python3 fetch_history.py --pair PEARL-USDT --period hour1 --days 150
-    python3 backtest.py                      # test the rules on that history
-    python3 paper_trader.py                  # practice trading, fake $1000
+**Earlier experiments** (kept for reference; their results used a flat cost and thin-market fills)
+
+| File | What it does |
+|---|---|
+| `robots.py`, `frozen.py` | Four-robot comparison; learn-a-month-then-freeze test |
+| `machine_sim.py`, `machine_speed.py`, `machine_1to120.py` | First adaptive machine and the update-interval tests |
+| `landscape.py`, `sweep.py`, `sweep_lines.py` | Settings landscape and the 1-100% sweeps |
+| `signals.py`, `dip_bot.py` | Search that found the buy-the-crash rule, and its first bot |
+| `patterns.py`, `strategy.py`, `pearl_bot.py`, `fetch_trades.py` | Spike research and the spike bot |
+| `backtest.py`, `paper_trader.py`, `volatility.py` | First rules, the trend practice trader, movement report |
+| `pearl_monitor.py` | Live price every second |
+
+    python3 fetch_history.py --pair PEARL-USDT --period min1 --days 150
+    python3 live_machine.py                  # robot 2, practice money
+    python3 checks.py                        # verify the engine
 
 To try your own rule, add a function to `backtest.py` that returns 1 (hold PEARL)
 or 0 (hold dollars) for each candle, and add it to `RULES`.

@@ -17,10 +17,14 @@
 
 \section{Cost}
 
-Every buy and every sell costs
+Every buy and every sell costs the 0.2\% fee plus half the gap between the buy price and the sell
+price. The gap is at least 1\%, and it cannot be smaller than one price step (tick):
 \[
-\kappa = 0.7\% \quad\Longrightarrow\quad \text{a buy and a sell together} \approx 1.4\%.
+\kappa = 0.2\% + \max\!\Big(0.5\%,\ \frac{\text{tick}}{2\times\text{price}}\Big)
+\quad\Longrightarrow\quad \text{normally } \kappa = 0.7\%,\ \text{a buy and a sell together} \approx 1.4\%.
 \]
+Until 10 Jul 2026 BigONE priced PEARL in whole cents (a tick of about 2\% of the price), so
+$\kappa$ was about 1.2--1.6\% then.
 
 \section{Data}
 
@@ -57,6 +61,8 @@ and takes the best one (the top of the smoothed landscape $\widetilde V_t$):
 \[
 (b_t, s_t) = \argmax_{b,s}\ \widetilde V_t(b,s).
 \]
+If many settings are tied for the top (within \$0.01 per \$1{,}000), it takes the middle of the
+tied area. If the top is not above \$1{,}000, it has no setting and makes no trades.
 As data comes in, it keeps updating, so its choice keeps getting better informed.
 
 \section{How often the robot updates}
@@ -154,14 +160,19 @@ only measure it.
 \textbf{The library.} Every finished trajectory is saved: its hours, $\mu_i$, $\sigma_i$, and its data.
 
 \textbf{After a reset.} For its first 12 hours the new trajectory cannot be described yet, so robot 2
-borrows the whole library. After that it borrows the 3 most similar past trajectories:
+borrows the whole library. After that it borrows the 3 most similar past trajectories. With
+direction $m = \mu/\sigma$, instability $\ln\sigma$ and $n$ hours of data:
 \[
-d_i = \Big|\frac{\mu}{\sigma} - \frac{\mu_i}{\sigma_i}\Big| + \Big|\ln\frac{\sigma}{\sigma_i}\Big| .
+d_i = \frac{|m - m_i|}{\sqrt{\operatorname{var}(m) + \frac1n + \frac1{n_i}}}
+    + \frac{|\ln\sigma - \ln\sigma_i|}{\sqrt{\operatorname{var}(\ln\sigma) + \frac1{2n} + \frac1{2n_i}}} ,
 \]
+where var is how much that number differs across the library. Each difference is measured against
+how much trajectories differ from each other plus how uncertain a young trajectory's numbers
+still are (after 12 hours its direction cannot be told yet; its instability can).
 Robot 2's landscape mixes the new trajectory's data with the borrowed data, and the borrowed data
 fades as the new data grows:
 \[
-\ln L(b,s) = \ln V_{\text{new}}(b,s) + w \sum_{i\ \text{borrowed}} \ln V_i(b,s),
+\ln\frac{L(b,s)}{1000} = \ln\frac{V_{\text{new}}(b,s)}{1000} + w \sum_{i\ \text{borrowed}} \ln\frac{V_i(b,s)}{1000},
 \qquad
 w = \max\!\Big(0,\ 1 - \frac{n_{\text{new}}}{n_{\text{borrowed}}}\Big),
 \]
@@ -172,7 +183,7 @@ finished trajectory goes into the library and robot 2's data restarts as above.
 
 \textbf{Choosing the sensitivity $\eta$.} Run robot 2 with resets at many levels of $\eta$ on
 25 Jun -- 30 Sep, take the middle of the biggest stretch of levels with high money, then check that
-level on 1 Oct -- 20 Nov, which it did not see.
+level on 1 Oct -- 20 Nov, which it did not see. The result is in \texttt{docs/robot2\_analysis.md}.
 
 \section{The algorithm}
 
