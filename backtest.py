@@ -104,7 +104,35 @@ def rule_swing(c, rise_pct, drop_pct):
     return out
 
 
+def rule_user(c, rise_pct, trail_pct, stop_pct, target_pct=1.6, floor_pct=1.5):
+    """USER RULE (see ALGORITHM.md).
+    Holding dollars: buy once price is rise_pct% above its lowest point.
+    Holding PEARL:   once price has reached +target_pct% over the buy price, sell when it
+                     falls trail_pct% from its highest point, never lower than +floor_pct%.
+                     Before that, sell if it falls stop_pct% from its highest point."""
+    pos, low, high, buy, out = 0, c[0][4], 0.0, 0.0, []
+    for x in c:
+        p = x[4]
+        if pos == 0:
+            low = min(low, p)
+            if p >= low * (1 + rise_pct / 100):
+                pos, buy, high = 1, p, p
+        else:
+            high = max(high, p)
+            if high >= buy * (1 + target_pct / 100):
+                sell_line = max(buy * (1 + floor_pct / 100), high * (1 - trail_pct / 100))
+            else:
+                sell_line = high * (1 - stop_pct / 100)
+            if p <= sell_line:
+                pos, low = 0, p
+        out.append(pos)
+    return out
+
+
 RULES = {
+    "user":     (rule_user,     {"rise_pct": [1, 2, 3, 5, 7, 10],
+                                 "trail_pct": [0.5, 1, 2, 3, 5],
+                                 "stop_pct": [1, 2, 3, 5, 7, 10]}),
     "swing":    (rule_swing,    {"rise_pct": [0.5, 1, 1.5, 2, 3, 4, 5, 7, 10],
                                  "drop_pct": [0.5, 1, 1.5, 2, 3, 4, 5, 7, 10]}),
     "trend":    (rule_trend,    {"fast": [6, 12, 24], "slow": [24, 48, 96, 168]}),
