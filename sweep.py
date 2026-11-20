@@ -155,5 +155,69 @@ def plot(fine, drop_line, pump_line, coarse, grid, hold, df):
     print("saved sweep.png")
 
 
-if __name__ == "__main__":
+if __name__ == "__main__" and "--all" not in __import__("sys").argv:
     main()
+
+
+def full_map():
+    """Every buy% x sell% pair from 0.5 to 100 in 0.5 steps -> sweep_all.png + data/sweep_all.csv"""
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    from matplotlib.colors import ListedColormap
+    from matplotlib.patches import Patch
+
+    df = pd.read_csv("data/PEARL-USDT_min1.csv", parse_dates=["time"]).set_index("time")
+    F = features(df)
+    ok = F.notna().all(axis=1).values
+    df, F = df[ok], F[ok]
+    hold = 1000 * df["close"].iloc[-1] / df["close"].iloc[0] * (1 - COST) ** 2
+    buys, sells, run = make_sim(df, F)
+    steps = np.round(np.arange(0.5, 100.01, 0.5), 1)
+    B, S = [buys(x) for x in steps], [sells(x) for x in steps]
+    res = [[run(b, s) for b in B] for s in S]                 # rows = sell %, cols = buy %
+    money = np.array([[m for m, _ in row] for row in res])
+    trades = np.array([[t for _, t in row] for row in res])
+    pd.DataFrame(money, index=steps, columns=steps).round(0).to_csv(
+        "data/sweep_all.csv", index_label="sell% \\ buy%")
+
+    cat = np.where(trades == 0, 0, np.where(money < 1000, 1, np.where(money < hold, 2, 3)))
+    names = ["never buys (keeps $1,000)", "lost money", f"made money, less than holding ${hold:,.0f}",
+             f"beat holding ${hold:,.0f}"]
+    colors = ["#e1e0d9", "#e34948", "#9ec5f4", "#256abf"]
+    counts = [(cat == k).sum() for k in range(4)]
+    for k in range(4):
+        print(f"{names[k]:<40} {counts[k]:>6} of {cat.size}")
+
+    surface, ink, ink2, muted = "#fcfcfb", "#0b0b0b", "#52514e", "#898781"
+    plt.rcParams.update({"font.size": 11, "text.color": ink, "axes.labelcolor": ink2,
+                         "xtick.color": muted, "ytick.color": muted, "axes.edgecolor": "#c3c2b7"})
+    fig, ax = plt.subplots(figsize=(11, 10.5), facecolor=surface)
+    ax.imshow(cat, origin="lower", cmap=ListedColormap(colors), vmin=-0.5, vmax=3.5, aspect="equal",
+              extent=[0.25, 100.25, 0.25, 100.25], interpolation="nearest")
+    ax.set_xlabel("BUY %  - how far PEARL falls in 4 hours before we buy")
+    ax.set_ylabel("SELL %  - how far it rises above the 4-hour low before we sell")
+    ax.set_title(f"All {cat.size:,} buy/sell combinations, 0.5% to 100%  ·  $1,000 from "
+                 f"{df.index[0]:%b %d} to {df.index[-1]:%b %d}", loc="left", fontsize=13, pad=12)
+    ax.set_xticks(range(0, 101, 10))
+    ax.set_yticks(range(0, 101, 10))
+    examples = [(1, 2), (1, 25), (1, 50), (25, 1), (50, 1), (6.4, 11.4), (5, 25), (25, 25)]
+    for bx, sy in examples:
+        bi, si = int(round(bx / 0.5)) - 1, int(round(sy / 0.5)) - 1
+        m = run(buys(bx), sells(sy))[0] if (bx, sy) == (6.4, 11.4) else money[si, bi]
+        ax.plot([bx], [sy], "o", ms=7, color=ink, mec=surface, mew=1.5)
+        off = (8, -16) if (bx, sy) == (1, 25) else (8, 6)
+        ax.annotate(f"{bx:g}/{sy:g}: ${m:,.0f}", (bx, sy), xytext=off, textcoords="offset points",
+                    fontsize=9.5, color=ink,
+                    bbox=dict(boxstyle="round,pad=0.2", fc=surface, ec="none", alpha=0.85))
+    ax.legend(handles=[Patch(color=colors[k], label=f"{names[k]}  ({counts[k]:,})") for k in (3, 2, 1, 0)],
+              loc="upper right", frameon=True, facecolor=surface, edgecolor="#e1e0d9", fontsize=10)
+    for side in ("top", "right"):
+        ax.spines[side].set_visible(False)
+    fig.savefig("sweep_all.png", dpi=110, facecolor=surface, bbox_inches="tight")
+    print("saved sweep_all.png")
+    return steps, money, trades, hold, run, buys, sells
+
+
+if __name__ == "__main__" and "--all" in __import__("sys").argv:
+    full_map()
