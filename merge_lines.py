@@ -283,6 +283,8 @@ def run_all(d, acc):
 def biggest_high_area(Z):
     """Cells of the biggest connected area at or above the average; returns its middle cell."""
     high = Z >= Z.mean()
+    if not high.any():
+        high[:] = True
     seen = np.zeros_like(high)
     best = []
     for i0, j0 in zip(*np.nonzero(high)):
@@ -306,7 +308,10 @@ def biggest_high_area(Z):
 
 def stretch_middle(v):
     v = np.asarray(v, float)
-    x = np.concatenate(([0], (v >= v.mean()).astype(int), [0]))
+    high = v >= v.mean()
+    if not high.any():
+        high[:] = True
+    x = np.concatenate(([0], high.astype(int), [0]))
     dd = np.diff(x)
     s, z = np.flatnonzero(dd == 1), np.flatnonzero(dd == -1) - 1
     L = z - s + 1
@@ -432,9 +437,37 @@ def plot():
     log("saved merge_lines.png")
 
 
+CACHE = "data/merge_build.npz"
+
+
+def save_build(d):
+    e = d["e"]
+    np.savez(CACHE, n=e.n, cl=e.cl[:e.n], kap=e.kap[:e.n], U=e.U[:e.n], D=e.D[:e.n], R=e.R[:e.n],
+             ts=e.ts[:e.n], B=e.B, S=e.S, hk=d["hk"], pick=d["pick"], ptr=d["ptr"],
+             ev_t=d["ev"][0], ev_s=d["ev"][1], ev_k=d["ev"][2], ev_a=d["ev"][3])
+
+
+def load_build(n_rows):
+    import os
+    from types import SimpleNamespace
+    if not os.path.exists(CACHE):
+        return None
+    z = np.load(CACHE)
+    if int(z["n"]) != n_rows:
+        return None
+    e = SimpleNamespace(**{k: z[k] for k in ("cl", "kap", "U", "D", "R", "ts", "B", "S")}, n=int(z["n"]))
+    return {"e": e, "hk": z["hk"], "pick": z["pick"], "ptr": z["ptr"],
+            "ev": [z["ev_t"], z["ev_s"], z["ev_k"], z["ev_a"]]}
+
+
 def main():
     df = pd.read_csv("data/PEARL-USDT_min1.csv", parse_dates=["time"])
-    d = build(df)
+    d = load_build(len(df))
+    if d is None:
+        d = build(df)
+        save_build(d)
+    else:
+        log("using the saved lines from data/merge_build.npz")
     t0 = time.time()
     acc = outcomes(d)
     log(f"accuracy outcomes {time.time() - t0:.0f}s")

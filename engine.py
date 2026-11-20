@@ -63,6 +63,8 @@ def decimals(x):
 def safest(F):
     """Middle of the biggest run of intervals at or above the average (ties: higher run average)."""
     high = F >= F.mean()
+    if not high.any():                  # all equal: rounding can put the average above every value
+        high[:] = True
     x = np.concatenate(([0], high.astype(np.int8), [0]))
     d = np.diff(x)
     starts, ends = np.flatnonzero(d == 1), np.flatnonzero(d == -1) - 1
