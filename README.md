@@ -11,6 +11,8 @@ Needs Python 3 only (no installs). See [PLAN.md](PLAN.md) for the research and t
 | `volatility.py` | How much PEARL moves in 1, 5, 10 and 60 minutes, spikes and drops |
 | `paper_trader.py` | Runs the chosen rule live with fake money |
 | `pearl_bot.py` | Runs the rules in ALGORITHM.md every second with fake money |
+| `live_machine.py` | Re-picks the buy/sell % daily from fresh data, then trades fake money |
+| `landscape.py` | Fine-step settings landscape and the week-by-week fair test |
 | `dip_bot.py` | Buy the crash, sell the pump (best result so far), fake money |
 | `signals.py` | Searches history for high-odds buy and sell moments |
 | `strategy.py` | The rules (normal + spike mode) and a second-by-second tester |
