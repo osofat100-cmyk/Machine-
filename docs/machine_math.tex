@@ -1,247 +1,195 @@
 \documentclass[11pt]{article}
-\usepackage[margin=2.5cm]{geometry}
+\usepackage[margin=2.4cm]{geometry}
 \usepackage{amsmath,amssymb}
+\usepackage{booktabs}
 \usepackage{enumitem}
 \usepackage[hidelinks]{hyperref}
 \usepackage{lmodern}
-\setlength{\parskip}{6pt}
+\setlength{\parskip}{5pt}
 \setlength{\parindent}{0pt}
 \DeclareMathOperator*{\argmax}{arg\,max}
+\newcommand{\ind}[1]{\mathbf{1}\!\left[#1\right]}
 
-\title{The Plan: an Adaptive Buy/Sell Robot for PEARL}
-\date{}
+\title{Robot 2: How It Works, Every Equation}
+\date{As built on 20 Nov 2026 \quad$\cdot$\quad code: \texttt{engine.py}, \texttt{merge\_lines.py}}
 
 \begin{document}
 \maketitle
-\vspace{-2em}
+\vspace{-1.5em}
 
-\section{Cost}
+\section*{The whole program in one picture}
 
-Every buy and every sell costs the 0.2\% fee plus half the gap between the buy price and the sell
-price. The gap is at least 1\%, and it cannot be smaller than one price step (tick):
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{@{}l l l@{}}
+\toprule
+When & Step & Uses \\
+\midrule
+every minute & 1. price numbers $U, D, R$ and cost $\kappa$ & the last 4 hours of prices \\
+every minute & 2. every setting's own account trades & step 1 \\
+every hour & 3. the watcher checks for a trajectory change & hourly prices \\
+every hour & 4. the 100 lines update their memory & steps 2 and 3 \\
+every hour & 5. each line picks its best setting & step 4 \\
+every hour & 6. each line's accuracy is updated & step 5, outcomes already known \\
+every hour & 7. the robot chooses which line to follow & step 6 \\
+every minute & 8. the robot buys or sells, with its risk & steps 1, 5, 6, 7 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The robot starts with \$1{,}000 and an empty memory. At minute $t$ it only uses prices from minutes
+before $t$, and every trade fills at the next minute's price. Nothing in steps 1--8 can see the future
+(checked in \texttt{checks.py} and \texttt{merge\_lines.py check}).
+
+\section{Prices and cost (every minute)}
+
+Minute $t$ has close $c_t$, high $h_t$, low $l_t$. Over the last 4 hours (240 minutes):
 \[
-\kappa = 0.2\% + \max\!\Big(0.5\%,\ \frac{\text{tick}}{2\times\text{price}}\Big)
-\quad\Longrightarrow\quad \text{normally } \kappa = 0.7\%,\ \text{a buy and a sell together} \approx 1.4\%.
+U_t = 100\Big(\frac{c_t}{\min_{0\le j<240} l_{t-j}} - 1\Big),\qquad
+D_t = 100\Big(1 - \frac{c_t}{\max_{0\le j<240} h_{t-j}}\Big),\qquad
+R_t = 100\Big(\frac{c_t}{c_{t-240}} - 1\Big).
 \]
-Until 10 Jul 2026 BigONE priced PEARL in whole cents (a tick of about 2\% of the price), so
-$\kappa$ was about 1.2--1.6\% then.
+$U$ = \% above the 4-hour low, $D$ = \% below the 4-hour high, $R$ = \% change over 4 hours.
 
-\section{Data}
-
-Minute prices $c_1, c_2, \dots, c_t$ downloaded from the exchange.
-
-\section{The best time to buy and sell}
-
-A setting is a pair $(b, s)$:
-\begin{itemize}[leftmargin=1.5em]
-\item buy after PEARL falls $b\%$ (in 4 hours, at its low),
-\item sell after PEARL rises $s\%$ (above that low, near its high).
-\end{itemize}
-
-Starting with $\$1{,}000$, a setting that buys at prices $p_1, p_2, \dots$ and sells at prices
-$q_1, q_2, \dots$ ends with
+Cost of one buy or one sell (fee plus half the buy/sell gap, never less than half a price tick):
 \[
-V(b,s) = 1000 \prod_{k} \frac{q_k}{p_k}\cdot\frac{1-\kappa}{1+\kappa}.
-\]
-
-$b$ and $s$ go in fractions of $0.1\%$:
-\[
-b, s \in \{0.1\%,\ 0.2\%,\ \dots,\ 100\%\},
-\qquad 1000 \times 1000 = 1{,}000{,}000 \text{ settings}.
-\]
-
-\textbf{Hindsight.} The best setting over all the data,
-$\argmax_{b,s} V(b,s)$, is only good for the past.
-
-\section{The robot}
-
-The robot uses the same data but pretends to have none at the start. At minute $t$ it only knows
-$c_1,\dots,c_{t-1}$. It works out every setting's money on that data, $V_t(b,s)$, after costs,
-and takes the best one (the top of the smoothed landscape $\widetilde V_t$):
-\[
-(b_t, s_t) = \argmax_{b,s}\ \widetilde V_t(b,s).
-\]
-If many settings are tied for the top (within \$0.01 per \$1{,}000), it takes the middle of the
-tied area. If the top is not above \$1{,}000, it has no setting and makes no trades.
-As data comes in, it keeps updating, so its choice keeps getting better informed.
-
-\section{How often the robot updates}
-
-The robot can update every $\Delta$ minutes, from one minute to one day:
-\[
-\Delta \in \{1, 2, \dots, 1440\}.
-\]
-$F(\Delta)$ is the money the robot ends with when it updates every $\Delta$ minutes.
-
-\section{The safest update interval}
-
-Not the lucky one (an anomaly, like a single minute that happened to do well), but the middle of
-the biggest set of minutes that all made high income.
-\begin{enumerate}[leftmargin=1.5em]
-\item High income means at or above the average of all 1,440:
-\[
-\bar F = \frac{1}{1440}\sum_{\Delta=1}^{1440} F(\Delta),
-\qquad
-\Delta \text{ is high} \iff F(\Delta) \ge \bar F .
-\]
-\item Find the biggest stretch of minutes in a row that are all high: $\Delta = a, a+1, \dots, z$.
-\item The safest interval is its middle:
-\[
-\Delta^* = \Big\lfloor \frac{a+z}{2} \Big\rfloor .
-\]
-\end{enumerate}
-
-\section{No fixed number}
-
-The safest interval changes as PEARL's price moves, so it is not fixed. The robot re-checks it as
-data comes in and uses whichever is safest so far:
-\[
-\Delta_t = \text{safest } \Delta \text{ using data up to minute } t,
-\qquad
-(b_t, s_t) = \text{the robot's setting, updated every } \Delta_t \text{ minutes}.
+\kappa_t = 0.2\% + \max\!\Big(0.5\%,\ \frac{\text{tick}_t}{2\,c_t}\Big).
 \]
 
-\section{Test first, then the real thing}
+\section{The rule and every setting's account (every minute)}
 
-\begin{enumerate}[leftmargin=1.5em]
-\item \textbf{Test:} start with no data. This shows how well the robot adapts. Look at its money
-from the first day to the last: does it get better or worse?
-\item \textbf{Real:} start with the data already downloaded, so the robot begins well informed.
-\end{enumerate}
-A robot that adapts well should give better results than one that does not.
-
-\section{Four robots}
-
-$V^{\text{all}}(b,s)$ is a setting's money over all the downloaded data. $V_t(b,s)$ is its money
-over the data seen so far. $F^{\text{all}}(\Delta)$ is how update interval $\Delta$ did over all
-the downloaded data (robot 1's run), and $F_t(\Delta)$ how it has done so far.
-
-\begin{enumerate}[leftmargin=1.5em]
-\item \textbf{No data.} Starts with nothing.
-  Setting from $V_t$; interval from $F_t$. Both adapt.
-\item \textbf{All data, adapts.} Starts with all the downloaded data, then adds what it sees as it
-  goes (by the end the data counts twice):
-  \[
-  L_t(b,s) = \frac{V^{\text{all}}(b,s)\cdot V_t(b,s)}{1000},
-  \qquad
-  G_t(\Delta) = \frac{F^{\text{all}}(\Delta)\cdot F_t(\Delta)}{1000}.
-  \]
-  Setting from $L_t$; interval from $G_t$. Both adapt.
-\item \textbf{Stays at 10/34.} Never updates: $(b_t, s_t) = (10\%, 34\%)$ for every $t$.
-  This is like cheating, because 10/34 was found with hindsight.
-\item \textbf{All data, fixed interval.} Setting from $L_t$ like robot 2, but the interval is
-  chosen once on day one from $F^{\text{all}}$ and never changes.
-\end{enumerate}
-All four start with \$1{,}000 on 25 Jun and trade to 20 Nov. Results: money at the end of each
-month and on the last day, against just holding.
-
-\section{Trajectories: when to reset the data}
-
-\textbf{Measuring a trajectory.} Every hour $h$, the price change is
-$r_h = 100\,\ln(c_h / c_{h-1})$ (in \%). A trajectory that began at hour $\tau$ has
+A setting is $\theta = (b, s)$, buy \% and sell \%, each from $0.1\%$ to its maximum in $0.1\%$ steps.
+\begin{align*}
+\text{buy signal:}\quad & U_t \le 0.23 \ \text{ and }\ R_t \le -b && \text{(fell $b$\% in 4 hours, at the low)}\\
+\text{sell signal:}\quad & D_t \le 1.8 \ \text{ and }\ U_t \ge s && \text{($s$\% above the low, near the high)}
+\end{align*}
+Every setting has its own \$1{,}000 account, started on day one and never reset. A signal on minute
+$t$ fills at $c_{t+1}$:
 \[
-\mu = \text{average of } r \text{ since } \tau \ \ (\text{direction and speed}),
-\qquad
-\sigma = \text{spread of } r \text{ since } \tau \ \ (\text{usual instability}).
+\text{buy: } q \leftarrow \frac{x}{c_{t+1}(1+\kappa_{t+1})},\ x \leftarrow 0
+\qquad\qquad
+\text{sell: } x \leftarrow q\,c_{t+1}(1-\kappa_{t+1}),\ q \leftarrow 0,
+\]
+\[
+V_t(\theta) = x + q\,c_t(1-\kappa_t) \qquad \text{(the account's value at minute } t\text{)}.
 \]
 
-\textbf{The watcher.} Each new hour is compared with the trajectory so far:
+\section{The watcher: trajectories (every hour)}
+
+Hourly price change $r_h = 100\ln(c_h/c_{h-1})$. The current trajectory began at hour $\tau$; its
+direction and usual instability are the average $\mu$ and spread $\sigma$ of $r$ since $\tau$. Each
+new hour:
 \[
-z_h = \frac{r_h - \mu}{\sigma},\qquad
-W_h = \max(0,\ W_{h-1} + z_h^2 - 1 - k),\qquad
-S^{\pm}_h = \max(0,\ S^{\pm}_{h-1} \pm z_h - k),
+z_h = \frac{r_h-\mu}{\sigma},\qquad
+W_h = \max(0,\,W_{h-1} + z_h^2 - 1.5),\qquad
+S^{\pm}_h = \max(0,\,S^{\pm}_{h-1} \pm z_h - 0.5).
 \]
-with $k = 0.5$ so small wobbles are ignored. $W$ adds up instability higher than usual; $S^{+}$
-and $S^{-}$ add up a change of direction. One odd hour is not enough; a run of them is. When any
-of them passes the sensitivity level $\eta$, the trajectory is over, and the new one starts at the
-hour where that sum was last zero (where the change began). The first 12 hours of a trajectory
-only measure it.
+If $W$, $S^+$ or $S^-$ passes $\eta = 14$, the trajectory has changed. The new one starts at the hour
+where that sum was last zero. A trajectory's first 12 hours only measure it. Over 25 Jun -- 20 Nov the
+watcher found 15 trajectories.
 
-\textbf{The library.} Every finished trajectory is saved: its hours, $\mu_i$, $\sigma_i$, and its data.
+\section{The 100 lines: memory that merges instead of resetting (every hour)}
 
-\textbf{After a reset.} For its first 12 hours the new trajectory cannot be described yet, so robot 2
-borrows the whole library. After that it borrows the 3 most similar past trajectories. With
-direction $m = \mu/\sigma$, instability $\ln\sigma$ and $n$ hours of data:
+Each setting's growth in hour $h$: $g_h(\theta) = \ln V_{h+1}(\theta) - \ln V_h(\theta)$.
+
+Line $p$ ($p = 1\%, 2\%, \dots, 100\%$) keeps $p$ of the old data at every trajectory change.
+Hour $h$ counts with weight $p^{\,j(h)}$, where $j(h)$ is the number of changes since hour $h$:
 \[
-d_i = \frac{|m - m_i|}{\sqrt{\operatorname{var}(m) + \frac1n + \frac1{n_i}}}
-    + \frac{|\ln\sigma - \ln\sigma_i|}{\sqrt{\operatorname{var}(\ln\sigma) + \frac1{2n} + \frac1{2n_i}}} ,
+\Sigma_p(\theta) = \sum_{h<t} p^{\,j(h)}\,g_h(\theta).
 \]
-where var is how much that number differs across the library. Each difference is measured against
-how much trajectories differ from each other plus how uncertain a young trajectory's numbers
-still are (after 12 hours its direction cannot be told yet; its instability can).
-Robot 2's landscape mixes the new trajectory's data with the borrowed data, and the borrowed data
-fades as the new data grows:
+Updating: each hour $\Sigma_p \leftarrow \Sigma_p + g_h$; at a change that began at hour $\tau'$,
+with $G = \ln V_t - \ln V_{\tau'}$ (the new trajectory's growth so far),
 \[
-\ln\frac{L(b,s)}{1000} = \ln\frac{V_{\text{new}}(b,s)}{1000} + w \sum_{i\ \text{borrowed}} \ln\frac{V_i(b,s)}{1000},
-\qquad
-w = \max\!\Big(0,\ 1 - \frac{n_{\text{new}}}{n_{\text{borrowed}}}\Big),
+\Sigma_p \leftarrow p\,(\Sigma_p - G) + G .
 \]
-where $n$ counts hours of data. The update-interval machines use the same mix.
+$p = 100\%$ never forgets ($\Sigma = \ln V_t/1000$); $p = 1\%$ almost fully resets.
 
-\textbf{Timing.} Every minute: robot 2 trades. Every hour: the watcher checks. On a reset: the
-finished trajectory goes into the library and robot 2's data restarts as above.
+\section{Each line's pick (every hour)}
 
-\textbf{Choosing the sensitivity $\eta$.} Run robot 2 with resets at many levels of $\eta$ on
-25 Jun -- 30 Sep, take the middle of the biggest stretch of levels with high money, then check that
-level on 1 Oct -- 20 Nov, which it did not see. The result is in \texttt{docs/robot2\_analysis.md}.
-
-\section{Merging instead of resetting}
-
-\textbf{One account per setting, never reset.} Every setting $(b,s)$ keeps one practice account
-from the first minute. Its growth in hour $h$ is
+Line $p$'s landscape is $L_p(\theta) = 1000\,e^{\Sigma_p(\theta)}$, smoothed over neighbouring settings
+with a bell curve about $1\%$ wide:
 \[
-g_h(b,s) = \ln V_{h+1}(b,s) - \ln V_h(b,s).
+\widetilde L_p = K_s\, L_p\, K_b^{\top},\qquad
+\theta_p = \argmax_\theta \widetilde L_p(\theta),
 \]
+taking the middle of the top if several tie, and no setting at all if the top is not above \$1{,}000.
 
-\textbf{100 lines.} Line $p$ keeps $p$ of the old data, $p \in \{1\%, 2\%, \dots, 100\%\}$.
-An hour's data counts with weight $p^{\,j}$, where $j$ is the number of trajectory changes the
-watcher has seen since that hour (data in the current trajectory has $j = 0$, weight 1):
+\section{Each line's accuracy (every hour)}
+
+A pick made at hour $\tau$ is judged $H$ minutes later by how its setting's account did:
 \[
-\ln\frac{L_p(b,s)}{1000} = \sum_{h < t} p^{\,j(h)}\, g_h(b,s).
+y_p(\tau) = \ln V_{\tau+H}(\theta_p(\tau)) - \ln V_{\tau}(\theta_p(\tau)).
 \]
-$p = 100\%$ never resets; $p = 1\%$ almost fully resets. Updating is simple: on a trajectory change
-multiply line $p$'s sum by $p$; every new hour add $g_h$. Line $p$'s setting is the top of its
-smoothed landscape, $(b_p, s_p)$.
-
-\textbf{Accuracy of a line, from history.} Every hour each line picks a setting. $H$ hours later
-we can see how that setting did:
+At minute $t$, using only picks with $\tau + H \le t$:
 \[
-y_p(\tau) = \ln V_{\tau+H}(b_p, s_p) - \ln V_{\tau}(b_p, s_p),
-\qquad
-a_p = \frac{\#\{\tau : y_p(\tau) > 0\}}{\#\{\tau : y_p(\tau) \ne 0\}} \in [0\%, 100\%],
+a_p = \frac{\#\{y_p > 0\}}{\#\{y_p \ne 0\}},\qquad
+R_p = \frac{\text{average gain of the winners}}{\text{average loss of the losers}} .
 \]
-counting only picks whose $H$ hours have already passed (no future data).
+$H$ is one of 5, 15, 30 minutes, 1, 2, 4, 8, 12 hours, 1, 2, 3, 5, 7, 14 days (14 versions).
 
-\textbf{Merging the lines into one.} Lines next to each other that pick the same setting are one
-line in practice. The robot follows the middle of the biggest stretch of lines whose accuracy is
-at or above the average, the same ``safest'' rule as before. That choice is re-made every hour, so
-it is one trajectory that keeps updating itself.
+\section{Which line the robot follows (every hour)}
 
-\textbf{Risk, 1--100\%.} With accuracy $a$ and $R$ = average win $\div$ average loss of the chosen
-line, the share of money put in on a buy is
+Take the lines whose accuracy is at or above the average of all lines, find the biggest run of
+neighbouring $p$ values among them, and follow the line in its middle:
 \[
-f = a - \frac{1-a}{R}, \qquad \text{kept between } 1\% \text{ and } 100\%.
+p^* = \text{middle of the biggest run of } \{p : a_p \ge \bar a\} .
 \]
-This is the Kelly rule: a line that is right more often, or wins more than it loses, gets more
-money; a line with no real edge gets the minimum.
+Before any accuracy is known, $p^* = 100\%$ (all lines are the same then anyway).
 
-\textbf{Tested} with \texttt{merge\_lines.py}: 100 lines $\times$ 100 risk levels, 100 lines $\times$
-Kelly $\times$ 14 horizons ($H$ = 5 minutes to 14 days), and the merged robot $\times$ 14 horizons.
-Results are in \texttt{docs/robot2\_analysis.md}.
+\section{The robot's trades and risk (every minute)}
 
-\section{The algorithm}
+The robot uses $\theta^* = (b^*, s^*) = \theta_{p^*}$ of the current hour and the same buy and sell
+signals as Section 2. On a buy it puts in a share $f$ of its money:
+\[
+f = \begin{cases} \text{a fixed } 1\%,\dots,100\% \\[2pt]
+\text{Kelly: } a_{p^*} - \dfrac{1-a_{p^*}}{R_{p^*}}, \ \text{kept between } 1\% \text{ and } 100\%. \end{cases}
+\]
+Each finished trade multiplies its money by
+$\;1 - f + f\,\dfrac{c_{\text{sell}}(1-\kappa_{\text{sell}})}{c_{\text{buy}}(1+\kappa_{\text{buy}})}$.
 
-\begin{enumerate}[leftmargin=1.5em]
-\item Load the cost $\kappa$ and the data (none for the test, the downloaded history for real).
-\item Every minute $t$:
-  \begin{enumerate}
-  \item For every update interval $\Delta = 1,\dots,1440$, keep track of $F(\Delta)$ so far.
-  \item Pick the safest interval $\Delta_t$ (Section 6).
-  \item If it is time to update ($t$ is a multiple of $\Delta_t$), recompute every setting's money
-        on the data so far and move to the best one, $(b_t, s_t)$.
-  \item Buy or sell with $(b_t, s_t)$, paying $\kappa$.
-  \end{enumerate}
-\item Report the money over time and at the end.
-\end{enumerate}
+\section{What the robot learns, and what is fixed}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.25}
+\begin{tabular}{@{}l l@{}}
+\toprule
+Learned from past prices, every hour & Fixed numbers \\
+\midrule
+every setting's money $V(\theta)$ & 4-hour window; $0.23\%$ ``at the low''; $1.8\%$ ``near the high'' \\
+when a trajectory changed & watcher: $0.5$, $\eta = 14$, 12 hours \\
+each line's pick $\theta_p$ & $0.1\%$ setting steps; $1\%$ smoothing \\
+each line's accuracy $a_p$ and $R_p$ & the 100 values of $p$; the 14 values of $H$ \\
+which line to follow, $p^*$ & cost $0.2\% + 0.5\%$ \\
+how much to put in (Kelly) & \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Results: \$1{,}000 on 25 Jun, memory empty, to 20 Nov}
+
+Nothing below was chosen after seeing the results: each row is the average over all 14 values of $H$.
+
+\begin{center}
+\renewcommand{\arraystretch}{1.25}
+\begin{tabular}{@{}l r r@{}}
+\toprule
+Robot & 20 Nov (average over the 14 $H$) & lowest -- highest \\
+\midrule
+Merged robot, Kelly risk & \$1{,}342 & \$1{,}086 -- \$1{,}727 \\
+Merged robot, risk 50\% & \$3{,}032 & \$2{,}464 -- \$3{,}605 \\
+Merged robot, risk 100\% & \$7{,}279 & \$4{,}675 -- \$10{,}281 \\
+\midrule
+Just holding PEARL & \$2{,}832 & \\
+\bottomrule
+\end{tabular}
+\end{center}
+Until 21 Sep a typical minute of PEARL trading was \$5--13, so the robot's \$1{,}000 orders in those
+months could not really have filled at those prices. Most of each robot's gain came from then.
+
+\section*{Where the code is}
+
+\texttt{merge\_lines.py} runs Sections 1--8 on the history. \texttt{engine.py} runs Sections 1--3 and
+the live practice bot, \texttt{live\_machine.py}; the live bot still uses the older design (reset the
+data at a trajectory change) and moves to the merged design once it is chosen.
 
 \end{document}
