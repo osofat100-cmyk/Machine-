@@ -1,0 +1,294 @@
+\documentclass[11pt]{article}
+\usepackage[margin=2.3cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{lmodern}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{0pt}
+
+\newcommand{\ind}[1]{\mathbf{1}\!\left[#1\right]}
+\DeclareMathOperator*{\argmax}{arg\,max}
+
+\title{The PEARL Machine: the Full Math, Layer by Layer}
+\author{Repository \texttt{Machine-}, branch \texttt{ccr-063c8579-mwbwim}}
+\date{Data: BigONE PEARL-USDT, 25 Jun 2026 -- 20 Nov 2026}
+
+\begin{document}
+\maketitle
+
+\section*{The stack at a glance}
+
+The program is ten layers. Each layer only uses the output of the layer above it.
+
+\begin{center}
+\renewcommand{\arraystretch}{1.25}
+\begin{tabular}{@{}r l l l@{}}
+\toprule
+ & Layer & Input & Output \\
+\midrule
+1 & Data & BigONE minute candles & prices $o_t,h_t,l_t,c_t$ \\
+2 & Costs & fee, buy/sell gap & $\kappa$ per side \\
+3 & Features & prices & $U_t,\ D_t,\ R_t$ \\
+4 & Rule & features, setting $(b,s)$ & buy signal $\beta_t$, sell signal $\sigma_t$ \\
+5 & Simulator & signals & money $V_E(b,s)$ \\
+6 & Landscape & 40{,}000 settings & matrix $\mathbf{V}_E$ \\
+7 & Smoothing & $\mathbf{V}_E$ & $\widetilde{\mathbf{V}}_E = K\,\mathbf{V}_E K^{\top}$ \\
+8 & Pick & $\widetilde{\mathbf{V}}_E$ & setting $\theta^*(E)$ \\
+9 & Machine & picks every $\Delta$ minutes & final money $F(\Delta)$ \\
+10 & Interval sweep & $\Delta=1,\dots,1440$ & safest $\Delta$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Data}
+
+Time $t$ counts minutes. The data are BigONE PEARL-USDT one-minute candles. For each
+minute: open $o_t$, high $h_t$, low $l_t$, close $c_t$.
+The first 240 minutes are used only to start the 4-hour features, so the machine runs on
+\[
+t = 0,1,\dots,T-1,\qquad T = 212{,}932 \text{ minutes (25 Jun 20:38 to 20 Nov 17:29 UTC)}.
+\]
+First close $c_0 = 0.68$, last close $c_{T-1} = 1.9515$.
+
+\section{Trading cost}
+
+Each buy or sell pays the exchange fee $f$ plus half the gap between the buy price and the
+sell price, $g$:
+\[
+f = 0.2\%,\qquad g = 0.5\%,\qquad \kappa = f + g = 0.7\% \text{ per side}.
+\]
+A buy at price $p$ costs $p(1+\kappa)$ per coin; a sell at price $p$ returns $p(1-\kappa)$ per coin.
+One buy-then-sell at the same price loses
+\[
+1 - \frac{1-\kappa}{1+\kappa} \approx 2\kappa = 1.4\%.
+\]
+
+\section{Features (what the rule looks at)}
+
+With a 4-hour window of $240$ minutes:
+\begin{align*}
+L_t &= \min_{0\le j<240} l_{t-j} && \text{(4-hour low)}\\
+H_t &= \max_{0\le j<240} h_{t-j} && \text{(4-hour high)}\\
+U_t &= 100\left(\frac{c_t}{L_t}-1\right) && \text{(\% above the 4-hour low)}\\
+D_t &= 100\left(1-\frac{c_t}{H_t}\right) && \text{(\% below the 4-hour high)}\\
+R_t &= 100\left(\frac{c_t}{c_{t-240}}-1\right) && \text{(\% change over 4 hours)}
+\end{align*}
+
+\section{The rule: buy the crash, sell the pump}
+
+A setting is a pair $\theta=(b,s)$: the buy \% and the sell \%. Two constants are fixed:
+$a = 0.23\%$ (``at the low'') and $n = 1.8\%$ (``near the high'').
+\begin{align*}
+\beta_t(b) &= \ind{U_t \le a}\cdot \ind{R_t \le -b} && \text{buy: fell $b$\% in 4 h and sits at the 4-hour low}\\
+\sigma_t(s) &= \ind{D_t \le n}\cdot \ind{U_t \ge s} && \text{sell: $s$\% above the 4-hour low and near the 4-hour high}
+\end{align*}
+
+\section{The simulator (one setting)}
+
+State at minute $t$: dollars $x_t$ and coins $q_t$. Start: $x_0 = 1000$, $q_0 = 0$.
+A decision made at minute $t$ fills at the next minute's close $c_{t+1}$, so the rule never
+sees the future. For $t = 0,\dots,E-2$:
+\[
+(x_{t+1},q_{t+1}) =
+\begin{cases}
+\left(0,\ \dfrac{x_t}{c_{t+1}(1+\kappa)}\right) & \text{if } q_t = 0 \text{ and } \beta_t(b)=1 \quad\text{(buy)}\\[2ex]
+\left(q_t\,c_{t+1}(1-\kappa),\ 0\right) & \text{if } q_t > 0 \text{ and } \sigma_t(s)=1 \quad\text{(sell)}\\[1ex]
+(x_t,\ q_t) & \text{otherwise.}
+\end{cases}
+\]
+The money at minute $E$ counts coins as if sold then:
+\[
+V_E(b,s) = x_{E-1} + q_{E-1}\,c_{E-1}(1-\kappa).
+\]
+
+\paragraph{Same thing as a product.} Let the buy minutes be $\tau_1<\tau_2<\dots$ and the sell
+minutes $\varsigma_1<\varsigma_2<\dots$, found by jumping:
+\[
+\tau_1 = \min\{t:\beta_t=1\},\qquad
+\varsigma_k = \min\{t>\tau_k:\sigma_t=1\},\qquad
+\tau_{k+1} = \min\{t>\varsigma_k:\beta_t=1\}.
+\]
+Then, for $N$ finished trades,
+\[
+V_E(b,s) = 1000\prod_{k=1}^{N}\frac{c_{\varsigma_k+1}\,(1-\kappa)}{c_{\tau_k+1}\,(1+\kappa)}
+\quad\times\quad
+\begin{cases}\dfrac{c_{E-1}(1-\kappa)}{c_{\tau_{N+1}+1}(1+\kappa)} & \text{if still holding}\\[1.5ex] 1 & \text{otherwise.}\end{cases}
+\]
+Each trade multiplies the money by (sell price $\div$ buy price) $\times\ (1-\kappa)/(1+\kappa)$.
+This is why many small trades lose: each one pays about $1.4\%$.
+
+\section{The landscape (40,000 settings at once)}
+
+Both the buy \% and the sell \% take values on the grid
+\[
+\mathcal{G} = \{0.5,\ 1.0,\ 1.5,\ \dots,\ 100\},\qquad |\mathcal{G}| = 200,
+\]
+so there are $200\times200 = 40{,}000$ settings. The landscape at minute $E$ is the matrix
+\[
+\mathbf{V}_E \in \mathbb{R}^{200\times 200},\qquad
+(\mathbf{V}_E)_{ij} = V_E(b_j,\ s_i),\qquad b_j = s_j = 0.5\,j .
+\]
+Rows are sell \%, columns are buy \%. A column whose buy \% was never reached stays at $1000$
+(it never bought).
+
+\section{Smoothing}
+
+A Gaussian blur about $1\%$ wide (two grid steps), clipped at the edges. Weights:
+\[
+w_k = \frac{e^{-k^2/(2\cdot 2^2)}}{\sum_{m=-6}^{6} e^{-m^2/(2\cdot 2^2)}},\qquad k=-6,\dots,6 .
+\]
+Blur matrix $K\in\mathbb{R}^{200\times200}$:
+\[
+K_{ij} = \sum_{k=-6}^{6} w_k\ \ind{\operatorname{clip}(i+k,\,1,\,200) = j}.
+\]
+Blurring rows and columns at once:
+\[
+\widetilde{\mathbf{V}}_E = K\,\mathbf{V}_E\,K^{\top}.
+\]
+Each smoothed value is a weighted average of the settings within about $1\%$ around it. A
+wide hill survives; a thin lucky spike gets flattened.
+
+\section{The pick}
+
+\[
+(i^*,j^*) = \argmax_{i,j}\ (\widetilde{\mathbf{V}}_E)_{ij},
+\qquad
+\theta^*(E) =
+\begin{cases}
+(b_{j^*},\ s_{i^*}) & \text{if } (\widetilde{\mathbf{V}}_E)_{i^*j^*} > 1000\\
+\varnothing & \text{otherwise (stay in USDC).}
+\end{cases}
+\]
+$\theta^*(E)$ uses only minutes before $E$. On day one almost nothing has traded, so the
+machine stays in USDC until some setting has made money.
+
+\section{\texorpdfstring{The machine (re-pick every $\Delta$ minutes)}{The machine (re-pick every Delta minutes)}}
+
+The machine holds the latest pick:
+\[
+\theta_t =
+\begin{cases}
+\varnothing & t < \Delta\\
+\theta^*\!\left(\Delta\left\lfloor t/\Delta \right\rfloor\right) & t \ge \Delta.
+\end{cases}
+\]
+It then runs the same simulator as Section 5, but with a setting that can change over time:
+$\beta_t(b_t)$ and $\sigma_t(s_t)$ where $\theta_t=(b_t,s_t)$, and no trades while
+$\theta_t=\varnothing$. Its final money is
+\[
+F(\Delta) = x_{T-1} + q_{T-1}\,c_{T-1}(1-\kappa).
+\]
+
+\section{The interval sweep and the safe choice}
+
+All re-pick intervals $\Delta = 1,2,\dots,1440$ minutes are run, each starting with \$1{,}000 on
+25 Jun with no data. To judge safety, look at the neighbours $\Delta-w,\dots,\Delta+w$:
+\[
+\text{worst}_w(\Delta) = \min_{|k|\le w} F(\Delta+k),\qquad
+\text{spread}_w(\Delta) = \max_{|k|\le w} F(\Delta+k) - \min_{|k|\le w} F(\Delta+k).
+\]
+The safe choice is a $\Delta$ with a high worst case and a small spread. Every
+$\Delta=20,\dots,39$ gives exactly the same result, so $\Delta^*=30$ sits in the middle:
+\[
+F(30) = \$4{,}733.99,\qquad \text{worst}_{10}(30) = \$4{,}733.99,\qquad \text{spread}_{10}(30) = \$179 .
+\]
+
+\section{The benchmark: just holding}
+
+Buy at the first minute, sell at the last, paying the cost twice:
+\[
+\text{Hold} = 1000\cdot\frac{c_{T-1}}{c_0}\,(1-\kappa)^2 = 1000\cdot\frac{1.9515}{0.68}\cdot 0.993^2 = \$2{,}829.82 .
+\]
+
+\section{How it runs fast}
+
+The trades of one setting up to minute $E$ do not depend on $E$ (the simulator never looks
+ahead). So:
+\begin{enumerate}[leftmargin=*]
+\item Run all 40,000 settings over the whole history once and record every buy and sell as an
+event $(t_e,\ \text{setting},\ \text{buy/sell},\ \text{amount})$: $191{,}132$ events.
+\item Keep three arrays over all settings: dollars $\mathbf{x}$, coins $\mathbf{q}$, holding flag $\mathbf{h}$.
+Walk forward in time; before minute $E$, apply every event with $t_e \le E-2$. Then
+\[
+\mathbf{V}_E = \mathbf{h}\odot \mathbf{q}\,c_{E-1}(1-\kappa) + (1-\mathbf{h})\odot\mathbf{x}.
+\]
+\item Compute $\theta^*(E)$ for every minute $E=1,\dots,T-1$ once: $212{,}931$ picks, each reading
+all $40{,}000$ settings, about $8.5\times10^{9}$ values in total.
+\item The pick at minute $E$ is the same for every machine, so all 1,440 machines reuse it.
+Together they consult $\sum_{\Delta=1}^{1440}\lfloor T/\Delta\rfloor \approx 1.67\times10^{6}$ picks
+and take $1440\times T \approx 3.07\times10^{8}$ trading steps.
+\end{enumerate}
+
+\section{Results}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{@{}l r r@{}}
+\toprule
+Re-pick every $\Delta$ & $F(\Delta)$ & buys \\
+\midrule
+1 minute & \$4{,}376.71 & 16 \\
+2 minutes & \$4{,}733.99 & 16 \\
+20--39 minutes (all the same) & \$4{,}733.99 & 16 \\
+60 minutes & \$4{,}733.99 & 16 \\
+120 minutes & \$4{,}912.63 & 16 \\
+424 minutes (highest, a lucky spike) & \$5{,}408.79 & 15 \\
+1{,}440 minutes (one day) & \$3{,}732.82 & 14 \\
+\midrule
+Just holding & \$2{,}829.82 & -- \\
+\bottomrule
+\end{tabular}
+\end{center}
+999 of the 1,440 intervals beat holding. Intervals of 1 to 120 minutes average \$4{,}613.
+
+\section{What the math does not cover}
+
+\begin{itemize}[leftmargin=*]
+\item One history. All numbers come from one five-month path of PEARL; a different path can rank
+the settings differently.
+\item Most of the machine's lead came from staying in USDC during the July--August fall.
+From 1 Aug onward, holding grew more.
+\item Fills are assumed at the next minute's close with a fixed $0.7\%$ cost. Real fills depend
+on the order book at that moment.
+\item The rule reads PEARL-USDT; the practice bots trade at the PEARL-USDC order book.
+\end{itemize}
+
+\appendix
+\section{Other layers built along the way}
+
+These were tested earlier and are not part of the machine above.
+
+\paragraph{Live monitor.} Every second: mid price $m_t=(\text{bid}_t+\text{ask}_t)/2$, spread
+$100(\text{ask}_t-\text{bid}_t)/m_t$, order-book imbalance
+$(Q^{\text{bid}}_t-Q^{\text{ask}}_t)/(Q^{\text{bid}}_t+Q^{\text{ask}}_t)$ over the top 5 levels, and
+UP/DOWN when the 10-reading average moves away from the 60-reading average by more than the spread.
+
+\paragraph{Trend rule.} Hold PEARL while $\overline{c}^{(24\text{h})}_t > \overline{c}^{(168\text{h})}_t$
+(simple moving averages of hourly closes).
+
+\paragraph{Swing rule.} Buy when $c_t \ge \ell_t(1+r)$ where $\ell_t$ is the lowest price since the last
+sell; sell when $c_t \le u_t(1-d)$ where $u_t$ is the highest price since the buy.
+
+\paragraph{Floor rule.} After buying at $B$ with highest price $u_t$ since then: if
+$u_t \ge 1.016B$, sell when $c_t \le \max(1.015B,\ u_t(1-\text{trail}))$; otherwise sell when
+$c_t\le u_t(1-\text{stop})$.
+
+\paragraph{Spike rule.} Over the last $W$ seconds with low $\ell$ and high $u$: a drop spike is
+$p\le u(1-\text{drop\_spike})$ (buy, sell at $+$bounce or $-$bounce\_stop); a rise spike is
+$p\ge \ell(1+\text{rise\_spike})$ (sell if holding, block buys 10 minutes).
+
+\paragraph{Odds of a move continuing.} For a drop of $X\%$ below the latest top $u$: the chance
+the price reaches $u(1-X)(1-0.016)$ before it gets back above $u$. For a rise of $X\%$ above the
+latest bottom: the mirror image.
+
+\paragraph{Why a 60/40 edge was not enough.} A trade wins $M$ with chance $p$ and loses $M$ otherwise:
+expected gain $(2p-1)M$. It pays only if
+\[
+(2p-1)\,M \ \ge\ 1.4\% ,
+\]
+so $p=0.6$ needs moves of $M\ge 7\%$, and $p=0.8$ needs $M\ge 2.33\%$.
+
+\end{document}
