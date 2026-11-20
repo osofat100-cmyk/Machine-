@@ -9,7 +9,7 @@ trade with that one setting, never changing it, from that day to the last day.
   Learn from Jun 25 - Oct 31, trade Nov 1 - Nov 20
 
 Best setting = top of the smoothed 0.1% landscape (same as the robots).
-Each trading period starts with $1,000 and is compared with just holding and with 10/34.
+Each trading period starts with $1,000 and is compared with just holding.
 
     python3 frozen.py
 """
@@ -49,19 +49,18 @@ def main():
     buy, sell = grids(m)
     ev = all_events(m, buy, sell)
     top = HillTop(len(buy), len(sell))
-    print(f"{'learn from':<22}{'frozen setting':>18}{'trade from':>14}{'frozen':>10}{'10/34':>10}{'holding':>10}")
-    for day in CUTOFFS:
+    print(f"{'AI':<6}{'learns from':<18}{'keeps forever':>16}{'trades':>16}{'ends with':>11}{'gain/loss':>11}{'holding':>10}")
+    for n, day in enumerate(CUTOFFS, 1):
         end = int(np.searchsorted(m.time.values, np.datetime64(day + "T00:00")))
         V = landscape_at(m, ev, len(buy), len(sell), end).astype(np.float32)
         _, (i, j) = top(V)
         b, s = float(buy[j]), float(sell[i])
-        frozen, n1 = trade_fixed(m, end, b, s)
-        fixed, n2 = trade_fixed(m, end, 10.0, 34.0)
+        final, buys = trade_fixed(m, end, b, s)
         hold = 1000 * m.close[-1] / m.close[end] * (1 - COST) ** 2
         learn = f"{m.time[0]:%b %d} - {m.time[end - 1]:%b %d}"
-        print(f"{learn:<22}{f'{b}% / {s}%':>18}{f'{m.time[end]:%b %d}':>14}"
-              f"{f'${frozen:,.0f}':>10}{f'${fixed:,.0f}':>10}{f'${hold:,.0f}':>10}   ({n1} and {n2} buys)")
-
+        period = f"{m.time[end]:%b %d} - {m.time[-1]:%b %d}"
+        print(f"{n:<6}{learn:<18}{f'{b}% / {s}%':>16}{period:>16}{f'${final:,.0f}':>11}"
+              f"{f'{final - 1000:+,.0f}':>11}{f'${hold:,.0f}':>10}   ({buys} buys)")
 
 if __name__ == "__main__":
     main()
