@@ -300,8 +300,10 @@ def plot(times, hourly, hold_curve, names, final, hold, paths):
         for side in ("top", "right"):
             a_.spines[side].set_visible(False)
     ax.plot(times, hold_curve, color=muted, lw=1.6, ls=(0, (5, 3)), label=f"just holding  ${hold:,.0f}")
+    same = np.allclose(hourly[names[1]], hourly[names[3]])
     for n, col in zip(names, colors):
-        ax.plot(times, hourly[n], color=col, lw=1.8, label=f"{n}  ${final[n]:,.0f}")
+        note = "  (same line as 4)" if same and n == names[1] else ""
+        ax.plot(times, hourly[n], color=col, lw=3.2 if note else 1.8, label=f"{n}  ${final[n]:,.0f}{note}")
     ax.legend(loc="upper left", frameon=False, fontsize=11)
     ax.yaxis.set_major_formatter(matplotlib.ticker.FuncFormatter(lambda v, _: f"${v:,.0f}"))
     ax.set_ylabel("account value ($)")
