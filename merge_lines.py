@@ -560,10 +560,65 @@ def check():
     log("\nall checks passed" if ok_all else "\nSOME CHECKS FAILED")
 
 
+def export(path="data/variations.json"):
+    """Everything the variations page needs: three surfaces x three periods, and account lines."""
+    import json
+    df = pd.read_csv("data/PEARL-USDT_min1.csv", parse_dates=["time"])
+    d = load_build(len(df))
+    acc = outcomes(d)
+    z = np.load("data/merge_lines.npz")
+    e, hk, pick = d["e"], d["hk"], d["pick"]
+    cut, end = int(z["cut"]), int(z["end"])
+    r0 = lambda a: np.round(a, 0).astype(int).tolist()
+    periods = {"whole": lambda tr, te: tr * te / 1000, "train": lambda tr, te: tr, "test": lambda tr, te: te}
+    out = {"keep": list(range(1, 101)), "risk": list(range(1, 101)), "horizons": [n for n, _ in HORIZONS],
+           "hold": {"whole": float(z["hold"][2]), "train": float(z["hold"][0]), "test": float(z["hold"][1])},
+           "grid": {}, "kelly": {}, "merged": {}}
+    for p, f in periods.items():
+        out["grid"][p] = r0(f(z["grid_tr"], z["grid_te"]))             # [keep][risk]
+        out["kelly"][p] = r0(f(z["kel_tr"], z["kel_te"]))               # [keep][horizon]
+        out["merged"][p] = r0(f(z["m_tr"], z["m_te"]))                  # [horizon][risk 1..100, Kelly]
+
+    # account lines, hour by hour from day one
+    h3 = [n for n, _ in HORIZONS].index("3 days")
+    A = acc_matrix(acc["3 days"], hk - 1)
+    line = np.full(len(hk), 99)
+    for j in range(len(hk)):
+        if not np.all(np.isnan(A[j])):
+            line[j] = safest(np.nan_to_num(A[j], nan=-1.0)) - 1
+    tr_m = trades(d, lambda j: int(pick[j, line[j]]))
+    f_m = np.array([[stats_at(acc["3 days"][line[np.searchsorted(hk, kd, side="right") - 1]], kd)[2]]
+                    for kd, _, _ in tr_m])
+    tr_100 = trades(d, lambda j: int(pick[j, 99]))
+    tr_43 = trades(d, lambda j: int(pick[j, 42]))
+    times = [int(hk[j]) - 1 for j in range(len(hk))] + [end]
+    k0 = int(hk[0]) - 1
+    lines = {
+        "Just holding PEARL": [1000 * e.cl[t] * (1 - e.kap[t]) / (e.cl[k0] * (1 + e.kap[k0])) for t in times],
+        "Never reset (keep 100%, risk 100%)": [money(d, tr_100, np.array([1.0]), t)[0] for t in times],
+        "Merged robot, risk 100%": [money(d, tr_m, np.array([1.0]), t)[0] for t in times],
+        "Merged robot, Kelly risk": [money(d, tr_m, f_m, t)[0] for t in times],
+        "Keep 43%, risk 77% (picked on Jun-Sep)": [money(d, tr_43, np.array([0.77]), t)[0] for t in times],
+    }
+    out["times"] = [int(e.ts[t]) for t in times]
+    out["lines"] = {k: r0(np.array(v)) for k, v in lines.items()}
+    out["thin_until"] = int(np.datetime64("2026-09-21", "m").astype(np.int64))
+    out["cut"] = int(e.ts[cut])
+    out["trades"] = {"Merged robot, risk 100%": len(tr_m), "Never reset (keep 100%, risk 100%)": len(tr_100),
+                     "Keep 43%, risk 77% (picked on Jun-Sep)": len(tr_43), "Merged robot, Kelly risk": len(tr_m)}
+    with open(path, "w") as fh:
+        json.dump(out, fh, separators=(",", ":"))
+    for k, v in out["lines"].items():
+        log(f"{k:<42} $1,000 -> ${v[-1]:,}   (on 21 Sep: ${v[int(np.searchsorted(out['times'], out['thin_until']))]:,})")
+    log(f"saved {path}")
+
+
 if __name__ == "__main__":
     if "plot" in sys.argv:
         plot()
     elif "check" in sys.argv:
         check()
+    elif "export" in sys.argv:
+        export()
     else:
         main()
