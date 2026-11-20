@@ -8,6 +8,7 @@ Needs Python 3 only (no installs). See [PLAN.md](PLAN.md) for the research and t
 | `pearl_monitor.py` | Live price every second, logged to `logs/` |
 | `fetch_history.py` | Downloads past prices into `data/` |
 | `backtest.py` | Tests trading rules on past prices, with fees and spread included |
+| `volatility.py` | How much PEARL moves in 1, 5, 10 and 60 minutes, spikes and drops |
 | `paper_trader.py` | Runs the chosen rule live with fake money |
 
     python3 pearl_monitor.py                 # watch PEARL-USDC live
