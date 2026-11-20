@@ -129,6 +129,51 @@ the downloaded data (robot 1's run), and $F_t(\Delta)$ how it has done so far.
 All four start with \$1{,}000 on 25 Jun and trade to 20 Nov. Results: money at the end of each
 month and on the last day, against just holding.
 
+\section{Trajectories: when to reset the data}
+
+\textbf{Measuring a trajectory.} Every hour $h$, the price change is
+$r_h = 100\,\ln(c_h / c_{h-1})$ (in \%). A trajectory that began at hour $\tau$ has
+\[
+\mu = \text{average of } r \text{ since } \tau \ \ (\text{direction and speed}),
+\qquad
+\sigma = \text{spread of } r \text{ since } \tau \ \ (\text{usual instability}).
+\]
+
+\textbf{The watcher.} Each new hour is compared with the trajectory so far:
+\[
+z_h = \frac{r_h - \mu}{\sigma},\qquad
+W_h = \max(0,\ W_{h-1} + z_h^2 - 1 - k),\qquad
+S^{\pm}_h = \max(0,\ S^{\pm}_{h-1} \pm z_h - k),
+\]
+with $k = 0.5$ so small wobbles are ignored. $W$ adds up instability higher than usual; $S^{+}$
+and $S^{-}$ add up a change of direction. One odd hour is not enough; a run of them is. When any
+of them passes the sensitivity level $\eta$, the trajectory is over, and the new one starts at the
+hour where that sum was last zero (where the change began). The first 12 hours of a trajectory
+only measure it.
+
+\textbf{The library.} Every finished trajectory is saved: its hours, $\mu_i$, $\sigma_i$, and its data.
+
+\textbf{After a reset.} For its first 12 hours the new trajectory cannot be described yet, so robot 2
+borrows the whole library. After that it borrows the 3 most similar past trajectories:
+\[
+d_i = \Big|\frac{\mu}{\sigma} - \frac{\mu_i}{\sigma_i}\Big| + \Big|\ln\frac{\sigma}{\sigma_i}\Big| .
+\]
+Robot 2's landscape mixes the new trajectory's data with the borrowed data, and the borrowed data
+fades as the new data grows:
+\[
+\ln L(b,s) = \ln V_{\text{new}}(b,s) + w \sum_{i\ \text{borrowed}} \ln V_i(b,s),
+\qquad
+w = \max\!\Big(0,\ 1 - \frac{n_{\text{new}}}{n_{\text{borrowed}}}\Big),
+\]
+where $n$ counts hours of data. The update-interval machines use the same mix.
+
+\textbf{Timing.} Every minute: robot 2 trades. Every hour: the watcher checks. On a reset: the
+finished trajectory goes into the library and robot 2's data restarts as above.
+
+\textbf{Choosing the sensitivity $\eta$.} Run robot 2 with resets at many levels of $\eta$ on
+25 Jun -- 30 Sep, take the middle of the biggest stretch of levels with high money, then check that
+level on 1 Oct -- 20 Nov, which it did not see.
+
 \section{The algorithm}
 
 \begin{enumerate}[leftmargin=1.5em]
