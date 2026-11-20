@@ -429,7 +429,8 @@ def plot():
     ax.set_xlabel("accuracy measured this long after each pick")
     ax.yaxis.set_major_formatter(matplotlib.ticker.FuncFormatter(lambda v, _: f"${v:,.0f}"))
     ax.set_title("Merged robot, TEST 1 Oct - 20 Nov (unseen)", loc="left", fontsize=12)
-    ax.legend(frameon=False, fontsize=10, loc="upper left")
+    ax.set_ylim(0, 1950)
+    ax.legend(frameon=False, fontsize=10, loc="upper left", ncol=2)
     ax.grid(axis="y", color=gridc, lw=0.7)
     fig.suptitle("Merging instead of resetting: 100 keep-lines x 100 risk levels x 14 accuracy horizons",
                  x=0.06, ha="left", fontsize=14, y=0.97)

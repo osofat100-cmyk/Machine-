@@ -97,3 +97,33 @@ round trip, above the 1.4% the tests assume).
 - On the only stretch that is both liquid and unseen (1 Oct – 20 Nov), no version beat holding.
 - That stretch is 7 weeks of one coin, and it was looked at earlier when the rule was first
   found, so it is not a perfectly clean test either.
+
+## Merging instead of resetting (`merge_lines.py`)
+
+Every setting keeps one account from day one. Line *p* (1%–100%) keeps *p* of the old data each
+time the watcher sees a trajectory change. Every hour each line picks a setting. Accuracy = share
+of a line's past picks that made money *H* later (5 minutes to 14 days), using only outcomes
+already known. Risk = share of money put in per buy, fixed 1%–100% or Kelly. The merged robot
+follows, every hour, the middle of the biggest stretch of lines with above-average accuracy.
+Checks (`python3 merge_lines.py check`): line 100% equals the never-reset engine pick for pick,
+account values match, the risk formula equals a plain account, accuracy uses no future outcomes.
+
+The price file now runs to 20 Nov 22:05, so holding over the test is $1,536 here.
+
+**Accuracy (whole history).** Lines keeping 25–50% of old data were the most accurate: about
+57–62% of their picks made money 5–7 days later. Never resetting was about 50%. Within 2 hours of
+a pick every line was below 50%: a "buy the crash" pick usually dips further first.
+
+**Results on the unseen period, 1 Oct – 20 Nov, per $1,000 (holding $1,536):**
+
+| Variations | Beat holding | Chosen on Jun–Sep | Its test result |
+|---|---|---|---|
+| 100 lines × 100 risk levels (10,000) | 180 | keep 43%, risk 77% | $1,077 |
+| 100 lines × Kelly × 14 horizons (1,400) | 0 | keep 46%, accuracy after 12 hours | $1,026 |
+| Merged robot × 14 horizons × 101 risk (1,414) | 0 | accuracy after 3 days, Kelly | $1,045 |
+
+- The 180 that beat holding are all in one corner (keep 55%+, risk 97%+). There the robot bought
+  before October and held, which is holding.
+- Kelly put in little money because accuracy was only 50–60%, so results stayed near $1,000.
+- Merging did better than resetting on the test (merged $1,045; keep 1% $804; the reset robot
+  $652), but not better than holding or never resetting ($1,558).

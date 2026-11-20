@@ -185,7 +185,7 @@ finished trajectory goes into the library and robot 2's data restarts as above.
 25 Jun -- 30 Sep, take the middle of the biggest stretch of levels with high money, then check that
 level on 1 Oct -- 20 Nov, which it did not see. The result is in \texttt{docs/robot2\_analysis.md}.
 
-\section{Merging instead of resetting (proposal, not built yet)}
+\section{Merging instead of resetting}
 
 \textbf{One account per setting, never reset.} Every setting $(b,s)$ keeps one practice account
 from the first minute. Its growth in hour $h$ is
@@ -224,6 +224,10 @@ f = a - \frac{1-a}{R}, \qquad \text{kept between } 1\% \text{ and } 100\%.
 \]
 This is the Kelly rule: a line that is right more often, or wins more than it loses, gets more
 money; a line with no real edge gets the minimum.
+
+\textbf{Tested} with \texttt{merge\_lines.py}: 100 lines $\times$ 100 risk levels, 100 lines $\times$
+Kelly $\times$ 14 horizons ($H$ = 5 minutes to 14 days), and the merged robot $\times$ 14 horizons.
+Results are in \texttt{docs/robot2\_analysis.md}.
 
 \section{The algorithm}
 
