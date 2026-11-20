@@ -40,11 +40,11 @@ $q_1, q_2, \dots$ ends with
 V(b,s) = 1000 \prod_{k} \frac{q_k}{p_k}\cdot\frac{1-\kappa}{1+\kappa}.
 \]
 
-$b$ and $s$ go in small fractions of a percent, $\delta$ apart:
+$b$ and $s$ go in fractions of $0.1\%$:
 \[
-b, s \in \{\delta,\ 2\delta,\ \dots,\ 100\%\}.
+b, s \in \{0.1\%,\ 0.2\%,\ \dots,\ 100\%\},
+\qquad 1000 \times 1000 = 1{,}000{,}000 \text{ settings}.
 \]
-With $\delta = 0.5\%$ that is $200 \times 200 = 40{,}000$ settings.
 
 \textbf{Hindsight.} The best setting over all the data,
 $\argmax_{b,s} V(b,s)$, is only good for the past.
@@ -69,14 +69,21 @@ $F(\Delta)$ is the money the robot ends with when it updates every $\Delta$ minu
 
 \section{The safest update interval}
 
-Not the lucky one, but the safest one: a good average, with the least difference between its
-left and right neighbours. With $w$ neighbours on each side:
+Not the lucky one (an anomaly, like a single minute that happened to do well), but the middle of
+the biggest set of minutes that all made high income.
+\begin{enumerate}[leftmargin=1.5em]
+\item High income means at or above the average of all 1,440:
 \[
-\text{average}(\Delta) = \frac{1}{2w+1}\sum_{k=-w}^{w} F(\Delta+k),
+\bar F = \frac{1}{1440}\sum_{\Delta=1}^{1440} F(\Delta),
 \qquad
-\text{difference}(\Delta) = \max_{|k|\le w} F(\Delta+k) - \min_{|k|\le w} F(\Delta+k).
+\Delta \text{ is high} \iff F(\Delta) \ge \bar F .
 \]
-The safest $\Delta$ has a high average and a small difference.
+\item Find the biggest stretch of minutes in a row that are all high: $\Delta = a, a+1, \dots, z$.
+\item The safest interval is its middle:
+\[
+\Delta^* = \Big\lfloor \frac{a+z}{2} \Big\rfloor .
+\]
+\end{enumerate}
 
 \section{No fixed number}
 
