@@ -613,11 +613,58 @@ def export(path="data/variations.json"):
     log(f"saved {path}")
 
 
+
+def export_all(path="data/all_variations.json"):
+    """All 12,814 robots as points with common axes: keep % (merged: average chosen),
+    risk % (Kelly: average actually put in), and money for the three periods."""
+    import json
+    df = pd.read_csv("data/PEARL-USDT_min1.csv", parse_dates=["time"])
+    d = load_build(len(df))
+    acc = outcomes(d)
+    z = np.load("data/merge_lines.npz")
+    hk, pick = d["hk"], d["pick"]
+    names = [n for n, _ in HORIZONS]
+    pts = []          # family, keep, risk, horizon, whole, train, test, trades
+
+    def add(fam, keep, risk, h, tr, te, ntr):
+        pts.append([fam, round(float(keep), 1), round(float(risk), 1), h,
+                    round(float(tr * te / 1000)), round(float(tr)), round(float(te)), int(ntr)])
+
+    for q in range(len(P)):
+        for r in range(len(RISK)):
+            add(0, q + 1, r + 1, -1, z["grid_tr"][q, r], z["grid_te"][q, r], z["ntr"][q])
+    for q in range(len(P)):
+        tr = trades(d, lambda j, q=q: int(pick[j, q]))
+        for h, name in enumerate(names):
+            f = [stats_at(acc[name][q], kd)[2] for kd, _, _ in tr]
+            add(1, q + 1, 100 * np.mean(f) if f else 0, h, z["kel_tr"][q, h], z["kel_te"][q, h], len(tr))
+    for h, name in enumerate(names):
+        line = z["m_line"][h]
+        tr = trades(d, lambda j: int(pick[j, line[j]]))
+        keep = line.mean() + 1
+        for r in range(len(RISK)):
+            add(2, keep, r + 1, h, z["m_tr"][h, r], z["m_te"][h, r], len(tr))
+        f = [stats_at(acc[name][line[np.searchsorted(hk, kd, side="right") - 1]], kd)[2] for kd, _, _ in tr]
+        add(3, keep, 100 * np.mean(f) if f else 0, h, z["m_tr"][h, -1], z["m_te"][h, -1], len(tr))
+    with open(path, "w") as fh:
+        json.dump({"cols": ["family", "keep", "risk", "horizon", "whole", "train", "test", "trades"],
+                   "families": ["Keep % x fixed risk", "Each line, Kelly risk", "Merged robot, fixed risk",
+                                "Merged robot, Kelly risk"],
+                   "horizons": names, "points": pts}, fh, separators=(",", ":"))
+    a = np.array([p_[4:7] for p_ in pts], float)
+    for col, nm in ((0, "whole"), (2, "unseen test")):
+        top = np.argsort(-a[:, col])[:5]
+        log(f"top 5 by {nm}: " + "; ".join(f"fam{pts[t][0]} keep {pts[t][1]} risk {pts[t][2]} h {pts[t][3]} "
+                                           f"-> ${a[t, col]:,.0f}" for t in top))
+    log(f"saved {path}: {len(pts):,} robots")
+
 if __name__ == "__main__":
     if "plot" in sys.argv:
         plot()
     elif "check" in sys.argv:
         check()
+    elif "export-all" in sys.argv:
+        export_all()
     elif "export" in sys.argv:
         export()
     else:
