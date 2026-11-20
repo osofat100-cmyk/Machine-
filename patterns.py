@@ -160,3 +160,43 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+
+def odds_after(series, levels=(0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 5, 6, 7, 8, 10), direction=-1, extra=EXTRA):
+    """direction -1: once price is X% BELOW its latest top, how often does it fall `extra`% more
+    before getting back to that top?  direction +1: same for rises above the latest bottom.
+    The top (bottom) starts fresh once the move has passed the largest level.
+    Returns {X: (times, % kept going)}."""
+    out = {x: [0, 0] for x in levels}
+    pending, armed = {}, set(levels)
+    ext = series[0][1]
+    reset_at = levels[-1] + extra
+    for _, p in series:
+        if (p > ext) if direction < 0 else (p < ext):     # back past the top/bottom
+            for x in pending:
+                out[x][0] += 1                             # recovered
+            pending, armed, ext = {}, set(levels), p
+            continue
+        for x in list(pending):
+            if (p <= pending[x]) if direction < 0 else (p >= pending[x]):
+                out[x][0] += 1
+                out[x][1] += 1                             # kept going
+                del pending[x]
+        move = (1 - p / ext) * 100 if direction < 0 else (p / ext - 1) * 100
+        for x in [x for x in armed if move >= x]:
+            armed.discard(x)
+            pending[x] = p * (1 - extra / 100) if direction < 0 else p * (1 + extra / 100)
+        if move >= reset_at:                               # move finished: start a fresh top/bottom
+            pending, armed, ext = {}, set(levels), p
+    return {x: (n, k / n * 100 if n else 0) for x, (n, k) in out.items()}
+
+
+def fifty_fifty(series):
+    """Print the keep-going odds for drops and rises."""
+    for d, name, ref in ((-1, "DROP below the latest top", "top"), (1, "RISE above the latest bottom", "bottom")):
+        res = odds_after(series, direction=d)
+        print(f"\n {name}: chance it goes {EXTRA}% further before getting back to the {ref}")
+        for x, (n, pct) in res.items():
+            if n >= 20:
+                print(f"   {x:>4}%   {pct:>4.0f}%   ({n} times)")
