@@ -104,6 +104,31 @@ from the first day to the last: does it get better or worse?
 \end{enumerate}
 A robot that adapts well should give better results than one that does not.
 
+\section{Four robots}
+
+$V^{\text{all}}(b,s)$ is a setting's money over all the downloaded data. $V_t(b,s)$ is its money
+over the data seen so far. $F^{\text{all}}(\Delta)$ is how update interval $\Delta$ did over all
+the downloaded data (robot 1's run), and $F_t(\Delta)$ how it has done so far.
+
+\begin{enumerate}[leftmargin=1.5em]
+\item \textbf{No data.} Starts with nothing.
+  Setting from $V_t$; interval from $F_t$. Both adapt.
+\item \textbf{All data, adapts.} Starts with all the downloaded data, then adds what it sees as it
+  goes (by the end the data counts twice):
+  \[
+  L_t(b,s) = \frac{V^{\text{all}}(b,s)\cdot V_t(b,s)}{1000},
+  \qquad
+  G_t(\Delta) = \frac{F^{\text{all}}(\Delta)\cdot F_t(\Delta)}{1000}.
+  \]
+  Setting from $L_t$; interval from $G_t$. Both adapt.
+\item \textbf{Stays at 10/34.} Never updates: $(b_t, s_t) = (10\%, 34\%)$ for every $t$.
+  This is like cheating, because 10/34 was found with hindsight.
+\item \textbf{All data, fixed interval.} Setting from $L_t$ like robot 2, but the interval is
+  chosen once on day one from $F^{\text{all}}$ and never changes.
+\end{enumerate}
+All four start with \$1{,}000 on 25 Jun and trade to 20 Nov. Results: money at the end of each
+month and on the last day, against just holding.
+
 \section{The algorithm}
 
 \begin{enumerate}[leftmargin=1.5em]
