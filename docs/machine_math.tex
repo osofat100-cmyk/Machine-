@@ -185,6 +185,46 @@ finished trajectory goes into the library and robot 2's data restarts as above.
 25 Jun -- 30 Sep, take the middle of the biggest stretch of levels with high money, then check that
 level on 1 Oct -- 20 Nov, which it did not see. The result is in \texttt{docs/robot2\_analysis.md}.
 
+\section{Merging instead of resetting (proposal, not built yet)}
+
+\textbf{One account per setting, never reset.} Every setting $(b,s)$ keeps one practice account
+from the first minute. Its growth in hour $h$ is
+\[
+g_h(b,s) = \ln V_{h+1}(b,s) - \ln V_h(b,s).
+\]
+
+\textbf{100 lines.} Line $p$ keeps $p$ of the old data, $p \in \{1\%, 2\%, \dots, 100\%\}$.
+An hour's data counts with weight $p^{\,j}$, where $j$ is the number of trajectory changes the
+watcher has seen since that hour (data in the current trajectory has $j = 0$, weight 1):
+\[
+\ln\frac{L_p(b,s)}{1000} = \sum_{h < t} p^{\,j(h)}\, g_h(b,s).
+\]
+$p = 100\%$ never resets; $p = 1\%$ almost fully resets. Updating is simple: on a trajectory change
+multiply line $p$'s sum by $p$; every new hour add $g_h$. Line $p$'s setting is the top of its
+smoothed landscape, $(b_p, s_p)$.
+
+\textbf{Accuracy of a line, from history.} Every hour each line picks a setting. $H$ hours later
+we can see how that setting did:
+\[
+y_p(\tau) = \ln V_{\tau+H}(b_p, s_p) - \ln V_{\tau}(b_p, s_p),
+\qquad
+a_p = \frac{\#\{\tau : y_p(\tau) > 0\}}{\#\{\tau : y_p(\tau) \ne 0\}} \in [0\%, 100\%],
+\]
+counting only picks whose $H$ hours have already passed (no future data).
+
+\textbf{Merging the lines into one.} Lines next to each other that pick the same setting are one
+line in practice. The robot follows the middle of the biggest stretch of lines whose accuracy is
+at or above the average, the same ``safest'' rule as before. That choice is re-made every hour, so
+it is one trajectory that keeps updating itself.
+
+\textbf{Risk, 1--100\%.} With accuracy $a$ and $R$ = average win $\div$ average loss of the chosen
+line, the share of money put in on a buy is
+\[
+f = a - \frac{1-a}{R}, \qquad \text{kept between } 1\% \text{ and } 100\%.
+\]
+This is the Kelly rule: a line that is right more often, or wins more than it loses, gets more
+money; a line with no real edge gets the minimum.
+
 \section{The algorithm}
 
 \begin{enumerate}[leftmargin=1.5em]
