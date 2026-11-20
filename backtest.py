@@ -86,7 +86,27 @@ def rule_dip(c, n, drop_pct, stop_pct):
     return out
 
 
+def rule_swing(c, rise_pct, drop_pct):
+    """SWING: buy once price has risen rise_pct% from its lowest point;
+    sell once price has fallen drop_pct% from its highest point since buying."""
+    pos, low, high, out = 0, c[0][4], c[0][4], []
+    for x in c:
+        p = x[4]
+        if pos == 0:
+            low = min(low, p)
+            if p >= low * (1 + rise_pct / 100):
+                pos, high = 1, p
+        else:
+            high = max(high, p)
+            if p <= high * (1 - drop_pct / 100):
+                pos, low = 0, p
+        out.append(pos)
+    return out
+
+
 RULES = {
+    "swing":    (rule_swing,    {"rise_pct": [0.5, 1, 1.5, 2, 3, 4, 5, 7, 10],
+                                 "drop_pct": [0.5, 1, 1.5, 2, 3, 4, 5, 7, 10]}),
     "trend":    (rule_trend,    {"fast": [6, 12, 24], "slow": [24, 48, 96, 168]}),
     "breakout": (rule_breakout, {"enter_n": [24, 48, 96], "exit_n": [12, 24, 48]}),
     "dip":      (rule_dip,      {"n": [12, 24, 48], "drop_pct": [3, 5, 8], "stop_pct": [8, 15]}),
