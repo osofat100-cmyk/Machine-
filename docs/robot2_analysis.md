@@ -151,3 +151,29 @@ $1,000 on 25 Jun 20:38, memory empty, to 20 Nov:
 
 Kelly put in 1% on most buys: accuracy pooled over all waiting times stayed close to 50%, which
 Kelly treats as no edge.
+
+## Which part of robot 2 helps or hurts (`ablation.py`)
+
+Each run switches one part off; all start 25 Jun with $1,000 and no data.
+
+| Robot 2 | Buys | Nov 20 (100% per buy) | Oct 1 – Nov 20 | From 21 Sep | Nov 20 (Kelly) |
+|---|---|---|---|---|---|
+| Everything on | 17 | $3,279 | $1,006 | +35% | $1,090 |
+| Timing machines off (newest pick every minute) | 19 | $4,356 | $1,166 | +52% | $1,161 |
+| Library off | 17 | $5,962 | $1,140 | +48% | $1,325 |
+| Accuracy judged after 3 days only | 17 | $3,279 | $1,006 | +35% | $1,274 |
+| Just holding | | $2,749 | $1,536 | +118% | |
+
+The library and the timing machines each lowered the result. Judging accuracy at one waiting time
+instead of all 14 changed only how much Kelly put in, not when the robot traded.
+
+## Compared with public professional methods (`benchmarks.py`)
+
+| Method | Nov 20 | Oct 1 – Nov 20 | Worst drop |
+|---|---|---|---|
+| Wells Fargo style: 3% in PEARL, rebalanced monthly | $1,080 | $1,011 | 5% |
+| Institutional trend-following, 10% risk target | $1,139 | $993 | 4% |
+| Grayscale-style 50-day average rule | $4,869 | $1,251 | 48% |
+| Robot 2, Kelly risk | $1,090 | $1,002 | 24% |
+| Robot 2, 100% per buy | $3,279 | $1,001 | 55% |
+| Just holding PEARL | $2,725 | $1,552 | 69% |
