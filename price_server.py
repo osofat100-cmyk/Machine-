@@ -91,6 +91,7 @@ def main():
 
     class Handler(BaseHTTPRequestHandler):
         protocol_version = "HTTP/1.1"
+        disable_nagle_algorithm = True      # send each answer at once (no 40 ms wait per minute)
 
         def do_GET(self):
             u = urlparse(self.path)
