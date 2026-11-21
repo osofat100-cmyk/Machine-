@@ -28,11 +28,12 @@ When & Step & Uses \\
 every minute & 1. price numbers $U, D, R$ and cost $\kappa$ & the last 4 hours of prices \\
 every minute & 2. every setting's own account trades & step 1 \\
 every hour & 3. the watcher checks for a trajectory change & hourly prices \\
-every hour & 4. the 100 lines update their memory & steps 2 and 3 \\
+every hour & 4. the 100 lines update their memory, with the library & steps 2 and 3 \\
 every hour & 5. each line picks its best setting & step 4 \\
 every hour & 6. each line's accuracy is updated & step 5, outcomes already known \\
 every hour & 7. the robot chooses which line to follow & step 6 \\
-every minute & 8. the robot buys or sells, with its risk & steps 1, 5, 6, 7 \\
+every minute & 8. the 1,440 timing machines take that line's setting & steps 2, 7 \\
+every minute & 9. the robot buys or sells, with its risk & steps 1, 6, 8 \\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -104,9 +105,18 @@ with $G = \ln V_t - \ln V_{\tau'}$ (the new trajectory's growth so far),
 \]
 $p = 100\%$ never forgets ($\Sigma = \ln V_t/1000$); $p = 1\%$ almost fully resets.
 
+\textbf{The library.} Every finished trajectory $i$ is saved with its growth per setting
+$\Lambda_i(\theta)$, its direction $\mu_i$ and instability $\sigma_i$. The 3 past trajectories most
+similar to the current one (all of them during its first 12 hours) get extra weight $w$, which fades
+as the current trajectory grows ($n$ = hours of data):
+\[
+\Sigma'_p(\theta) = \Sigma_p(\theta) + w \sum_{i \in \text{similar}} \Lambda_i(\theta),
+\qquad w = \max\!\Big(0,\ 1 - \frac{n_{\text{current}}}{n_{\text{similar}}}\Big).
+\]
+
 \section{Each line's pick (every hour)}
 
-Line $p$'s landscape is $L_p(\theta) = 1000\,e^{\Sigma_p(\theta)}$, smoothed over neighbouring settings
+Line $p$'s landscape is $L_p(\theta) = 1000\,e^{\Sigma'_p(\theta)}$, smoothed over neighbouring settings
 with a bell curve about $1\%$ wide:
 \[
 \widetilde L_p = K_s\, L_p\, K_b^{\top},\qquad
@@ -125,7 +135,8 @@ At minute $t$, using only picks with $\tau + H \le t$:
 a_p = \frac{\#\{y_p > 0\}}{\#\{y_p \ne 0\}},\qquad
 R_p = \frac{\text{average gain of the winners}}{\text{average loss of the losers}} .
 \]
-$H$ is one of 5, 15, 30 minutes, 1, 2, 4, 8, 12 hours, 1, 2, 3, 5, 7, 14 days (14 versions).
+Every pick is judged at all 14 waiting times $H$ = 5, 15, 30 minutes, 1, 2, 4, 8, 12 hours,
+1, 2, 3, 5, 7, 14 days, and $a_p$, $R_p$ count all of those judgements together.
 
 \section{Which line the robot follows (every hour)}
 
@@ -136,10 +147,20 @@ p^* = \text{middle of the biggest run of } \{p : a_p \ge \bar a\} .
 \]
 Before any accuracy is known, $p^* = 100\%$ (all lines are the same then anyway).
 
+\section{Update timing: the 1,440 timing machines (every minute)}
+
+Every minute the followed line's best setting is worked out again, $\theta_{p^*}(t)$. Timing machine
+$\Delta$ ($\Delta = 1, \dots, 1440$ minutes) takes that setting every $\Delta$ minutes and trades its own
+\$1{,}000 with it; $F_t(\Delta)$ is its money. The robot uses the timing in the middle of the biggest
+run of machines at or above the average,
+\[
+\Delta^*_t = \text{middle of the biggest run of } \{\Delta : F_t(\Delta) \ge \bar F_t\},
+\]
+and takes the setting machine $\Delta^*_t$ is currently using, $\theta^* = (b^*, s^*)$.
+
 \section{The robot's trades and risk (every minute)}
 
-The robot uses $\theta^* = (b^*, s^*) = \theta_{p^*}$ of the current hour and the same buy and sell
-signals as Section 2. On a buy it puts in a share $f$ of its money:
+The robot uses $\theta^* = (b^*, s^*)$ and the same buy and sell signals as Section 2. On a buy it puts in a share $f$ of its money:
 \[
 f = \begin{cases} \text{a fixed } 1\%,\dots,100\% \\[2pt]
 \text{Kelly: } a_{p^*} - \dfrac{1-a_{p^*}}{R_{p^*}}, \ \text{kept between } 1\% \text{ and } 100\%. \end{cases}
@@ -160,6 +181,8 @@ when a trajectory changed & watcher: $0.5$, $\eta = 14$, 12 hours \\
 each line's pick $\theta_p$ & $0.1\%$ setting steps; $1\%$ smoothing \\
 each line's accuracy $a_p$ and $R_p$ & the 100 values of $p$; the 14 values of $H$ \\
 which line to follow, $p^*$ & cost $0.2\% + 0.5\%$ \\
+the similar past trajectories and $w$ & 3 similar trajectories \\
+the update timing $\Delta^*$ & the 1,440 timings \\
 how much to put in (Kelly) & \\
 \bottomrule
 \end{tabular}
@@ -167,29 +190,29 @@ how much to put in (Kelly) & \\
 
 \section{Results: \$1{,}000 on 25 Jun, memory empty, to 20 Nov}
 
-Nothing below was chosen after seeing the results: each row is the average over all 14 values of $H$.
+One run of the whole robot (\texttt{python3 robot2.py}); the risk changes only how much each buy
+puts in, not when the robot buys or sells.
 
 \begin{center}
 \renewcommand{\arraystretch}{1.25}
-\begin{tabular}{@{}l r r@{}}
+\begin{tabular}{@{}l r r r@{}}
 \toprule
-Robot & 20 Nov (average over the 14 $H$) & lowest -- highest \\
+ & 20 Nov & 1 Oct -- 20 Nov & from 21 Sep \\
 \midrule
-Merged robot, Kelly risk & \$1{,}342 & \$1{,}086 -- \$1{,}727 \\
-Merged robot, risk 50\% & \$3{,}032 & \$2{,}464 -- \$3{,}605 \\
-Merged robot, risk 100\% & \$7{,}279 & \$4{,}675 -- \$10{,}281 \\
+Robot 2, Kelly risk (what it used) & \$1{,}090 & $\times$1.00 & $+5\%$ \\
+Robot 2, 50\% per buy & \$1{,}938 & $\times$1.01 & $+21\%$ \\
+Robot 2, 100\% per buy & \$3{,}279 & $\times$1.01 & $+35\%$ \\
 \midrule
-Just holding PEARL & \$2{,}832 & \\
+Just holding PEARL & \$2{,}749 & $\times$1.54 & $+118\%$ \\
 \bottomrule
 \end{tabular}
 \end{center}
-Until 21 Sep a typical minute of PEARL trading was \$5--13, so the robot's \$1{,}000 orders in those
-months could not really have filled at those prices. Most of each robot's gain came from then.
+Until 21 Sep a typical minute of PEARL trading was \$5--13, so \$1{,}000 orders in those months could
+not really have filled at those prices.
 
 \section*{Where the code is}
 
-\texttt{merge\_lines.py} runs Sections 1--8 on the history. \texttt{engine.py} runs Sections 1--3 and
-the live practice bot, \texttt{live\_machine.py}; the live bot still uses the older design (reset the
-data at a trajectory change) and moves to the merged design once it is chosen.
+\texttt{robot2.py} is the whole robot (Sections 1--9); \texttt{python3 robot2.py check} checks it.
+The live practice bot \texttt{live\_machine.py} runs the same class.
 
 \end{document}

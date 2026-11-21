@@ -127,3 +127,27 @@ a pick every line was below 50%: a "buy the crash" pick usually dips further fir
 - Kelly put in little money because accuracy was only 50–60%, so results stayed near $1,000.
 - Merging did better than resetting on the test (merged $1,045; keep 1% $804; the reset robot
   $652), but not better than holding or never resetting ($1,558).
+
+## Robot 2 with everything connected (`robot2.py`)
+
+One robot now holds all parts: the 100 lines, the trajectory library (similar past trajectories
+get extra weight that fades), accuracy judged at all 14 waiting times, the followed line, the
+1,440 timing machines, and Kelly risk. The live practice bot runs the same class.
+
+Checks (`python3 robot2.py check`), all pass: with the library off its 100 lines pick exactly what
+`merge_lines.py` picked (66,700 of 66,700); accuracy counted live equals accuracy rebuilt
+afterwards (444,747 judged picks); the per-minute pick equals a direct calculation; changing
+prices after a moment changes nothing before it; stop, save, reload and continue gives the same
+result.
+
+$1,000 on 25 Jun 20:38, memory empty, to 20 Nov:
+
+| | 20 Nov | 1 Oct – 20 Nov | from 21 Sep |
+|---|---|---|---|
+| Kelly risk (what it used) | $1,090 | ×1.00 | +5% |
+| 50% per buy | $1,938 | ×1.01 | +21% |
+| 100% per buy | $3,279 | ×1.01 | +35% |
+| Just holding | $2,749 | ×1.54 | +118% |
+
+Kelly put in 1% on most buys: accuracy pooled over all waiting times stayed close to 50%, which
+Kelly treats as no edge.

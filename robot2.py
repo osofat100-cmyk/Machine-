@@ -394,7 +394,7 @@ def run():
     thin = int(np.searchsorted(r.ts[:r.n], int(np.datetime64("2026-09-21", "m").astype(np.int64))))
     end, k0 = r.n - 1, WINDOW
     hold = lambda a, b: 1000 * r.cl[b] * (1 - r.kap[b]) / (r.cl[a] * (1 + r.kap[a]))
-    log(f"\nRobot 2, all parts connected: $1,000 on {np.datetime64(int(r.ts[k0]), 'D')}, memory empty")
+    log(f"\nRobot 2, all parts connected: $1,000 on {np.datetime64(int(r.ts[k0]), 'm')}, memory empty")
     log(f"{'risk':<22}{'20 Nov':>10}{'gain':>10}{'to 30 Sep':>11}{'1 Oct-20 Nov':>14}{'from 21 Sep':>13}")
     for name, f in (("Kelly (what it used)", None), ("100% per buy", 1.0), ("50% per buy", 0.5)):
         w, a, t = money_at(r, f, end), money_at(r, f, cut), money_at(r, f, thin)
