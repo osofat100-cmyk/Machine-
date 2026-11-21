@@ -1,0 +1,6 @@
+
+Rebalancing run started at 10/01/26 00:01:00
+
+Rebalancing run started at 10/01/26 00:01:00
+10/02/26 06:58:00	buy	1.14
+10/02/26 07:03:00	buy	1.14

@@ -289,3 +289,109 @@ ran TheoBrigitte NostalgiaForInfinityX3259 (strategies/nfix/NostalgiaForInfinity
 ran TheoBrigitte NostalgiaForInfinityX3468 (strategies/nfix/NostalgiaForInfinityX3468.py) 3 1074.17 9s
 ran TheoBrigitte NostalgiaForInfinityX4003 (strategies/nfix/NostalgiaForInfinityX4003.py) 4 1019.62 8s
 ran TheoBrigitte NostalgiaForInfinityX4113 (strategies/nfix/NostalgiaForInfinityX4113.py) 3 1074.17 10s
+ran TheoBrigitte NostalgiaForInfinityX4334 (strategies/nfix/NostalgiaForInfinityX4334.py) 1 925.04 9s
+ran TheoBrigitte NOTankAi_15 (strategies/notankai/NOTankAi_15.py) 42 7343.66 6s
+ran TheoBrigitte NOTankAi_15_Cleaned (strategies/notankai/NOTankAi_15_Cleaned.py) 42 7343.66 5s
+ran TheoBrigitte NOTankAi_15_Cleaned_v2 (strategies/notankai/NOTankAi_15_Cleaned_v2.py) 43 5727.36 4s
+failed TheoBrigitte NOTankAi_15_ali (strategies/notankai/NOTankAi_15_ali.py) None None ImportError: Short strategies cannot run in spot markets. Please make sure that this is the correct strategy and that yo
+ran TheoBrigitte NOTankAi_15 (strategies/notankai/dry-run/2024-09-07/NOTankAi_15.py) 42 7343.66 6s
+ran TheoBrigitte NOTankAi_15 (strategies/notankai/dry-run/2024-12-16/NOTankAi_15.py) 42 7343.66 7s
+ran TheoBrigitte NOTankAi_15 (strategies/notankai/dry-run/2024-12-30/NOTankAi_15.py) 42 7343.66 6s
+failed TheoBrigitte AlligatorStrategy (strategies/profiters/AlligatorStrategy.py) None None 2026-11-21 15:58:50,413 - freqtrade - ERROR - Impossible to load Strategy 'AlligatorStrategy'. This class does not exist
+ran TheoBrigitte BigTrader (strategies/profiters/BigTrader.py) 2 1068.78 4s
+failed TheoBrigitte CrossEMAStrategy (strategies/profiters/CrossEMAStrategy.py) None None 2026-11-21 15:58:57,056 - freqtrade - ERROR - Impossible to load Strategy 'CrossEMAStrategy'. This class does not exist 
+ran TheoBrigitte NormalizerStrategyHO2 (strategies/profiters/NormalizerStrategyHO2.py) 4 1010.91 4s
+ran TheoBrigitte SqueezeMomentum (strategies/profiters/SqueezeMomentum.py) 62 441.14 5s
+failed TheoBrigitte SupertrendStrategy (strategies/profiters/SupertrendStrategy.py) None None 2026-11-21 15:59:04,238 - freqtrade - ERROR - Impossible to load Strategy 'SupertrendStrategy'. This class does not exis
+failed TheoBrigitte TrixStrategy (strategies/profiters/TrixStrategy.py) None None 2026-11-21 15:59:07,683 - freqtrade - ERROR - Impossible to load Strategy 'TrixStrategy'. This class does not exist or c
+ran TheoBrigitte QuickBuyStrategy (strategies/quick_buy/quick_buy_strategy.py) 150 66.19 5s
+failed TheoBrigitte QuickAdapterV3 (strategies/quickadapter/QuickAdapterV3.py) None None 2026-11-21 15:59:10,997 - freqtrade - ERROR - Timeframe needs to be set in either configuration or as cli argument `--ti
+failed TheoBrigitte AdaptiveRenkoStrategy (strategies/renko/AdaptiveRenkoStrategy.py) None None 2026-11-21 15:59:15,882 - freqtrade - ERROR - Impossible to load Strategy 'AdaptiveRenkoStrategy'. This class does not e
+ran TheoBrigitte Rsiqui (strategies/rsiqui/Rsiqui.py) 67 879.83 5s
+failed TheoBrigitte RsiquiV2 (strategies/rsiqui/RsiquiV2.py) None None ImportError: Short strategies cannot run in spot markets. Please make sure that this is the correct strategy and that yo
+failed TheoBrigitte RsiquiV2_protections (strategies/rsiqui/RsiquiV2_protections.py) None None ImportError: Short strategies cannot run in spot markets. Please make sure that this is the correct strategy and that yo
+failed TheoBrigitte RsiquiV5 (strategies/rsiqui/RsiquiV5.py) None None ImportError: Short strategies cannot run in spot markets. Please make sure that this is the correct strategy and that yo
+ran TheoBrigitte RsiquiV5_long_only (strategies/rsiqui/RsiquiV5_long_only.py) 13 1024.1 5s
+failed TheoBrigitte RsiquiV5 (strategies/rsiqui/RsiquiV5_protections.py) None None ImportError: Short strategies cannot run in spot markets. Please make sure that this is the correct strategy and that yo
+ran TheoBrigitte Rsiqui_protections (strategies/rsiqui/Rsiqui_protections.py) 67 879.83 5s
+ran TheoBrigitte Simple (strategies/simple/Simple.py) 126 222.53 5s
+failed TheoBrigitte slownsteady (strategies/slownsteady/slownsteady_v2.py) None None TypeError: NDFrame.fillna() got an unexpected keyword argument 'method'
+ran TheoBrigitte NotAnotherSMAOffSetStrategy_V2 (strategies/smas/NotAnotherSMAOffSetStrategy_V2.py) 4 916.43 5s
+ran TheoBrigitte NotAnotherSMAOffSetStrategy_V2_protections (strategies/smas/NotAnotherSMAOffSetStrategy_V2_protections.py) 4 916.43 7s
+ran TheoBrigitte NotAnotherSMAOffsetStrategyHOv3 (strategies/smas/NotAnotherSMAOffsetStrategyHOv3_b.py) 19 868.97 6s
+ran TheoBrigitte NotAnotherSMAOffsetStrategyHOv3_protections (strategies/smas/NotAnotherSMAOffsetStrategyHOv3_b_protections.py) 19 868.97 6s
+ran TheoBrigitte NotAnotherSMAOffsetStrategyLite (strategies/smas/NotAnotherSMAOffsetStrategyLite.py) 34 672.08 5s
+ran TheoBrigitte NotAnotherSMAOffsetStrategyLite_protections (strategies/smas/NotAnotherSMAOffsetStrategyLite_protections.py) 34 672.08 5s
+ran TheoBrigitte NotAnotherSMAOffsetStrategyModHO (strategies/smas/NotAnotherSMAOffsetStrategyModHO.py) 33 582.73 6s
+ran TheoBrigitte NotAnotherSMAOffsetStrategyModHO_protections (strategies/smas/NotAnotherSMAOffsetStrategyModHO_protections.py) 33 582.73 5s
+ran TheoBrigitte NotAnotherSMAOffsetStrategy_uzi (strategies/smas/NotAnotherSMAOffsetStrategy_uzi.py) 21 899.68 5s
+ran TheoBrigitte NotAnotherSMAOffsetStrategy_uzi3 (strategies/smas/NotAnotherSMAOffsetStrategy_uzi3.py) 30 781.45 5s
+ran TheoBrigitte NotAnotherSMAOffsetStrategy_uzi3_protections (strategies/smas/NotAnotherSMAOffsetStrategy_uzi3_protections.py) 30 781.45 5s
+ran TheoBrigitte NotAnotherSMAOffsetStrategy_uzi_protections (strategies/smas/NotAnotherSMAOffsetStrategy_uzi_protections.py) 21 899.68 5s
+ran TheoBrigitte SMAOffsetProtectOptV0 (strategies/smas/SMAOffsetProtectOptV0.py) 10 1062.32 5s
+ran TheoBrigitte SMAOffsetProtectOptV0_protections (strategies/smas/SMAOffsetProtectOptV0_protections.py) 10 1062.32 5s
+ran TheoBrigitte SMAOffsetProtectOptV1 (strategies/smas/SMAOffsetProtectOptV1.py) 11 980.1 5s
+ran TheoBrigitte SMAOffsetProtectOptV1HO1 (strategies/smas/SMAOffsetProtectOptV1HO1.py) 46 623.52 5s
+ran TheoBrigitte SMAOffsetProtectOptV1HO1_protections (strategies/smas/SMAOffsetProtectOptV1HO1_protections.py) 46 623.52 5s
+ran TheoBrigitte SMAOffsetProtectOptV1Mod2 (strategies/smas/SMAOffsetProtectOptV1Mod2_antipump.py) 9 1052.64 5s
+ran TheoBrigitte SMAOffsetProtectOptV1Mod2_antipump (strategies/smas/SMAOffsetProtectOptV1Mod2_antipump.py) 9 1052.64 5s
+ran TheoBrigitte SMAOffsetProtectOptV1Mod2_protections (strategies/smas/SMAOffsetProtectOptV1Mod2_antipump_protections.py) 9 1052.64 5s
+ran TheoBrigitte SMAOffsetProtectOptV1Mod2_antipump_protections (strategies/smas/SMAOffsetProtectOptV1Mod2_antipump_protections.py) 9 1052.64 6s
+ran TheoBrigitte SMAOffsetProtectOptV1_protections (strategies/smas/SMAOffsetProtectOptV1_protections.py) 11 980.1 5s
+ran TheoBrigitte SMAOffsetV2 (strategies/smas/SMAOffsetV2.py) 20 909.01 5s
+ran TheoBrigitte SMAOffsetV2_protections (strategies/smas/SMAOffsetV2_protections.py) 20 909.01 5s
+ran TheoBrigitte SMAOffset_Hippocritical_dca (strategies/smas/SMAOffset_Hippocritical_dca.py) 2 1003.72 6s
+ran TheoBrigitte SMAOffset_Hippocritical_dca_leverage (strategies/smas/SMAOffset_Hippocritical_dca_leverage.py) 2 1003.72 5s
+ran TheoBrigitte SMAOffset_Hippocritical_dca_leverage_protections (strategies/smas/SMAOffset_Hippocritical_dca_leverage_protections.py) 2 1003.72 5s
+ran TheoBrigitte SMAOffset_Hippocritical_dca_old (strategies/smas/SMAOffset_Hippocritical_dca_old.py) 2 1003.72 5s
+ran TheoBrigitte SMAOffset_Hippocritical_dca_old_protections (strategies/smas/SMAOffset_Hippocritical_dca_old_protections.py) 2 1003.72 5s
+ran TheoBrigitte SMAOffset_Hippocritical_dca_protections (strategies/smas/SMAOffset_Hippocritical_dca_protections.py) 2 1003.72 6s
+ran TheoBrigitte SMAOffset_Hippocritical_dca_protections2 (strategies/smas/SMAOffset_Hippocritical_dca_protections2.py) 2 1003.38 5s
+ran TheoBrigitte SMAOffset_Hippocritical_dca_protections_obf (strategies/smas/SMAOffset_Hippocritical_dca_protections_obf.py) 2 1006.6 5s
+ran TheoBrigitte NotAnotherSMAOffsetStrategyHOv3 (strategies/smas/dry-run/2025-01-24/NotAnotherSMAOffsetStrategyHOv3_b.py) 19 868.97 5s
+ran TheoBrigitte SMAOffset_Hippocritical_dca_leverage (strategies/smas/dry-run/2025-01-29/SMAOffset_Hippocritical_dca_leverage.py) 2 1003.72 6s
+ran TheoBrigitte SMAOffset_Hippocritical_dca (strategies/smas/dry-run/2025-02-28/overbuy/SMAOffset_Hippocritical_dca.py) 2 1008.48 7s
+ran TheoBrigitte SMAOffset_Hippocritical_dca (strategies/smas/dry-run/2025-02-28/trailing5/SMAOffset_Hippocritical_dca.py) 2 1003.72 7s
+ran TheoBrigitte SMAOffset_Hippocritical_dca (strategies/smas/dry-run/2025-03-07/SMAOffset_Hippocritical_dca.py) 2 1003.72 6s
+ran TheoBrigitte SMAOffset_Hippocritical_dca (strategies/smas/dry-run/2025-05-25/binance/SMAOffset_Hippocritical_dca.py) 2 1003.72 5s
+ran TheoBrigitte SMAOffset_Hippocritical_dca (strategies/smas/dry-run/2025-05-25/kucoin/SMAOffset_Hippocritical_dca.py) 2 1003.72 5s
+ran TheoBrigitte SMAOffset_Hippocritical_dca (strategies/smas/dry-run/2026-08-14/joyboy/SMAOffset_Hippocritical_dca.py) 2 1003.72 5s
+ran TheoBrigitte SMAOffset_Hippocritical_dca (strategies/smas/dry-run/2026-08-14/magicboy/SMAOffset_Hippocritical_dca.py) 2 1003.72 5s
+ran TheoBrigitte SMAOffset_Hippocritical_dca (strategies/smas/dry-run/2026-08-14/warboy/SMAOffset_Hippocritical_dca.py) 2 1003.72 6s
+ran TheoBrigitte BinMfiBTCv5003 (strategies/sponsors/BinMfiBTCv5003.py) 4 1044.88 6s
+ran TheoBrigitte CombinedBinHAndClucHyper (strategies/sponsors/CombinedBinHAndClucHyper.py) 47 992.76 7s
+failed TheoBrigitte zorkv7_0_0 (strategies/sponsors/zorkv7_0_0.py) None None 2026-11-21 16:01:36,166 - freqtrade - ERROR - Impossible to load Strategy 'zorkv7_0_0'. This class does not exist or con
+ran TheoBrigitte SqueezeMomentum (strategies/squeezemomentum/SqueezeMomentum.py) 65 335.01 5s
+ran TheoBrigitte StarRise (strategies/starrise/StarRise.py) 7 1047.6 6s
+ran TheoBrigitte StarRise_strat (strategies/starrise/StarRise_V2.py) 7 875.28 7s
+ran TheoBrigitte StarRise_V2 (strategies/starrise/StarRise_V2.py) 7 875.28 7s
+ran TheoBrigitte StarRise_strat3 (strategies/starrise/StarRise_V3.py) 11 790.86 10s
+<unknown>:48: SyntaxWarning: invalid escape sequence '\ '
+<unknown>:39: SyntaxWarning: invalid escape sequence '\ '
+<unknown>:48: SyntaxWarning: invalid escape sequence '\ '
+ran TheoBrigitte StarRise_V3 (strategies/starrise/StarRise_V3.py) 11 790.86 9s
+<unknown>:38: SyntaxWarning: invalid escape sequence '\ '
+<unknown>:39: SyntaxWarning: invalid escape sequence '\ '
+ran TheoBrigitte Tank1Modulus (strategies/tank/Tank1Modulus.py) 2 1091.55 12s
+<unknown>:38: SyntaxWarning: invalid escape sequence '\ '
+ran TheoBrigitte Tank5ModulusDCA (strategies/tank/Tank5ModulusDCA.py) 34 1165.18 32s
+ran TheoBrigitte Tank5ModulusDCAV3 (strategies/tank/Tank5ModulusDCAV3.py) 35 1900.25 80s
+failed TheoBrigitte FixedRiskRewardLoss (strategies/test/FixedRiskRewardLoss.py) None None 2026-11-21 16:02:33,701 - freqtrade - ERROR - Timeframe needs to be set in either configuration or as cli argument `--ti
+failed TheoBrigitte TrendFollowingStrategy (strategies/trendfollowing/TrendFollowingStrategy.py) None None ImportError: Short strategies cannot run in spot markets. Please make sure that this is the correct strategy and that yo
+failed TheoBrigitte new_turtle (strategies/turtle/new_turtle.py) None None TypeError: Invalid value 'False' for dtype 'float64'
+failed TheoBrigitte new_turtle_roi (strategies/turtle/new_turtle_roi.py) None None 2026-11-21 16:02:50,086 - freqtrade - ERROR - Impossible to load Strategy 'new_turtle_roi'. This class does not exist or
+ran TheoBrigitte twinturboV8 (strategies/twinturbov8/twinturboV8.py) 1 1030.19 5s
+ran TheoBrigitte twinturboV8_2 (strategies/twinturbov8/twinturboV8_2.py) 1 1030.23 6s
+ran TheoBrigitte VolatilitySystem (strategies/volatility/VolatilitySystem.py) 2 739.77 6s
+failed TheoBrigitte VolatilitySystemV2 (strategies/volatility/VolatilitySystemV2.py) None None ImportError: Short strategies cannot run in spot markets. Please make sure that this is the correct strategy and that yo
+ran TheoBrigitte VVW (strategies/vvw/vvw.py) 50 620.3 7s
+ran TheoBrigitte TRIWAVE (strategies/wave/TRIWAVE.py) 14 0.0 6s
+ran TheoBrigitte dualwave (strategies/wave/dualwave.py) 15 792.3 8s
+failed TheoBrigitte WTX3 (strategies/wtx3/scalpv3.py) None None ImportError: Short strategies cannot run in spot markets. Please make sure that this is the correct strategy and that yo
+failed TheoBrigitte simple_patterns (strategies/yodo/simple_patterns.py) None None 2026-11-21 16:03:39,986 - freqtrade - ERROR - Impossible to load Strategy 'simple_patterns'. This class does not exist o
+ran nateemma OversoldReversion (Reversion/OversoldReversion.py) 0 1000.0 4s
+failed nateemma CryptoFrog (reference/CryptoFrog.py) None None 2026-11-21 16:03:44,977 - freqtrade - ERROR - Impossible to load Strategy 'CryptoFrog'. This class does not exist or con
+failed nateemma MacheteV8b (reference/MacheteV8b.py) None None 2026-11-21 16:03:47,489 - freqtrade - ERROR - Impossible to load Strategy 'MacheteV8b'. This class does not exist or con
+failed nateemma BuyRegions (TSPredict/BuyRegions.py) None None 2026-11-21 16:03:52,541 - freqtrade - ERROR - Impossible to load Strategy 'BuyRegions'. This class does not exist or con
+failed nateemma TriggerOnlyStrategy (SimpleStrategies/TriggerOnly.py) None None 2026-11-21 16:03:54,872 - freqtrade - ERROR - Impossible to load Strategy 'TriggerOnlyStrategy'. This class does not exi
+failed nateemma BaseStrategy (Framework/BaseStrategy.py) None None 2026-11-21 16:04:00,759 - freqtrade - ERROR - Impossible to load Strategy 'BaseStrategy'. This class does not exist or c

@@ -1,0 +1,54 @@
+{
+    "config": {
+        "crypto-currencies": {
+            "PEARL": {
+                "enabled": true,
+                "pairs": [
+                    "PEARL/USDT"
+                ]
+            }
+        },
+        "distribution": "default",
+        "exchanges": {
+            "bigone": {
+                "enabled": true,
+                "exchange-type": "spot"
+            }
+        },
+        "trader": {
+            "enabled": false,
+            "load-trade-history": false
+        },
+        "trader-simulator": {
+            "enabled": true,
+            "fees": {
+                "maker": 0.7,
+                "taker": 0.7
+            },
+            "starting-portfolio": {
+                "USDT": 1000,
+                "PEARL": 0
+            }
+        },
+        "trading": {
+            "reference-market": "USDT",
+            "risk": 0.5
+        }
+    },
+    "profile": {
+        "auto_update": false,
+        "avatar": "default_profile.png",
+        "complexity": 1,
+        "description": "Simple DCA (Dollar cost averaging) is a profile that can help you lower the amount you pay for investments and minimize risk. Instead of purchasing investments at a single price point, with dollar cost averaging you buy in smaller amounts at regular intervals, regardless of price. Over the long term, dollar cost averaging can help lower your investment costs and boost your returns.",
+        "extra_backtesting_time_frames": [],
+        "hidden": false,
+        "id": "contest_simple_dca",
+        "imported": false,
+        "name": "contest simple_dca",
+        "origin_url": null,
+        "read_only": false,
+        "risk": 1,
+        "slug": "",
+        "type": "live"
+    }
+}
