@@ -12,3 +12,4 @@
 **/lookahead/
 **/*.feather
 **/*.json.gz
+freqtrade_community/runs/
