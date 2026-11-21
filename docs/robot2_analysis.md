@@ -162,10 +162,16 @@ Each run switches one part off; all start 25 Jun with $1,000 and no data.
 | Timing machines off (newest pick every minute) | 19 | $4,356 | $1,166 | +52% | $1,161 |
 | Library off | 17 | $5,962 | $1,140 | +48% | $1,325 |
 | Accuracy judged after 3 days only | 17 | $3,279 | $1,006 | +35% | $1,274 |
+| Library off + timing off | 21 | $7,543 | $1,154 | +50% | $1,362 |
 | Just holding | | $2,749 | $1,536 | +118% | |
 
 The library and the timing machines each lowered the result. Judging accuracy at one waiting time
 instead of all 14 changed only how much Kelly put in, not when the robot traded.
+
+With both off, the whole-period result was the highest ($7,543), but most of that came before
+21 Sep, when the market was too thin to fill $1,000 orders. On the unseen Oct–Nov stretch it made
+$1,154 per $1,000: about the same as either part off alone, below the Grayscale-style 50-day rule
+($1,251) and below holding ($1,536).
 
 ## Compared with public professional methods (`benchmarks.py`)
 

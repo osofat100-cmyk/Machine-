@@ -72,10 +72,16 @@ def main():
         print(f"{name:<48}{o['buys']:>6}{f'${w:,.0f}':>15}{f'${te:,.0f}':>9}{f'{aft:+.0f}%':>13}{f'${o['kelly'][0]:,.0f}':>16}")
     h = [hold(WINDOW, n - 1), hold(cut, n - 1), (hold(thin, n - 1) / 1000 - 1) * 100]
     print(f"{'just holding':<48}{'':>6}{f'${h[0]:,.0f}':>15}{f'${h[1]:,.0f}':>9}{f'{h[2]:+.0f}%':>13}")
+    old = {}                                    # keep rows from earlier runs of other variants
+    if os.path.exists("data/ablation.csv"):
+        with open("data/ablation.csv", newline="") as f:
+            old = {r[0]: r for r in list(csv.reader(f))[1:] if r and r[0] != "just holding"}
+    old.update({r[0]: r for r in rows})
+    order = ["everything on"] + [v[0] for v in VARIANTS]
     with open("data/ablation.csv", "w", newline="") as f:
         w_ = csv.writer(f)
         w_.writerow(["robot", "buys", "nov20_full_risk_$", "oct_nov_per_1000_$", "from_21sep_%", "nov20_kelly_$"])
-        w_.writerows(rows)
+        w_.writerows(sorted(old.values(), key=lambda r: order.index(r[0]) if r[0] in order else len(order)))
         w_.writerow(["just holding", "", round(h[0]), round(h[1]), round(h[2]), ""])
 
 
