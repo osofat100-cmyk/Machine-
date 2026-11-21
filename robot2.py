@@ -33,7 +33,7 @@ from engine import (AT_LOW, BORROW, DELTAS, FEE, HALF_GAP, K_WOBBLE, MIN_HOURS, 
 
 KEEP = np.arange(1, 101) / 100.0
 HORIZONS = [5, 15, 30, 60, 120, 240, 480, 720, 1440, 2880, 4320, 7200, 10080, 20160]   # minutes
-SNAP_HOURS = 96
+SNAP_HOURS = 72
 LN1000 = math.log(1000.0)
 
 
@@ -63,7 +63,7 @@ class Robot2:
         self.hk, self.hc, self.r = [], [], []
         self.lnv_last = np.full(self.N, LN1000)          # ln value of every setting at the last hour
         self.snap = {}                                   # hour -> ln values (recent hours only)
-        self.start_lnv = np.full(self.N, LN1000, np.float32)
+        self.start_lnv = np.full(self.N, LN1000)
         self.start = self.i = 0
         self.W = self.Sp = self.Sm = 0.0
         self.zW = self.zP = self.zM = 0
@@ -263,7 +263,7 @@ class Robot2:
         lnv = np.log(self.book.value(self.cl[k - 1], self.kap[k - 1]))
         self.sig += lnv - self.lnv_last
         self.lnv_last = lnv
-        self.snap[j] = lnv.astype(np.float32)
+        self.snap[j] = lnv.copy()
         for old in [h for h in self.snap if h < j - SNAP_HOURS]:
             del self.snap[old]
         if len(self.hc) >= 2:
@@ -306,7 +306,7 @@ class Robot2:
     def _change(self, ns):
         """Trajectory [start, ns) has ended. Save it; the 100 lines keep p of the older data."""
         rr = np.array(self.r[self.start:ns])
-        lnv_ns = self._snap_at(ns).astype(np.float64)
+        lnv_ns = self._snap_at(ns)
         self.library.append({"a": self.start, "b": ns, "hours": ns - self.start, "detected": len(self.r),
                              "mu": float(rr.mean()), "sd": float(rr.std(ddof=1)),
                              "lnV": (lnv_ns - self.start_lnv).astype(np.float32)})
@@ -315,7 +315,7 @@ class Robot2:
         self.start = self.i = ns
         self.W = self.Sp = self.Sm = 0.0
         self.zW = self.zP = self.zM = ns
-        self.start_lnv = lnv_ns.astype(np.float32)
+        self.start_lnv = lnv_ns.copy()
 
     def _refresh_borrow(self):
         lib = self.library
