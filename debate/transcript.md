@@ -136,3 +136,63 @@ My pick stays hammertoe/crypto_balancer only if Agent 4 shows CCXT in its code. 
 Agent 6, you said you'd keep crypto_balancer "only if... CCXT in its code". It's there.
 
 **I'm switching to hammertoe/crypto_balancer.** It's confirmed config-only. With OctoBot, we still don't know whether it can hold a 20/80 USD leg.
+
+### Agent 5 - round 3
+Agent 2 and Agent 6: your per-trade math assumes full stake every trade ("ln 2.17 / 813", "over 1,100% of cost on the stake"). Freqle used 100 USDT stakes on a 1,000 USDT wallet, so it's ~1.4% per trade on the stake, not 0.1%. But that doesn't save my pick. That edge came from 33 deep majors at 0.2% cost, and nobody found a single live result on a thin coin. Agent 1 confirmed Coinbase is "possible, both untested" in Freqtrade. That's one more unknown.
+
+Agent 3, you settled the open question: crypto_balancer "Requires-Dist: ccxt", exchange via getattr(ccxt, name), --valuebase settable to USD, dry-run default, backtester included. That makes it the only config-only pick here that trades rarely. I'm switching.
+
+VOTE: hammertoe/crypto_balancer (pip crypto-balancer 3.1.1) | strategy/setting: threshold rebalance, 20% PEARL / 80% stable | changes user must approve: config.ini exchange (bigone or coinbase), targets PEARL 20 / USDT (or USD) 80, threshold value, --valuebase USD on Coinbase; run through our sealed one-minute test first | confidence: low
+
+### Agent 1 - round 3
+Agent 3, you wrote crypto_balancer has "Requires-Dist: ccxt", opens the exchange with "getattr(ccxt, name)", and dry-run is the default. Agent 4 withdrew "Uses CCXT" because it had only seen a summary. Agent 3 read the package itself, so that settles it. My condition was a 20/80 split with a USD leg. crypto_balancer shows that (stablecoins sit in its targets). OctoBot Basket still doesn't. I switch.
+
+Agent 5, fair correction: 813 trades were spread over 33 pairs, about 25 per pair, not 813. My "0.001%" figure was wrong. The point stands that each trade costs us 4-7x what Freqle charged.
+
+Caveats: nobody has run it, the last release is about 2 years old with one maintainer (Agent 2), and its threshold is a distance across all targets (Agent 3's file), not a plain ±%. Feeding our sealed prices into its backtester may need a small adapter, which the user would have to approve.
+
+VOTE: hammertoe/crypto_balancer 3.1.1 | strategy/setting: threshold rebalance, PEARL 20 / USDT (USD on Coinbase) 80, wide threshold, dry-run | changes user must approve: config.ini only (exchange bigone or coinbase, targets PEARL:20 USDT:80, threshold), --valuebase USD on Coinbase, plus an adapter if needed for the sealed test | confidence: low
+
+### Agent 4 - round 3
+Agent 3, you wrote that the package "says `Requires-Dist: ccxt`" and opens the exchange with "`getattr(ccxt, name)`". That is direct evidence from the code, and it beats my snippet-only search. My round-2 conclusion was wrong. crypto_balancer does use CCXT, so it can reach both BigONE and Coinbase. Agent 6's condition is met.
+
+Agent 3 also wrote that the OctoBot basket still has "stablecoin as a weighted leg: still unconfirmed". So OctoBot can't be shown to do 20/80, and I am dropping it.
+
+Agent 5, I agree with running "a rebalancer side by side" with Freqtrade in the sealed test. But Freqle's 0.1%-per-side fee is 4-7x below ours, so I don't back Freqtrade as the pick.
+
+One caution: Agent 3's round-0 file says the threshold is "RMS distance from targets (sample 2.0)", not a plain drift %. The user should approve the exact number after the sealed test.
+
+VOTE: hammertoe/crypto_balancer (pip crypto-balancer 3.1.1) | strategy/setting: threshold rebalancing, targets PEARL 20 / USDT 80 on BigONE (USD 80 on Coinbase with --valuebase USD), dry-run first | changes user must approve: config.ini only (exchange section + API keys, targets, threshold value), no code edits | confidence: medium
+
+### Agent 6 - round 3
+Agent 1, your question: no. I grepped the anotherRebalancer files I fetched (api.py, rebalancer.py, README) for "dry", "test", "paper", "sandbox": zero hits. api.py line 104 calls `create_order` directly. It trades real money on first run. That is another reason to drop it, so your fallback to it doesn't hold.
+
+Agent 3: thank you. `Requires-Dist: ccxt`, `getattr(ccxt, name)`, `--valuebase` USD, stablecoin in the target list, dry-run by default, backtester included. That meets my condition. Agent 4 owned the error; Agent 3 settled it from the package itself.
+
+Agent 5: "whichever beats holding wins" is right. I'd add: run both through our sealed one-minute test, same $1,000, same costs. Agent 2's math stands, though: 0.1% edge per trade vs 0.85-1.4% cost.
+
+OctoBot basket stays unproven on a USD leg.
+
+VOTE: hammertoe/crypto_balancer (pip crypto-balancer 3.1.1) | strategy/setting: threshold rebalance PEARL 20% / stablecoin 80%, wide threshold, dry-run first | changes user must approve: config.ini exchange section (bigone or coinbase) + API keys, pair PEARL/USDT or PEARL/USD, targets 20/80, threshold value, --valuebase | confidence: low
+
+### Agent 3 - round 3
+No new search. I read more of the package I'd already downloaded. In v3.1.1, `portfolio.py` line 63 is `needs_balancing: balance_max_error > threshold`, where the error is each coin's distance from its target in percentage points. So `threshold = 15` with targets PEARL 20 / USDT 80 trades only when PEARL leaves 5%-35%. That's exactly the drift rule. My earlier "RMS" note came from an older changelog and is out of date.
+
+It runs once each time it's called, so it needs a schedule (cron, for example hourly). That's a setting, not a code change.
+
+Agent 5, you said "keep Freqtrade only if the sealed test runs it AND a rebalancer side by side". I agree. Your ~25 trades per pair at 1.4% is still ~35% of the stake in costs.
+
+Agent 6, thanks for checking anotherRebalancer's code. "USDT is hard coded" plus code-set weights rules it out.
+
+VOTE: hammertoe/crypto_balancer (pip install crypto-balancer 3.1.1) | strategy/setting: threshold rebalance, PEARL 20 / USDT (USD on Coinbase) 80, threshold 15, checked hourly, dry-run first | changes user must approve: config.ini (exchange bigone or coinbase, targets, threshold, API keys), --valuebase USD on Coinbase, an hourly cron schedule; no code edits | confidence: medium (config-only is confirmed; no track record; BigONE/Coinbase through CCXT untested)
+
+### Agent 2 - round 3
+Agent 4, my source: a web search result linking the ecosyste.ms repo page (https://repos.ecosyste.ms/hosts/GitHub/repositories/hammertoe/crypto_balancer), summarised as "depends on ccxt". That was a listing, not code. Agent 3 has now settled it with the package itself: "`Requires-Dist: ccxt`" and "`getattr(ccxt, name)`". No new search was needed.
+
+Agent 5, you're right and I was wrong. My "0.1% per trade" assumed the whole wallet compounded. With flat 100 USDT stakes, your "+1.44% net per trade" is the right reading. But that edge was earned "on 33 deep-book majors", about 25 trades per pair, and it nets about 0.24% after BigONE's costs. That is too thin to trust on one thin coin.
+
+I agree with Agent 5's idea: the sealed test should run crypto_balancer and Freqtrade side by side, and whichever beats holding wins.
+
+Agent 6, thanks for reading the anotherRebalancer code. A min_volatility weighting and hard-coded USDT rule it out. I drop it.
+
+VOTE: hammertoe/crypto_balancer (pip crypto-balancer 3.1.1) | strategy/setting: threshold rebalancing, 20% PEARL / 80% stablecoin, wide threshold (about 15 points of drift, exact scale to check in code), dry-run first | changes user must approve: config.ini exchange section (bigone or coinbase), targets PEARL 20 / USDT or USD 80, threshold value, --valuebase USD on Coinbase; then our sealed one-minute test before any money | confidence: medium (it is the best fit; expected profit is low)
