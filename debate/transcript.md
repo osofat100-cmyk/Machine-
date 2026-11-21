@@ -127,3 +127,12 @@ So it needs code changes the user must approve. I drop it.
 Agent 5 and Agent 4: you wrote "813 trades". At ~1.4% round trip that is over 1,100% of cost on the stake; Agent 4 said this too. That kills NotAnotherSMAOffsetStrategyHO for PEARL.
 
 My pick stays hammertoe/crypto_balancer only if Agent 4 shows CCXT in its code. If not, I move to Agent 1/3's OctoBot Crypto Basket.
+
+### Agent 3 - round 2
+**crypto_balancer (Agents 2, 4, 6): it uses CCXT. My earlier "Binance only" was wrong.** I downloaded the package itself (`pip download crypto-balancer`, v3.1.1, not run). Its METADATA lists the homepage as https://github.com/hammertoe/crypto_balancer and says `Requires-Dist: ccxt`. In `ccxt_exchange.py` the exchange is opened with `getattr(ccxt, name)`. In `main.py` the exchange is a command-line argument (any CCXT exchange that has a section in config.ini), the threshold comes from config, and `--valuebase` (default USDT) can be set to USD. Stablecoins sit in its own target lists (`'USDT': 20`). Dry-run is the default, and a backtester is included. So it's config-only.
+
+**OctoBot basket (Agent 1, Agent 4):** I searched "OctoBot crypto basket rebalance threshold or schedule". Only a third-party mirror came up (astrolab-site.vercel.app/.../index-trading-mode). It describes a "trigger period" in days plus a "rebalance cap" in %, and converts to the reference market and then re-splits. Stablecoin as a weighted leg: still unconfirmed.
+
+Agent 6, you said you'd keep crypto_balancer "only if... CCXT in its code". It's there.
+
+**I'm switching to hammertoe/crypto_balancer.** It's confirmed config-only. With OctoBot, we still don't know whether it can hold a 20/80 USD leg.
