@@ -108,6 +108,7 @@ async def run(name, config):
     res = await engine.run_backtesting(config, START, END, backtesting_resolution="1m", trade_cost=0.007)
     r = res["results"]
     shorts = max([x["short_amount"] for x in res["position_held_timeseries"]] or [0.0])
+    longs = max([x["long_amount"] for x in res["position_held_timeseries"]] or [0.0])
     filled = [e for e in res["executors"] if e.filled_amount_quote > 0]
     raw = 1000 + float(r["net_pnl_quote"])
     end = max(0.0, raw)  # the engine keeps sizing from the fixed 1,000 budget; below 0 = account wiped out
@@ -115,6 +116,9 @@ async def run(name, config):
             f"close types {dict(r['close_types'])}")
     if raw < 0:
         note += f"; engine total {raw:,.2f} (losses larger than the account: wiped out, recorded as 0)"
+    note += f"; peak PEARL held {longs:,.2f} USDT"
+    if longs > 1000:
+        note += " (MORE than the 1,000 account: the engine checks no balance, so this result is not reachable on spot)"
     if shorts > 0:
         note += f"; position went short up to {shorts:.2f} USDT"
     print(f"{name:<34} filled executors {len(filled):>5}  end ${end:,.2f}  ({time.time() - t0:.0f}s)  {note}",
@@ -167,7 +171,10 @@ BB2_ARGS = ("3m", 100, 2.0, 0.0, 1.0, 1, 0.03, 0.02, 2700, 300)
 
 
 async def main():
+    only = sys.argv[1:]  # optional: names (prefix match) to run
     for name, make in configs():
+        if only and not any(name.startswith(o) for o in only):
+            continue
         try:
             trades, end, note = await run(name, make())
             sealed.record("Hummingbot 20261118 V2 controller", name, "B", trades, end, "ran", note)

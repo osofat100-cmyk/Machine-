@@ -1,0 +1,11 @@
+[portfolio]
+exchange = "bigone"
+currency1 = "PEARL"
+currency2 = "USDT"
+base_currency = "USDT"
+
+[bigone]
+api_key = ""
+api_secret = ""
+balance_ratio = 0.2
+trigger_ratio = 0.05

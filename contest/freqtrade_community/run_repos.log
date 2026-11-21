@@ -266,3 +266,26 @@ failed TheoBrigitte TrailingBuyStrat (strategies/nasos/NASOSv5_mod3.py) None Non
 ran TheoBrigitte NASOSv4 (strategies/nasos/dry-run/2025-01-19/NASOSv4.py) 34 1070.96 5s
 ran TheoBrigitte NASOSv4 (strategies/nasos/dry-run/2025-04-15/binance/NASOSv4.py) 34 1070.96 5s
 ran TheoBrigitte NASOSv4 (strategies/nasos/dry-run/2025-04-15/kucoin/NASOSv4.py) 34 1070.96 5s
+ran TheoBrigitte NFI3 (strategies/nfix/NFI3.py) 15 1052.42 6s
+failed TheoBrigitte NostalgiaForInfinity772martinsk3 (strategies/nfix/NostalgiaForInfinity772martinsk3.py) None None NameError: name 'pta' is not defined. Did you mean: 'ta'? | on 2026.10: AttributeError: module 'numpy' has no attribute 
+ran TheoBrigitte NostalgiaForInfinityX (strategies/nfix/NostalgiaForInfinityX.py) 9 1088.78 12s
+ran TheoBrigitte NostalgiaForInfinityX13107 (strategies/nfix/NostalgiaForInfinityX13107.py) 7 1182.09 10s
+ran TheoBrigitte NostalgiaForInfinityX1337 (strategies/nfix/NostalgiaForInfinityX1337.py) 10 1183.14 9s
+ran TheoBrigitte NostalgiaForInfinityX2488 (strategies/nfix/NostalgiaForInfinityX2488.py) 5 1057.15 9s
+ran TheoBrigitte NostalgiaForInfinityX2616 (strategies/nfix/NostalgiaForInfinityX2616.py) 5 1028.94 10s
+ran TheoBrigitte NostalgiaForInfinityX2616_nosell (strategies/nfix/NostalgiaForInfinityX2616_nosell.py) 1 1406.27 18s
+ran TheoBrigitte NostalgiaForInfinityX2626 (strategies/nfix/NostalgiaForInfinityX2626.py) 5 1028.94 10s
+ran TheoBrigitte NostalgiaForInfinityX2640 (strategies/nfix/NostalgiaForInfinityX2640.py) 5 1028.94 10s
+ran TheoBrigitte NostalgiaForInfinityX3121 (strategies/nfix/NostalgiaForInfinityX3121.py) 5 1028.94 10s
+ran TheoBrigitte NostalgiaForInfinityX3182 (strategies/nfix/NostalgiaForInfinityX3182.py) 5 1028.94 9s
+ran TheoBrigitte NostalgiaForInfinityX3187 (strategies/nfix/NostalgiaForInfinityX3187.py) 5 1028.94 10s
+ran TheoBrigitte NostalgiaForInfinityX3199 (strategies/nfix/NostalgiaForInfinityX3199.py) 5 1028.94 9s
+ran TheoBrigitte NostalgiaForInfinityX3208 (strategies/nfix/NostalgiaForInfinityX3208.py) 5 1028.94 9s
+ran TheoBrigitte NostalgiaForInfinityX3211 (strategies/nfix/NostalgiaForInfinityX3211.py) 5 1028.94 9s
+ran TheoBrigitte NostalgiaForInfinityX3221 (strategies/nfix/NostalgiaForInfinityX3221.py) 5 1028.94 10s
+ran TheoBrigitte NostalgiaForInfinityX3243 (strategies/nfix/NostalgiaForInfinityX3243.py) 5 1028.94 9s
+ran TheoBrigitte NostalgiaForInfinityX3253 (strategies/nfix/NostalgiaForInfinityX3253.py) 7 1129.3 10s
+ran TheoBrigitte NostalgiaForInfinityX3259 (strategies/nfix/NostalgiaForInfinityX3259.py) 7 1129.3 10s
+ran TheoBrigitte NostalgiaForInfinityX3468 (strategies/nfix/NostalgiaForInfinityX3468.py) 3 1074.17 9s
+ran TheoBrigitte NostalgiaForInfinityX4003 (strategies/nfix/NostalgiaForInfinityX4003.py) 4 1019.62 8s
+ran TheoBrigitte NostalgiaForInfinityX4113 (strategies/nfix/NostalgiaForInfinityX4113.py) 3 1074.17 10s
