@@ -3,7 +3,8 @@
 Which part of robot 2 helps or hurts? Runs robot2.py with one part switched off at a time,
 each from 25 Jun with $1,000 and no data, and compares with everything on (data/robot2_run.npz).
 
-    python3 ablation.py          # -> data/ablation.csv
+    python3 ablation.py                   # all variants -> data/ablation.csv
+    python3 ablation.py "timing off"      # only variants whose name contains the text
 """
 import os
 os.environ.setdefault("OMP_NUM_THREADS", "1")
@@ -22,6 +23,7 @@ VARIANTS = [
     ("timing off (use the newest pick every minute)", {"adapt_interval": False, "fixed_interval": 1}),
     ("library off", {"borrow": False}),
     ("accuracy judged after 3 days only", {"judge": [4320]}),
+    ("library off + timing off", {"borrow": False, "adapt_interval": False, "fixed_interval": 1}),
 ]
 
 
@@ -47,9 +49,11 @@ def summarize(ts, fills, cl, kap, n):
 
 
 def main():
-    print(f"{len(VARIANTS)} runs", flush=True)
-    with mp.Pool(len(VARIANTS)) as pool:
-        res = dict(pool.map(run, VARIANTS))
+    import sys
+    pick = [v for v in VARIANTS if any(a in v[0] for a in sys.argv[1:])] or VARIANTS
+    print(f"{len(pick)} runs", flush=True)
+    with mp.Pool(len(pick)) as pool:
+        res = dict(pool.map(run, pick))
     z = np.load("data/robot2_run.npz")
     res = {"everything on": summarize(z["ts"], z["fills"].astype(object).tolist() and
                                       [[int(a), int(b), float(c)] for a, b, c in z["fills"]],
