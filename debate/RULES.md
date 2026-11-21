@@ -23,3 +23,5 @@ Append command (replace N and the text):
     ### Agent N - round R
     your message
     MSG
+
+7. If your own write to transcript.md is blocked, return your message text exactly. The coordinator pastes it unchanged under your heading, marked "(pasted by coordinator, write was blocked)".
