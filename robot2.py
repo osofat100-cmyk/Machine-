@@ -38,8 +38,12 @@ LN1000 = math.log(1000.0)
 
 
 class Robot2:
-    def __init__(self, eta=14.0, risk="kelly", borrow=True, buy_max=30.0, sell_max=50.0):
+    def __init__(self, eta=14.0, risk="kelly", borrow=True, buy_max=30.0, sell_max=50.0,
+                 adapt_interval=True, fixed_interval=1, judge=None):
+        # adapt_interval / fixed_interval / judge exist to switch parts off in tests
         self.eta, self.risk, self.borrow = float(eta), risk, borrow
+        self.adapt_interval, self.fixed_interval = adapt_interval, int(fixed_interval)
+        self.judge = list(HORIZONS if judge is None else judge)
         self.buy = np.round(np.arange(STEP, buy_max + 1e-9, STEP), 1)
         self.sell = np.round(np.arange(STEP, sell_max + 1e-9, STEP), 1)
         self.nb, self.ns = len(self.buy), len(self.sell)
@@ -73,7 +77,7 @@ class Robot2:
         # the 100 lines
         self.sig = np.zeros((len(KEEP), self.N))         # weighted ln growth per line and setting
         self.line_picks = []                             # per hour: setting index picked by each line
-        self.queue = {H: deque() for H in HORIZONS}      # picks waiting to be judged
+        self.queue = {H: deque() for H in self.judge}    # picks waiting to be judged
         self.pos, self.nz = np.zeros(len(KEEP)), np.zeros(len(KEEP))
         self.win, self.loss = np.zeros(len(KEEP)), np.zeros(len(KEEP))
         self.line = len(KEEP) - 1                        # followed line (index); 100% until accuracy exists
@@ -88,7 +92,7 @@ class Robot2:
         self.m_b, self.m_s = np.full(nd, np.nan), np.full(nd, np.nan)
         self.m_pb = self.m_ps = None
         self.F = np.full(nd, 1000.0)
-        self.interval = 1
+        self.interval = self.fixed_interval
 
         # the robot's own account
         self.cash, self.coins, self.pending, self.f_next = 1000.0, 0.0, None, 1.0
@@ -173,7 +177,7 @@ class Robot2:
 
     def _judge(self, k):
         """Picks whose waiting time ends now: did their setting make money?"""
-        for H in HORIZONS:
+        for H in self.judge:
             qd = self.queue[H]
             while qd and qd[0][0] <= k:
                 _, q, th, v0 = qd.popleft()
@@ -241,7 +245,7 @@ class Robot2:
             self.pending = None
         if k < WINDOW:
             return None
-        self.interval = safest(self.F)                   # F is from the minute before
+        self.interval = safest(self.F) if self.adapt_interval else self.fixed_interval
         b, s = self.m_b[self.interval - 1], self.m_s[self.interval - 1]
         self.setting = None if b != b else (float(b), float(s))
         holding = self.coins > 0
@@ -350,7 +354,7 @@ class Robot2:
         for q in np.flatnonzero(picks >= 0):
             th = int(picks[q])
             v0 = self._setting_value(th, t0)
-            for H in HORIZONS:
+            for H in self.judge:
                 self.queue[H].append((t0 + H, int(q), th, v0))
         if self.nz.any():
             a = np.where(self.nz > 0, self.pos / np.maximum(self.nz, 1), -1.0)
