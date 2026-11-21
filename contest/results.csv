@@ -1,0 +1,2 @@
+program,strategy,how,trades,end_value,status,note
+crypto_balancer 3.1.1,"PEARL 20 / USDT 80, threshold 15, hourly",A,1,1095.5,ran,"voted setting; live use needs 2 one-line fixes (BigONE None min, --valuebase ignored)"

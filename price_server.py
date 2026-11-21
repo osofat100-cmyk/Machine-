@@ -14,7 +14,7 @@ It hands them out one minute at a time, oldest first, and it is also the exchang
 
     GET /next?order=BUY&share=1.0      order: BUY, SELL or NONE
     GET /next?order=SELL&qty=12.5      with qty: buy or sell that many coins (capped by what the account has)
-      -> {"ts": minutes since 1970, "time", "high", "low", "close", "source", "value", "cash", "coins"}
+      -> {"ts": minutes since 1970, "time", "high", "low", "close", "source", "volume", "value", "cash", "coins"}
       -> {"done": true, "account": {...}} after the last minute
 """
 import argparse
@@ -37,6 +37,7 @@ class Exchange:
         self.ts = df["time"].values.astype("datetime64[m]").astype(np.int64).tolist()
         self.hi, self.lo, self.cl = (df[c].astype(float).tolist() for c in ("high", "low", "close"))
         self.src = df["source"].tolist()
+        self.vol = df["volume"].astype(float).tolist()
         self.k = -1
         self.seen = [-10 ** 9] * 10
         self.cash, self.coins = 1000.0, 0.0
@@ -86,7 +87,7 @@ class Exchange:
                                 "source": self.src[k], "cash": self.cash, "coins": self.coins})
         self.kap = kap
         return {"ts": self.ts[k], "time": self.time[k], "high": self.hi[k], "low": self.lo[k], "close": c,
-                "source": self.src[k], "value": value, "cash": self.cash, "coins": self.coins}
+                "source": self.src[k], "volume": self.vol[k], "value": value, "cash": self.cash, "coins": self.coins}
 
     def summary(self):
         k = self.k
