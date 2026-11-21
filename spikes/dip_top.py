@@ -9,6 +9,10 @@ Cost per side 0.7% (0.2% fee + 0.5% half gap); a decision on a minute's close fi
 
     python3 spikes/dip_top.py choose   -> spikes/dip_top_train.csv, spikes/dip_top_winner.json, spikes/dip_top_graph.png
     python3 spikes/dip_top.py test     -> spikes/dip_top_last_month.csv
+    python3 spikes/dip_top.py smooth   pick the middle of the highest AREA, not the highest single peak:
+                                       every pair scored by the average of all pairs within +-5% buy and +-5% sell
+                                       -> spikes/dip_top_smooth_winner.json, spikes/dip_top_smooth_graph.png
+    python3 spikes/dip_top.py test smooth  -> spikes/dip_top_smooth_last_month.csv
 """
 import csv
 import http.client
@@ -143,8 +147,59 @@ def choose():
     print("saved spikes/dip_top_graph.png")
 
 
+WINDOW = 5
+
+
+def smooth():
+    df = pd.read_csv(os.path.join(HERE, "dip_top_train.csv"))
+    grid_ = df.pivot(index="buy_after_fall_%", columns="sell_after_rise_%", values="training_$")
+    v = grid_.to_numpy()
+    n, m = v.shape
+    avg = np.empty_like(v)
+    for i in range(n):
+        for j in range(m):
+            avg[i, j] = v[max(0, i - WINDOW):i + WINDOW + 1, max(0, j - WINDOW):j + WINDOW + 1].mean()
+    i, j = np.unravel_index(np.argmax(avg), avg.shape)
+    x, y = int(grid_.index[i]), int(grid_.columns[j])
+    trades = int(df[(df["buy_after_fall_%"] == x) & (df["sell_after_rise_%"] == y)]["trades"].iloc[0])
+    win = {"x": x / 100, "y": y / 100, "area_average_$": round(float(avg[i, j]), 2),
+           "own_training_$": round(float(v[i, j]), 2), "training_trades": trades, "window": f"+-{WINDOW}%"}
+    with open(os.path.join(HERE, "dip_top_smooth_winner.json"), "w") as f:
+        json.dump(win, f, indent=2)
+    order = np.argsort(-avg, axis=None)[:10]
+    print(f"best areas (average of every pair within +-{WINDOW}% buy and +-{WINDOW}% sell):")
+    for k in order:
+        a, b = np.unravel_index(k, avg.shape)
+        print(f"  buy after {grid_.index[a]}% fall, sell after {grid_.columns[b]}% rise: area average "
+              f"${avg[a, b]:,.2f}, this pair alone ${v[a, b]:,.2f}")
+    print(f"winner (middle of the best area): buy after a {x}% fall, sell after a {y}% rise; area average "
+          f"${avg[i, j]:,.2f}, this pair alone ${v[i, j]:,.2f}, {trades} training trades")
+
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    X, Y = np.meshgrid(grid_.index.to_numpy(), grid_.columns.to_numpy(), indexing="ij")
+    fig = plt.figure(figsize=(20, 8.5))
+    for k, (z, title) in enumerate(((v, "Each pair alone (spiky = luck)"),
+                                    (avg, f"Area average, +-{WINDOW}% around each pair (the safe hill)")), 1):
+        ax = fig.add_subplot(1, 2, k, projection="3d")
+        ax.plot_surface(X, Y, z, cmap="viridis", linewidth=0, antialiased=True, alpha=0.95)
+        ax.scatter([x], [y], [z[i, j]], color="red", s=80, depthshade=False)
+        ax.set_xlabel("buy after PEARL falls this % from its top")
+        ax.set_ylabel("sell after PEARL rises this % above the buy")
+        ax.set_zlabel("\\$ at the end of the training months")
+        ax.set_title(title + f"\nred dot = chosen: buy after {x}% fall, sell after {y}% rise "
+                     f"(\\${z[i, j]:,.0f})")
+        ax.view_init(elev=30, azim=-125)
+    fig.suptitle("Training months 25 Jun - 21 Oct, $1,000 start".replace("$", "\\$"), fontsize=13)
+    fig.tight_layout(rect=(0, 0, 1, 0.95))
+    fig.savefig(os.path.join(HERE, "dip_top_smooth_graph.png"), dpi=110)
+    print("saved spikes/dip_top_smooth_graph.png")
+
+
 def test():
-    with open(os.path.join(HERE, "dip_top_winner.json")) as f:
+    tag = "_smooth" if "smooth" in sys.argv[2:] else ""
+    with open(os.path.join(HERE, f"dip_top{tag}_winner.json")) as f:
         w = json.load(f)
     robot, port = Robot(w["x"], w["y"]), 8792
     print(f"dip and top: buy after a {w['x']:.0%} fall from the top, sell after a {w['y']:.0%} rise; no stop-loss")
@@ -180,7 +235,7 @@ def test():
     still = f" (still holding {acct['coins']:,.2f} PEARL, valued at the last price)" if acct["coins"] > 0 else ""
     print(f"dip and top: $1,000 -> ${acct['value']:,.2f} after {len(acct['trades'])} trades{still}")
     print(f"just holding PEARL: $1,000 -> ${acct['holding']:,.2f}")
-    with open(os.path.join(HERE, "dip_top_last_month.csv"), "w", newline="") as f:
+    with open(os.path.join(HERE, f"dip_top{tag}_last_month.csv"), "w", newline="") as f:
         wr = csv.writer(f)
         wr.writerow(["time_utc", "action", "price", "account_$", "source"])
         for t in acct["trades"]:
@@ -190,4 +245,4 @@ def test():
 
 
 if __name__ == "__main__":
-    {"choose": choose, "test": test}[sys.argv[1]]()
+    {"choose": choose, "test": test, "smooth": smooth}[sys.argv[1]]()
