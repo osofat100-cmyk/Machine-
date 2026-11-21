@@ -1,2 +1,11 @@
 program,strategy,how,trades,end_value,status,note
 crypto_balancer 3.1.1,"PEARL 20 / USDT 80, threshold 15, hourly",A,1,1095.5,ran,"voted setting; live use needs 2 one-line fixes (BigONE None min, --valuebase ignored)"
+"CryptoTrade (Xtra-Computing, EMNLP 2024)",LLM reflection agent,none,,,cannot run here,needs paid OpenAI API key; backtest-only on BTC/ETH
+AI-Trader (HKUDS),LLM live benchmark,none,,,cannot run here,"needs paid OpenAI, Alpha Vantage and Jina keys"
+TradingAgents (TauricResearch),multi-agent LLM,none,,,cannot run here,needs paid LLM API key
+FS-ReasoningAgent (Persdre),LLM reasoning trader,none,,,cannot run here,needs paid LLM API key
+AgenticTrading (Open-Finance-Lab),LLM agent orchestration,none,,,cannot run here,needs paid LLM API key
+"TradingView Pine scripts (UT Bot, MACD+SMA200, Chandelier Exit, Heikin Ashi, SSL; Alorse 48, PineCryptoStrategies)",signals,none,,,cannot run here,run only inside TradingView; running elsewhere means rewriting them (a change the user must approve)
+"MQL5 EAs (Crypto Investor, Crypto Suite, BTC ANCHOR, Pac Man BTC)",expert advisors,none,,,cannot run here,"paid ($250-267), MetaTrader 5 only, BTC/ETH contracts, no PEARL"
+Cryptohopper / 3Commas / Stoic / Bitsgap / Pionex bots,hosted bots,none,,,cannot run here,"paid hosted services, closed code, need real exchange keys"
+"Telegram bots (Banana Gun, Maestro, Unibot, BonkBot, Trojan)",DEX sniping,none,,,cannot run here,DEX-only token sniping; PEARL test is CEX spot
