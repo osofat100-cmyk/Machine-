@@ -39,9 +39,11 @@ LN1000 = math.log(1000.0)
 
 class Robot2:
     def __init__(self, eta=14.0, risk="kelly", borrow=True, buy_max=30.0, sell_max=50.0,
-                 adapt_interval=True, fixed_interval=1, judge=None):
+                 adapt_interval=True, fixed_interval=1, judge=None,
+                 window=WINDOW, at_low=AT_LOW, near_high=NEAR_HIGH):
         # adapt_interval / fixed_interval / judge exist to switch parts off in tests
         self.eta, self.risk, self.borrow = float(eta), risk, borrow
+        self.window, self.at_low, self.near_high = int(window), float(at_low), float(near_high)
         self.adapt_interval, self.fixed_interval = adapt_interval, int(fixed_interval)
         self.judge = list(HORIZONS if judge is None else judge)
         self.buy = np.round(np.arange(STEP, buy_max + 1e-9, STEP), 1)
@@ -60,7 +62,7 @@ class Robot2:
         self.kap = np.full(cap, FEE + HALF_GAP)
         self.dec_seen = [-10 ** 9] * 10
         self.n = 0
-        self.book = Book(self.B, self.S)                 # one account per setting, never reset
+        self.book = Book(self.B, self.S, self.at_low, self.near_high)   # one account per setting, never reset
 
         # hours, watcher, library
         self.cur_hour = None
@@ -112,10 +114,11 @@ class Robot2:
                 setattr(self, name, new)
         self.ts[k], self.hi[k], self.lo[k], self.cl[k] = ts_min, high, low, close
         self.n = k + 1
-        if k >= WINDOW:
-            U = (close / self.lo[k - WINDOW + 1:k + 1].min() - 1) * 100
-            D = (1 - close / self.hi[k - WINDOW + 1:k + 1].max()) * 100
-            R = (close / self.cl[k - WINDOW] - 1) * 100
+        wn = self.window
+        if k >= wn:
+            U = (close / self.lo[k - wn + 1:k + 1].min() - 1) * 100
+            D = (1 - close / self.hi[k - wn + 1:k + 1].max()) * 100
+            R = (close / self.cl[k - wn] - 1) * 100
         else:
             U = D = R = math.nan
         self.U[k], self.D[k], self.R[k] = U, D, R
@@ -132,7 +135,7 @@ class Robot2:
 
         self.book.minute(close, U, D, R, kap)
         self._judge(k)
-        kr = k - WINDOW
+        kr = k - wn
         self._machines(kr, close, U, D, R, kap)
         action = self._robot(k, close, U, D, R, kap)
         self.pick = self._pick(close, kap)
@@ -142,6 +145,12 @@ class Robot2:
                              self.setting[1] if self.setting else math.nan,
                              self.line + 1, self.w, len(self.library), float(self.coins > 0)))
         return action
+
+    def __setstate__(self, st):                          # robots saved before these were settable
+        st.setdefault("window", WINDOW)
+        st.setdefault("at_low", AT_LOW)
+        st.setdefault("near_high", NEAR_HIGH)
+        self.__dict__.update(st)
 
     def value(self, c=None):
         c = self.cl[self.n - 1] if c is None else c
@@ -219,11 +228,11 @@ class Robot2:
             else:
                 self.m_b[upd], self.m_s[upd] = self.pick
         hold = self.m_coins > 0
-        if U <= AT_LOW:
+        if U <= self.at_low:
             m = ~hold & (self.m_b <= -R)
             if m.any():
                 self.m_pb = m
-        if D <= NEAR_HIGH:
+        if D <= self.near_high:
             m = hold & (self.m_s <= U)
             if m.any():
                 self.m_ps = m
@@ -243,7 +252,7 @@ class Robot2:
             self.trades.append((int(self.ts[k]), self.pending, c, self.value(c), self.setting, self.interval,
                                 self.f_next if self.pending == "BUY" else None))
             self.pending = None
-        if k < WINDOW:
+        if k < self.window:
             return None
         self.interval = safest(self.F) if self.adapt_interval else self.fixed_interval
         b, s = self.m_b[self.interval - 1], self.m_s[self.interval - 1]
@@ -251,10 +260,10 @@ class Robot2:
         holding = self.coins > 0
         if self.setting is None:
             pass
-        elif not holding and U <= AT_LOW and R <= -b:
+        elif not holding and U <= self.at_low and R <= -b:
             self.pending = "BUY"
             self.f_next = self.kelly(self.line) if self.risk == "kelly" else float(self.risk)
-        elif holding and D <= NEAR_HIGH and U >= s:
+        elif holding and D <= self.near_high and U >= s:
             self.pending = "SELL"
         return self.pending
 
@@ -396,7 +405,7 @@ def run():
     r = feed(Robot2(), df, log)
     cut = int(np.searchsorted(r.ts[:r.n], int(np.datetime64("2026-10-01", "m").astype(np.int64)))) - 1
     thin = int(np.searchsorted(r.ts[:r.n], int(np.datetime64("2026-09-21", "m").astype(np.int64))))
-    end, k0 = r.n - 1, WINDOW
+    end, k0 = r.n - 1, r.window
     hold = lambda a, b: 1000 * r.cl[b] * (1 - r.kap[b]) / (r.cl[a] * (1 + r.kap[a]))
     log(f"\nRobot 2, all parts connected: $1,000 on {np.datetime64(int(r.ts[k0]), 'm')}, memory empty")
     log(f"{'risk':<22}{'20 Nov':>10}{'gain':>10}{'to 30 Sep':>11}{'1 Oct-20 Nov':>14}{'from 21 Sep':>13}")
