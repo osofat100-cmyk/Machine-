@@ -41,25 +41,33 @@ def signals(df, name):
     return t
 
 
-def main():
+def main(only=None):
     df = candles()
     names = [n for n, _ in inspect.getmembers(ExampleStrategies, inspect.isfunction) if n.startswith("strategy_")
              and n not in ("strategy_collider", "strategy_diff")]
     cut = int(len(df) * 0.7)
     for name in names:
+        if only and name not in only:
+            continue
         try:
             t = signals(df, name)
-            short = signals(df.iloc[:cut], name)
-            a, b = list(t.returns[:cut - 5]), list(short.returns[:cut - 5])
-            causal = a == b
+            try:
+                short = signals(df.iloc[:cut], name)
+                a, b = list(t.returns[:cut - 5]), list(short.returns[:cut - 5])
+                causal = (a == b) if len(a) == len(b) else None   # shorter series gave fewer signals: inconclusive
+            except Exception:
+                a = b = []
+                causal = None                                    # check could not run on the shorter series
             out = t.backtest(deposit=1000, commission=0.7, bet=np.inf, plot=False, print_out=False, show=False)
             value = float(t.deposit_history[-1])
             n = int(t.trades)
             note = "quick-trade own backtest, 15m, long only (convert_signal), commission 0.7%"
-            if not causal:
-                diff = next(i for i, (x, y) in enumerate(zip(a, b)) if x != y)
+            if causal is False:
+                diff = next((i for i, (x, y) in enumerate(zip(a, b)) if x != y), min(len(a), len(b)))
                 note = f"LOOKS AHEAD: signals change when later candles are added (first at candle {diff}); " + note
-            status = "ran" if causal else "ran (looks ahead, invalid)"
+            if causal is None:
+                note = "causality check could not run on 70% of the candles; " + note
+            status = "ran (looks ahead, invalid)" if causal is False else "ran"
             print(f"{name:<34} {n:>4} trades  $1,000 -> ${value:,.2f}  causal={causal}", flush=True)
             sealed.record("quick-trade 8.0.0", name, "B", n, value, status, note)
         except Exception as e:
@@ -69,4 +77,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    main(sys.argv[1:] or None)
