@@ -1,0 +1,108 @@
+2026-11-21 15:31:08,732 - [bot_PEARL_USDT_BACKTEST_strategySIMPLE_GRID_spacingGEOMETRIC_size8_range0.2864-1.762_20261121_1531] root - INFO - Logging initialized. Log level: INFO
+2026-11-21 15:31:08,732 - [bot_PEARL_USDT_BACKTEST_strategySIMPLE_GRID_spacingGEOMETRIC_size8_range0.2864-1.762_20261121_1531] EventBus - INFO - Callback '_handle_stop_bot_event' subscribed to event: stop_bot
+2026-11-21 15:31:08,732 - [bot_PEARL_USDT_BACKTEST_strategySIMPLE_GRID_spacingGEOMETRIC_size8_range0.2864-1.762_20261121_1531] GridTradingBot - INFO - Starting Grid Trading Bot in backtest mode with strategy: simple_grid
+2026-11-21 15:31:08,735 - [bot_PEARL_USDT_BACKTEST_strategySIMPLE_GRID_spacingGEOMETRIC_size8_range0.2864-1.762_20261121_1531] EventBus - INFO - Callback '_handle_stop_event' subscribed to event: stop_bot
+2026-11-21 15:31:08,735 - [bot_PEARL_USDT_BACKTEST_strategySIMPLE_GRID_spacingGEOMETRIC_size8_range0.2864-1.762_20261121_1531] EventBus - INFO - Callback '_handle_stop' subscribed to event: stop_bot
+2026-11-21 15:31:08,735 - [bot_PEARL_USDT_BACKTEST_strategySIMPLE_GRID_spacingGEOMETRIC_size8_range0.2864-1.762_20261121_1531] GridManager - INFO - Grids and levels initialized. Central price: 0.7163680319675679
+2026-11-21 15:31:08,735 - [bot_PEARL_USDT_BACKTEST_strategySIMPLE_GRID_spacingGEOMETRIC_size8_range0.2864-1.762_20261121_1531] GridManager - INFO - Price grids: [0.2864, 0.3712718294096891, 0.4812945925740827, 0.6239215218923556, 0.8088145420427802, 1.0484987942646051, 1.3592111224876857, 1.7620000000000002]
+2026-11-21 15:31:08,735 - [bot_PEARL_USDT_BACKTEST_strategySIMPLE_GRID_spacingGEOMETRIC_size8_range0.2864-1.762_20261121_1531] GridManager - INFO - Buy grids: [0.2864, 0.3712718294096891, 0.4812945925740827, 0.6239215218923556]
+2026-11-21 15:31:08,735 - [bot_PEARL_USDT_BACKTEST_strategySIMPLE_GRID_spacingGEOMETRIC_size8_range0.2864-1.762_20261121_1531] GridManager - INFO - Sell grids: [0.8088145420427802, 1.0484987942646051, 1.3592111224876857, 1.7620000000000002]
+2026-11-21 15:31:08,735 - [bot_PEARL_USDT_BACKTEST_strategySIMPLE_GRID_spacingGEOMETRIC_size8_range0.2864-1.762_20261121_1531] GridManager - INFO - Grid levels: {0.2864: GridLevel(price=0.2864, state=READY_TO_BUY, num_orders=0, paired_buy_level=None), paired_sell_level=None), 0.3712718294096891: GridLevel(price=0.3712718294096891, state=READY_TO_BUY, num_orders=0, paired_buy_level=None), paired_sell_level=None), 0.4812945925740827: GridLevel(price=0.4812945925740827, state=READY_TO_BUY, num_orders=0, paired_buy_level=None), paired_sell_level=None), 0.6239215218923556: GridLevel(price=0.6239215218923556, state=READY_TO_BUY, num_orders=0, paired_buy_level=None), paired_sell_level=None), 0.8088145420427802: GridLevel(price=0.8088145420427802, state=READY_TO_SELL, num_orders=0, paired_buy_level=None), paired_sell_level=None), 1.0484987942646051: GridLevel(price=1.0484987942646051, state=READY_TO_SELL, num_orders=0, paired_buy_level=None), paired_sell_level=None), 1.3592111224876857: GridLevel(price=1.3592111224876857, state=READY_TO_SELL, num_orders=0, paired_buy_level=None), paired_sell_level=None), 1.7620000000000002: GridLevel(price=1.7620000000000002, state=READY_TO_SELL, num_orders=0, paired_buy_level=None), paired_sell_level=None)}
+2026-11-21 15:31:08,735 - [bot_PEARL_USDT_BACKTEST_strategySIMPLE_GRID_spacingGEOMETRIC_size8_range0.2864-1.762_20261121_1531] OrderStatusTracker - INFO - OrderStatusTracker has started tracking open orders.
+2026-11-21 15:31:08,736 - [bot_PEARL_USDT_BACKTEST_strategySIMPLE_GRID_spacingGEOMETRIC_size8_range0.2864-1.762_20261121_1531] BacktestExchangeService - INFO - Loading OHLCV data from file: data/PEARL_USDT_1m_sealed.csv
+2026-11-21 15:31:08,766 - [bot_PEARL_USDT_BACKTEST_strategySIMPLE_GRID_spacingGEOMETRIC_size8_range0.2864-1.762_20261121_1531] BacktestGridStrategy - INFO - Starting backtest simulation
+2026-11-21 15:31:08,775 - [bot_PEARL_USDT_BACKTEST_strategySIMPLE_GRID_spacingGEOMETRIC_size8_range0.2864-1.762_20261121_1531] BacktestGridStrategy - INFO - Current price 1.2214 is within the grid range. Will perform initial purchase
+2026-11-21 15:31:08,775 - [bot_PEARL_USDT_BACKTEST_strategySIMPLE_GRID_spacingGEOMETRIC_size8_range0.2864-1.762_20261121_1531] InitialPurchase - INFO - Performing initial crypto purchase: 204.68315048305223 at price 1.2214.
+2026-11-21 15:31:08,776 - [bot_PEARL_USDT_BACKTEST_strategySIMPLE_GRID_spacingGEOMETRIC_size8_range0.2864-1.762_20261121_1531] BalanceTracker - INFO - Updated balances. Fiat balance: 750.0, Crypto balance: 203.25036843, Total base balance: 817.29981988
+2026-11-21 15:31:08,776 - [bot_PEARL_USDT_BACKTEST_strategySIMPLE_GRID_spacingGEOMETRIC_size8_range0.2864-1.762_20261121_1531] InitialPurchase - INFO - Initial crypto purchase completed. Order details: Order(id=backtest-0, status=OrderStatus.CLOSED, type=OrderType.MARKET, side=OrderSide.BUY, price=1.2214, average=1.2214, amount=204.68315048305223, filled=204.68315048305223, remaining=0, timestamp=1790812800000, datetime=2026-10-01T00:00:00, symbol=PEARL/USDT, time_in_force=GTC, trades=None, fee=None, cost=None)
+2026-11-21 15:31:08,776 - [bot_PEARL_USDT_BACKTEST_strategySIMPLE_GRID_spacingGEOMETRIC_size8_range0.2864-1.762_20261121_1531] BacktestGridStrategy - INFO - Initial purchase done, will initialize grid orders
+2026-11-21 15:31:08,776 - [bot_PEARL_USDT_BACKTEST_strategySIMPLE_GRID_spacingGEOMETRIC_size8_range0.2864-1.762_20261121_1531] BalanceTracker - INFO - Reserved 29.259333551673805 fiat for a buy order. Remaining fiat balance: 720.74066645.
+2026-11-21 15:31:08,776 - [bot_PEARL_USDT_BACKTEST_strategySIMPLE_GRID_spacingGEOMETRIC_size8_range0.2864-1.762_20261121_1531] GridManager - INFO - Buy order placed and marked as pending at grid level 0.2864.
+2026-11-21 15:31:08,776 - [bot_PEARL_USDT_BACKTEST_strategySIMPLE_GRID_spacingGEOMETRIC_size8_range0.2864-1.762_20261121_1531] BalanceTracker - INFO - Reserved 37.93004991284299 fiat for a buy order. Remaining fiat balance: 682.81061654.
+2026-11-21 15:31:08,776 - [bot_PEARL_USDT_BACKTEST_strategySIMPLE_GRID_spacingGEOMETRIC_size8_range0.2864-1.762_20261121_1531] GridManager - INFO - Buy order placed and marked as pending at grid level 0.3712718294096891.
+2026-11-21 15:31:08,776 - [bot_PEARL_USDT_BACKTEST_strategySIMPLE_GRID_spacingGEOMETRIC_size8_range0.2864-1.762_20261121_1531] BalanceTracker - INFO - Reserved 49.17024797745123 fiat for a buy order. Remaining fiat balance: 633.64036856.
+2026-11-21 15:31:08,776 - [bot_PEARL_USDT_BACKTEST_strategySIMPLE_GRID_spacingGEOMETRIC_size8_range0.2864-1.762_20261121_1531] GridManager - INFO - Buy order placed and marked as pending at grid level 0.4812945925740827.
+2026-11-21 15:31:08,776 - [bot_PEARL_USDT_BACKTEST_strategySIMPLE_GRID_spacingGEOMETRIC_size8_range0.2864-1.762_20261121_1531] BalanceTracker - INFO - Reserved 63.74136843266894 fiat for a buy order. Remaining fiat balance: 569.89900013.
+2026-11-21 15:31:08,776 - [bot_PEARL_USDT_BACKTEST_strategySIMPLE_GRID_spacingGEOMETRIC_size8_range0.2864-1.762_20261121_1531] GridManager - INFO - Buy order placed and marked as pending at grid level 0.6239215218923556.
+2026-11-21 15:31:08,776 - [bot_PEARL_USDT_BACKTEST_strategySIMPLE_GRID_spacingGEOMETRIC_size8_range0.2864-1.762_20261121_1531] BalanceTracker - INFO - Reserved 102.16247748489458 crypto for a sell order. Remaining crypto balance: 101.08789095.
+2026-11-21 15:31:08,776 - [bot_PEARL_USDT_BACKTEST_strategySIMPLE_GRID_spacingGEOMETRIC_size8_range0.2864-1.762_20261121_1531] GridManager - INFO - Sell order placed and marked as pending at grid level 1.3592111224876857.
+2026-11-21 15:31:08,776 - [bot_PEARL_USDT_BACKTEST_strategySIMPLE_GRID_spacingGEOMETRIC_size8_range0.2864-1.762_20261121_1531] BalanceTracker - INFO - Reserved 101.08788995 crypto for a sell order. Remaining crypto balance: 0.00000100.
+2026-11-21 15:31:08,776 - [bot_PEARL_USDT_BACKTEST_strategySIMPLE_GRID_spacingGEOMETRIC_size8_range0.2864-1.762_20261121_1531] GridManager - INFO - Sell order placed and marked as pending at grid level 1.7620000000000002.
+2026-11-21 15:31:08,832 - [bot_PEARL_USDT_BACKTEST_strategySIMPLE_GRID_spacingGEOMETRIC_size8_range0.2864-1.762_20261121_1531] OrderSimulator - INFO - Simulated fill for SELL order at price 1.3592111224876857 with amount 102.16247748489458. Filled at timestamp 2026-10-07 14:59:00
+2026-11-21 15:31:08,832 - [bot_PEARL_USDT_BACKTEST_strategySIMPLE_GRID_spacingGEOMETRIC_size8_range0.2864-1.762_20261121_1531] BalanceTracker - INFO - Sell order completed: 102.16247748489458 crypto sold at 1.3592111224876857.
+2026-11-21 15:31:08,832 - [bot_PEARL_USDT_BACKTEST_strategySIMPLE_GRID_spacingGEOMETRIC_size8_range0.2864-1.762_20261121_1531] BalanceTracker - INFO - Updated balances. Fiat balance: 887.88835307, Crypto balance: 101.08789095, Total base balance: 754.32588936
+2026-11-21 15:31:08,832 - [bot_PEARL_USDT_BACKTEST_strategySIMPLE_GRID_spacingGEOMETRIC_size8_range0.2864-1.762_20261121_1531] OrderManager - INFO - Sell order completed at grid level GridLevel(price=1.3592111224876857, state=WAITING_FOR_SELL_FILL, num_orders=1, paired_buy_level=None), paired_sell_level=None).
+2026-11-21 15:31:08,832 - [bot_PEARL_USDT_BACKTEST_strategySIMPLE_GRID_spacingGEOMETRIC_size8_range0.2864-1.762_20261121_1531] GridManager - INFO - Sell order completed at grid level 1.3592111224876857. Transitioning to READY_TO_SELL.
+2026-11-21 15:31:08,832 - [bot_PEARL_USDT_BACKTEST_strategySIMPLE_GRID_spacingGEOMETRIC_size8_range0.2864-1.762_20261121_1531] GridManager - INFO - No free buy level for the proceeds of sell level 1.3592111224876857; they stay in fiat.
+2026-11-21 15:31:08,885 - [bot_PEARL_USDT_BACKTEST_strategySIMPLE_GRID_spacingGEOMETRIC_size8_range0.2864-1.762_20261121_1531] OrderSimulator - INFO - Simulated fill for SELL order at price 1.7620000000000002 with amount 101.08788995. Filled at timestamp 2026-10-13 14:44:00
+2026-11-21 15:31:08,885 - [bot_PEARL_USDT_BACKTEST_strategySIMPLE_GRID_spacingGEOMETRIC_size8_range0.2864-1.762_20261121_1531] BalanceTracker - INFO - Sell order completed: 101.08788995 crypto sold at 1.7620000000000002.
+2026-11-21 15:31:08,885 - [bot_PEARL_USDT_BACKTEST_strategySIMPLE_GRID_spacingGEOMETRIC_size8_range0.2864-1.762_20261121_1531] BalanceTracker - INFO - Updated balances. Fiat balance: 1064.75839713, Crypto balance: 1e-06, Total base balance: 604.2896702
+2026-11-21 15:31:08,885 - [bot_PEARL_USDT_BACKTEST_strategySIMPLE_GRID_spacingGEOMETRIC_size8_range0.2864-1.762_20261121_1531] OrderManager - INFO - Sell order completed at grid level GridLevel(price=1.7620000000000002, state=WAITING_FOR_SELL_FILL, num_orders=1, paired_buy_level=None), paired_sell_level=None).
+2026-11-21 15:31:08,886 - [bot_PEARL_USDT_BACKTEST_strategySIMPLE_GRID_spacingGEOMETRIC_size8_range0.2864-1.762_20261121_1531] GridManager - INFO - Sell order completed at grid level 1.7620000000000002. Transitioning to READY_TO_SELL.
+2026-11-21 15:31:08,886 - [bot_PEARL_USDT_BACKTEST_strategySIMPLE_GRID_spacingGEOMETRIC_size8_range0.2864-1.762_20261121_1531] GridManager - INFO - No free buy level for the proceeds of sell level 1.7620000000000002; they stay in fiat.
+2026-11-21 15:31:09,241 - [bot_PEARL_USDT_BACKTEST_strategySIMPLE_GRID_spacingGEOMETRIC_size8_range0.2864-1.762_20261121_1531] BacktestGridStrategy - INFO - Ending backtest simulation
+2026-11-21 15:31:09,258 - [bot_PEARL_USDT_BACKTEST_strategySIMPLE_GRID_spacingGEOMETRIC_size8_range0.2864-1.762_20261121_1531] TradingPerformanceAnalyzer - INFO - 
+Formatted Orders:
+| Order Side   | Type   | Status   |   Price |   Quantity | Timestamp           | Grid Level         | Slippage   |
+|:-------------|:-------|:---------|--------:|-----------:|:--------------------|:-------------------|:-----------|
+| BUY          | MARKET | CLOSED   | 1.2214  |    204.683 | 2026-10-01T00:00:00 | N/A                | N/A        |
+| SELL         | LIMIT  | CLOSED   | 1.35921 |    102.162 | 2026-10-07T14:59:00 | 1.3592111224876857 | 0.00%      |
+| SELL         | LIMIT  | CLOSED   | 1.762   |    101.088 | 2026-10-13T14:44:00 | 1.7620000000000002 | 0.00%      |
+2026-11-21 15:31:09,258 - [bot_PEARL_USDT_BACKTEST_strategySIMPLE_GRID_spacingGEOMETRIC_size8_range0.2864-1.762_20261121_1531] TradingPerformanceAnalyzer - INFO - 
+Performance Summary:
++---------------------------+---------------------+
+| Metric                    | Value               |
++===========================+=====================+
+| Pair                      | PEARL/USDT          |
++---------------------------+---------------------+
+| Start Date                | 2026-10-01 00:00:00 |
++---------------------------+---------------------+
+| End Date                  | 2026-11-20 23:59:00 |
++---------------------------+---------------------+
+| Duration                  | 50 days 23:59:00    |
++---------------------------+---------------------+
+| ROI                       | 6.48%               |
++---------------------------+---------------------+
+| Max Drawdown              | 6.22%               |
++---------------------------+---------------------+
+| Max Drawdown Duration     | 38 days 09:16:00    |
++---------------------------+---------------------+
+| Max Runup                 | 12.20%              |
++---------------------------+---------------------+
+| Time in Profit %          | 88.33%              |
++---------------------------+---------------------+
+| Time in Loss %            | 11.67%              |
++---------------------------+---------------------+
+| Buy and Hold Return %     | 49.65%              |
++---------------------------+---------------------+
+| Grid Trading Gains        | 64.76               |
++---------------------------+---------------------+
+| Unrealized PnL            | 0.00                |
++---------------------------+---------------------+
+| Total Fees                | 3.97                |
++---------------------------+---------------------+
+| Final Balance (Fiat)      | 1064.76             |
++---------------------------+---------------------+
+| Final Crypto Balance      | 0.0000 PEARL        |
++---------------------------+---------------------+
+| Final Crypto Value (Fiat) | 0.00 USDT           |
++---------------------------+---------------------+
+| Remaining Fiat Balance    | 1064.76 USDT        |
++---------------------------+---------------------+
+| Number of Buy Trades      | 1                   |
++---------------------------+---------------------+
+| Number of Sell Trades     | 2                   |
++---------------------------+---------------------+
+| Sharpe Ratio              | 1.51                |
++---------------------------+---------------------+
+| Sortino Ratio             | 2.15                |
++---------------------------+---------------------+
+2026-11-21 15:31:09,258 - [bot_PEARL_USDT_BACKTEST_strategySIMPLE_GRID_spacingGEOMETRIC_size8_range0.2864-1.762_20261121_1531] EventBus - INFO - Callback '_handle_stop_event' unsubscribed from event: stop_bot
+2026-11-21 15:31:09,258 - [bot_PEARL_USDT_BACKTEST_strategySIMPLE_GRID_spacingGEOMETRIC_size8_range0.2864-1.762_20261121_1531] EventBus - INFO - Callback '_handle_stop' unsubscribed from event: stop_bot
+2026-11-21 15:31:09,258 - [bot_PEARL_USDT_BACKTEST_strategySIMPLE_GRID_spacingGEOMETRIC_size8_range0.2864-1.762_20261121_1531] EventBus - INFO - Shutting down EventBus...
+2026-11-21 15:31:09,258 - [bot_PEARL_USDT_BACKTEST_strategySIMPLE_GRID_spacingGEOMETRIC_size8_range0.2864-1.762_20261121_1531] EventBus - INFO - EventBus shutdown complete.
+2026-11-21 15:31:09,259 - [-] root - INFO - Shutting down bot and cleaning up tasks...
+2026-11-21 15:31:09,259 - [-] root - INFO - Tasks to cancel: 1
+2026-11-21 15:31:09,259 - [-] root - INFO - Task to cancel: <Task pending name='Task-3' coro=<OrderStatusTracker._track_open_order_statuses() running at /home/user/Machine-/contest/grid_dca/downloads/grid_trading_bot/src/grid_trading_bot/core/order_handling/order_status_tracker.py:74> wait_for=<Future pending cb=[Task.task_wakeup()]>> - Done: False - Cancelled: False
+2026-11-21 15:31:09,259 - [bot_PEARL_USDT_BACKTEST_strategySIMPLE_GRID_spacingGEOMETRIC_size8_range0.2864-1.762_20261121_1531] OrderStatusTracker - INFO - OrderStatusTracker monitoring task was cancelled.
+2026-11-21 15:31:09,259 - [-] root - INFO - All tasks have completed.

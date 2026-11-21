@@ -1,0 +1,58 @@
+{
+  "max_open_trades": 1,
+  "stake_currency": "USDT",
+  "stake_amount": "unlimited",
+  "tradable_balance_ratio": 1.0,
+  "dry_run": true,
+  "dry_run_wallet": 1000,
+  "trading_mode": "spot",
+  "margin_mode": "",
+  "unfilledtimeout": {
+    "entry": 10,
+    "exit": 10,
+    "exit_timeout_count": 0,
+    "unit": "minutes"
+  },
+  "entry_pricing": {
+    "price_side": "other",
+    "use_order_book": false,
+    "order_book_top": 1,
+    "price_last_balance": 0.0,
+    "check_depth_of_market": {
+      "enabled": false,
+      "bids_to_ask_delta": 1
+    }
+  },
+  "exit_pricing": {
+    "price_side": "other",
+    "use_order_book": false,
+    "order_book_top": 1
+  },
+  "exchange": {
+    "name": "bigone",
+    "key": "",
+    "secret": "",
+    "ccxt_config": {
+      "validateServerSsl": "/root/.ccr/ca-bundle.crt"
+    },
+    "ccxt_async_config": {
+      "cafile": "/root/.ccr/ca-bundle.crt"
+    },
+    "pair_whitelist": [
+      "PEARL/USDT"
+    ],
+    "pair_blacklist": []
+  },
+  "pairlists": [
+    {
+      "method": "StaticPairList"
+    }
+  ],
+  "dataformat_ohlcv": "feather",
+  "datadir": "user_data/data/bigone",
+  "user_data_dir": "user_data",
+  "internals": {
+    "process_throttle_secs": 5
+  },
+  "bot_name": "contest"
+}
