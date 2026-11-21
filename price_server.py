@@ -100,8 +100,9 @@ class Exchange:
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--port", type=int, default=8765)
+    ap.add_argument("--file", default=SEALED, help="sealed price file to hand out")
     a = ap.parse_args()
-    ex = Exchange(SEALED)
+    ex = Exchange(a.file)
 
     class Handler(BaseHTTPRequestHandler):
         protocol_version = "HTTP/1.1"
