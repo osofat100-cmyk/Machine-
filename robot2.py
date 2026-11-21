@@ -84,6 +84,7 @@ class Robot2:
         self.win, self.loss = np.zeros(len(KEEP)), np.zeros(len(KEEP))
         self.line = len(KEEP) - 1                        # followed line (index); 100% until accuracy exists
         self.M = np.ones(self.N, np.float32)             # landscape = M x current account values
+        self.Mbig_i, self.Mbig = np.empty(0, np.int64), np.empty(0)   # M too big for float32, kept in float64
         self.mdirty = True
         self.SA = self.SB = None
         self.pick = None
@@ -150,6 +151,8 @@ class Robot2:
         st.setdefault("window", WINDOW)
         st.setdefault("at_low", AT_LOW)
         st.setdefault("near_high", NEAR_HIGH)
+        st.setdefault("Mbig_i", np.empty(0, np.int64))
+        st.setdefault("Mbig", np.empty(0))
         self.__dict__.update(st)
 
     def value(self, c=None):
@@ -176,10 +179,16 @@ class Robot2:
         """Best setting of the followed line, now: smoothed  M x (each setting's account value)."""
         bk = self.book
         if bk.dirty or self.mdirty:
-            A = (np.where(bk.hold, 0.0, bk.cash) * self.M).astype(np.float32)
-            Bm = (np.where(bk.hold, bk.coins, 0.0) * self.M).astype(np.float32)
+            cash, coins = np.where(bk.hold, 0.0, bk.cash), np.where(bk.hold, bk.coins, 0.0)
+            A, Bm = cash * self.M, coins * self.M
+            if self.Mbig_i.size:
+                i = self.Mbig_i
+                A[i], Bm[i] = cash[i] * self.Mbig, coins[i] * self.Mbig
+            A, Bm = A.astype(np.float32), Bm.astype(np.float32)
             self.SA = self.Ks @ A.reshape(self.ns, self.nb) @ self.KbT
             self.SB = self.Ks @ Bm.reshape(self.ns, self.nb) @ self.KbT
+            if not (np.isfinite(self.SA).all() and np.isfinite(self.SB).all()):
+                raise FloatingPointError(f"landscape not finite at minute {self.n - 1}")
             bk.dirty = self.mdirty = False
         th = self._top(self.SA + np.float32(c * (1 - kap)) * self.SB)
         return None if th < 0 else (float(self.B[th]), float(self.S[th]))
@@ -369,7 +378,11 @@ class Robot2:
             a = np.where(self.nz > 0, self.pos / np.maximum(self.nz, 1), -1.0)
             self.line = safest(a) - 1
         extra = 0.0 if self.w == 0 else self.w * self.bsum
-        self.M = np.exp(LN1000 + self.sig[self.line] + extra - self.lnv_last).astype(np.float32)
+        e = LN1000 + self.sig[self.line] + extra - self.lnv_last
+        big = e > 88.0                     # exp(88.7) is the largest float32; a setting that lost almost
+        self.Mbig_i = np.flatnonzero(big)  # everything has a huge M and a tiny account: keep M in float64
+        self.Mbig = np.exp(np.minimum(e[big], 700.0))
+        self.M = np.exp(np.where(big, 0.0, e)).astype(np.float32)
         self.mdirty = True
         self.pick = self._pick(self.cl[k - 1], self.kap[k - 1])
 

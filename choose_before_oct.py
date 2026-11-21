@@ -27,6 +27,7 @@ os.environ.setdefault("OPENBLAS_NUM_THREADS", "1")
 
 import csv
 import itertools
+import json
 import multiprocessing as mp
 import pickle
 import shutil
@@ -57,6 +58,11 @@ def make_before():
 
 def run(job):
     key, (w, a, h, parts) = job
+    done = f"{TMP}/{key}.json"                  # a finished run is not repeated after a restart
+    if os.path.exists(done):
+        with open(done) as f:
+            v, buys = json.load(f)
+        return key, (w, a, h, parts), v, buys, 0.0
     df = pd.read_csv(BEFORE, parse_dates=["time"])
     assert df["time"].iloc[-1] < pd.Timestamp(CUT, tz="UTC")
     t0 = time.time()
@@ -64,6 +70,8 @@ def run(job):
     with open(f"{TMP}/{key}.pkl", "wb") as f:
         pickle.dump(r, f, protocol=pickle.HIGHEST_PROTOCOL)
     buys = sum(1 for t in r.trades if t[1] == "BUY")
+    with open(done, "w") as f:
+        json.dump([r.value(), buys], f)
     return key, (w, a, h, parts), r.value(), buys, time.time() - t0
 
 
