@@ -6,6 +6,7 @@ A resting limit order "fills" when a later minute's low (buy) or high (sell) tou
 as an order with the next request and fills at that next minute's close, like every other order in the contest.
 The server takes one order per request, so several queued orders go out one minute apart.
 """
+import atexit
 import csv
 import os
 import sys
@@ -33,6 +34,7 @@ class Feed:
         self.queue, self.limits, self.filled, self._lid = [], {}, set(), 0
         self.decisions = []
         self.sealed = sealed.Sealed(port).__enter__()
+        atexit.register(self.sealed.server.terminate)
         self.m = self.sealed.next()
         self._add(self.m)
 

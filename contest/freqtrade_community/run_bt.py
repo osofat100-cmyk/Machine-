@@ -20,8 +20,10 @@ from concurrent.futures import ThreadPoolExecutor
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 FT = os.path.join(HERE, "venv", "bin", "freqtrade")
+FT_OLD = os.path.join(HERE, "venv_np1", "bin", "freqtrade")
+OLD_HINT = re.compile(r"numpy|NAN|Impossible to load Strategy|ImportError|AttributeError|ModuleNotFoundError|pandas_ta")
 NETWORK = re.compile(r"\b(requests\.|urllib|socket\.|subprocess|os\.system|http\.client|aiohttp|websocket)")
-FIELDS = ["label", "repo", "class", "file", "timeframe", "status", "trades", "end_value", "start", "end", "note"]
+FIELDS = ["label", "repo", "class", "file", "timeframe", "status", "trades", "end_value", "start", "end", "freqtrade", "note"]
 
 
 def classes_in(path):
@@ -32,7 +34,7 @@ def classes_in(path):
     return {n.name for n in tree.body if isinstance(n, ast.ClassDef)}
 
 
-def run(job, timeout):
+def run_one(job, timeout, ft):
     label = job["label"]
     work = os.path.join(HERE, "runs", re.sub(r"[^A-Za-z0-9_.-]", "_", label))
     shutil.rmtree(work, ignore_errors=True)
@@ -49,9 +51,10 @@ def run(job, timeout):
     if NETWORK.search(text):
         row.update(status="skipped", note="strategy file makes network/system calls: " + NETWORK.search(text).group(0))
         return row
-    cmd = [FT, "backtesting", "-c", os.path.join(HERE, "config.json"), "--userdir", os.path.join(HERE, "user_data"),
+    cmd = [ft, "backtesting", "-c", os.path.join(HERE, "config.json"), "--userdir", os.path.join(HERE, "user_data"),
            "--strategy", job["class"], "--strategy-path", sdir, "--timerange", "20261001-20261121",
-           "--fee", "0.007", "--cache", "none", "--export", "trades", "--backtest-directory", rdir]
+           "--fee", "0.007", "--cache", "none", "--export", "trades"]
+    cmd += ["--backtest-directory", rdir] if ft == FT else ["--export-filename", os.path.join(rdir, "result.json")]
     t0 = time.time()
     try:
         p = subprocess.run(cmd, cwd=HERE, capture_output=True, text=True, timeout=timeout)
@@ -68,13 +71,35 @@ def run(job, timeout):
         err = [ln for ln in log.splitlines() if "ERROR" in ln or "Error" in ln or "Exception" in ln]
         row.update(status="failed", note=(err[-1] if err else log.strip().splitlines()[-1] if log.strip() else "no output")[-300:])
         return row
-    from freqtrade.data.btanalysis import load_backtest_stats
-    st = load_backtest_stats(zips[-1])["strategy"][job["class"]]
+    st = read_stats(zips[-1])["strategy"][job["class"]]
     row.update(status="ran", trades=st["total_trades"], end_value=round(st["final_balance"], 2),
                start=st["backtest_start"], end=st["backtest_end"], timeframe=st.get("timeframe"),
                note=f"{time.time() - t0:.0f}s")
     if not str(st["backtest_start"]).startswith("2026-10-01 00:"):
         row["note"] += "; started late (not enough warm-up candles before 1 Oct)"
+    return row
+
+
+def read_stats(path):
+    if path.endswith(".zip"):
+        import zipfile
+        z = zipfile.ZipFile(path)
+        for n in z.namelist():
+            if n.endswith(".json") and not n.endswith("_config.json"):
+                d = json.loads(z.read(n))
+                if "strategy" in d:
+                    return d
+    return json.load(open(path))
+
+
+def run(job, timeout):
+    row = run_one(job, timeout, FT)
+    row["freqtrade"] = "2026.10"
+    if row["status"] == "failed" and OLD_HINT.search(row.get("note") or "") and "Short strategies" not in row["note"]:
+        first = row["note"]
+        row = run_one(job, timeout, FT_OLD)
+        row["freqtrade"] = "2024.10 (numpy 1.26)"
+        row["note"] = (row.get("note") or "") + f" | on 2026.10: {first[:150]}"
     return row
 
 

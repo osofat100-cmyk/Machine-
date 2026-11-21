@@ -1,0 +1,268 @@
+ran BuyMeAnIcecream Bandtastic (strategies/Bandtastic.py) 84 0.0 5s
+ran BuyMeAnIcecream BearMarketHybrid (strategies/BearMarketHybrid.py) 1 1010.06 4s
+ran BuyMeAnIcecream BearMarketPatterns (strategies/BearMarketPatterns.py) 0 1000.0 4s
+ran BuyMeAnIcecream BearMarketRSI (strategies/BearMarketRSI.py) 11 793.96 4s
+ran BuyMeAnIcecream CryptoKMLMSwitcherAdvanced (strategies/CryptoKMLMSwitcher_Advanced.py) 24 1376.82 7s
+ran BuyMeAnIcecream CustomStoplossWithPSAR (strategies/CustomStoplossWithPSAR.py) 2 1438.3 6s
+ran BuyMeAnIcecream DipBuyingStrategy (strategies/DipBuyingStrategy.py) 105 0.0 5s
+ran BuyMeAnIcecream ElliotV5_SMA (strategies/ElliotV5_SMA.py) 5 993.31 5s
+failed BuyMeAnIcecream FixedRiskRewardLoss (strategies/FixedRiskRewardLoss.py) None None 2026-11-21 15:41:22,653 - freqtrade - ERROR - Timeframe needs to be set in either configuration or as cli argument `--ti
+ran BuyMeAnIcecream HighFreqMAPullback (strategies/HighFreqMAPullback.py) 1 986.0 6s
+ran BuyMeAnIcecream PatternRecognition_BearMarket (strategies/PatternRecognition_BearMarket.py) 0 1000.0 4s
+ran BuyMeAnIcecream PatternRecognition_BearMarket_Simple (strategies/PatternRecognition_BearMarket_Simple.py) 0 1000.0 4s
+ran BuyMeAnIcecream PatternRecognition_BearMarket_VerySimple (strategies/PatternRecognition_BearMarket_VerySimple.py) 0 1000.0 4s
+ran BuyMeAnIcecream PatternRecognition_Debug (strategies/PatternRecognition_Debug.py) 1 1265.47 4s
+ran BuyMeAnIcecream ScalpingMARibbon (strategies/ScalpingMARibbon.py) 389 2.19 7s
+ran BuyMeAnIcecream ScalpingSimple (strategies/ScalpingSimple.py) 80 356.56 7s
+ran BuyMeAnIcecream ScalpingUltraFast (strategies/ScalpingUltraFast.py) 0 1000.0 7s
+ran BuyMeAnIcecream SimpleTestStrategy (strategies/SimpleTestStrategy.py) 88 305.56 5s
+ran BuyMeAnIcecream SmoothOperator_Optimized (strategies/SmoothOperator_Optimized.py) 63 485.15 5s
+ran BuyMeAnIcecream SmoothOperator_Optimized_Final (strategies/SmoothOperator_Optimized_Final.py) 12 985.7 5s
+ran BuyMeAnIcecream SmoothOperator_Optimized_v2 (strategies/SmoothOperator_Optimized_v2.py) 15 945.1 5s
+ran BuyMeAnIcecream Supertrend (strategies/Supertrend.py) 23 1032.45 5s | on 2026.10: 2026-11-21 15:41:53,557 - freqtrade - ERROR - Impossible to load Strategy 'Supertrend'. This class does
+ran BuyMeAnIcecream TrendFollowingStrategy (strategies/futures/TrendFollowingStrategy.py) 28 801.12 5s
+failed TheoBrigitte AlexBandSniperV65513 (strategies/Alex/AlexBandSniperV6553.py) None None 2026-11-21 15:42:06,520 - freqtrade - ERROR - Impossible to load Strategy 'AlexBandSniperV65513'. This class does not ex
+failed TheoBrigitte AlexDivergenceV6 (strategies/Alex/AlexDivergenceV6.py) None None ImportError: Short strategies cannot run in spot markets. Please make sure that this is the correct strategy and that yo
+failed TheoBrigitte AlexNexusForgeV8AIV7 (strategies/Alex/AlexNexusForgeV8AIV8.py) None None ImportError: Short strategies cannot run in spot markets. Please make sure that this is the correct strategy and that yo
+failed TheoBrigitte ECRV32 (strategies/Alex/ECRV32.py) None None ImportError: Short strategies cannot run in spot markets. Please make sure that this is the correct strategy and that yo
+failed TheoBrigitte FFTAdaptiveCycle (strategies/Alex/FFT_AdaptiveCycle_v1.py) None None ImportError: Short strategies cannot run in spot markets. Please make sure that this is the correct strategy and that yo
+failed TheoBrigitte NOTankAi_19_2 (strategies/Alex/NoTankAi_19_2.py) None None ImportError: Short strategies cannot run in spot markets. Please make sure that this is the correct strategy and that yo
+failed TheoBrigitte AutoArimaTripleV1 (strategies/AutoArimaTripleV1/AutoArimaTripleV1.py) None None 2026-11-21 15:42:21,551 - freqtrade - ERROR - Impossible to load Strategy 'AutoArimaTripleV1'. This class does not exist
+ran TheoBrigitte BinHV27 (strategies/BinHV45/BinHV27.py) 41 807.28 5s
+failed TheoBrigitte BinHV27_werkkrew (strategies/BinHV45/BinHV27_werkkrew.py) None None TypeError: BinHV27_werkkrew.min_roi_reached_entry() takes 2 positional arguments but 4 were given
+ran TheoBrigitte BinHV45 (strategies/BinHV45/BinHV45.py) 37 574.49 8s
+ran TheoBrigitte BinHV45HO (strategies/BinHV45/BinHV45HO.py) 3 1038.27 6s
+ran TheoBrigitte BinHV45_kanaxe (strategies/BinHV45/BinHV45_kanaxe.py) 37 676.72 7s
+ran TheoBrigitte BinHV45_stash (strategies/BinHV45/BinHV45_stash.py) 34 653.12 7s
+ran TheoBrigitte BinHV45_werkkrew (strategies/BinHV45/BinHV45_werkkrew.py) 35 1265.08 7s
+ran TheoBrigitte BinMfiBTCv5003 (strategies/BinHV45/BinMfiBTCv5003.py) 4 1044.88 5s
+ran TheoBrigitte BinHV45_stash (strategies/BinHV45/dry-run/2025-03-07/BinHV45_stash.py) 34 653.12 7s
+ran TheoBrigitte BinHV45_kanaxe (strategies/BinHV45/dry-run/2025-03-08/BinHV45_kanaxe/BinHV45_kanaxe.py) 37 676.72 7s
+ran TheoBrigitte BinHV45_werkkrew (strategies/BinHV45/dry-run/2025-03-08/BinHV45_werkkrew/BinHV45_werkkrew.py) 35 1265.08 7s
+ran TheoBrigitte BinHV45_stash (strategies/BinHV45/dry-run/2025-03-09/binance/BinHV45_stash.py) 34 653.12 7s
+ran TheoBrigitte BinHV45_stash (strategies/BinHV45/dry-run/2025-03-09/kucoin/BinHV45_stash.py) 34 653.12 8s
+ran TheoBrigitte BinMfiBTCv5003 (strategies/BinHV45/dry-run/2025-04-15/binance/BinMfiBTCv5003.py) 4 1044.88 5s
+ran TheoBrigitte BinMfiBTCv5003 (strategies/BinHV45/dry-run/2025-04-15/kucoin/BinMfiBTCv5003.py) 4 1044.88 7s
+ran TheoBrigitte BinHV45HO_protections (strategies/BinHV45_protections/BinHV45HO_protections.py) 3 1038.27 7s
+ran TheoBrigitte BinHV45_kanaxe_protections (strategies/BinHV45_protections/BinHV45_kanaxe_protections.py) 37 676.72 7s
+ran TheoBrigitte BinHV45_protections (strategies/BinHV45_protections/BinHV45_protections.py) 37 574.49 8s
+ran TheoBrigitte BinHV45_stash_protections (strategies/BinHV45_protections/BinHV45_stash_protections.py) 34 653.12 7s
+ran TheoBrigitte BinHV45_werkkrew_protections (strategies/BinHV45_protections/BinHV45_werkkrew_protections.py) 35 1265.08 7s
+ran TheoBrigitte BinMfiBTCv5003_protections (strategies/BinHV45_protections/BinMfiBTCv5003_protections.py) 4 1044.88 5s
+ran TheoBrigitte ElliotV5_SMA (strategies/ElliotV5_SMA/ElliotV5_SMA.py) 26 854.9 5s
+ran TheoBrigitte ElliotV5_SMA (strategies/ElliotV5_SMA/dry-run/2024-11-04/ElliotV5_SMA.py) 26 854.9 6s
+ran TheoBrigitte FVGAdvancedStrategy_V2 (strategies/FVGAdvancedStrategy_V2/FVGAdvancedStrategy_V2.py) 8 943.13 6s
+failed TheoBrigitte GeneStrategy (strategies/GeneTrader/GeneStrategy.py) None None 2026-11-21 15:43:43,567 - freqtrade - ERROR - Impossible to load Strategy 'GeneStrategy'. This class does not exist or c
+failed TheoBrigitte GeneStrategy_v2 (strategies/GeneTrader/GeneStrategy_v2.py) None None 2026-11-21 15:43:45,531 - freqtrade - ERROR - Impossible to load Strategy 'GeneStrategy_v2'. This class does not exist o
+failed TheoBrigitte GeneTrader_gen10_1734895087_6007 (strategies/GeneTrader/GeneTrader_gen10_1734895087_6007.py) None None 2026-11-21 15:43:52,556 - freqtrade - ERROR - Impossible to load Strategy 'GeneTrader_gen10_1734895087_6007'. This class
+failed TheoBrigitte GeneTrader_gen5_1735014093_4541 (strategies/GeneTrader/GeneTrader_gen5_1735014093_4541.py) None None 2026-11-21 15:43:54,308 - freqtrade - ERROR - Impossible to load Strategy 'GeneTrader_gen5_1735014093_4541'. This class 
+failed TheoBrigitte newstrategy53_22 (strategies/GeneTrader/NewStrategy53_22.py) None None 2026-11-21 15:44:00,362 - freqtrade - ERROR - Impossible to load Strategy 'newstrategy53_22'. This class does not exist 
+failed TheoBrigitte GeneStrategy (strategies/GeneTrader/dry-run/2025-01-19/GeneStrategy.py) None None 2026-11-21 15:44:02,097 - freqtrade - ERROR - Impossible to load Strategy 'GeneStrategy'. This class does not exist or c
+failed TheoBrigitte newstrategy53 (strategies/GeneTrader/newstrategy53.py) None None 2026-11-21 15:44:08,933 - freqtrade - ERROR - Impossible to load Strategy 'newstrategy53'. This class does not exist or 
+ran TheoBrigitte MACDStrategy (strategies/MACDStrategy/MACDStrategy.py) 37 561.99 5s
+ran TheoBrigitte MACDStrategy_crossed (strategies/MACDStrategy/MACDStrategy_crossed.py) 24 609.46 6s
+ran TheoBrigitte ZaratustraDCA2_06 (strategies/Zaratustra/ZaratustraDCA2_06.py) 44 415.57 7s
+<unknown>:37: SyntaxWarning: invalid escape sequence '\_'
+<unknown>:37: SyntaxWarning: invalid escape sequence '\_'
+<unknown>:37: SyntaxWarning: invalid escape sequence '\_'
+failed TheoBrigitte ARIMA_15 (strategies/arima/ARIMA_15.py) None None 2026-11-21 15:44:20,256 - freqtrade - ERROR - Impossible to load Strategy 'ARIMA_15'. This class does not exist or conta
+failed TheoBrigitte ARIMASTR (strategies/arima/ARIMA_5.py) None None 2026-11-21 15:44:23,457 - freqtrade - ERROR - Impossible to load Strategy 'ARIMASTR'. This class does not exist or conta
+<unknown>:37: SyntaxWarning: invalid escape sequence '\_'
+failed TheoBrigitte ARIMA_5 (strategies/arima/ARIMA_5.py) None None 2026-11-21 15:44:27,631 - freqtrade - ERROR - Impossible to load Strategy 'ARIMA_5'. This class does not exist or contai
+failed TheoBrigitte BB_RPB_TSL_SMA_Tranz (strategies/bb/BB_RPB_TSL_SMA_Tranz_1.py) None None 2026-11-21 15:44:30,771 - freqtrade - ERROR - Impossible to load Strategy 'BB_RPB_TSL_SMA_Tranz'. This class does not ex
+failed TheoBrigitte UziChanTB2 (strategies/bb/BB_RPB_TSL_SMA_Tranz_1.py) None None 2026-11-21 15:44:35,154 - freqtrade - ERROR - Impossible to load Strategy 'UziChanTB2'. This class does not exist or con
+ran TheoBrigitte ADXMomentum (strategies/berlinguyinca/1h/ADXMomentum.py) 57 558.24 4s
+ran TheoBrigitte ASDTSRockwellTrading (strategies/berlinguyinca/1h/ASDTSRockwellTrading.py) 391 2.21 6s
+ran TheoBrigitte AdxSmas (strategies/berlinguyinca/1h/AdxSmas.py) 23 1121.0 5s
+ran TheoBrigitte AverageStrategy (strategies/berlinguyinca/1h/AverageStrategy.py) 4 2366.04 5s
+ran TheoBrigitte AwesomeMacd (strategies/berlinguyinca/1h/AwesomeMacd.py) 13 870.68 5s
+ran TheoBrigitte BbandRsi (strategies/berlinguyinca/1h/BbandRsi.py) 5 660.63 5s
+ran TheoBrigitte BinHV27 (strategies/berlinguyinca/1h/BinHV27.py) 41 807.28 6s
+ran TheoBrigitte BinHV45 (strategies/berlinguyinca/1h/BinHV45.py) 37 574.49 7s
+ran TheoBrigitte CCIStrategy (strategies/berlinguyinca/1h/CCIStrategy.py) 12 892.27 7s
+ran TheoBrigitte CMCWinner (strategies/berlinguyinca/1h/CMCWinner.py) 22 799.17 5s
+ran TheoBrigitte ClucMay72018 (strategies/berlinguyinca/1h/ClucMay72018.py) 19 819.39 4s
+ran TheoBrigitte CofiBitStrategy (strategies/berlinguyinca/1h/CofiBitStrategy.py) 168 93.07 5s
+ran TheoBrigitte CombinedBinHAndCluc (strategies/berlinguyinca/1h/CombinedBinHAndCluc.py) 42 544.78 5s
+ran TheoBrigitte DoesNothingStrategy (strategies/berlinguyinca/1h/DoesNothingStrategy.py) 0 1000.0 5s
+ran TheoBrigitte EMASkipPump (strategies/berlinguyinca/1h/EMASkipPump.py) 212 31.87 5s
+ran TheoBrigitte Freqtrade_backtest_validation_freqtrade1 (strategies/berlinguyinca/1h/Freqtrade_backtest_validation_freqtrade1.py) 23 992.04 5s
+ran TheoBrigitte Low_BB (strategies/berlinguyinca/1h/Low_BB.py) 4 889.48 6s
+ran TheoBrigitte MACDStrategy (strategies/berlinguyinca/1h/MACDStrategy.py) 37 561.99 5s
+ran TheoBrigitte MACDStrategy_crossed (strategies/berlinguyinca/1h/MACDStrategy_crossed.py) 24 609.46 5s
+ran TheoBrigitte Quickie (strategies/berlinguyinca/1h/Quickie.py) 39 708.17 5s
+ran TheoBrigitte ReinforcedAverageStrategy (strategies/berlinguyinca/1h/ReinforcedAverageStrategy.py) 0 1000.0 4s
+ran TheoBrigitte ReinforcedQuickie (strategies/berlinguyinca/1h/ReinforcedQuickie.py) 61 449.07 5s
+ran TheoBrigitte ReinforcedSmoothScalp (strategies/berlinguyinca/1h/ReinforcedSmoothScalp.py) 32 549.5 6s
+ran TheoBrigitte Scalp (strategies/berlinguyinca/1h/Scalp.py) 453 2.19 7s
+ran TheoBrigitte Simple (strategies/berlinguyinca/1h/Simple.py) 126 222.53 5s
+ran TheoBrigitte SmoothOperator (strategies/berlinguyinca/1h/SmoothOperator.py) 57 543.4 5s
+ran TheoBrigitte SmoothScalp (strategies/berlinguyinca/1h/SmoothScalp.py) 55 531.96 6s
+ran TheoBrigitte TDSequentialStrategy (strategies/berlinguyinca/1h/TDSequentialStrategy.py) 12 1343.15 5s
+ran TheoBrigitte TechnicalExampleStrategy (strategies/berlinguyinca/1h/TechnicalExampleStrategy.py) 480 2.16 6s
+failed TheoBrigitte MultiRSI (strategies/berlinguyinca/MultiRSI.py) None None TypeError: NDFrame.fillna() got an unexpected keyword argument 'method'
+ran TheoBrigitte BigZ04_TSL4 (strategies/bigz/BigZ04_TSL4.py) 10 940.09 5s
+failed TheoBrigitte Cenderawasih_30m (strategies/cenderawasih/Cenderawasih_30m.py) None None 2026-11-21 15:45:59,218 - freqtrade - ERROR - Impossible to load Strategy 'Cenderawasih_30m'. This class does not exist 
+failed TheoBrigitte Cenderawasih_3_kucoin (strategies/cenderawasih3/Cenderawasih_3_kucoin.py) None None 2026-11-21 15:46:04,000 - freqtrade - ERROR - Impossible to load Strategy 'Cenderawasih_3_kucoin'. This class does not e
+ran TheoBrigitte NotAnotherSMAOffsetStrategyHOv3 (strategies/cenderawasih3/NotAnotherSMAOffsetStrategyHOv3.py) 18 809.94 6s
+failed TheoBrigitte BinClucHyperOpt (strategies/cluc/BinClucHyperOpt.py) None None 2026-11-21 15:46:11,654 - freqtrade - ERROR - Impossible to load Strategy 'BinClucHyperOpt'. This class does not exist o
+ran TheoBrigitte BinClucMadDevelop (strategies/cluc/BinClucMadDevelop.py) 18 915.49 4s | on 2026.10: AttributeError: module 'numpy' has no attribute 'NAN'. Did you mean: 'nan'?
+ran TheoBrigitte CoreStrategy (strategies/cluc/BinClucMadSMACore.py) 18 1118.16 4s | on 2026.10: AttributeError: module 'numpy' has no attribute 'NAN'. Did you mean: 'nan'?
+ran TheoBrigitte BinClucMadv1 (strategies/cluc/BinClucMadSMACore.py) 16 975.9 4s | on 2026.10: AttributeError: module 'numpy' has no attribute 'NAN'. Did you mean: 'nan'?
+ran TheoBrigitte BinClucMadv2 (strategies/cluc/BinClucMadSMACore.py) 10 855.64 4s | on 2026.10: AttributeError: module 'numpy' has no attribute 'NAN'. Did you mean: 'nan'?
+ran TheoBrigitte BinClucMadSMAv1 (strategies/cluc/BinClucMadSMACore.py) 18 1118.16 4s | on 2026.10: AttributeError: module 'numpy' has no attribute 'NAN'. Did you mean: 'nan'?
+ran TheoBrigitte BinClucMadSMAv2 (strategies/cluc/BinClucMadSMACore.py) 20 1137.12 5s | on 2026.10: AttributeError: module 'numpy' has no attribute 'NAN'. Did you mean: 'nan'?
+ran TheoBrigitte BinClucMadSMADevelop (strategies/cluc/BinClucMadSMADevelop.py) 18 1118.16 5s | on 2026.10: AttributeError: module 'numpy' has no attribute 'NAN'. Did you mean: 'nan'?
+ran TheoBrigitte Cluc4werk (strategies/cluc/Cluc4werk.py) 64 427.77 7s
+ran TheoBrigitte Cluc5werk (strategies/cluc/Cluc5werk.py) 21 827.88 7s
+ran TheoBrigitte Cluc4werk (strategies/cluc/Cluc6werk.py) 113 225.03 8s
+ran TheoBrigitte Cluc7werk (strategies/cluc/Cluc7werk.py) 44 524.18 6s
+ran TheoBrigitte ClucFiatROI (strategies/cluc/ClucFiatROI.py) 46 1026.59 6s
+ran TheoBrigitte ClucFiatSlow (strategies/cluc/ClucFiatSlow.py) 46 1026.59 6s
+ran TheoBrigitte ClucHAnix (strategies/cluc/ClucHAnix (3).py) 36 869.81 9s
+ran TheoBrigitte ClucHAnix_5m1 (strategies/cluc/ClucHAnix 5m trailbuy2 + BBRSIV5 offsets.py) 31 890.33 6s
+ran TheoBrigitte ClucHAnix_5mTB1 (strategies/cluc/ClucHAnix 5m trailbuy2 + BBRSIV5 offsets.py) 31 890.33 5s
+ran TheoBrigitte ClucHAnix_5m1 (strategies/cluc/ClucHAnix 5m trailbuy2 + dynamic offset.py) 31 890.33 6s
+ran TheoBrigitte ClucHAnix_5mTB1 (strategies/cluc/ClucHAnix 5m trailbuy2 + dynamic offset.py) 31 890.33 6s
+failed TheoBrigitte ClucHAnix (strategies/cluc/ClucHAnix E01VE Offsets.py) None None 2026-11-21 15:47:19,628 - freqtrade - ERROR - Impossible to load Strategy 'ClucHAnix'. This class does not exist or cont
+ran TheoBrigitte ClucHAnix (strategies/cluc/ClucHAnix.py) 39 893.48 10s
+failed TheoBrigitte ClucHAnix (strategies/cluc/ClucHAnix2.py) None None 2026-11-21 15:47:26,786 - freqtrade - ERROR - Impossible to load Strategy 'ClucHAnix'. This class does not exist or cont
+ran TheoBrigitte ClucHAnix_5m (strategies/cluc/ClucHAnix_5m.py) 47 1158.02 6s
+ran TheoBrigitte ClucHAnix_5m1 (strategies/cluc/ClucHAnix_5mTB1 (1).py) 31 890.33 6s
+ran TheoBrigitte ClucHAnix_5mTB1 (strategies/cluc/ClucHAnix_5mTB1 (1).py) 31 890.33 5s
+ran TheoBrigitte ClucHAnix_5m1 (strategies/cluc/ClucHAnix_5mTB1.py) 31 890.33 5s
+ran TheoBrigitte ClucHAnix_5mTB1 (strategies/cluc/ClucHAnix_5mTB1.py) 31 890.33 5s
+ran TheoBrigitte ClucHAnix_5m_old (strategies/cluc/ClucHAnix_5m_old.py) 29 1201.08 6s
+failed TheoBrigitte ClucHAnix_BB_RPB_HO2 (strategies/cluc/ClucHAnix_BB_RPB_HO2.py) None None 2026-11-21 15:47:50,106 - freqtrade - ERROR - Impossible to load Strategy 'ClucHAnix_BB_RPB_HO2'. This class does not ex
+failed TheoBrigitte ClucHAnix_BB_RPB_MOD (strategies/cluc/ClucHAnix_BB_RPB_MOD.py) None None 2026-11-21 15:47:51,106 - freqtrade - ERROR - Impossible to load Strategy 'ClucHAnix_BB_RPB_MOD'. This class does not ex
+failed TheoBrigitte ClucHAnix_BB_RPB_MOD (strategies/cluc/ClucHAnix_BB_RPB_MOD2.py) None None 2026-11-21 15:47:57,250 - freqtrade - ERROR - Impossible to load Strategy 'ClucHAnix_BB_RPB_MOD'. This class does not ex
+failed TheoBrigitte ClucHAnix_BB_RPB_MOD (strategies/cluc/ClucHAnix_BB_RPB_MOD2_TB.py) None None 2026-11-21 15:47:58,625 - freqtrade - ERROR - Impossible to load Strategy 'ClucHAnix_BB_RPB_MOD'. This class does not ex
+failed TheoBrigitte TrailingBuyStrat2 (strategies/cluc/ClucHAnix_BB_RPB_MOD2_TB.py) None None 2026-11-21 15:48:05,457 - freqtrade - ERROR - Impossible to load Strategy 'TrailingBuyStrat2'. This class does not exist
+failed TheoBrigitte ClucHAnix5m (strategies/cluc/ClucHAnix_BB_RPB_MOD_E0V1E_DYNAMIC_TB (1).py) None None 2026-11-21 15:48:05,948 - freqtrade - ERROR - Impossible to load Strategy 'ClucHAnix5m'. This class does not exist or co
+failed TheoBrigitte ClucHAnix_BB_RPB_MOD2_ROI_DYNAMIC_TB (strategies/cluc/ClucHAnix_BB_RPB_MOD_E0V1E_DYNAMIC_TB (1).py) None None 2026-11-21 15:48:13,809 - freqtrade - ERROR - Impossible to load Strategy 'ClucHAnix_BB_RPB_MOD2_ROI_DYNAMIC_TB'. This c
+ran TheoBrigitte ClucHAnix_hhll (strategies/cluc/ClucHAnix_hhll (1).py) 27 1126.82 7s
+ran TheoBrigitte ClucHAnix_hhll_TB (strategies/cluc/ClucHAnix_hhll (1).py) 27 1126.82 6s
+ran TheoBrigitte ClucHAwerk (strategies/cluc/ClucHAwerk.py) 171 50.12 11s
+ran TheoBrigitte ClucMay72018 (strategies/cluc/ClucMay72018.py) 19 819.39 5s
+ran TheoBrigitte CombinedBinHAndCluc (strategies/cluc/CombinedBinHAndCluc.py) 42 544.78 5s
+ran TheoBrigitte CombinedBinHAndCluc2021 (strategies/cluc/CombinedBinHAndCluc2021.py) 38 463.08 5s
+ran TheoBrigitte CombinedBinHAndCluc2021Bull (strategies/cluc/CombinedBinHAndCluc2021Bull.py) 41 424.42 4s
+ran TheoBrigitte CombinedBinHAndClucV2 (strategies/cluc/CombinedBinHAndClucV2.py) 14 618.3 4s | on 2026.10: AttributeError: module 'numpy' has no attribute 'NAN'. Did you mean: 'nan'?
+ran TheoBrigitte CombinedBinHAndClucV4 (strategies/cluc/CombinedBinHAndClucV4.py) 35 659.71 5s
+ran TheoBrigitte CombinedBinHAndClucV5 (strategies/cluc/CombinedBinHAndClucV5.py) 35 642.69 5s
+ran TheoBrigitte CombinedBinHAndClucV6 (strategies/cluc/CombinedBinHAndClucV6.py) 23 746.59 4s | on 2026.10: AttributeError: module 'numpy' has no attribute 'NAN'. Did you mean: 'nan'?
+ran TheoBrigitte CombinedBinHAndClucV7 (strategies/cluc/CombinedBinHAndClucV7.py) 19 856.7 4s | on 2026.10: AttributeError: module 'numpy' has no attribute 'NAN'. Did you mean: 'nan'?
+ran TheoBrigitte CombinedBinHAndClucV8 (strategies/cluc/CombinedBinHAndClucV8.py) 17 912.62 4s | on 2026.10: AttributeError: module 'numpy' has no attribute 'NAN'. Did you mean: 'nan'?
+ran TheoBrigitte CombinedBinHAndClucV8Hyper (strategies/cluc/CombinedBinHAndClucV8Hyper.py) 19 934.55 4s | on 2026.10: AttributeError: module 'numpy' has no attribute 'NAN'. Did you mean: 'nan'?
+ran TheoBrigitte CombinedBinHAndClucV8XH (strategies/cluc/CombinedBinHAndClucV8XH.py) 10 917.36 5s | on 2026.10: AttributeError: module 'numpy' has no attribute 'NAN'. Did you mean: 'nan'?
+ran TheoBrigitte CombinedBinHClucAndMADV3 (strategies/cluc/CombinedBinHClucAndMADV3.py) 26 884.57 6s
+ran TheoBrigitte CombinedBinHClucAndMADV6 (strategies/cluc/CombinedBinHClucAndMADV6.py) 15 868.83 4s | on 2026.10: AttributeError: module 'numpy' has no attribute 'NAN'. Did you mean: 'nan'?
+ran TheoBrigitte CombinedBinHClucAndMADV9 (strategies/cluc/CombinedBinHClucAndMADV9.py) 15 826.02 4s | on 2026.10: AttributeError: module 'numpy' has no attribute 'NAN'. Did you mean: 'nan'?
+ran TheoBrigitte ClucHAnix (strategies/cluc/TrailingBuyStratCluc.py) 39 893.48 13s
+ran TheoBrigitte TrailingBuyStratCluc (strategies/cluc/TrailingBuyStratCluc.py) 39 893.48 12s
+failed TheoBrigitte ClucHAnix_BB_RPB_MOD (strategies/cluc/TrailingBuyStratClucBBRPBMODE.py) None None 2026-11-21 15:49:34,468 - freqtrade - ERROR - Impossible to load Strategy 'ClucHAnix_BB_RPB_MOD'. This class does not ex
+failed TheoBrigitte TrailingBuyStratClucBBRPBMODE (strategies/cluc/TrailingBuyStratClucBBRPBMODE.py) None None 2026-11-21 15:49:34,682 - freqtrade - ERROR - Impossible to load Strategy 'TrailingBuyStratClucBBRPBMODE'. This class do
+failed TheoBrigitte ClucHAnix5m (strategies/cluc/TrailingBuy_ClucHAnix_5m_E0V1E_by_TraNz (1).py) None None 2026-11-21 15:49:41,387 - freqtrade - ERROR - Impossible to load Strategy 'ClucHAnix5m'. This class does not exist or co
+failed TheoBrigitte TrailingBuyStratCluc5m (strategies/cluc/TrailingBuy_ClucHAnix_5m_E0V1E_by_TraNz (1).py) None None 2026-11-21 15:49:42,408 - freqtrade - ERROR - Impossible to load Strategy 'TrailingBuyStratCluc5m'. This class does not 
+failed TheoBrigitte ClucHAnix5m (strategies/cluc/TrailingBuy_ClucHAnix_5m_E0V1E_by_TraNz.py) None None 2026-11-21 15:49:48,878 - freqtrade - ERROR - Impossible to load Strategy 'ClucHAnix5m'. This class does not exist or co
+failed TheoBrigitte TrailingBuyStratCluc5m (strategies/cluc/TrailingBuy_ClucHAnix_5m_E0V1E_by_TraNz.py) None None 2026-11-21 15:49:50,053 - freqtrade - ERROR - Impossible to load Strategy 'TrailingBuyStratCluc5m'. This class does not 
+failed TheoBrigitte CryptoFrog (strategies/cryptofrog-strategies/CryptoFrog.py) None None 2026-11-21 15:49:56,961 - freqtrade - ERROR - Impossible to load Strategy 'CryptoFrog'. This class does not exist or con
+failed TheoBrigitte CryptoFrog_nateema (strategies/cryptofrog-strategies/CryptoFrog_nateema.py) None None 2026-11-21 15:49:58,114 - freqtrade - ERROR - Impossible to load Strategy 'CryptoFrog_nateema'. This class does not exis
+failed TheoBrigitte Danke (strategies/danke/Danke.py) None None NameError: name 'pta' is not defined. Did you mean: 'ta'? | on 2026.10: AttributeError: module 'numpy' has no attribute 
+failed TheoBrigitte DWT (strategies/dwt/DWT.py) None None 2026-11-21 15:50:05,736 - freqtrade - ERROR - Impossible to load Strategy 'DWT'. This class does not exist or contains P
+failed TheoBrigitte DWT_Leveraged (strategies/dwt/DWT_Leveraged.py) None None 2026-11-21 15:50:11,607 - freqtrade - ERROR - Impossible to load Strategy 'DWT_Leveraged'. This class does not exist or 
+failed TheoBrigitte DWT_LongShort (strategies/dwt/DWT_LongShort.py) None None 2026-11-21 15:50:12,108 - freqtrade - ERROR - Impossible to load Strategy 'DWT_LongShort'. This class does not exist or 
+failed TheoBrigitte DWT_short (strategies/dwt/DWT_short.py) None None 2026-11-21 15:50:18,669 - freqtrade - ERROR - Impossible to load Strategy 'DWT_short'. This class does not exist or cont
+ran TheoBrigitte E0V1E (strategies/e0v1e/E0V1E.py) 3 1152.68 5s
+ran TheoBrigitte E0V1E2 (strategies/e0v1e/E0V1E2.py) 3 1009.43 6s
+ran TheoBrigitte E0V1E_DCA3 (strategies/e0v1e/E0V1E_DCA3.py) 32 949.51 7s
+ran TheoBrigitte E0V1E_ewo (strategies/e0v1e/E0V1E_ewo.py) 5 1016.75 5s
+ran TheoBrigitte E0V1E_protections (strategies/e0v1e/E0V1E_protections.py) 3 1152.68 5s
+ran TheoBrigitte E0V1E_strs (strategies/e0v1e/E0V1E_strs.py) 2 903.86 6s
+ran TheoBrigitte E0V1E (strategies/e0v1e/dry-run/2025-02-15/E0V1E.py) 3 1152.68 6s
+ran TheoBrigitte E0V1E (strategies/e0v1e_stash/E0V1E.py) 2 903.86 4s
+<unknown>:38: SyntaxWarning: invalid escape sequence '\ '
+<unknown>:38: SyntaxWarning: invalid escape sequence '\ '
+ran TheoBrigitte Auto_EI_t4c0s (strategies/ei/Auto_EI_t4c0s.py) 9 658.01 8s
+ran TheoBrigitte EI4_t4c0s_V2 (strategies/ei/EI4_t4c0s_V2.py) 29 1634.89 10s
+ran TheoBrigitte EI4_t4c0s_V2_2 (strategies/ei/EI4_t4c0s_V2_2.py) 29 1634.89 10s
+ran TheoBrigitte Auto_EI_t4c0s (strategies/ei/dry-run/2024-09-15/Auto_EI_t4c0s.py) 9 658.01 8s
+ran TheoBrigitte Auto_EI_t4c0s (strategies/ei/dry-run/2024-10-18/Auto_EI_t4c0s.py) 9 658.01 9s
+ran TheoBrigitte EI1_t4c0s_V4 (strategies/eiv4/EI1_t4c0s_V4.py) 1 1192.44 5s
+ran TheoBrigitte ElliotV8_original_ichiv2 (strategies/eliot/ElliotV8_original_ichiv2.py) 32 672.3 6s
+ran TheoBrigitte ElliotV8_original_ichiv2OH (strategies/eliot/ElliotV8_original_ichiv2OH.py) 18 1369.46 5s
+failed TheoBrigitte falconTrader (strategies/falcon/falconTrader.py) None None 2026-11-21 15:51:15,258 - freqtrade - ERROR - Impossible to load Strategy 'falconTrader'. This class does not exist or c
+failed TheoBrigitte FastSupertrend_optim3 (strategies/fastsupertrend/FastSupertrend_optim3.py) None None : Short strategies cannot run in spot markets. Please make sure that this is the correct strategy and that your trading 
+failed TheoBrigitte FastSupertrend_optim3_rsi_70 (strategies/fastsupertrend/FastSupertrend_optim3_rsi_70.py) None None : Short strategies cannot run in spot markets. Please make sure that this is the correct strategy and that your trading 
+failed TheoBrigitte FastSupertrend_optim3_rsi_75 (strategies/fastsupertrend/FastSupertrend_optim3_rsi_75.py) None None : Short strategies cannot run in spot markets. Please make sure that this is the correct strategy and that your trading 
+failed TheoBrigitte FastSupertrend_optim3_rsi_752 (strategies/fastsupertrend/FastSupertrend_optim3_rsi_752.py) None None : Short strategies cannot run in spot markets. Please make sure that this is the correct strategy and that your trading 
+failed TheoBrigitte FastSupertrend_optim3_rsi_75fix (strategies/fastsupertrend/FastSupertrend_optim3_rsi_75fix.py) None None : Short strategies cannot run in spot markets. Please make sure that this is the correct strategy and that your trading 
+failed TheoBrigitte FastSupertrend_optim3_rsi_75fix_signal (strategies/fastsupertrend/FastSupertrend_optim3_rsi_75fix_signal.py) None None : Short strategies cannot run in spot markets. Please make sure that this is the correct strategy and that your trading 
+failed TheoBrigitte FastSupertrend_optim3_rsi_75lev (strategies/fastsupertrend/FastSupertrend_optim3_rsi_75lev.py) None None : Short strategies cannot run in spot markets. Please make sure that this is the correct strategy and that your trading 
+failed TheoBrigitte FastSupertrend_optim3_rsi_75sell (strategies/fastsupertrend/FastSupertrend_optim3_rsi_75sell.py) None None : Short strategies cannot run in spot markets. Please make sure that this is the correct strategy and that your trading 
+failed TheoBrigitte FastSupertrend_optim3_rsi_80 (strategies/fastsupertrend/FastSupertrend_optim3_rsi_80.py) None None : Short strategies cannot run in spot markets. Please make sure that this is the correct strategy and that your trading 
+failed TheoBrigitte FastSupertrend_optim_quick (strategies/fastsupertrend/FastSupertrend_optim_quick.py) None None : Short strategies cannot run in spot markets. Please make sure that this is the correct strategy and that your trading 
+failed TheoBrigitte FastSupertrend_optim_quick2 (strategies/fastsupertrend/FastSupertrend_optim_quick2.py) None None : Short strategies cannot run in spot markets. Please make sure that this is the correct strategy and that your trading 
+failed TheoBrigitte FastSupertrend_optim_quick3 (strategies/fastsupertrend/FastSupertrend_optim_quick3.py) None None : Short strategies cannot run in spot markets. Please make sure that this is the correct strategy and that your trading 
+failed TheoBrigitte FastSupertrend_optim_quick4 (strategies/fastsupertrend/FastSupertrend_optim_quick4.py) None None : Short strategies cannot run in spot markets. Please make sure that this is the correct strategy and that your trading 
+failed TheoBrigitte FastSupertrend_optim_quick5 (strategies/fastsupertrend/FastSupertrend_optim_quick5.py) None None : Short strategies cannot run in spot markets. Please make sure that this is the correct strategy and that your trading 
+failed TheoBrigitte FastSupertrend_ts_origstop_fix (strategies/fastsupertrend/FastSupertrend_ts_origstop_fix.py) None None : Short strategies cannot run in spot markets. Please make sure that this is the correct strategy and that your trading 
+ran TheoBrigitte Bandtastic (strategies/freqtrade-strategies/Bandtastic.py) 84 0.0 5s
+ran TheoBrigitte BreakEven (strategies/freqtrade-strategies/BreakEven.py) 0 1000.0 5s
+ran TheoBrigitte CustomStoplossWithPSAR (strategies/freqtrade-strategies/CustomStoplossWithPSAR.py) 1 1479.98 5s
+ran TheoBrigitte Diamond (strategies/freqtrade-strategies/Diamond.py) 35 652.82 6s
+failed TheoBrigitte FixedRiskRewardLoss (strategies/freqtrade-strategies/FixedRiskRewardLoss.py) None None 2026-11-21 15:52:18,096 - freqtrade - ERROR - Timeframe needs to be set in either configuration or as cli argument `--ti
+failed TheoBrigitte GodStra (strategies/freqtrade-strategies/GodStra.py) None None 2026-11-21 15:52:24,796 - freqtrade - ERROR - Impossible to load Strategy 'GodStra'. This class does not exist or contai
+failed TheoBrigitte Heracles (strategies/freqtrade-strategies/Heracles.py) None None 2026-11-21 15:52:27,508 - freqtrade - ERROR - Impossible to load Strategy 'Heracles'. This class does not exist or conta
+ran TheoBrigitte HourBasedStrategy (strategies/freqtrade-strategies/HourBasedStrategy.py) 54 586.66 4s
+ran TheoBrigitte InformativeSample (strategies/freqtrade-strategies/InformativeSample.py) 125 182.24 5s
+ran TheoBrigitte MultiMa (strategies/freqtrade-strategies/MultiMa.py) 6 765.37 4s
+ran TheoBrigitte PatternRecognition (strategies/freqtrade-strategies/PatternRecognition.py) 1 1265.47 4s
+ran TheoBrigitte PowerTower (strategies/freqtrade-strategies/PowerTower.py) 7 895.04 5s
+ran TheoBrigitte Strategy001 (strategies/freqtrade-strategies/Strategy001.py) 69 388.22 6s
+ran TheoBrigitte Strategy001_custom_exit (strategies/freqtrade-strategies/Strategy001_custom_exit.py) 71 506.53 8s
+ran TheoBrigitte Strategy002 (strategies/freqtrade-strategies/Strategy002.py) 5 1072.35 5s
+ran TheoBrigitte Strategy003 (strategies/freqtrade-strategies/Strategy003.py) 15 699.46 5s
+ran TheoBrigitte Strategy004 (strategies/freqtrade-strategies/Strategy004.py) 30 983.38 5s
+ran TheoBrigitte Strategy005 (strategies/freqtrade-strategies/Strategy005.py) 14 754.61 5s
+ran TheoBrigitte Supertrend (strategies/freqtrade-strategies/Supertrend.py) 23 1032.45 5s | on 2026.10: 2026-11-21 15:52:55,927 - freqtrade - ERROR - Impossible to load Strategy 'Supertrend'. This class does
+ran TheoBrigitte SwingHighToSky (strategies/freqtrade-strategies/SwingHighToSky.py) 14 733.58 5s
+ran TheoBrigitte UniversalMACD (strategies/freqtrade-strategies/UniversalMACD.py) 34 1439.67 5s
+ran TheoBrigitte hlhb (strategies/freqtrade-strategies/hlhb.py) 2 1034.05 4s
+ran TheoBrigitte mabStra (strategies/freqtrade-strategies/mabStra.py) 18 1295.42 5s
+failed TheoBrigitte multi_tf (strategies/freqtrade-strategies/multi_tf.py) None None 2026-11-21 15:53:12,327 - freqtrade - ERROR - Impossible to load Strategy 'multi_tf'. This class does not exist or conta
+ran TheoBrigitte DoubleEMACrossoverWithTrend (strategies/freqtrade-strategies-that-work/DoubleEMACrossoverWithTrend.py) 8 1537.04 4s
+ran TheoBrigitte EMAPriceCrossoverWithThreshold (strategies/freqtrade-strategies-that-work/EMAPriceCrossoverWithThreshold.py) 7 744.68 4s
+ran TheoBrigitte MACDCrossoverWithTrend (strategies/freqtrade-strategies-that-work/MACDCrossoverWithTrend.py) 6 855.73 4s
+ran TheoBrigitte RSIDirectionalWithTrend (strategies/freqtrade-strategies-that-work/RSIDirectionalWithTrend.py) 4 952.69 4s
+ran TheoBrigitte RSIDirectionalWithTrendSlow (strategies/freqtrade-strategies-that-work/RSIDirectionalWithTrendSlow.py) 1 966.49 4s
+ran TheoBrigitte HarmonicDivergence_fix (strategies/harmonic-divergence/HarmonicDivergence-fix.py) 143 499.55 24s
+ran TheoBrigitte HarmonicDivergence (strategies/harmonic-divergence/HarmonicDivergence.py) 0 1000.0 14s
+ran TheoBrigitte HarmonicDivergence_fix (strategies/harmonic-divergence/dry-run/2025-01-21/HarmonicDivergence-fix.py) 143 499.55 29s
+failed TheoBrigitte Insomnia_short (strategies/insomnia/Insomnia_short.py) None None ImportError: Short strategies cannot run in spot markets. Please make sure that this is the correct strategy and that yo
+ran TheoBrigitte JuicyTrend (strategies/juicy/JuicyTrend.py) 153 204.53 6s
+ran TheoBrigitte Kasuari (strategies/kasuari/kasuari.py) 0 1000.0 7s
+failed TheoBrigitte MiniLambo (strategies/lambo/MiniLambo.py) None None 2026-11-21 15:54:11,686 - freqtrade - ERROR - Impossible to load Strategy 'MiniLambo'. This class does not exist or cont
+failed TheoBrigitte MiniLambo_TBS (strategies/lambo/MiniLambo.py) None None 2026-11-21 15:54:12,750 - freqtrade - ERROR - Impossible to load Strategy 'MiniLambo_TBS'. This class does not exist or 
+ran TheoBrigitte PowerTower (strategies/momentum/PowerTower.py) 7 895.04 6s
+failed TheoBrigitte momentum (strategies/momentum/momentum.py) None None ImportError: Short strategies cannot run in spot markets. Please make sure that this is the correct strategy and that yo
+ran TheoBrigitte momentum_long (strategies/momentum/momentum_long.py) 128 183.58 5s
+failed TheoBrigitte momentum_rsi (strategies/momentum/momentum_rsi.py) None None ImportError: Short strategies cannot run in spot markets. Please make sure that this is the correct strategy and that yo
+failed TheoBrigitte momentum_wick (strategies/momentum/momentum_wick.py) None None ImportError: Short strategies cannot run in spot markets. Please make sure that this is the correct strategy and that yo
+failed TheoBrigitte ToTheMoon (strategies/moon/ToTheMoon.py) None None 2026-11-21 15:54:29,802 - freqtrade - ERROR - Impossible to load Strategy 'ToTheMoon'. This class does not exist or cont
+ran TheoBrigitte NASOSv4 (strategies/nasos/NASOSv4.py) 34 1070.96 5s
+ran TheoBrigitte NASOSv5 (strategies/nasos/NASOSv5.py) 19 1267.39 6s
+ran TheoBrigitte NASOSv5 (strategies/nasos/NASOSv5_antipump.py) 19 1267.39 5s
+ran TheoBrigitte NASOSv5_antipump (strategies/nasos/NASOSv5_antipump.py) 19 1051.88 6s
+ran TheoBrigitte NASOSv5_mod1 (strategies/nasos/NASOSv5_mod1.py) 14 1781.2 6s
+ran TheoBrigitte NASOSv5PD (strategies/nasos/NASOSv5_mod1.py) 14 1781.2 6s
+failed TheoBrigitte TrailingBuyStrat (strategies/nasos/NASOSv5_mod1.py) None None KeyError: 'pre_buy'
+ran TheoBrigitte NASOSv5_mod2 (strategies/nasos/NASOSv5_mod2.py) 1 1030.29 7s
+ran TheoBrigitte NASOSv5PD (strategies/nasos/NASOSv5_mod2.py) 16 1894.8 8s
+failed TheoBrigitte TrailingBuyStrat (strategies/nasos/NASOSv5_mod2.py) None None KeyError: 'pre_buy'
+ran TheoBrigitte NASOSv5_mod3 (strategies/nasos/NASOSv5_mod3.py) 11 1573.44 6s
+ran TheoBrigitte NASOSv5PD (strategies/nasos/NASOSv5_mod3.py) 16 1894.8 5s
+failed TheoBrigitte TrailingBuyStrat (strategies/nasos/NASOSv5_mod3.py) None None KeyError: 'pre_buy'
+ran TheoBrigitte NASOSv4 (strategies/nasos/dry-run/2025-01-19/NASOSv4.py) 34 1070.96 5s
+ran TheoBrigitte NASOSv4 (strategies/nasos/dry-run/2025-04-15/binance/NASOSv4.py) 34 1070.96 5s
+ran TheoBrigitte NASOSv4 (strategies/nasos/dry-run/2025-04-15/kucoin/NASOSv4.py) 34 1070.96 5s

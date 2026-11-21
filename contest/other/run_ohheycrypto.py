@@ -22,7 +22,8 @@ from ohheycrypto.config.settings import Config  # noqa: E402
 h = sealed.history_before_oct()
 binance.Sim.rows = [{"time": t, "high": a, "low": b, "close": c}
                     for t, a, b, c in zip(h["time"], h["high"], h["low"], h["close"])]
-bot = TradingBot(Config())
+bot = TradingBot(Config.load_from_env())
+assert bot.config.trading.crypto_currency == "PEARL", bot.config.trading.crypto_currency
 with sealed.Sealed(int(sys.argv[1]) if len(sys.argv) > 1 else 8863) as s:
     m = s.next()
     binance.exchange_minute(m)

@@ -1,0 +1,1 @@
+Coinbase-Balancer [PEARL 0.2 / hub 0.8 (hub BTC = USDT), hourly, limit orders 0.7% away] 1224 runs: $1,000 -> $1,121.48 after 399 fills (holding $1,475.67)

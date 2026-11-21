@@ -1,0 +1,2312 @@
+[
+{
+"label": "BuyMeAnIcecream Bandtastic (strategies/Bandtastic.py)",
+"repo": "BuyMeAnIcecream/freqtrade-strategies",
+"file": "downloads/BuyMeAnIcecream_freqtrade-strategies/user_data/strategies/Bandtastic.py",
+"class": "Bandtastic"
+},
+{
+"label": "BuyMeAnIcecream BearMarketHybrid (strategies/BearMarketHybrid.py)",
+"repo": "BuyMeAnIcecream/freqtrade-strategies",
+"file": "downloads/BuyMeAnIcecream_freqtrade-strategies/user_data/strategies/BearMarketHybrid.py",
+"class": "BearMarketHybrid"
+},
+{
+"label": "BuyMeAnIcecream BearMarketPatterns (strategies/BearMarketPatterns.py)",
+"repo": "BuyMeAnIcecream/freqtrade-strategies",
+"file": "downloads/BuyMeAnIcecream_freqtrade-strategies/user_data/strategies/BearMarketPatterns.py",
+"class": "BearMarketPatterns"
+},
+{
+"label": "BuyMeAnIcecream BearMarketRSI (strategies/BearMarketRSI.py)",
+"repo": "BuyMeAnIcecream/freqtrade-strategies",
+"file": "downloads/BuyMeAnIcecream_freqtrade-strategies/user_data/strategies/BearMarketRSI.py",
+"class": "BearMarketRSI"
+},
+{
+"label": "BuyMeAnIcecream CryptoKMLMSwitcherAdvanced (strategies/CryptoKMLMSwitcher_Advanced.py)",
+"repo": "BuyMeAnIcecream/freqtrade-strategies",
+"file": "downloads/BuyMeAnIcecream_freqtrade-strategies/user_data/strategies/CryptoKMLMSwitcher_Advanced.py",
+"class": "CryptoKMLMSwitcherAdvanced"
+},
+{
+"label": "BuyMeAnIcecream CustomStoplossWithPSAR (strategies/CustomStoplossWithPSAR.py)",
+"repo": "BuyMeAnIcecream/freqtrade-strategies",
+"file": "downloads/BuyMeAnIcecream_freqtrade-strategies/user_data/strategies/CustomStoplossWithPSAR.py",
+"class": "CustomStoplossWithPSAR"
+},
+{
+"label": "BuyMeAnIcecream DipBuyingStrategy (strategies/DipBuyingStrategy.py)",
+"repo": "BuyMeAnIcecream/freqtrade-strategies",
+"file": "downloads/BuyMeAnIcecream_freqtrade-strategies/user_data/strategies/DipBuyingStrategy.py",
+"class": "DipBuyingStrategy"
+},
+{
+"label": "BuyMeAnIcecream ElliotV5_SMA (strategies/ElliotV5_SMA.py)",
+"repo": "BuyMeAnIcecream/freqtrade-strategies",
+"file": "downloads/BuyMeAnIcecream_freqtrade-strategies/user_data/strategies/ElliotV5_SMA.py",
+"class": "ElliotV5_SMA"
+},
+{
+"label": "BuyMeAnIcecream FixedRiskRewardLoss (strategies/FixedRiskRewardLoss.py)",
+"repo": "BuyMeAnIcecream/freqtrade-strategies",
+"file": "downloads/BuyMeAnIcecream_freqtrade-strategies/user_data/strategies/FixedRiskRewardLoss.py",
+"class": "FixedRiskRewardLoss"
+},
+{
+"label": "BuyMeAnIcecream HighFreqMAPullback (strategies/HighFreqMAPullback.py)",
+"repo": "BuyMeAnIcecream/freqtrade-strategies",
+"file": "downloads/BuyMeAnIcecream_freqtrade-strategies/user_data/strategies/HighFreqMAPullback.py",
+"class": "HighFreqMAPullback"
+},
+{
+"label": "BuyMeAnIcecream PatternRecognition_BearMarket (strategies/PatternRecognition_BearMarket.py)",
+"repo": "BuyMeAnIcecream/freqtrade-strategies",
+"file": "downloads/BuyMeAnIcecream_freqtrade-strategies/user_data/strategies/PatternRecognition_BearMarket.py",
+"class": "PatternRecognition_BearMarket"
+},
+{
+"label": "BuyMeAnIcecream PatternRecognition_BearMarket_Simple (strategies/PatternRecognition_BearMarket_Simple.py)",
+"repo": "BuyMeAnIcecream/freqtrade-strategies",
+"file": "downloads/BuyMeAnIcecream_freqtrade-strategies/user_data/strategies/PatternRecognition_BearMarket_Simple.py",
+"class": "PatternRecognition_BearMarket_Simple"
+},
+{
+"label": "BuyMeAnIcecream PatternRecognition_BearMarket_VerySimple (strategies/PatternRecognition_BearMarket_VerySimple.py)",
+"repo": "BuyMeAnIcecream/freqtrade-strategies",
+"file": "downloads/BuyMeAnIcecream_freqtrade-strategies/user_data/strategies/PatternRecognition_BearMarket_VerySimple.py",
+"class": "PatternRecognition_BearMarket_VerySimple"
+},
+{
+"label": "BuyMeAnIcecream PatternRecognition_Debug (strategies/PatternRecognition_Debug.py)",
+"repo": "BuyMeAnIcecream/freqtrade-strategies",
+"file": "downloads/BuyMeAnIcecream_freqtrade-strategies/user_data/strategies/PatternRecognition_Debug.py",
+"class": "PatternRecognition_Debug"
+},
+{
+"label": "BuyMeAnIcecream ScalpingMARibbon (strategies/ScalpingMARibbon.py)",
+"repo": "BuyMeAnIcecream/freqtrade-strategies",
+"file": "downloads/BuyMeAnIcecream_freqtrade-strategies/user_data/strategies/ScalpingMARibbon.py",
+"class": "ScalpingMARibbon"
+},
+{
+"label": "BuyMeAnIcecream ScalpingSimple (strategies/ScalpingSimple.py)",
+"repo": "BuyMeAnIcecream/freqtrade-strategies",
+"file": "downloads/BuyMeAnIcecream_freqtrade-strategies/user_data/strategies/ScalpingSimple.py",
+"class": "ScalpingSimple"
+},
+{
+"label": "BuyMeAnIcecream ScalpingUltraFast (strategies/ScalpingUltraFast.py)",
+"repo": "BuyMeAnIcecream/freqtrade-strategies",
+"file": "downloads/BuyMeAnIcecream_freqtrade-strategies/user_data/strategies/ScalpingUltraFast.py",
+"class": "ScalpingUltraFast"
+},
+{
+"label": "BuyMeAnIcecream SimpleTestStrategy (strategies/SimpleTestStrategy.py)",
+"repo": "BuyMeAnIcecream/freqtrade-strategies",
+"file": "downloads/BuyMeAnIcecream_freqtrade-strategies/user_data/strategies/SimpleTestStrategy.py",
+"class": "SimpleTestStrategy"
+},
+{
+"label": "BuyMeAnIcecream SmoothOperator_Optimized (strategies/SmoothOperator_Optimized.py)",
+"repo": "BuyMeAnIcecream/freqtrade-strategies",
+"file": "downloads/BuyMeAnIcecream_freqtrade-strategies/user_data/strategies/SmoothOperator_Optimized.py",
+"class": "SmoothOperator_Optimized"
+},
+{
+"label": "BuyMeAnIcecream SmoothOperator_Optimized_Final (strategies/SmoothOperator_Optimized_Final.py)",
+"repo": "BuyMeAnIcecream/freqtrade-strategies",
+"file": "downloads/BuyMeAnIcecream_freqtrade-strategies/user_data/strategies/SmoothOperator_Optimized_Final.py",
+"class": "SmoothOperator_Optimized_Final"
+},
+{
+"label": "BuyMeAnIcecream SmoothOperator_Optimized_v2 (strategies/SmoothOperator_Optimized_v2.py)",
+"repo": "BuyMeAnIcecream/freqtrade-strategies",
+"file": "downloads/BuyMeAnIcecream_freqtrade-strategies/user_data/strategies/SmoothOperator_Optimized_v2.py",
+"class": "SmoothOperator_Optimized_v2"
+},
+{
+"label": "BuyMeAnIcecream Supertrend (strategies/Supertrend.py)",
+"repo": "BuyMeAnIcecream/freqtrade-strategies",
+"file": "downloads/BuyMeAnIcecream_freqtrade-strategies/user_data/strategies/Supertrend.py",
+"class": "Supertrend"
+},
+{
+"label": "BuyMeAnIcecream TrendFollowingStrategy (strategies/futures/TrendFollowingStrategy.py)",
+"repo": "BuyMeAnIcecream/freqtrade-strategies",
+"file": "downloads/BuyMeAnIcecream_freqtrade-strategies/user_data/strategies/futures/TrendFollowingStrategy.py",
+"class": "TrendFollowingStrategy"
+},
+{
+"label": "TheoBrigitte AlexBandSniperV65513 (strategies/Alex/AlexBandSniperV6553.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/Alex/AlexBandSniperV6553.py",
+"class": "AlexBandSniperV65513"
+},
+{
+"label": "TheoBrigitte AlexDivergenceV6 (strategies/Alex/AlexDivergenceV6.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/Alex/AlexDivergenceV6.py",
+"class": "AlexDivergenceV6"
+},
+{
+"label": "TheoBrigitte AlexNexusForgeV8AIV7 (strategies/Alex/AlexNexusForgeV8AIV8.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/Alex/AlexNexusForgeV8AIV8.py",
+"class": "AlexNexusForgeV8AIV7"
+},
+{
+"label": "TheoBrigitte ECRV32 (strategies/Alex/ECRV32.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/Alex/ECRV32.py",
+"class": "ECRV32"
+},
+{
+"label": "TheoBrigitte FFTAdaptiveCycle (strategies/Alex/FFT_AdaptiveCycle_v1.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/Alex/FFT_AdaptiveCycle_v1.py",
+"class": "FFTAdaptiveCycle"
+},
+{
+"label": "TheoBrigitte NOTankAi_19_2 (strategies/Alex/NoTankAi_19_2.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/Alex/NoTankAi_19_2.py",
+"class": "NOTankAi_19_2"
+},
+{
+"label": "TheoBrigitte AutoArimaTripleV1 (strategies/AutoArimaTripleV1/AutoArimaTripleV1.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/AutoArimaTripleV1/AutoArimaTripleV1.py",
+"class": "AutoArimaTripleV1"
+},
+{
+"label": "TheoBrigitte BinHV27 (strategies/BinHV45/BinHV27.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/BinHV45/BinHV27.py",
+"class": "BinHV27"
+},
+{
+"label": "TheoBrigitte BinHV27_werkkrew (strategies/BinHV45/BinHV27_werkkrew.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/BinHV45/BinHV27_werkkrew.py",
+"class": "BinHV27_werkkrew"
+},
+{
+"label": "TheoBrigitte BinHV45 (strategies/BinHV45/BinHV45.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/BinHV45/BinHV45.py",
+"class": "BinHV45"
+},
+{
+"label": "TheoBrigitte BinHV45HO (strategies/BinHV45/BinHV45HO.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/BinHV45/BinHV45HO.py",
+"class": "BinHV45HO"
+},
+{
+"label": "TheoBrigitte BinHV45_kanaxe (strategies/BinHV45/BinHV45_kanaxe.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/BinHV45/BinHV45_kanaxe.py",
+"class": "BinHV45_kanaxe"
+},
+{
+"label": "TheoBrigitte BinHV45_stash (strategies/BinHV45/BinHV45_stash.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/BinHV45/BinHV45_stash.py",
+"class": "BinHV45_stash"
+},
+{
+"label": "TheoBrigitte BinHV45_werkkrew (strategies/BinHV45/BinHV45_werkkrew.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/BinHV45/BinHV45_werkkrew.py",
+"class": "BinHV45_werkkrew"
+},
+{
+"label": "TheoBrigitte BinMfiBTCv5003 (strategies/BinHV45/BinMfiBTCv5003.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/BinHV45/BinMfiBTCv5003.py",
+"class": "BinMfiBTCv5003"
+},
+{
+"label": "TheoBrigitte BinHV45_stash (strategies/BinHV45/dry-run/2025-03-07/BinHV45_stash.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/BinHV45/dry-run/2025-03-07/BinHV45_stash.py",
+"class": "BinHV45_stash"
+},
+{
+"label": "TheoBrigitte BinHV45_kanaxe (strategies/BinHV45/dry-run/2025-03-08/BinHV45_kanaxe/BinHV45_kanaxe.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/BinHV45/dry-run/2025-03-08/BinHV45_kanaxe/BinHV45_kanaxe.py",
+"class": "BinHV45_kanaxe"
+},
+{
+"label": "TheoBrigitte BinHV45_werkkrew (strategies/BinHV45/dry-run/2025-03-08/BinHV45_werkkrew/BinHV45_werkkrew.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/BinHV45/dry-run/2025-03-08/BinHV45_werkkrew/BinHV45_werkkrew.py",
+"class": "BinHV45_werkkrew"
+},
+{
+"label": "TheoBrigitte BinHV45_stash (strategies/BinHV45/dry-run/2025-03-09/binance/BinHV45_stash.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/BinHV45/dry-run/2025-03-09/binance/BinHV45_stash.py",
+"class": "BinHV45_stash"
+},
+{
+"label": "TheoBrigitte BinHV45_stash (strategies/BinHV45/dry-run/2025-03-09/kucoin/BinHV45_stash.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/BinHV45/dry-run/2025-03-09/kucoin/BinHV45_stash.py",
+"class": "BinHV45_stash"
+},
+{
+"label": "TheoBrigitte BinMfiBTCv5003 (strategies/BinHV45/dry-run/2025-04-15/binance/BinMfiBTCv5003.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/BinHV45/dry-run/2025-04-15/binance/BinMfiBTCv5003.py",
+"class": "BinMfiBTCv5003"
+},
+{
+"label": "TheoBrigitte BinMfiBTCv5003 (strategies/BinHV45/dry-run/2025-04-15/kucoin/BinMfiBTCv5003.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/BinHV45/dry-run/2025-04-15/kucoin/BinMfiBTCv5003.py",
+"class": "BinMfiBTCv5003"
+},
+{
+"label": "TheoBrigitte BinHV45HO_protections (strategies/BinHV45_protections/BinHV45HO_protections.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/BinHV45_protections/BinHV45HO_protections.py",
+"class": "BinHV45HO_protections"
+},
+{
+"label": "TheoBrigitte BinHV45_kanaxe_protections (strategies/BinHV45_protections/BinHV45_kanaxe_protections.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/BinHV45_protections/BinHV45_kanaxe_protections.py",
+"class": "BinHV45_kanaxe_protections"
+},
+{
+"label": "TheoBrigitte BinHV45_protections (strategies/BinHV45_protections/BinHV45_protections.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/BinHV45_protections/BinHV45_protections.py",
+"class": "BinHV45_protections"
+},
+{
+"label": "TheoBrigitte BinHV45_stash_protections (strategies/BinHV45_protections/BinHV45_stash_protections.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/BinHV45_protections/BinHV45_stash_protections.py",
+"class": "BinHV45_stash_protections"
+},
+{
+"label": "TheoBrigitte BinHV45_werkkrew_protections (strategies/BinHV45_protections/BinHV45_werkkrew_protections.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/BinHV45_protections/BinHV45_werkkrew_protections.py",
+"class": "BinHV45_werkkrew_protections"
+},
+{
+"label": "TheoBrigitte BinMfiBTCv5003_protections (strategies/BinHV45_protections/BinMfiBTCv5003_protections.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/BinHV45_protections/BinMfiBTCv5003_protections.py",
+"class": "BinMfiBTCv5003_protections"
+},
+{
+"label": "TheoBrigitte ElliotV5_SMA (strategies/ElliotV5_SMA/ElliotV5_SMA.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/ElliotV5_SMA/ElliotV5_SMA.py",
+"class": "ElliotV5_SMA"
+},
+{
+"label": "TheoBrigitte ElliotV5_SMA (strategies/ElliotV5_SMA/dry-run/2024-11-04/ElliotV5_SMA.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/ElliotV5_SMA/dry-run/2024-11-04/ElliotV5_SMA.py",
+"class": "ElliotV5_SMA"
+},
+{
+"label": "TheoBrigitte FVGAdvancedStrategy_V2 (strategies/FVGAdvancedStrategy_V2/FVGAdvancedStrategy_V2.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/FVGAdvancedStrategy_V2/FVGAdvancedStrategy_V2.py",
+"class": "FVGAdvancedStrategy_V2"
+},
+{
+"label": "TheoBrigitte GeneStrategy (strategies/GeneTrader/GeneStrategy.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/GeneTrader/GeneStrategy.py",
+"class": "GeneStrategy"
+},
+{
+"label": "TheoBrigitte GeneStrategy_v2 (strategies/GeneTrader/GeneStrategy_v2.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/GeneTrader/GeneStrategy_v2.py",
+"class": "GeneStrategy_v2"
+},
+{
+"label": "TheoBrigitte GeneTrader_gen10_1734895087_6007 (strategies/GeneTrader/GeneTrader_gen10_1734895087_6007.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/GeneTrader/GeneTrader_gen10_1734895087_6007.py",
+"class": "GeneTrader_gen10_1734895087_6007"
+},
+{
+"label": "TheoBrigitte GeneTrader_gen5_1735014093_4541 (strategies/GeneTrader/GeneTrader_gen5_1735014093_4541.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/GeneTrader/GeneTrader_gen5_1735014093_4541.py",
+"class": "GeneTrader_gen5_1735014093_4541"
+},
+{
+"label": "TheoBrigitte newstrategy53_22 (strategies/GeneTrader/NewStrategy53_22.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/GeneTrader/NewStrategy53_22.py",
+"class": "newstrategy53_22"
+},
+{
+"label": "TheoBrigitte GeneStrategy (strategies/GeneTrader/dry-run/2025-01-19/GeneStrategy.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/GeneTrader/dry-run/2025-01-19/GeneStrategy.py",
+"class": "GeneStrategy"
+},
+{
+"label": "TheoBrigitte newstrategy53 (strategies/GeneTrader/newstrategy53.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/GeneTrader/newstrategy53.py",
+"class": "newstrategy53"
+},
+{
+"label": "TheoBrigitte MACDStrategy (strategies/MACDStrategy/MACDStrategy.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/MACDStrategy/MACDStrategy.py",
+"class": "MACDStrategy"
+},
+{
+"label": "TheoBrigitte MACDStrategy_crossed (strategies/MACDStrategy/MACDStrategy_crossed.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/MACDStrategy/MACDStrategy_crossed.py",
+"class": "MACDStrategy_crossed"
+},
+{
+"label": "TheoBrigitte ZaratustraDCA2_06 (strategies/Zaratustra/ZaratustraDCA2_06.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/Zaratustra/ZaratustraDCA2_06.py",
+"class": "ZaratustraDCA2_06"
+},
+{
+"label": "TheoBrigitte ARIMA_15 (strategies/arima/ARIMA_15.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/arima/ARIMA_15.py",
+"class": "ARIMA_15"
+},
+{
+"label": "TheoBrigitte ARIMASTR (strategies/arima/ARIMA_5.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/arima/ARIMA_5.py",
+"class": "ARIMASTR"
+},
+{
+"label": "TheoBrigitte ARIMA_5 (strategies/arima/ARIMA_5.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/arima/ARIMA_5.py",
+"class": "ARIMA_5"
+},
+{
+"label": "TheoBrigitte BB_RPB_TSL_SMA_Tranz (strategies/bb/BB_RPB_TSL_SMA_Tranz_1.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/bb/BB_RPB_TSL_SMA_Tranz_1.py",
+"class": "BB_RPB_TSL_SMA_Tranz"
+},
+{
+"label": "TheoBrigitte UziChanTB2 (strategies/bb/BB_RPB_TSL_SMA_Tranz_1.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/bb/BB_RPB_TSL_SMA_Tranz_1.py",
+"class": "UziChanTB2"
+},
+{
+"label": "TheoBrigitte ADXMomentum (strategies/berlinguyinca/1h/ADXMomentum.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/berlinguyinca/1h/ADXMomentum.py",
+"class": "ADXMomentum"
+},
+{
+"label": "TheoBrigitte ASDTSRockwellTrading (strategies/berlinguyinca/1h/ASDTSRockwellTrading.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/berlinguyinca/1h/ASDTSRockwellTrading.py",
+"class": "ASDTSRockwellTrading"
+},
+{
+"label": "TheoBrigitte AdxSmas (strategies/berlinguyinca/1h/AdxSmas.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/berlinguyinca/1h/AdxSmas.py",
+"class": "AdxSmas"
+},
+{
+"label": "TheoBrigitte AverageStrategy (strategies/berlinguyinca/1h/AverageStrategy.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/berlinguyinca/1h/AverageStrategy.py",
+"class": "AverageStrategy"
+},
+{
+"label": "TheoBrigitte AwesomeMacd (strategies/berlinguyinca/1h/AwesomeMacd.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/berlinguyinca/1h/AwesomeMacd.py",
+"class": "AwesomeMacd"
+},
+{
+"label": "TheoBrigitte BbandRsi (strategies/berlinguyinca/1h/BbandRsi.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/berlinguyinca/1h/BbandRsi.py",
+"class": "BbandRsi"
+},
+{
+"label": "TheoBrigitte BinHV27 (strategies/berlinguyinca/1h/BinHV27.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/berlinguyinca/1h/BinHV27.py",
+"class": "BinHV27"
+},
+{
+"label": "TheoBrigitte BinHV45 (strategies/berlinguyinca/1h/BinHV45.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/berlinguyinca/1h/BinHV45.py",
+"class": "BinHV45"
+},
+{
+"label": "TheoBrigitte CCIStrategy (strategies/berlinguyinca/1h/CCIStrategy.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/berlinguyinca/1h/CCIStrategy.py",
+"class": "CCIStrategy"
+},
+{
+"label": "TheoBrigitte CMCWinner (strategies/berlinguyinca/1h/CMCWinner.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/berlinguyinca/1h/CMCWinner.py",
+"class": "CMCWinner"
+},
+{
+"label": "TheoBrigitte ClucMay72018 (strategies/berlinguyinca/1h/ClucMay72018.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/berlinguyinca/1h/ClucMay72018.py",
+"class": "ClucMay72018"
+},
+{
+"label": "TheoBrigitte CofiBitStrategy (strategies/berlinguyinca/1h/CofiBitStrategy.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/berlinguyinca/1h/CofiBitStrategy.py",
+"class": "CofiBitStrategy"
+},
+{
+"label": "TheoBrigitte CombinedBinHAndCluc (strategies/berlinguyinca/1h/CombinedBinHAndCluc.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/berlinguyinca/1h/CombinedBinHAndCluc.py",
+"class": "CombinedBinHAndCluc"
+},
+{
+"label": "TheoBrigitte DoesNothingStrategy (strategies/berlinguyinca/1h/DoesNothingStrategy.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/berlinguyinca/1h/DoesNothingStrategy.py",
+"class": "DoesNothingStrategy"
+},
+{
+"label": "TheoBrigitte EMASkipPump (strategies/berlinguyinca/1h/EMASkipPump.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/berlinguyinca/1h/EMASkipPump.py",
+"class": "EMASkipPump"
+},
+{
+"label": "TheoBrigitte Freqtrade_backtest_validation_freqtrade1 (strategies/berlinguyinca/1h/Freqtrade_backtest_validation_freqtrade1.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/berlinguyinca/1h/Freqtrade_backtest_validation_freqtrade1.py",
+"class": "Freqtrade_backtest_validation_freqtrade1"
+},
+{
+"label": "TheoBrigitte Low_BB (strategies/berlinguyinca/1h/Low_BB.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/berlinguyinca/1h/Low_BB.py",
+"class": "Low_BB"
+},
+{
+"label": "TheoBrigitte MACDStrategy (strategies/berlinguyinca/1h/MACDStrategy.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/berlinguyinca/1h/MACDStrategy.py",
+"class": "MACDStrategy"
+},
+{
+"label": "TheoBrigitte MACDStrategy_crossed (strategies/berlinguyinca/1h/MACDStrategy_crossed.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/berlinguyinca/1h/MACDStrategy_crossed.py",
+"class": "MACDStrategy_crossed"
+},
+{
+"label": "TheoBrigitte Quickie (strategies/berlinguyinca/1h/Quickie.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/berlinguyinca/1h/Quickie.py",
+"class": "Quickie"
+},
+{
+"label": "TheoBrigitte ReinforcedAverageStrategy (strategies/berlinguyinca/1h/ReinforcedAverageStrategy.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/berlinguyinca/1h/ReinforcedAverageStrategy.py",
+"class": "ReinforcedAverageStrategy"
+},
+{
+"label": "TheoBrigitte ReinforcedQuickie (strategies/berlinguyinca/1h/ReinforcedQuickie.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/berlinguyinca/1h/ReinforcedQuickie.py",
+"class": "ReinforcedQuickie"
+},
+{
+"label": "TheoBrigitte ReinforcedSmoothScalp (strategies/berlinguyinca/1h/ReinforcedSmoothScalp.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/berlinguyinca/1h/ReinforcedSmoothScalp.py",
+"class": "ReinforcedSmoothScalp"
+},
+{
+"label": "TheoBrigitte Scalp (strategies/berlinguyinca/1h/Scalp.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/berlinguyinca/1h/Scalp.py",
+"class": "Scalp"
+},
+{
+"label": "TheoBrigitte Simple (strategies/berlinguyinca/1h/Simple.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/berlinguyinca/1h/Simple.py",
+"class": "Simple"
+},
+{
+"label": "TheoBrigitte SmoothOperator (strategies/berlinguyinca/1h/SmoothOperator.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/berlinguyinca/1h/SmoothOperator.py",
+"class": "SmoothOperator"
+},
+{
+"label": "TheoBrigitte SmoothScalp (strategies/berlinguyinca/1h/SmoothScalp.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/berlinguyinca/1h/SmoothScalp.py",
+"class": "SmoothScalp"
+},
+{
+"label": "TheoBrigitte TDSequentialStrategy (strategies/berlinguyinca/1h/TDSequentialStrategy.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/berlinguyinca/1h/TDSequentialStrategy.py",
+"class": "TDSequentialStrategy"
+},
+{
+"label": "TheoBrigitte TechnicalExampleStrategy (strategies/berlinguyinca/1h/TechnicalExampleStrategy.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/berlinguyinca/1h/TechnicalExampleStrategy.py",
+"class": "TechnicalExampleStrategy"
+},
+{
+"label": "TheoBrigitte MultiRSI (strategies/berlinguyinca/MultiRSI.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/berlinguyinca/MultiRSI.py",
+"class": "MultiRSI"
+},
+{
+"label": "TheoBrigitte BigZ04_TSL4 (strategies/bigz/BigZ04_TSL4.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/bigz/BigZ04_TSL4.py",
+"class": "BigZ04_TSL4"
+},
+{
+"label": "TheoBrigitte Cenderawasih_30m (strategies/cenderawasih/Cenderawasih_30m.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/cenderawasih/Cenderawasih_30m.py",
+"class": "Cenderawasih_30m"
+},
+{
+"label": "TheoBrigitte Cenderawasih_3_kucoin (strategies/cenderawasih3/Cenderawasih_3_kucoin.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/cenderawasih3/Cenderawasih_3_kucoin.py",
+"class": "Cenderawasih_3_kucoin"
+},
+{
+"label": "TheoBrigitte NotAnotherSMAOffsetStrategyHOv3 (strategies/cenderawasih3/NotAnotherSMAOffsetStrategyHOv3.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/cenderawasih3/NotAnotherSMAOffsetStrategyHOv3.py",
+"class": "NotAnotherSMAOffsetStrategyHOv3"
+},
+{
+"label": "TheoBrigitte BinClucHyperOpt (strategies/cluc/BinClucHyperOpt.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/cluc/BinClucHyperOpt.py",
+"class": "BinClucHyperOpt"
+},
+{
+"label": "TheoBrigitte BinClucMadDevelop (strategies/cluc/BinClucMadDevelop.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/cluc/BinClucMadDevelop.py",
+"class": "BinClucMadDevelop"
+},
+{
+"label": "TheoBrigitte CoreStrategy (strategies/cluc/BinClucMadSMACore.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/cluc/BinClucMadSMACore.py",
+"class": "CoreStrategy"
+},
+{
+"label": "TheoBrigitte BinClucMadv1 (strategies/cluc/BinClucMadSMACore.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/cluc/BinClucMadSMACore.py",
+"class": "BinClucMadv1"
+},
+{
+"label": "TheoBrigitte BinClucMadv2 (strategies/cluc/BinClucMadSMACore.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/cluc/BinClucMadSMACore.py",
+"class": "BinClucMadv2"
+},
+{
+"label": "TheoBrigitte BinClucMadSMAv1 (strategies/cluc/BinClucMadSMACore.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/cluc/BinClucMadSMACore.py",
+"class": "BinClucMadSMAv1"
+},
+{
+"label": "TheoBrigitte BinClucMadSMAv2 (strategies/cluc/BinClucMadSMACore.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/cluc/BinClucMadSMACore.py",
+"class": "BinClucMadSMAv2"
+},
+{
+"label": "TheoBrigitte BinClucMadSMADevelop (strategies/cluc/BinClucMadSMADevelop.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/cluc/BinClucMadSMADevelop.py",
+"class": "BinClucMadSMADevelop"
+},
+{
+"label": "TheoBrigitte Cluc4werk (strategies/cluc/Cluc4werk.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/cluc/Cluc4werk.py",
+"class": "Cluc4werk"
+},
+{
+"label": "TheoBrigitte Cluc5werk (strategies/cluc/Cluc5werk.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/cluc/Cluc5werk.py",
+"class": "Cluc5werk"
+},
+{
+"label": "TheoBrigitte Cluc4werk (strategies/cluc/Cluc6werk.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/cluc/Cluc6werk.py",
+"class": "Cluc4werk"
+},
+{
+"label": "TheoBrigitte Cluc7werk (strategies/cluc/Cluc7werk.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/cluc/Cluc7werk.py",
+"class": "Cluc7werk"
+},
+{
+"label": "TheoBrigitte ClucFiatROI (strategies/cluc/ClucFiatROI.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/cluc/ClucFiatROI.py",
+"class": "ClucFiatROI"
+},
+{
+"label": "TheoBrigitte ClucFiatSlow (strategies/cluc/ClucFiatSlow.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/cluc/ClucFiatSlow.py",
+"class": "ClucFiatSlow"
+},
+{
+"label": "TheoBrigitte ClucHAnix (strategies/cluc/ClucHAnix (3).py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/cluc/ClucHAnix (3).py",
+"class": "ClucHAnix"
+},
+{
+"label": "TheoBrigitte ClucHAnix_5m1 (strategies/cluc/ClucHAnix 5m trailbuy2 + BBRSIV5 offsets.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/cluc/ClucHAnix 5m trailbuy2 + BBRSIV5 offsets.py",
+"class": "ClucHAnix_5m1"
+},
+{
+"label": "TheoBrigitte ClucHAnix_5mTB1 (strategies/cluc/ClucHAnix 5m trailbuy2 + BBRSIV5 offsets.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/cluc/ClucHAnix 5m trailbuy2 + BBRSIV5 offsets.py",
+"class": "ClucHAnix_5mTB1"
+},
+{
+"label": "TheoBrigitte ClucHAnix_5m1 (strategies/cluc/ClucHAnix 5m trailbuy2 + dynamic offset.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/cluc/ClucHAnix 5m trailbuy2 + dynamic offset.py",
+"class": "ClucHAnix_5m1"
+},
+{
+"label": "TheoBrigitte ClucHAnix_5mTB1 (strategies/cluc/ClucHAnix 5m trailbuy2 + dynamic offset.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/cluc/ClucHAnix 5m trailbuy2 + dynamic offset.py",
+"class": "ClucHAnix_5mTB1"
+},
+{
+"label": "TheoBrigitte ClucHAnix (strategies/cluc/ClucHAnix E01VE Offsets.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/cluc/ClucHAnix E01VE Offsets.py",
+"class": "ClucHAnix"
+},
+{
+"label": "TheoBrigitte ClucHAnix (strategies/cluc/ClucHAnix.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/cluc/ClucHAnix.py",
+"class": "ClucHAnix"
+},
+{
+"label": "TheoBrigitte ClucHAnix (strategies/cluc/ClucHAnix2.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/cluc/ClucHAnix2.py",
+"class": "ClucHAnix"
+},
+{
+"label": "TheoBrigitte ClucHAnix_5m (strategies/cluc/ClucHAnix_5m.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/cluc/ClucHAnix_5m.py",
+"class": "ClucHAnix_5m"
+},
+{
+"label": "TheoBrigitte ClucHAnix_5m1 (strategies/cluc/ClucHAnix_5mTB1 (1).py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/cluc/ClucHAnix_5mTB1 (1).py",
+"class": "ClucHAnix_5m1"
+},
+{
+"label": "TheoBrigitte ClucHAnix_5mTB1 (strategies/cluc/ClucHAnix_5mTB1 (1).py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/cluc/ClucHAnix_5mTB1 (1).py",
+"class": "ClucHAnix_5mTB1"
+},
+{
+"label": "TheoBrigitte ClucHAnix_5m1 (strategies/cluc/ClucHAnix_5mTB1.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/cluc/ClucHAnix_5mTB1.py",
+"class": "ClucHAnix_5m1"
+},
+{
+"label": "TheoBrigitte ClucHAnix_5mTB1 (strategies/cluc/ClucHAnix_5mTB1.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/cluc/ClucHAnix_5mTB1.py",
+"class": "ClucHAnix_5mTB1"
+},
+{
+"label": "TheoBrigitte ClucHAnix_5m_old (strategies/cluc/ClucHAnix_5m_old.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/cluc/ClucHAnix_5m_old.py",
+"class": "ClucHAnix_5m_old"
+},
+{
+"label": "TheoBrigitte ClucHAnix_BB_RPB_HO2 (strategies/cluc/ClucHAnix_BB_RPB_HO2.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/cluc/ClucHAnix_BB_RPB_HO2.py",
+"class": "ClucHAnix_BB_RPB_HO2"
+},
+{
+"label": "TheoBrigitte ClucHAnix_BB_RPB_MOD (strategies/cluc/ClucHAnix_BB_RPB_MOD.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/cluc/ClucHAnix_BB_RPB_MOD.py",
+"class": "ClucHAnix_BB_RPB_MOD"
+},
+{
+"label": "TheoBrigitte ClucHAnix_BB_RPB_MOD (strategies/cluc/ClucHAnix_BB_RPB_MOD2.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/cluc/ClucHAnix_BB_RPB_MOD2.py",
+"class": "ClucHAnix_BB_RPB_MOD"
+},
+{
+"label": "TheoBrigitte ClucHAnix_BB_RPB_MOD (strategies/cluc/ClucHAnix_BB_RPB_MOD2_TB.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/cluc/ClucHAnix_BB_RPB_MOD2_TB.py",
+"class": "ClucHAnix_BB_RPB_MOD"
+},
+{
+"label": "TheoBrigitte TrailingBuyStrat2 (strategies/cluc/ClucHAnix_BB_RPB_MOD2_TB.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/cluc/ClucHAnix_BB_RPB_MOD2_TB.py",
+"class": "TrailingBuyStrat2"
+},
+{
+"label": "TheoBrigitte ClucHAnix5m (strategies/cluc/ClucHAnix_BB_RPB_MOD_E0V1E_DYNAMIC_TB (1).py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/cluc/ClucHAnix_BB_RPB_MOD_E0V1E_DYNAMIC_TB (1).py",
+"class": "ClucHAnix5m"
+},
+{
+"label": "TheoBrigitte ClucHAnix_BB_RPB_MOD2_ROI_DYNAMIC_TB (strategies/cluc/ClucHAnix_BB_RPB_MOD_E0V1E_DYNAMIC_TB (1).py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/cluc/ClucHAnix_BB_RPB_MOD_E0V1E_DYNAMIC_TB (1).py",
+"class": "ClucHAnix_BB_RPB_MOD2_ROI_DYNAMIC_TB"
+},
+{
+"label": "TheoBrigitte ClucHAnix_hhll (strategies/cluc/ClucHAnix_hhll (1).py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/cluc/ClucHAnix_hhll (1).py",
+"class": "ClucHAnix_hhll"
+},
+{
+"label": "TheoBrigitte ClucHAnix_hhll_TB (strategies/cluc/ClucHAnix_hhll (1).py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/cluc/ClucHAnix_hhll (1).py",
+"class": "ClucHAnix_hhll_TB"
+},
+{
+"label": "TheoBrigitte ClucHAwerk (strategies/cluc/ClucHAwerk.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/cluc/ClucHAwerk.py",
+"class": "ClucHAwerk"
+},
+{
+"label": "TheoBrigitte ClucMay72018 (strategies/cluc/ClucMay72018.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/cluc/ClucMay72018.py",
+"class": "ClucMay72018"
+},
+{
+"label": "TheoBrigitte CombinedBinHAndCluc (strategies/cluc/CombinedBinHAndCluc.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/cluc/CombinedBinHAndCluc.py",
+"class": "CombinedBinHAndCluc"
+},
+{
+"label": "TheoBrigitte CombinedBinHAndCluc2021 (strategies/cluc/CombinedBinHAndCluc2021.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/cluc/CombinedBinHAndCluc2021.py",
+"class": "CombinedBinHAndCluc2021"
+},
+{
+"label": "TheoBrigitte CombinedBinHAndCluc2021Bull (strategies/cluc/CombinedBinHAndCluc2021Bull.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/cluc/CombinedBinHAndCluc2021Bull.py",
+"class": "CombinedBinHAndCluc2021Bull"
+},
+{
+"label": "TheoBrigitte CombinedBinHAndClucV2 (strategies/cluc/CombinedBinHAndClucV2.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/cluc/CombinedBinHAndClucV2.py",
+"class": "CombinedBinHAndClucV2"
+},
+{
+"label": "TheoBrigitte CombinedBinHAndClucV4 (strategies/cluc/CombinedBinHAndClucV4.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/cluc/CombinedBinHAndClucV4.py",
+"class": "CombinedBinHAndClucV4"
+},
+{
+"label": "TheoBrigitte CombinedBinHAndClucV5 (strategies/cluc/CombinedBinHAndClucV5.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/cluc/CombinedBinHAndClucV5.py",
+"class": "CombinedBinHAndClucV5"
+},
+{
+"label": "TheoBrigitte CombinedBinHAndClucV6 (strategies/cluc/CombinedBinHAndClucV6.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/cluc/CombinedBinHAndClucV6.py",
+"class": "CombinedBinHAndClucV6"
+},
+{
+"label": "TheoBrigitte CombinedBinHAndClucV7 (strategies/cluc/CombinedBinHAndClucV7.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/cluc/CombinedBinHAndClucV7.py",
+"class": "CombinedBinHAndClucV7"
+},
+{
+"label": "TheoBrigitte CombinedBinHAndClucV8 (strategies/cluc/CombinedBinHAndClucV8.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/cluc/CombinedBinHAndClucV8.py",
+"class": "CombinedBinHAndClucV8"
+},
+{
+"label": "TheoBrigitte CombinedBinHAndClucV8Hyper (strategies/cluc/CombinedBinHAndClucV8Hyper.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/cluc/CombinedBinHAndClucV8Hyper.py",
+"class": "CombinedBinHAndClucV8Hyper"
+},
+{
+"label": "TheoBrigitte CombinedBinHAndClucV8XH (strategies/cluc/CombinedBinHAndClucV8XH.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/cluc/CombinedBinHAndClucV8XH.py",
+"class": "CombinedBinHAndClucV8XH"
+},
+{
+"label": "TheoBrigitte CombinedBinHClucAndMADV3 (strategies/cluc/CombinedBinHClucAndMADV3.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/cluc/CombinedBinHClucAndMADV3.py",
+"class": "CombinedBinHClucAndMADV3"
+},
+{
+"label": "TheoBrigitte CombinedBinHClucAndMADV6 (strategies/cluc/CombinedBinHClucAndMADV6.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/cluc/CombinedBinHClucAndMADV6.py",
+"class": "CombinedBinHClucAndMADV6"
+},
+{
+"label": "TheoBrigitte CombinedBinHClucAndMADV9 (strategies/cluc/CombinedBinHClucAndMADV9.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/cluc/CombinedBinHClucAndMADV9.py",
+"class": "CombinedBinHClucAndMADV9"
+},
+{
+"label": "TheoBrigitte ClucHAnix (strategies/cluc/TrailingBuyStratCluc.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/cluc/TrailingBuyStratCluc.py",
+"class": "ClucHAnix"
+},
+{
+"label": "TheoBrigitte TrailingBuyStratCluc (strategies/cluc/TrailingBuyStratCluc.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/cluc/TrailingBuyStratCluc.py",
+"class": "TrailingBuyStratCluc"
+},
+{
+"label": "TheoBrigitte ClucHAnix_BB_RPB_MOD (strategies/cluc/TrailingBuyStratClucBBRPBMODE.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/cluc/TrailingBuyStratClucBBRPBMODE.py",
+"class": "ClucHAnix_BB_RPB_MOD"
+},
+{
+"label": "TheoBrigitte TrailingBuyStratClucBBRPBMODE (strategies/cluc/TrailingBuyStratClucBBRPBMODE.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/cluc/TrailingBuyStratClucBBRPBMODE.py",
+"class": "TrailingBuyStratClucBBRPBMODE"
+},
+{
+"label": "TheoBrigitte ClucHAnix5m (strategies/cluc/TrailingBuy_ClucHAnix_5m_E0V1E_by_TraNz (1).py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/cluc/TrailingBuy_ClucHAnix_5m_E0V1E_by_TraNz (1).py",
+"class": "ClucHAnix5m"
+},
+{
+"label": "TheoBrigitte TrailingBuyStratCluc5m (strategies/cluc/TrailingBuy_ClucHAnix_5m_E0V1E_by_TraNz (1).py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/cluc/TrailingBuy_ClucHAnix_5m_E0V1E_by_TraNz (1).py",
+"class": "TrailingBuyStratCluc5m"
+},
+{
+"label": "TheoBrigitte ClucHAnix5m (strategies/cluc/TrailingBuy_ClucHAnix_5m_E0V1E_by_TraNz.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/cluc/TrailingBuy_ClucHAnix_5m_E0V1E_by_TraNz.py",
+"class": "ClucHAnix5m"
+},
+{
+"label": "TheoBrigitte TrailingBuyStratCluc5m (strategies/cluc/TrailingBuy_ClucHAnix_5m_E0V1E_by_TraNz.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/cluc/TrailingBuy_ClucHAnix_5m_E0V1E_by_TraNz.py",
+"class": "TrailingBuyStratCluc5m"
+},
+{
+"label": "TheoBrigitte CryptoFrog (strategies/cryptofrog-strategies/CryptoFrog.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/cryptofrog-strategies/CryptoFrog.py",
+"class": "CryptoFrog"
+},
+{
+"label": "TheoBrigitte CryptoFrog_nateema (strategies/cryptofrog-strategies/CryptoFrog_nateema.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/cryptofrog-strategies/CryptoFrog_nateema.py",
+"class": "CryptoFrog_nateema"
+},
+{
+"label": "TheoBrigitte Danke (strategies/danke/Danke.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/danke/Danke.py",
+"class": "Danke"
+},
+{
+"label": "TheoBrigitte DWT (strategies/dwt/DWT.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/dwt/DWT.py",
+"class": "DWT"
+},
+{
+"label": "TheoBrigitte DWT_Leveraged (strategies/dwt/DWT_Leveraged.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/dwt/DWT_Leveraged.py",
+"class": "DWT_Leveraged"
+},
+{
+"label": "TheoBrigitte DWT_LongShort (strategies/dwt/DWT_LongShort.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/dwt/DWT_LongShort.py",
+"class": "DWT_LongShort"
+},
+{
+"label": "TheoBrigitte DWT_short (strategies/dwt/DWT_short.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/dwt/DWT_short.py",
+"class": "DWT_short"
+},
+{
+"label": "TheoBrigitte E0V1E (strategies/e0v1e/E0V1E.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/e0v1e/E0V1E.py",
+"class": "E0V1E"
+},
+{
+"label": "TheoBrigitte E0V1E2 (strategies/e0v1e/E0V1E2.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/e0v1e/E0V1E2.py",
+"class": "E0V1E2"
+},
+{
+"label": "TheoBrigitte E0V1E_DCA3 (strategies/e0v1e/E0V1E_DCA3.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/e0v1e/E0V1E_DCA3.py",
+"class": "E0V1E_DCA3"
+},
+{
+"label": "TheoBrigitte E0V1E_ewo (strategies/e0v1e/E0V1E_ewo.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/e0v1e/E0V1E_ewo.py",
+"class": "E0V1E_ewo"
+},
+{
+"label": "TheoBrigitte E0V1E_protections (strategies/e0v1e/E0V1E_protections.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/e0v1e/E0V1E_protections.py",
+"class": "E0V1E_protections"
+},
+{
+"label": "TheoBrigitte E0V1E_strs (strategies/e0v1e/E0V1E_strs.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/e0v1e/E0V1E_strs.py",
+"class": "E0V1E_strs"
+},
+{
+"label": "TheoBrigitte E0V1E (strategies/e0v1e/dry-run/2025-02-15/E0V1E.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/e0v1e/dry-run/2025-02-15/E0V1E.py",
+"class": "E0V1E"
+},
+{
+"label": "TheoBrigitte E0V1E (strategies/e0v1e_stash/E0V1E.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/e0v1e_stash/E0V1E.py",
+"class": "E0V1E"
+},
+{
+"label": "TheoBrigitte Auto_EI_t4c0s (strategies/ei/Auto_EI_t4c0s.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/ei/Auto_EI_t4c0s.py",
+"class": "Auto_EI_t4c0s"
+},
+{
+"label": "TheoBrigitte EI4_t4c0s_V2 (strategies/ei/EI4_t4c0s_V2.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/ei/EI4_t4c0s_V2.py",
+"class": "EI4_t4c0s_V2"
+},
+{
+"label": "TheoBrigitte EI4_t4c0s_V2_2 (strategies/ei/EI4_t4c0s_V2_2.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/ei/EI4_t4c0s_V2_2.py",
+"class": "EI4_t4c0s_V2_2"
+},
+{
+"label": "TheoBrigitte Auto_EI_t4c0s (strategies/ei/dry-run/2024-09-15/Auto_EI_t4c0s.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/ei/dry-run/2024-09-15/Auto_EI_t4c0s.py",
+"class": "Auto_EI_t4c0s"
+},
+{
+"label": "TheoBrigitte Auto_EI_t4c0s (strategies/ei/dry-run/2024-10-18/Auto_EI_t4c0s.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/ei/dry-run/2024-10-18/Auto_EI_t4c0s.py",
+"class": "Auto_EI_t4c0s"
+},
+{
+"label": "TheoBrigitte EI1_t4c0s_V4 (strategies/eiv4/EI1_t4c0s_V4.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/eiv4/EI1_t4c0s_V4.py",
+"class": "EI1_t4c0s_V4"
+},
+{
+"label": "TheoBrigitte ElliotV8_original_ichiv2 (strategies/eliot/ElliotV8_original_ichiv2.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/eliot/ElliotV8_original_ichiv2.py",
+"class": "ElliotV8_original_ichiv2"
+},
+{
+"label": "TheoBrigitte ElliotV8_original_ichiv2OH (strategies/eliot/ElliotV8_original_ichiv2OH.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/eliot/ElliotV8_original_ichiv2OH.py",
+"class": "ElliotV8_original_ichiv2OH"
+},
+{
+"label": "TheoBrigitte falconTrader (strategies/falcon/falconTrader.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/falcon/falconTrader.py",
+"class": "falconTrader"
+},
+{
+"label": "TheoBrigitte FastSupertrend_optim3 (strategies/fastsupertrend/FastSupertrend_optim3.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/fastsupertrend/FastSupertrend_optim3.py",
+"class": "FastSupertrend_optim3"
+},
+{
+"label": "TheoBrigitte FastSupertrend_optim3_rsi_70 (strategies/fastsupertrend/FastSupertrend_optim3_rsi_70.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/fastsupertrend/FastSupertrend_optim3_rsi_70.py",
+"class": "FastSupertrend_optim3_rsi_70"
+},
+{
+"label": "TheoBrigitte FastSupertrend_optim3_rsi_75 (strategies/fastsupertrend/FastSupertrend_optim3_rsi_75.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/fastsupertrend/FastSupertrend_optim3_rsi_75.py",
+"class": "FastSupertrend_optim3_rsi_75"
+},
+{
+"label": "TheoBrigitte FastSupertrend_optim3_rsi_752 (strategies/fastsupertrend/FastSupertrend_optim3_rsi_752.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/fastsupertrend/FastSupertrend_optim3_rsi_752.py",
+"class": "FastSupertrend_optim3_rsi_752"
+},
+{
+"label": "TheoBrigitte FastSupertrend_optim3_rsi_75fix (strategies/fastsupertrend/FastSupertrend_optim3_rsi_75fix.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/fastsupertrend/FastSupertrend_optim3_rsi_75fix.py",
+"class": "FastSupertrend_optim3_rsi_75fix"
+},
+{
+"label": "TheoBrigitte FastSupertrend_optim3_rsi_75fix_signal (strategies/fastsupertrend/FastSupertrend_optim3_rsi_75fix_signal.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/fastsupertrend/FastSupertrend_optim3_rsi_75fix_signal.py",
+"class": "FastSupertrend_optim3_rsi_75fix_signal"
+},
+{
+"label": "TheoBrigitte FastSupertrend_optim3_rsi_75lev (strategies/fastsupertrend/FastSupertrend_optim3_rsi_75lev.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/fastsupertrend/FastSupertrend_optim3_rsi_75lev.py",
+"class": "FastSupertrend_optim3_rsi_75lev"
+},
+{
+"label": "TheoBrigitte FastSupertrend_optim3_rsi_75sell (strategies/fastsupertrend/FastSupertrend_optim3_rsi_75sell.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/fastsupertrend/FastSupertrend_optim3_rsi_75sell.py",
+"class": "FastSupertrend_optim3_rsi_75sell"
+},
+{
+"label": "TheoBrigitte FastSupertrend_optim3_rsi_80 (strategies/fastsupertrend/FastSupertrend_optim3_rsi_80.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/fastsupertrend/FastSupertrend_optim3_rsi_80.py",
+"class": "FastSupertrend_optim3_rsi_80"
+},
+{
+"label": "TheoBrigitte FastSupertrend_optim_quick (strategies/fastsupertrend/FastSupertrend_optim_quick.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/fastsupertrend/FastSupertrend_optim_quick.py",
+"class": "FastSupertrend_optim_quick"
+},
+{
+"label": "TheoBrigitte FastSupertrend_optim_quick2 (strategies/fastsupertrend/FastSupertrend_optim_quick2.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/fastsupertrend/FastSupertrend_optim_quick2.py",
+"class": "FastSupertrend_optim_quick2"
+},
+{
+"label": "TheoBrigitte FastSupertrend_optim_quick3 (strategies/fastsupertrend/FastSupertrend_optim_quick3.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/fastsupertrend/FastSupertrend_optim_quick3.py",
+"class": "FastSupertrend_optim_quick3"
+},
+{
+"label": "TheoBrigitte FastSupertrend_optim_quick4 (strategies/fastsupertrend/FastSupertrend_optim_quick4.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/fastsupertrend/FastSupertrend_optim_quick4.py",
+"class": "FastSupertrend_optim_quick4"
+},
+{
+"label": "TheoBrigitte FastSupertrend_optim_quick5 (strategies/fastsupertrend/FastSupertrend_optim_quick5.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/fastsupertrend/FastSupertrend_optim_quick5.py",
+"class": "FastSupertrend_optim_quick5"
+},
+{
+"label": "TheoBrigitte FastSupertrend_ts_origstop_fix (strategies/fastsupertrend/FastSupertrend_ts_origstop_fix.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/fastsupertrend/FastSupertrend_ts_origstop_fix.py",
+"class": "FastSupertrend_ts_origstop_fix"
+},
+{
+"label": "TheoBrigitte Bandtastic (strategies/freqtrade-strategies/Bandtastic.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/freqtrade-strategies/Bandtastic.py",
+"class": "Bandtastic"
+},
+{
+"label": "TheoBrigitte BreakEven (strategies/freqtrade-strategies/BreakEven.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/freqtrade-strategies/BreakEven.py",
+"class": "BreakEven"
+},
+{
+"label": "TheoBrigitte CustomStoplossWithPSAR (strategies/freqtrade-strategies/CustomStoplossWithPSAR.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/freqtrade-strategies/CustomStoplossWithPSAR.py",
+"class": "CustomStoplossWithPSAR"
+},
+{
+"label": "TheoBrigitte Diamond (strategies/freqtrade-strategies/Diamond.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/freqtrade-strategies/Diamond.py",
+"class": "Diamond"
+},
+{
+"label": "TheoBrigitte FixedRiskRewardLoss (strategies/freqtrade-strategies/FixedRiskRewardLoss.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/freqtrade-strategies/FixedRiskRewardLoss.py",
+"class": "FixedRiskRewardLoss"
+},
+{
+"label": "TheoBrigitte GodStra (strategies/freqtrade-strategies/GodStra.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/freqtrade-strategies/GodStra.py",
+"class": "GodStra"
+},
+{
+"label": "TheoBrigitte Heracles (strategies/freqtrade-strategies/Heracles.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/freqtrade-strategies/Heracles.py",
+"class": "Heracles"
+},
+{
+"label": "TheoBrigitte HourBasedStrategy (strategies/freqtrade-strategies/HourBasedStrategy.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/freqtrade-strategies/HourBasedStrategy.py",
+"class": "HourBasedStrategy"
+},
+{
+"label": "TheoBrigitte InformativeSample (strategies/freqtrade-strategies/InformativeSample.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/freqtrade-strategies/InformativeSample.py",
+"class": "InformativeSample"
+},
+{
+"label": "TheoBrigitte MultiMa (strategies/freqtrade-strategies/MultiMa.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/freqtrade-strategies/MultiMa.py",
+"class": "MultiMa"
+},
+{
+"label": "TheoBrigitte PatternRecognition (strategies/freqtrade-strategies/PatternRecognition.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/freqtrade-strategies/PatternRecognition.py",
+"class": "PatternRecognition"
+},
+{
+"label": "TheoBrigitte PowerTower (strategies/freqtrade-strategies/PowerTower.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/freqtrade-strategies/PowerTower.py",
+"class": "PowerTower"
+},
+{
+"label": "TheoBrigitte Strategy001 (strategies/freqtrade-strategies/Strategy001.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/freqtrade-strategies/Strategy001.py",
+"class": "Strategy001"
+},
+{
+"label": "TheoBrigitte Strategy001_custom_exit (strategies/freqtrade-strategies/Strategy001_custom_exit.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/freqtrade-strategies/Strategy001_custom_exit.py",
+"class": "Strategy001_custom_exit"
+},
+{
+"label": "TheoBrigitte Strategy002 (strategies/freqtrade-strategies/Strategy002.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/freqtrade-strategies/Strategy002.py",
+"class": "Strategy002"
+},
+{
+"label": "TheoBrigitte Strategy003 (strategies/freqtrade-strategies/Strategy003.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/freqtrade-strategies/Strategy003.py",
+"class": "Strategy003"
+},
+{
+"label": "TheoBrigitte Strategy004 (strategies/freqtrade-strategies/Strategy004.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/freqtrade-strategies/Strategy004.py",
+"class": "Strategy004"
+},
+{
+"label": "TheoBrigitte Strategy005 (strategies/freqtrade-strategies/Strategy005.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/freqtrade-strategies/Strategy005.py",
+"class": "Strategy005"
+},
+{
+"label": "TheoBrigitte Supertrend (strategies/freqtrade-strategies/Supertrend.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/freqtrade-strategies/Supertrend.py",
+"class": "Supertrend"
+},
+{
+"label": "TheoBrigitte SwingHighToSky (strategies/freqtrade-strategies/SwingHighToSky.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/freqtrade-strategies/SwingHighToSky.py",
+"class": "SwingHighToSky"
+},
+{
+"label": "TheoBrigitte UniversalMACD (strategies/freqtrade-strategies/UniversalMACD.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/freqtrade-strategies/UniversalMACD.py",
+"class": "UniversalMACD"
+},
+{
+"label": "TheoBrigitte hlhb (strategies/freqtrade-strategies/hlhb.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/freqtrade-strategies/hlhb.py",
+"class": "hlhb"
+},
+{
+"label": "TheoBrigitte mabStra (strategies/freqtrade-strategies/mabStra.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/freqtrade-strategies/mabStra.py",
+"class": "mabStra"
+},
+{
+"label": "TheoBrigitte multi_tf (strategies/freqtrade-strategies/multi_tf.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/freqtrade-strategies/multi_tf.py",
+"class": "multi_tf"
+},
+{
+"label": "TheoBrigitte DoubleEMACrossoverWithTrend (strategies/freqtrade-strategies-that-work/DoubleEMACrossoverWithTrend.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/freqtrade-strategies-that-work/DoubleEMACrossoverWithTrend.py",
+"class": "DoubleEMACrossoverWithTrend"
+},
+{
+"label": "TheoBrigitte EMAPriceCrossoverWithThreshold (strategies/freqtrade-strategies-that-work/EMAPriceCrossoverWithThreshold.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/freqtrade-strategies-that-work/EMAPriceCrossoverWithThreshold.py",
+"class": "EMAPriceCrossoverWithThreshold"
+},
+{
+"label": "TheoBrigitte MACDCrossoverWithTrend (strategies/freqtrade-strategies-that-work/MACDCrossoverWithTrend.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/freqtrade-strategies-that-work/MACDCrossoverWithTrend.py",
+"class": "MACDCrossoverWithTrend"
+},
+{
+"label": "TheoBrigitte RSIDirectionalWithTrend (strategies/freqtrade-strategies-that-work/RSIDirectionalWithTrend.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/freqtrade-strategies-that-work/RSIDirectionalWithTrend.py",
+"class": "RSIDirectionalWithTrend"
+},
+{
+"label": "TheoBrigitte RSIDirectionalWithTrendSlow (strategies/freqtrade-strategies-that-work/RSIDirectionalWithTrendSlow.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/freqtrade-strategies-that-work/RSIDirectionalWithTrendSlow.py",
+"class": "RSIDirectionalWithTrendSlow"
+},
+{
+"label": "TheoBrigitte HarmonicDivergence_fix (strategies/harmonic-divergence/HarmonicDivergence-fix.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/harmonic-divergence/HarmonicDivergence-fix.py",
+"class": "HarmonicDivergence_fix"
+},
+{
+"label": "TheoBrigitte HarmonicDivergence (strategies/harmonic-divergence/HarmonicDivergence.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/harmonic-divergence/HarmonicDivergence.py",
+"class": "HarmonicDivergence"
+},
+{
+"label": "TheoBrigitte HarmonicDivergence_fix (strategies/harmonic-divergence/dry-run/2025-01-21/HarmonicDivergence-fix.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/harmonic-divergence/dry-run/2025-01-21/HarmonicDivergence-fix.py",
+"class": "HarmonicDivergence_fix"
+},
+{
+"label": "TheoBrigitte Insomnia_short (strategies/insomnia/Insomnia_short.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/insomnia/Insomnia_short.py",
+"class": "Insomnia_short"
+},
+{
+"label": "TheoBrigitte JuicyTrend (strategies/juicy/JuicyTrend.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/juicy/JuicyTrend.py",
+"class": "JuicyTrend"
+},
+{
+"label": "TheoBrigitte Kasuari (strategies/kasuari/kasuari.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/kasuari/kasuari.py",
+"class": "Kasuari"
+},
+{
+"label": "TheoBrigitte MiniLambo (strategies/lambo/MiniLambo.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/lambo/MiniLambo.py",
+"class": "MiniLambo"
+},
+{
+"label": "TheoBrigitte MiniLambo_TBS (strategies/lambo/MiniLambo.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/lambo/MiniLambo.py",
+"class": "MiniLambo_TBS"
+},
+{
+"label": "TheoBrigitte PowerTower (strategies/momentum/PowerTower.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/momentum/PowerTower.py",
+"class": "PowerTower"
+},
+{
+"label": "TheoBrigitte momentum (strategies/momentum/momentum.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/momentum/momentum.py",
+"class": "momentum"
+},
+{
+"label": "TheoBrigitte momentum_long (strategies/momentum/momentum_long.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/momentum/momentum_long.py",
+"class": "momentum_long"
+},
+{
+"label": "TheoBrigitte momentum_rsi (strategies/momentum/momentum_rsi.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/momentum/momentum_rsi.py",
+"class": "momentum_rsi"
+},
+{
+"label": "TheoBrigitte momentum_wick (strategies/momentum/momentum_wick.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/momentum/momentum_wick.py",
+"class": "momentum_wick"
+},
+{
+"label": "TheoBrigitte ToTheMoon (strategies/moon/ToTheMoon.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/moon/ToTheMoon.py",
+"class": "ToTheMoon"
+},
+{
+"label": "TheoBrigitte NASOSv4 (strategies/nasos/NASOSv4.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/nasos/NASOSv4.py",
+"class": "NASOSv4"
+},
+{
+"label": "TheoBrigitte NASOSv5 (strategies/nasos/NASOSv5.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/nasos/NASOSv5.py",
+"class": "NASOSv5"
+},
+{
+"label": "TheoBrigitte NASOSv5 (strategies/nasos/NASOSv5_antipump.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/nasos/NASOSv5_antipump.py",
+"class": "NASOSv5"
+},
+{
+"label": "TheoBrigitte NASOSv5_antipump (strategies/nasos/NASOSv5_antipump.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/nasos/NASOSv5_antipump.py",
+"class": "NASOSv5_antipump"
+},
+{
+"label": "TheoBrigitte NASOSv5_mod1 (strategies/nasos/NASOSv5_mod1.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/nasos/NASOSv5_mod1.py",
+"class": "NASOSv5_mod1"
+},
+{
+"label": "TheoBrigitte NASOSv5PD (strategies/nasos/NASOSv5_mod1.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/nasos/NASOSv5_mod1.py",
+"class": "NASOSv5PD"
+},
+{
+"label": "TheoBrigitte TrailingBuyStrat (strategies/nasos/NASOSv5_mod1.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/nasos/NASOSv5_mod1.py",
+"class": "TrailingBuyStrat"
+},
+{
+"label": "TheoBrigitte NASOSv5_mod2 (strategies/nasos/NASOSv5_mod2.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/nasos/NASOSv5_mod2.py",
+"class": "NASOSv5_mod2"
+},
+{
+"label": "TheoBrigitte NASOSv5PD (strategies/nasos/NASOSv5_mod2.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/nasos/NASOSv5_mod2.py",
+"class": "NASOSv5PD"
+},
+{
+"label": "TheoBrigitte TrailingBuyStrat (strategies/nasos/NASOSv5_mod2.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/nasos/NASOSv5_mod2.py",
+"class": "TrailingBuyStrat"
+},
+{
+"label": "TheoBrigitte NASOSv5_mod3 (strategies/nasos/NASOSv5_mod3.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/nasos/NASOSv5_mod3.py",
+"class": "NASOSv5_mod3"
+},
+{
+"label": "TheoBrigitte NASOSv5PD (strategies/nasos/NASOSv5_mod3.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/nasos/NASOSv5_mod3.py",
+"class": "NASOSv5PD"
+},
+{
+"label": "TheoBrigitte TrailingBuyStrat (strategies/nasos/NASOSv5_mod3.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/nasos/NASOSv5_mod3.py",
+"class": "TrailingBuyStrat"
+},
+{
+"label": "TheoBrigitte NASOSv4 (strategies/nasos/dry-run/2025-01-19/NASOSv4.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/nasos/dry-run/2025-01-19/NASOSv4.py",
+"class": "NASOSv4"
+},
+{
+"label": "TheoBrigitte NASOSv4 (strategies/nasos/dry-run/2025-04-15/binance/NASOSv4.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/nasos/dry-run/2025-04-15/binance/NASOSv4.py",
+"class": "NASOSv4"
+},
+{
+"label": "TheoBrigitte NASOSv4 (strategies/nasos/dry-run/2025-04-15/kucoin/NASOSv4.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/nasos/dry-run/2025-04-15/kucoin/NASOSv4.py",
+"class": "NASOSv4"
+},
+{
+"label": "TheoBrigitte NFI3 (strategies/nfix/NFI3.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/nfix/NFI3.py",
+"class": "NFI3"
+},
+{
+"label": "TheoBrigitte NostalgiaForInfinity772martinsk3 (strategies/nfix/NostalgiaForInfinity772martinsk3.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/nfix/NostalgiaForInfinity772martinsk3.py",
+"class": "NostalgiaForInfinity772martinsk3"
+},
+{
+"label": "TheoBrigitte NostalgiaForInfinityX (strategies/nfix/NostalgiaForInfinityX.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/nfix/NostalgiaForInfinityX.py",
+"class": "NostalgiaForInfinityX"
+},
+{
+"label": "TheoBrigitte NostalgiaForInfinityX13107 (strategies/nfix/NostalgiaForInfinityX13107.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/nfix/NostalgiaForInfinityX13107.py",
+"class": "NostalgiaForInfinityX13107"
+},
+{
+"label": "TheoBrigitte NostalgiaForInfinityX1337 (strategies/nfix/NostalgiaForInfinityX1337.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/nfix/NostalgiaForInfinityX1337.py",
+"class": "NostalgiaForInfinityX1337"
+},
+{
+"label": "TheoBrigitte NostalgiaForInfinityX2488 (strategies/nfix/NostalgiaForInfinityX2488.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/nfix/NostalgiaForInfinityX2488.py",
+"class": "NostalgiaForInfinityX2488"
+},
+{
+"label": "TheoBrigitte NostalgiaForInfinityX2616 (strategies/nfix/NostalgiaForInfinityX2616.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/nfix/NostalgiaForInfinityX2616.py",
+"class": "NostalgiaForInfinityX2616"
+},
+{
+"label": "TheoBrigitte NostalgiaForInfinityX2616_nosell (strategies/nfix/NostalgiaForInfinityX2616_nosell.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/nfix/NostalgiaForInfinityX2616_nosell.py",
+"class": "NostalgiaForInfinityX2616_nosell"
+},
+{
+"label": "TheoBrigitte NostalgiaForInfinityX2626 (strategies/nfix/NostalgiaForInfinityX2626.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/nfix/NostalgiaForInfinityX2626.py",
+"class": "NostalgiaForInfinityX2626"
+},
+{
+"label": "TheoBrigitte NostalgiaForInfinityX2640 (strategies/nfix/NostalgiaForInfinityX2640.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/nfix/NostalgiaForInfinityX2640.py",
+"class": "NostalgiaForInfinityX2640"
+},
+{
+"label": "TheoBrigitte NostalgiaForInfinityX3121 (strategies/nfix/NostalgiaForInfinityX3121.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/nfix/NostalgiaForInfinityX3121.py",
+"class": "NostalgiaForInfinityX3121"
+},
+{
+"label": "TheoBrigitte NostalgiaForInfinityX3182 (strategies/nfix/NostalgiaForInfinityX3182.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/nfix/NostalgiaForInfinityX3182.py",
+"class": "NostalgiaForInfinityX3182"
+},
+{
+"label": "TheoBrigitte NostalgiaForInfinityX3187 (strategies/nfix/NostalgiaForInfinityX3187.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/nfix/NostalgiaForInfinityX3187.py",
+"class": "NostalgiaForInfinityX3187"
+},
+{
+"label": "TheoBrigitte NostalgiaForInfinityX3199 (strategies/nfix/NostalgiaForInfinityX3199.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/nfix/NostalgiaForInfinityX3199.py",
+"class": "NostalgiaForInfinityX3199"
+},
+{
+"label": "TheoBrigitte NostalgiaForInfinityX3208 (strategies/nfix/NostalgiaForInfinityX3208.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/nfix/NostalgiaForInfinityX3208.py",
+"class": "NostalgiaForInfinityX3208"
+},
+{
+"label": "TheoBrigitte NostalgiaForInfinityX3211 (strategies/nfix/NostalgiaForInfinityX3211.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/nfix/NostalgiaForInfinityX3211.py",
+"class": "NostalgiaForInfinityX3211"
+},
+{
+"label": "TheoBrigitte NostalgiaForInfinityX3221 (strategies/nfix/NostalgiaForInfinityX3221.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/nfix/NostalgiaForInfinityX3221.py",
+"class": "NostalgiaForInfinityX3221"
+},
+{
+"label": "TheoBrigitte NostalgiaForInfinityX3243 (strategies/nfix/NostalgiaForInfinityX3243.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/nfix/NostalgiaForInfinityX3243.py",
+"class": "NostalgiaForInfinityX3243"
+},
+{
+"label": "TheoBrigitte NostalgiaForInfinityX3253 (strategies/nfix/NostalgiaForInfinityX3253.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/nfix/NostalgiaForInfinityX3253.py",
+"class": "NostalgiaForInfinityX3253"
+},
+{
+"label": "TheoBrigitte NostalgiaForInfinityX3259 (strategies/nfix/NostalgiaForInfinityX3259.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/nfix/NostalgiaForInfinityX3259.py",
+"class": "NostalgiaForInfinityX3259"
+},
+{
+"label": "TheoBrigitte NostalgiaForInfinityX3468 (strategies/nfix/NostalgiaForInfinityX3468.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/nfix/NostalgiaForInfinityX3468.py",
+"class": "NostalgiaForInfinityX3468"
+},
+{
+"label": "TheoBrigitte NostalgiaForInfinityX4003 (strategies/nfix/NostalgiaForInfinityX4003.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/nfix/NostalgiaForInfinityX4003.py",
+"class": "NostalgiaForInfinityX4003"
+},
+{
+"label": "TheoBrigitte NostalgiaForInfinityX4113 (strategies/nfix/NostalgiaForInfinityX4113.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/nfix/NostalgiaForInfinityX4113.py",
+"class": "NostalgiaForInfinityX4113"
+},
+{
+"label": "TheoBrigitte NostalgiaForInfinityX4334 (strategies/nfix/NostalgiaForInfinityX4334.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/nfix/NostalgiaForInfinityX4334.py",
+"class": "NostalgiaForInfinityX4334"
+},
+{
+"label": "TheoBrigitte NOTankAi_15 (strategies/notankai/NOTankAi_15.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/notankai/NOTankAi_15.py",
+"class": "NOTankAi_15"
+},
+{
+"label": "TheoBrigitte NOTankAi_15_Cleaned (strategies/notankai/NOTankAi_15_Cleaned.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/notankai/NOTankAi_15_Cleaned.py",
+"class": "NOTankAi_15_Cleaned"
+},
+{
+"label": "TheoBrigitte NOTankAi_15_Cleaned_v2 (strategies/notankai/NOTankAi_15_Cleaned_v2.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/notankai/NOTankAi_15_Cleaned_v2.py",
+"class": "NOTankAi_15_Cleaned_v2"
+},
+{
+"label": "TheoBrigitte NOTankAi_15_ali (strategies/notankai/NOTankAi_15_ali.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/notankai/NOTankAi_15_ali.py",
+"class": "NOTankAi_15_ali"
+},
+{
+"label": "TheoBrigitte NOTankAi_15 (strategies/notankai/dry-run/2024-09-07/NOTankAi_15.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/notankai/dry-run/2024-09-07/NOTankAi_15.py",
+"class": "NOTankAi_15"
+},
+{
+"label": "TheoBrigitte NOTankAi_15 (strategies/notankai/dry-run/2024-12-16/NOTankAi_15.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/notankai/dry-run/2024-12-16/NOTankAi_15.py",
+"class": "NOTankAi_15"
+},
+{
+"label": "TheoBrigitte NOTankAi_15 (strategies/notankai/dry-run/2024-12-30/NOTankAi_15.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/notankai/dry-run/2024-12-30/NOTankAi_15.py",
+"class": "NOTankAi_15"
+},
+{
+"label": "TheoBrigitte AlligatorStrategy (strategies/profiters/AlligatorStrategy.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/profiters/AlligatorStrategy.py",
+"class": "AlligatorStrategy"
+},
+{
+"label": "TheoBrigitte BigTrader (strategies/profiters/BigTrader.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/profiters/BigTrader.py",
+"class": "BigTrader"
+},
+{
+"label": "TheoBrigitte CrossEMAStrategy (strategies/profiters/CrossEMAStrategy.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/profiters/CrossEMAStrategy.py",
+"class": "CrossEMAStrategy"
+},
+{
+"label": "TheoBrigitte NormalizerStrategyHO2 (strategies/profiters/NormalizerStrategyHO2.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/profiters/NormalizerStrategyHO2.py",
+"class": "NormalizerStrategyHO2"
+},
+{
+"label": "TheoBrigitte SqueezeMomentum (strategies/profiters/SqueezeMomentum.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/profiters/SqueezeMomentum.py",
+"class": "SqueezeMomentum"
+},
+{
+"label": "TheoBrigitte SupertrendStrategy (strategies/profiters/SupertrendStrategy.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/profiters/SupertrendStrategy.py",
+"class": "SupertrendStrategy"
+},
+{
+"label": "TheoBrigitte TrixStrategy (strategies/profiters/TrixStrategy.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/profiters/TrixStrategy.py",
+"class": "TrixStrategy"
+},
+{
+"label": "TheoBrigitte QuickBuyStrategy (strategies/quick_buy/quick_buy_strategy.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/quick_buy/quick_buy_strategy.py",
+"class": "QuickBuyStrategy"
+},
+{
+"label": "TheoBrigitte QuickAdapterV3 (strategies/quickadapter/QuickAdapterV3.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/quickadapter/QuickAdapterV3.py",
+"class": "QuickAdapterV3"
+},
+{
+"label": "TheoBrigitte AdaptiveRenkoStrategy (strategies/renko/AdaptiveRenkoStrategy.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/renko/AdaptiveRenkoStrategy.py",
+"class": "AdaptiveRenkoStrategy"
+},
+{
+"label": "TheoBrigitte Rsiqui (strategies/rsiqui/Rsiqui.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/rsiqui/Rsiqui.py",
+"class": "Rsiqui"
+},
+{
+"label": "TheoBrigitte RsiquiV2 (strategies/rsiqui/RsiquiV2.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/rsiqui/RsiquiV2.py",
+"class": "RsiquiV2"
+},
+{
+"label": "TheoBrigitte RsiquiV2_protections (strategies/rsiqui/RsiquiV2_protections.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/rsiqui/RsiquiV2_protections.py",
+"class": "RsiquiV2_protections"
+},
+{
+"label": "TheoBrigitte RsiquiV5 (strategies/rsiqui/RsiquiV5.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/rsiqui/RsiquiV5.py",
+"class": "RsiquiV5"
+},
+{
+"label": "TheoBrigitte RsiquiV5_long_only (strategies/rsiqui/RsiquiV5_long_only.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/rsiqui/RsiquiV5_long_only.py",
+"class": "RsiquiV5_long_only"
+},
+{
+"label": "TheoBrigitte RsiquiV5 (strategies/rsiqui/RsiquiV5_protections.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/rsiqui/RsiquiV5_protections.py",
+"class": "RsiquiV5"
+},
+{
+"label": "TheoBrigitte Rsiqui_protections (strategies/rsiqui/Rsiqui_protections.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/rsiqui/Rsiqui_protections.py",
+"class": "Rsiqui_protections"
+},
+{
+"label": "TheoBrigitte Simple (strategies/simple/Simple.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/simple/Simple.py",
+"class": "Simple"
+},
+{
+"label": "TheoBrigitte slownsteady (strategies/slownsteady/slownsteady_v2.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/slownsteady/slownsteady_v2.py",
+"class": "slownsteady"
+},
+{
+"label": "TheoBrigitte NotAnotherSMAOffSetStrategy_V2 (strategies/smas/NotAnotherSMAOffSetStrategy_V2.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/smas/NotAnotherSMAOffSetStrategy_V2.py",
+"class": "NotAnotherSMAOffSetStrategy_V2"
+},
+{
+"label": "TheoBrigitte NotAnotherSMAOffSetStrategy_V2_protections (strategies/smas/NotAnotherSMAOffSetStrategy_V2_protections.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/smas/NotAnotherSMAOffSetStrategy_V2_protections.py",
+"class": "NotAnotherSMAOffSetStrategy_V2_protections"
+},
+{
+"label": "TheoBrigitte NotAnotherSMAOffsetStrategyHOv3 (strategies/smas/NotAnotherSMAOffsetStrategyHOv3_b.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/smas/NotAnotherSMAOffsetStrategyHOv3_b.py",
+"class": "NotAnotherSMAOffsetStrategyHOv3"
+},
+{
+"label": "TheoBrigitte NotAnotherSMAOffsetStrategyHOv3_protections (strategies/smas/NotAnotherSMAOffsetStrategyHOv3_b_protections.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/smas/NotAnotherSMAOffsetStrategyHOv3_b_protections.py",
+"class": "NotAnotherSMAOffsetStrategyHOv3_protections"
+},
+{
+"label": "TheoBrigitte NotAnotherSMAOffsetStrategyLite (strategies/smas/NotAnotherSMAOffsetStrategyLite.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/smas/NotAnotherSMAOffsetStrategyLite.py",
+"class": "NotAnotherSMAOffsetStrategyLite"
+},
+{
+"label": "TheoBrigitte NotAnotherSMAOffsetStrategyLite_protections (strategies/smas/NotAnotherSMAOffsetStrategyLite_protections.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/smas/NotAnotherSMAOffsetStrategyLite_protections.py",
+"class": "NotAnotherSMAOffsetStrategyLite_protections"
+},
+{
+"label": "TheoBrigitte NotAnotherSMAOffsetStrategyModHO (strategies/smas/NotAnotherSMAOffsetStrategyModHO.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/smas/NotAnotherSMAOffsetStrategyModHO.py",
+"class": "NotAnotherSMAOffsetStrategyModHO"
+},
+{
+"label": "TheoBrigitte NotAnotherSMAOffsetStrategyModHO_protections (strategies/smas/NotAnotherSMAOffsetStrategyModHO_protections.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/smas/NotAnotherSMAOffsetStrategyModHO_protections.py",
+"class": "NotAnotherSMAOffsetStrategyModHO_protections"
+},
+{
+"label": "TheoBrigitte NotAnotherSMAOffsetStrategy_uzi (strategies/smas/NotAnotherSMAOffsetStrategy_uzi.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/smas/NotAnotherSMAOffsetStrategy_uzi.py",
+"class": "NotAnotherSMAOffsetStrategy_uzi"
+},
+{
+"label": "TheoBrigitte NotAnotherSMAOffsetStrategy_uzi3 (strategies/smas/NotAnotherSMAOffsetStrategy_uzi3.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/smas/NotAnotherSMAOffsetStrategy_uzi3.py",
+"class": "NotAnotherSMAOffsetStrategy_uzi3"
+},
+{
+"label": "TheoBrigitte NotAnotherSMAOffsetStrategy_uzi3_protections (strategies/smas/NotAnotherSMAOffsetStrategy_uzi3_protections.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/smas/NotAnotherSMAOffsetStrategy_uzi3_protections.py",
+"class": "NotAnotherSMAOffsetStrategy_uzi3_protections"
+},
+{
+"label": "TheoBrigitte NotAnotherSMAOffsetStrategy_uzi_protections (strategies/smas/NotAnotherSMAOffsetStrategy_uzi_protections.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/smas/NotAnotherSMAOffsetStrategy_uzi_protections.py",
+"class": "NotAnotherSMAOffsetStrategy_uzi_protections"
+},
+{
+"label": "TheoBrigitte SMAOffsetProtectOptV0 (strategies/smas/SMAOffsetProtectOptV0.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/smas/SMAOffsetProtectOptV0.py",
+"class": "SMAOffsetProtectOptV0"
+},
+{
+"label": "TheoBrigitte SMAOffsetProtectOptV0_protections (strategies/smas/SMAOffsetProtectOptV0_protections.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/smas/SMAOffsetProtectOptV0_protections.py",
+"class": "SMAOffsetProtectOptV0_protections"
+},
+{
+"label": "TheoBrigitte SMAOffsetProtectOptV1 (strategies/smas/SMAOffsetProtectOptV1.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/smas/SMAOffsetProtectOptV1.py",
+"class": "SMAOffsetProtectOptV1"
+},
+{
+"label": "TheoBrigitte SMAOffsetProtectOptV1HO1 (strategies/smas/SMAOffsetProtectOptV1HO1.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/smas/SMAOffsetProtectOptV1HO1.py",
+"class": "SMAOffsetProtectOptV1HO1"
+},
+{
+"label": "TheoBrigitte SMAOffsetProtectOptV1HO1_protections (strategies/smas/SMAOffsetProtectOptV1HO1_protections.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/smas/SMAOffsetProtectOptV1HO1_protections.py",
+"class": "SMAOffsetProtectOptV1HO1_protections"
+},
+{
+"label": "TheoBrigitte SMAOffsetProtectOptV1Mod2 (strategies/smas/SMAOffsetProtectOptV1Mod2_antipump.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/smas/SMAOffsetProtectOptV1Mod2_antipump.py",
+"class": "SMAOffsetProtectOptV1Mod2"
+},
+{
+"label": "TheoBrigitte SMAOffsetProtectOptV1Mod2_antipump (strategies/smas/SMAOffsetProtectOptV1Mod2_antipump.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/smas/SMAOffsetProtectOptV1Mod2_antipump.py",
+"class": "SMAOffsetProtectOptV1Mod2_antipump"
+},
+{
+"label": "TheoBrigitte SMAOffsetProtectOptV1Mod2_protections (strategies/smas/SMAOffsetProtectOptV1Mod2_antipump_protections.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/smas/SMAOffsetProtectOptV1Mod2_antipump_protections.py",
+"class": "SMAOffsetProtectOptV1Mod2_protections"
+},
+{
+"label": "TheoBrigitte SMAOffsetProtectOptV1Mod2_antipump_protections (strategies/smas/SMAOffsetProtectOptV1Mod2_antipump_protections.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/smas/SMAOffsetProtectOptV1Mod2_antipump_protections.py",
+"class": "SMAOffsetProtectOptV1Mod2_antipump_protections"
+},
+{
+"label": "TheoBrigitte SMAOffsetProtectOptV1_protections (strategies/smas/SMAOffsetProtectOptV1_protections.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/smas/SMAOffsetProtectOptV1_protections.py",
+"class": "SMAOffsetProtectOptV1_protections"
+},
+{
+"label": "TheoBrigitte SMAOffsetV2 (strategies/smas/SMAOffsetV2.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/smas/SMAOffsetV2.py",
+"class": "SMAOffsetV2"
+},
+{
+"label": "TheoBrigitte SMAOffsetV2_protections (strategies/smas/SMAOffsetV2_protections.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/smas/SMAOffsetV2_protections.py",
+"class": "SMAOffsetV2_protections"
+},
+{
+"label": "TheoBrigitte SMAOffset_Hippocritical_dca (strategies/smas/SMAOffset_Hippocritical_dca.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/smas/SMAOffset_Hippocritical_dca.py",
+"class": "SMAOffset_Hippocritical_dca"
+},
+{
+"label": "TheoBrigitte SMAOffset_Hippocritical_dca_leverage (strategies/smas/SMAOffset_Hippocritical_dca_leverage.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/smas/SMAOffset_Hippocritical_dca_leverage.py",
+"class": "SMAOffset_Hippocritical_dca_leverage"
+},
+{
+"label": "TheoBrigitte SMAOffset_Hippocritical_dca_leverage_protections (strategies/smas/SMAOffset_Hippocritical_dca_leverage_protections.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/smas/SMAOffset_Hippocritical_dca_leverage_protections.py",
+"class": "SMAOffset_Hippocritical_dca_leverage_protections"
+},
+{
+"label": "TheoBrigitte SMAOffset_Hippocritical_dca_old (strategies/smas/SMAOffset_Hippocritical_dca_old.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/smas/SMAOffset_Hippocritical_dca_old.py",
+"class": "SMAOffset_Hippocritical_dca_old"
+},
+{
+"label": "TheoBrigitte SMAOffset_Hippocritical_dca_old_protections (strategies/smas/SMAOffset_Hippocritical_dca_old_protections.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/smas/SMAOffset_Hippocritical_dca_old_protections.py",
+"class": "SMAOffset_Hippocritical_dca_old_protections"
+},
+{
+"label": "TheoBrigitte SMAOffset_Hippocritical_dca_protections (strategies/smas/SMAOffset_Hippocritical_dca_protections.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/smas/SMAOffset_Hippocritical_dca_protections.py",
+"class": "SMAOffset_Hippocritical_dca_protections"
+},
+{
+"label": "TheoBrigitte SMAOffset_Hippocritical_dca_protections2 (strategies/smas/SMAOffset_Hippocritical_dca_protections2.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/smas/SMAOffset_Hippocritical_dca_protections2.py",
+"class": "SMAOffset_Hippocritical_dca_protections2"
+},
+{
+"label": "TheoBrigitte SMAOffset_Hippocritical_dca_protections_obf (strategies/smas/SMAOffset_Hippocritical_dca_protections_obf.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/smas/SMAOffset_Hippocritical_dca_protections_obf.py",
+"class": "SMAOffset_Hippocritical_dca_protections_obf"
+},
+{
+"label": "TheoBrigitte NotAnotherSMAOffsetStrategyHOv3 (strategies/smas/dry-run/2025-01-24/NotAnotherSMAOffsetStrategyHOv3_b.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/smas/dry-run/2025-01-24/NotAnotherSMAOffsetStrategyHOv3_b.py",
+"class": "NotAnotherSMAOffsetStrategyHOv3"
+},
+{
+"label": "TheoBrigitte SMAOffset_Hippocritical_dca_leverage (strategies/smas/dry-run/2025-01-29/SMAOffset_Hippocritical_dca_leverage.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/smas/dry-run/2025-01-29/SMAOffset_Hippocritical_dca_leverage.py",
+"class": "SMAOffset_Hippocritical_dca_leverage"
+},
+{
+"label": "TheoBrigitte SMAOffset_Hippocritical_dca (strategies/smas/dry-run/2025-02-28/overbuy/SMAOffset_Hippocritical_dca.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/smas/dry-run/2025-02-28/overbuy/SMAOffset_Hippocritical_dca.py",
+"class": "SMAOffset_Hippocritical_dca"
+},
+{
+"label": "TheoBrigitte SMAOffset_Hippocritical_dca (strategies/smas/dry-run/2025-02-28/trailing5/SMAOffset_Hippocritical_dca.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/smas/dry-run/2025-02-28/trailing5/SMAOffset_Hippocritical_dca.py",
+"class": "SMAOffset_Hippocritical_dca"
+},
+{
+"label": "TheoBrigitte SMAOffset_Hippocritical_dca (strategies/smas/dry-run/2025-03-07/SMAOffset_Hippocritical_dca.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/smas/dry-run/2025-03-07/SMAOffset_Hippocritical_dca.py",
+"class": "SMAOffset_Hippocritical_dca"
+},
+{
+"label": "TheoBrigitte SMAOffset_Hippocritical_dca (strategies/smas/dry-run/2025-05-25/binance/SMAOffset_Hippocritical_dca.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/smas/dry-run/2025-05-25/binance/SMAOffset_Hippocritical_dca.py",
+"class": "SMAOffset_Hippocritical_dca"
+},
+{
+"label": "TheoBrigitte SMAOffset_Hippocritical_dca (strategies/smas/dry-run/2025-05-25/kucoin/SMAOffset_Hippocritical_dca.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/smas/dry-run/2025-05-25/kucoin/SMAOffset_Hippocritical_dca.py",
+"class": "SMAOffset_Hippocritical_dca"
+},
+{
+"label": "TheoBrigitte SMAOffset_Hippocritical_dca (strategies/smas/dry-run/2026-08-14/joyboy/SMAOffset_Hippocritical_dca.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/smas/dry-run/2026-08-14/joyboy/SMAOffset_Hippocritical_dca.py",
+"class": "SMAOffset_Hippocritical_dca"
+},
+{
+"label": "TheoBrigitte SMAOffset_Hippocritical_dca (strategies/smas/dry-run/2026-08-14/magicboy/SMAOffset_Hippocritical_dca.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/smas/dry-run/2026-08-14/magicboy/SMAOffset_Hippocritical_dca.py",
+"class": "SMAOffset_Hippocritical_dca"
+},
+{
+"label": "TheoBrigitte SMAOffset_Hippocritical_dca (strategies/smas/dry-run/2026-08-14/warboy/SMAOffset_Hippocritical_dca.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/smas/dry-run/2026-08-14/warboy/SMAOffset_Hippocritical_dca.py",
+"class": "SMAOffset_Hippocritical_dca"
+},
+{
+"label": "TheoBrigitte BinMfiBTCv5003 (strategies/sponsors/BinMfiBTCv5003.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/sponsors/BinMfiBTCv5003.py",
+"class": "BinMfiBTCv5003"
+},
+{
+"label": "TheoBrigitte CombinedBinHAndClucHyper (strategies/sponsors/CombinedBinHAndClucHyper.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/sponsors/CombinedBinHAndClucHyper.py",
+"class": "CombinedBinHAndClucHyper"
+},
+{
+"label": "TheoBrigitte zorkv7_0_0 (strategies/sponsors/zorkv7_0_0.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/sponsors/zorkv7_0_0.py",
+"class": "zorkv7_0_0"
+},
+{
+"label": "TheoBrigitte SqueezeMomentum (strategies/squeezemomentum/SqueezeMomentum.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/squeezemomentum/SqueezeMomentum.py",
+"class": "SqueezeMomentum"
+},
+{
+"label": "TheoBrigitte StarRise (strategies/starrise/StarRise.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/starrise/StarRise.py",
+"class": "StarRise"
+},
+{
+"label": "TheoBrigitte StarRise_strat (strategies/starrise/StarRise_V2.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/starrise/StarRise_V2.py",
+"class": "StarRise_strat"
+},
+{
+"label": "TheoBrigitte StarRise_V2 (strategies/starrise/StarRise_V2.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/starrise/StarRise_V2.py",
+"class": "StarRise_V2"
+},
+{
+"label": "TheoBrigitte StarRise_strat3 (strategies/starrise/StarRise_V3.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/starrise/StarRise_V3.py",
+"class": "StarRise_strat3"
+},
+{
+"label": "TheoBrigitte StarRise_V3 (strategies/starrise/StarRise_V3.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/starrise/StarRise_V3.py",
+"class": "StarRise_V3"
+},
+{
+"label": "TheoBrigitte Tank1Modulus (strategies/tank/Tank1Modulus.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/tank/Tank1Modulus.py",
+"class": "Tank1Modulus"
+},
+{
+"label": "TheoBrigitte Tank5ModulusDCA (strategies/tank/Tank5ModulusDCA.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/tank/Tank5ModulusDCA.py",
+"class": "Tank5ModulusDCA"
+},
+{
+"label": "TheoBrigitte Tank5ModulusDCAV3 (strategies/tank/Tank5ModulusDCAV3.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/tank/Tank5ModulusDCAV3.py",
+"class": "Tank5ModulusDCAV3"
+},
+{
+"label": "TheoBrigitte FixedRiskRewardLoss (strategies/test/FixedRiskRewardLoss.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/test/FixedRiskRewardLoss.py",
+"class": "FixedRiskRewardLoss"
+},
+{
+"label": "TheoBrigitte TrendFollowingStrategy (strategies/trendfollowing/TrendFollowingStrategy.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/trendfollowing/TrendFollowingStrategy.py",
+"class": "TrendFollowingStrategy"
+},
+{
+"label": "TheoBrigitte new_turtle (strategies/turtle/new_turtle.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/turtle/new_turtle.py",
+"class": "new_turtle"
+},
+{
+"label": "TheoBrigitte new_turtle_roi (strategies/turtle/new_turtle_roi.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/turtle/new_turtle_roi.py",
+"class": "new_turtle_roi"
+},
+{
+"label": "TheoBrigitte twinturboV8 (strategies/twinturbov8/twinturboV8.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/twinturbov8/twinturboV8.py",
+"class": "twinturboV8"
+},
+{
+"label": "TheoBrigitte twinturboV8_2 (strategies/twinturbov8/twinturboV8_2.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/twinturbov8/twinturboV8_2.py",
+"class": "twinturboV8_2"
+},
+{
+"label": "TheoBrigitte VolatilitySystem (strategies/volatility/VolatilitySystem.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/volatility/VolatilitySystem.py",
+"class": "VolatilitySystem"
+},
+{
+"label": "TheoBrigitte VolatilitySystemV2 (strategies/volatility/VolatilitySystemV2.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/volatility/VolatilitySystemV2.py",
+"class": "VolatilitySystemV2"
+},
+{
+"label": "TheoBrigitte VVW (strategies/vvw/vvw.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/vvw/vvw.py",
+"class": "VVW"
+},
+{
+"label": "TheoBrigitte TRIWAVE (strategies/wave/TRIWAVE.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/wave/TRIWAVE.py",
+"class": "TRIWAVE"
+},
+{
+"label": "TheoBrigitte dualwave (strategies/wave/dualwave.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/wave/dualwave.py",
+"class": "dualwave"
+},
+{
+"label": "TheoBrigitte WTX3 (strategies/wtx3/scalpv3.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/wtx3/scalpv3.py",
+"class": "WTX3"
+},
+{
+"label": "TheoBrigitte simple_patterns (strategies/yodo/simple_patterns.py)",
+"repo": "TheoBrigitte/freqtrade",
+"file": "downloads/TheoBrigitte_freqtrade/strategies/yodo/simple_patterns.py",
+"class": "simple_patterns"
+},
+{
+"label": "nateemma OversoldReversion (Reversion/OversoldReversion.py)",
+"repo": "nateemma/strategies",
+"file": "downloads/nateemma_strategies/Reversion/OversoldReversion.py",
+"class": "OversoldReversion"
+},
+{
+"label": "nateemma CryptoFrog (reference/CryptoFrog.py)",
+"repo": "nateemma/strategies",
+"file": "downloads/nateemma_strategies/reference/CryptoFrog.py",
+"class": "CryptoFrog"
+},
+{
+"label": "nateemma MacheteV8b (reference/MacheteV8b.py)",
+"repo": "nateemma/strategies",
+"file": "downloads/nateemma_strategies/reference/MacheteV8b.py",
+"class": "MacheteV8b"
+},
+{
+"label": "nateemma BuyRegions (TSPredict/BuyRegions.py)",
+"repo": "nateemma/strategies",
+"file": "downloads/nateemma_strategies/TSPredict/BuyRegions.py",
+"class": "BuyRegions"
+},
+{
+"label": "nateemma TriggerOnlyStrategy (SimpleStrategies/TriggerOnly.py)",
+"repo": "nateemma/strategies",
+"file": "downloads/nateemma_strategies/SimpleStrategies/TriggerOnly.py",
+"class": "TriggerOnlyStrategy"
+},
+{
+"label": "nateemma BaseStrategy (Framework/BaseStrategy.py)",
+"repo": "nateemma/strategies",
+"file": "downloads/nateemma_strategies/Framework/BaseStrategy.py",
+"class": "BaseStrategy"
+}
+]
