@@ -13,7 +13,8 @@ It hands them out one minute at a time, oldest first, and it is also the exchang
     python3 price_server.py [--port 8765]
 
     GET /next?order=BUY&share=1.0      order: BUY, SELL or NONE
-      -> {"ts": minutes since 1970, "time", "high", "low", "close", "source", "value"}
+    GET /next?order=SELL&qty=12.5      with qty: buy or sell that many coins (capped by what the account has)
+      -> {"ts": minutes since 1970, "time", "high", "low", "close", "source", "value", "cash", "coins"}
       -> {"done": true, "account": {...}} after the last minute
 """
 import argparse
@@ -49,7 +50,7 @@ class Exchange:
         dec = max(d for d in range(10) if self.seen[d] > k - 1440)
         return FEE + max(HALF_GAP, 0.5 * 10.0 ** -dec / self.cl[k])
 
-    def next(self, order, share):
+    def next(self, order, share, qty=None):
         if self.k + 1 >= len(self.cl):
             return {"done": True, "account": self.summary()}
         self.k += 1
@@ -58,7 +59,19 @@ class Exchange:
         if self.hold0 is None:
             self.hold0 = 1000.0 / (c * (1 + kap))
         note = None
-        if order == "BUY" and self.coins == 0 and self.cash > 0:
+        if qty is not None and order == "BUY" and self.cash > 0:
+            got = min(qty, self.cash / (c * (1 + kap)))
+            self.coins += got
+            self.cash = max(0.0, self.cash - got * c * (1 + kap))
+            note = "BUY"
+        elif qty is not None and order == "SELL" and self.coins > 0:
+            gone = min(qty, self.coins)
+            self.coins -= gone
+            self.cash += gone * c * (1 - kap)
+            note = "SELL"
+        elif qty is not None:
+            pass
+        elif order == "BUY" and self.coins == 0 and self.cash > 0:
             put = min(1.0, max(0.0, share)) * self.cash
             self.coins = put / (c * (1 + kap))
             self.cash -= put
@@ -70,10 +83,10 @@ class Exchange:
         value = self.cash + self.coins * c * (1 - kap)
         if note:
             self.trades.append({"time": self.time[k], "action": note, "price": c, "value": value,
-                                "source": self.src[k]})
+                                "source": self.src[k], "cash": self.cash, "coins": self.coins})
         self.kap = kap
         return {"ts": self.ts[k], "time": self.time[k], "high": self.hi[k], "low": self.lo[k], "close": c,
-                "source": self.src[k], "value": value}
+                "source": self.src[k], "value": value, "cash": self.cash, "coins": self.coins}
 
     def summary(self):
         k = self.k
@@ -101,7 +114,8 @@ def main():
                 q = parse_qs(u.query)
                 order = q.get("order", ["NONE"])[0].upper()
                 share = float(q.get("share", ["1"])[0])
-                body, code = json.dumps(ex.next(order, share)).encode(), 200
+                qty = float(q["qty"][0]) if "qty" in q else None
+                body, code = json.dumps(ex.next(order, share, qty)).encode(), 200
             self.send_response(code)
             self.send_header("Content-Type", "application/json")
             self.send_header("Content-Length", str(len(body)))
