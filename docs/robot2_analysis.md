@@ -183,3 +183,43 @@ $1,154 per $1,000: about the same as either part off alone, below the Grayscale-
 | Robot 2, Kelly risk | $1,090 | $1,002 | 24% |
 | Robot 2, 100% per buy | $3,279 | $1,001 | 55% |
 | Just holding PEARL | $2,725 | $1,552 | 69% |
+
+## The sealed test: chosen on Jun–Sep only, Oct–Nov handed over one minute at a time
+
+Run on 21 Nov 2026: `python3 fetch_sealed.py`, `python3 choose_before_oct.py`, `python3 test_unseen.py`.
+
+**Chosen using only prices before 1 Oct** (`choose_before_oct.py`, 30 robots, all money per buy,
+25 Jun – 30 Sep). The 27 window / low / high combinations were scored as the average of each and
+its grid neighbours (safest, not luckiest). Then the 4 part choices were tried at the winner:
+
+| | Chosen | Was (picked after seeing Oct–Nov) |
+|---|---|---|
+| Window | 2 hours | 4 hours |
+| "At the low" | 0.50% | 0.23% |
+| "Near the high" | 1.0% | 1.8% |
+| Parts | library off, timing on | library off, timing off |
+| Money on 30 Sep (from $1,000) | $3,358 | |
+
+**Test prices, sealed** (`data/sealed/`, opened only by `price_server.py`): BigONE PEARL-USDT
+1 Oct – 13 Nov 17:59, then Coinbase PEARL-USD 13 Nov 18:00 – 20 Nov 23:59 (Coinbase started
+trading PEARL at 17:21 that day; no other exchange had PEARL minute prices before 23 Oct). At the
+switch Coinbase was 3.8% above BigONE. The robot and holding both held PEARL then, so both got it.
+
+**The test.** The robot knew 140,122 minutes, the last at 30 Sep 23:59. It started 1 Oct with
+$1,000 USDC and asked the server for one minute at a time (73,440 minutes). The server kept the
+account and filled each order at the next minute.
+
+| Time | Trade | Price | Account |
+|---|---|---|---|
+| 21 Oct 16:28 | Buy | 2.2019 | $986.10 |
+| 18 Nov 15:59 | Sell | 2.1403 | $958.51 |
+| 19 Nov 11:42 | Buy | 2.2581 | $945.18 |
+| 20 Nov 23:59 | (still holding) | | **$765.07** |
+
+| $1,000 on 1 Oct → 20 Nov | |
+|---|---|
+| Robot 2, chosen on Jun–Sep, sealed test | **$765** (−23%) |
+| Just holding PEARL | **$1,476** (+48%) |
+
+The server's account and the robot's own count agree to the cent. The robot bought near the
+October top, held through the fall to about $1.40, and bought again on 19 Nov before a drop.
