@@ -12,7 +12,8 @@ Cost per side 0.7% (0.2% fee + 0.5% half gap); a decision on a minute's close fi
     python3 spikes/dip_top.py smooth   pick the middle of the highest AREA, not the highest single peak:
                                        every pair scored by the average of all pairs within +-5% buy and +-5% sell
                                        -> spikes/dip_top_smooth_winner.json, spikes/dip_top_smooth_graph.png
-    python3 spikes/dip_top.py test smooth  -> spikes/dip_top_smooth_last_month.csv
+    python3 spikes/dip_top.py smooth 15  same with +-15% -> spikes/dip_top_smooth15_winner.json, ..._graph.png
+    python3 spikes/dip_top.py test smooth      (or smooth15 ...)  -> spikes/dip_top_smooth*_last_month.csv
 """
 import csv
 import http.client
@@ -147,10 +148,9 @@ def choose():
     print("saved spikes/dip_top_graph.png")
 
 
-WINDOW = 5
-
-
 def smooth():
+    WINDOW = int(sys.argv[2]) if len(sys.argv) > 2 else 5
+    tag = "_smooth" if WINDOW == 5 else f"_smooth{WINDOW}"
     df = pd.read_csv(os.path.join(HERE, "dip_top_train.csv"))
     grid_ = df.pivot(index="buy_after_fall_%", columns="sell_after_rise_%", values="training_$")
     v = grid_.to_numpy()
@@ -164,7 +164,7 @@ def smooth():
     trades = int(df[(df["buy_after_fall_%"] == x) & (df["sell_after_rise_%"] == y)]["trades"].iloc[0])
     win = {"x": x / 100, "y": y / 100, "area_average_$": round(float(avg[i, j]), 2),
            "own_training_$": round(float(v[i, j]), 2), "training_trades": trades, "window": f"+-{WINDOW}%"}
-    with open(os.path.join(HERE, "dip_top_smooth_winner.json"), "w") as f:
+    with open(os.path.join(HERE, f"dip_top{tag}_winner.json"), "w") as f:
         json.dump(win, f, indent=2)
     order = np.argsort(-avg, axis=None)[:10]
     print(f"best areas (average of every pair within +-{WINDOW}% buy and +-{WINDOW}% sell):")
@@ -193,12 +193,12 @@ def smooth():
         ax.view_init(elev=30, azim=-125)
     fig.suptitle("Training months 25 Jun - 21 Oct, $1,000 start".replace("$", "\\$"), fontsize=13)
     fig.tight_layout(rect=(0, 0, 1, 0.95))
-    fig.savefig(os.path.join(HERE, "dip_top_smooth_graph.png"), dpi=110)
-    print("saved spikes/dip_top_smooth_graph.png")
+    fig.savefig(os.path.join(HERE, f"dip_top{tag}_graph.png"), dpi=110)
+    print(f"saved spikes/dip_top{tag}_graph.png")
 
 
 def test():
-    tag = "_smooth" if "smooth" in sys.argv[2:] else ""
+    tag = f"_{sys.argv[2]}" if len(sys.argv) > 2 else ""
     with open(os.path.join(HERE, f"dip_top{tag}_winner.json")) as f:
         w = json.load(f)
     robot, port = Robot(w["x"], w["y"]), 8792
