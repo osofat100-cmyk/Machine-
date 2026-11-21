@@ -1,0 +1,69 @@
+program,strategy,how,trades,end_value,status,note
+Freqtrade 2026.10,AverageStrategy,B,4.0,2366.04,ran,"look-ahead check: no bias (4 trades, two +50% ROI exits)"
+Freqtrade 2026.10,UniversalMACD,B,37.0,1509.6,ran,LOOK-AHEAD BIAS FOUND by Freqtrade (4 of 20 signals) - result not valid
+Freqtrade 2026.10,FixedRiskRewardLoss,B,1.0,1481.53,ran,ships with no timeframe; run at 5m (Freqtrade sample config value); 1 trade = bought and held; look-ahead check: too few trades to test
+Freqtrade 2026.10,CustomStoplossWithPSAR,B,2.0,1438.3,ran,look-ahead check: no bias
+Freqtrade 2026.10,TDSequentialStrategy,B,12.0,1343.15,ran,LOOK-AHEAD BIAS FOUND by Freqtrade (1 of 12 signals) - result not valid
+Freqtrade 2026.10,mabStra,B,18.0,1295.42,ran,look-ahead check: no bias
+Freqtrade 2026.10,PatternRecognition,B,1.0,1265.47,ran,look-ahead check: no bias (1 trade)
+Freqtrade 2026.10,AdxSmas,B,23.0,1121.0,ran,look-ahead check: no bias
+Freqtrade 2026.10,Supertrend,B,24.0,1119.32,ran,LOOK-AHEAD BIAS FOUND by Freqtrade (2 of 20 signals) - result not valid
+Freqtrade 2026.10,Strategy002,B,5.0,1072.35,ran,
+Freqtrade 2026.10,hlhb,B,2.0,1034.05,ran,
+Freqtrade 2026.10,Freqtrade_backtest_validation_freqtrade1,B,23.0,1012.9,ran,
+Freqtrade 2026.10,DoesNothingStrategy,B,0.0,1000.0,ran,0 trades
+Freqtrade 2026.10,wtc,B,0.0,1000.0,ran,0 trades; repo puts it in lookahead_bias/ (known-biased example)
+Freqtrade 2026.10,ReinforcedAverageStrategy,B,0.0,1000.0,ran,0 trades
+Freqtrade 2026.10,BreakEven,B,0.0,1000.0,ran,0 trades
+Freqtrade 2026.10,Strategy004,B,30.0,983.38,ran,
+Freqtrade 2026.10,PowerTower,B,7.0,895.04,ran,
+Freqtrade 2026.10,CCIStrategy,B,13.0,893.74,ran,
+Freqtrade 2026.10,Low_BB,B,4.0,889.48,ran,
+Freqtrade 2026.10,TrendFollowingStrategy,B,24.0,882.08,ran,
+Freqtrade 2026.10,AwesomeMacd,B,15.0,881.85,ran,
+Freqtrade 2026.10,Bandtastic,B,78.0,867.87,ran,
+Freqtrade 2026.10,ClucMay72018,B,20.0,813.59,ran,
+Freqtrade 2026.10,CMCWinner,B,22.0,799.17,ran,
+Freqtrade 2026.10,BinHV27,B,42.0,783.73,ran,
+Freqtrade 2026.10,MultiMa,B,6.0,765.36,ran,
+Freqtrade 2026.10,Strategy005,B,14.0,754.61,ran,
+Freqtrade 2026.10,TrendRiderStrategy,B,14.0,744.32,ran,
+Freqtrade 2026.10,SwingHighToSky,B,14.0,733.58,ran,
+Freqtrade 2026.10,Strategy003,B,15.0,699.46,ran,
+Freqtrade 2026.10,SmoothScalp,B,36.0,678.2,ran,
+Freqtrade 2026.10,BbandRsi,B,5.0,660.63,ran,
+Freqtrade 2026.10,Diamond,B,35.0,652.82,ran,
+Freqtrade 2026.10,Quickie,B,27.0,643.51,ran,
+Freqtrade 2026.10,HourBasedStrategy,B,56.0,639.27,ran,
+Freqtrade 2026.10,MACDStrategy_crossed,B,24.0,609.45,ran,
+Freqtrade 2026.10,BinHV45,B,39.0,589.16,ran,
+Freqtrade 2026.10,CombinedBinHAndCluc,B,43.0,584.53,ran,
+Freqtrade 2026.10,ADXMomentum,B,56.0,580.08,ran,
+Freqtrade 2026.10,MACDStrategy,B,37.0,562.0,ran,
+Freqtrade 2026.10,ReinforcedSmoothScalp,B,35.0,559.32,ran,
+Freqtrade 2026.10,SmoothOperator,B,58.0,542.9,ran,
+Freqtrade 2026.10,ReinforcedQuickie,B,62.0,489.27,ran,
+Freqtrade 2026.10,Strategy001_custom_exit,B,74.0,458.48,ran,
+Freqtrade 2026.10,Simple,B,97.0,401.68,ran,
+Freqtrade 2026.10,FSupertrendStrategy,B,39.0,398.4,ran,
+Freqtrade 2026.10,Strategy001,B,71.0,396.28,ran,
+Freqtrade 2026.10,MultiRSI,B,100.0,226.05,ran,
+Freqtrade 2026.10,CofiBitStrategy,B,172.0,91.11,ran,
+Freqtrade 2026.10,EMASkipPump,B,170.0,61.69,ran,
+Freqtrade 2026.10,ASDTSRockwellTrading,B,326.0,8.22,ran,
+Freqtrade 2026.10,Scalp,B,402.0,4.29,ran,
+Freqtrade 2026.10,TechnicalExampleStrategy,B,507.0,2.17,ran,
+Freqtrade 2026.10,AlmgrenChrissStrategy,none,,,cannot run here,needs shorting/futures (Freqtrade: 'Short strategies cannot run in spot markets'); spot-only test
+Freqtrade 2026.10,FAdxSmaStrategy,none,,,cannot run here,needs shorting/futures (Freqtrade: 'Short strategies cannot run in spot markets'); spot-only test
+Freqtrade 2026.10,FReinforcedStrategy,none,,,cannot run here,needs shorting/futures (Freqtrade: 'Short strategies cannot run in spot markets'); spot-only test
+Freqtrade 2026.10,FSampleStrategy,none,,,cannot run here,needs shorting/futures (Freqtrade: 'Short strategies cannot run in spot markets'); spot-only test
+Freqtrade 2026.10,Heracles,B,,,does not run as shipped,"ERROR 'Dataframe returned from strategy has mismatching length' (strategy code); needs ta package, installed"
+Freqtrade 2026.10,InformativeSample,B,0.0,,cannot run here,needs BTC/USDT 15m data (informative pair); 0 trades without it
+Freqtrade 2026.10,multi_tf,none,,,does not run as shipped,Freqtrade loader skips 'class multi_tf (IStrategy)' (space before bracket); fix: remove the space. File says NOT TO BE USED FOR LIVE
+Freqtrade 2026.10,TWAPStrategy,none,,,cannot run here,needs shorting/futures (Freqtrade: 'Short strategies cannot run in spot markets'); spot-only test
+Freqtrade 2026.10,VolatilitySystem,none,,,cannot run here,needs shorting/futures (Freqtrade: 'Short strategies cannot run in spot markets'); spot-only test
+Freqtrade 2026.10,FOttStrategy,none,,,does not run as shipped,'from numpy.lib import math' fails on numpy 2 (needed by current Freqtrade); older Freqtrade+numpy 1 can't install (pandas-ta gone from PyPI); fix: 'import math'; also a futures strategy
+Freqtrade 2026.10,GodStra,none,,,does not run as shipped,'from numpy.lib import math' fails on numpy 2 (needed by current Freqtrade); older Freqtrade+numpy 1 can't install (pandas-ta gone from PyPI); fix: 'import math'
+Freqtrade 2026.10,GodStraNew,none,,,does not run as shipped,'from numpy.lib import math' fails on numpy 2 (needed by current Freqtrade); older Freqtrade+numpy 1 can't install (pandas-ta gone from PyPI); fix: 'import math'; repo marks it as a known look-ahead-biased example
+Freqtrade 2026.10,DevilStra,none,,,does not run as shipped,'from numpy.lib import math' fails on numpy 2 (needed by current Freqtrade); older Freqtrade+numpy 1 can't install (pandas-ta gone from PyPI); fix: 'import math'; repo marks it as a known look-ahead-biased example
+Freqtrade 2026.10,Zeus,none,,,does not run as shipped,'from numpy.lib import math' fails on numpy 2 (needed by current Freqtrade); older Freqtrade+numpy 1 can't install (pandas-ta gone from PyPI); fix: 'import math'; repo marks it as a known look-ahead-biased example
