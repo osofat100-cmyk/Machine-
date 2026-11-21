@@ -35,3 +35,10 @@ Written before any program was run on the test.
     simulator; limit: sent on the candle its simulator fills it, server fills at the next close). The price server
     keeps the real account, so a sell of PEARL it does not hold sells nothing (OpenTrader's grid assumes the coins for
     grid lines above the price are already held and has no balance check).
+- OpenTrader grid: first try deadlocked (Node fetch opened a 2nd connection; the price server serves one at a time) ->
+  fixed by one kept-alive http.Agent connection. Result $1,145.46, 115 orders, 108 filled, 7 sells with no PEARL held.
+- OpenTrader dca: backtester throws "Trade with type DCA is not supported in backtesting". Not run.
+- Gunbot (paid), Pionex (hosted): not run.
+- pantelis98765/crypto-bot: Docker Hub image only (no public source; README says <your-repo>), Binance + Crypto.com only,
+  needs Postgres. No docker daemon here; registry API pull refused twice: TOOMANYREQUESTS (unauthenticated rate limit).
+- pantelis98765/crypto-bot: 3rd pull refused (TOOMANYREQUESTS). Recorded 'cannot run here'.

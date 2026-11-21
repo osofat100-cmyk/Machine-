@@ -1,0 +1,2589 @@
+[15:49:50.615] INFO: [RSI] Bot started with params
+    high: 70
+    low: 30
+    periods: 14
+    persistence: 1
+    quantity: 818
+[15:49:50.637] INFO: [RSI] State initialized
+    trend: {
+      "direction": "none",
+      "duration": 0,
+      "persisted": false,
+      "adviced": false
+    }
+[15:49:50.638] INFO: [RSI] RSI value: 40.7
+[15:49:50.639] INFO: [RSI] In no trend
+[15:49:50.664] INFO: [RSI] RSI value: 43.14
+[15:49:50.664] INFO: [RSI] In no trend
+[15:49:50.689] INFO: [RSI] RSI value: 41.02
+[15:49:50.689] INFO: [RSI] In no trend
+[15:49:50.715] INFO: [RSI] RSI value: 41.86
+[15:49:50.716] INFO: [RSI] In no trend
+[15:49:50.752] INFO: [RSI] RSI value: 44.34
+[15:49:50.752] INFO: [RSI] In no trend
+[15:49:50.775] INFO: [RSI] RSI value: 44.54
+[15:49:50.775] INFO: [RSI] In no trend
+[15:49:50.800] INFO: [RSI] RSI value: 45.44
+[15:49:50.800] INFO: [RSI] In no trend
+[15:49:50.821] INFO: [RSI] RSI value: 53.8
+[15:49:50.821] INFO: [RSI] In no trend
+[15:49:50.840] INFO: [RSI] RSI value: 49.47
+[15:49:50.840] INFO: [RSI] In no trend
+[15:49:50.863] INFO: [RSI] RSI value: 52.05
+[15:49:50.863] INFO: [RSI] In no trend
+[15:49:50.884] INFO: [RSI] RSI value: 45.36
+[15:49:50.884] INFO: [RSI] In no trend
+[15:49:50.906] INFO: [RSI] RSI value: 46.12
+[15:49:50.906] INFO: [RSI] In no trend
+[15:49:50.927] INFO: [RSI] RSI value: 50.23
+[15:49:50.928] INFO: [RSI] In no trend
+[15:49:50.955] INFO: [RSI] RSI value: 45.52
+[15:49:50.955] INFO: [RSI] In no trend
+[15:49:50.989] INFO: [RSI] RSI value: 45.58
+[15:49:50.989] INFO: [RSI] In no trend
+[15:49:51.012] INFO: [RSI] RSI value: 36.24
+[15:49:51.012] INFO: [RSI] In no trend
+[15:49:51.029] INFO: [RSI] RSI value: 38.12
+[15:49:51.029] INFO: [RSI] In no trend
+[15:49:51.048] INFO: [RSI] RSI value: 39.28
+[15:49:51.048] INFO: [RSI] In no trend
+[15:49:51.062] INFO: [RSI] RSI value: 37.28
+[15:49:51.062] INFO: [RSI] In no trend
+[15:49:51.087] INFO: [RSI] RSI value: 34.94
+[15:49:51.088] INFO: [RSI] In no trend
+[15:49:51.104] INFO: [RSI] RSI value: 40.17
+[15:49:51.104] INFO: [RSI] In no trend
+[15:49:51.121] INFO: [RSI] RSI value: 36.33
+[15:49:51.121] INFO: [RSI] In no trend
+[15:49:51.139] INFO: [RSI] RSI value: 36.28
+[15:49:51.139] INFO: [RSI] In no trend
+[15:49:51.162] INFO: [RSI] RSI value: 36.18
+[15:49:51.162] INFO: [RSI] In no trend
+[15:49:51.183] INFO: [RSI] RSI value: 36.14
+[15:49:51.183] INFO: [RSI] In no trend
+[15:49:51.196] INFO: [RSI] RSI value: 35.89
+[15:49:51.196] INFO: [RSI] In no trend
+[15:49:51.215] INFO: [RSI] RSI value: 39.02
+[15:49:51.215] INFO: [RSI] In no trend
+[15:49:51.234] INFO: [RSI] RSI value: 39.76
+[15:49:51.234] INFO: [RSI] In no trend
+[15:49:51.251] INFO: [RSI] RSI value: 39.71
+[15:49:51.251] INFO: [RSI] In no trend
+[15:49:51.264] INFO: [RSI] RSI value: 34.48
+[15:49:51.264] INFO: [RSI] In no trend
+[15:49:51.281] INFO: [RSI] RSI value: 38.58
+[15:49:51.281] INFO: [RSI] In no trend
+[15:49:51.297] INFO: [RSI] RSI value: 35.96
+[15:49:51.297] INFO: [RSI] In no trend
+[15:49:51.315] INFO: [RSI] RSI value: 32.73
+[15:49:51.315] INFO: [RSI] In no trend
+[15:49:51.331] INFO: [RSI] RSI value: 35.49
+[15:49:51.331] INFO: [RSI] In no trend
+[15:49:51.348] INFO: [RSI] RSI value: 35.34
+[15:49:51.348] INFO: [RSI] In no trend
+[15:49:51.365] INFO: [RSI] RSI value: 32.76
+[15:49:51.365] INFO: [RSI] In no trend
+[15:49:51.384] INFO: [RSI] RSI value: 29.46
+[15:49:51.384] INFO: [RSI] In low since 1 candle(s)
+[15:49:51.384] INFO: [RSI] Advised to BUY
+[15:49:51.406] INFO: [MarketSimulator] Market BUY order was filled at 1.1298 on 2026-10-02T14:00:00
+[15:49:51.407] INFO: [RSI] RSI value: 36.75
+[15:49:51.407] INFO: [RSI] In no trend
+[15:49:51.421] INFO: [RSI] RSI value: 34.35
+[15:49:51.421] INFO: [RSI] In no trend
+[15:49:51.437] INFO: [RSI] RSI value: 31.92
+[15:49:51.437] INFO: [RSI] In no trend
+[15:49:51.464] INFO: [RSI] RSI value: 47.18
+[15:49:51.464] INFO: [RSI] In no trend
+[15:49:51.482] INFO: [RSI] RSI value: 39.93
+[15:49:51.482] INFO: [RSI] In no trend
+[15:49:51.517] INFO: [RSI] RSI value: 38.6
+[15:49:51.517] INFO: [RSI] In no trend
+[15:49:51.542] INFO: [RSI] RSI value: 39.36
+[15:49:51.542] INFO: [RSI] In no trend
+[15:49:51.569] INFO: [RSI] RSI value: 37.14
+[15:49:51.569] INFO: [RSI] In no trend
+[15:49:51.595] INFO: [RSI] RSI value: 34.66
+[15:49:51.595] INFO: [RSI] In no trend
+[15:49:51.632] INFO: [RSI] RSI value: 30.23
+[15:49:51.632] INFO: [RSI] In no trend
+[15:49:51.660] INFO: [RSI] RSI value: 25.78
+[15:49:51.660] INFO: [RSI] In low since 2 candle(s)
+[15:49:51.694] INFO: [RSI] RSI value: 24.19
+[15:49:51.694] INFO: [RSI] In low since 3 candle(s)
+[15:49:51.752] INFO: [RSI] RSI value: 21.9
+[15:49:51.752] INFO: [RSI] In low since 4 candle(s)
+[15:49:51.781] INFO: [RSI] RSI value: 19.85
+[15:49:51.781] INFO: [RSI] In low since 5 candle(s)
+[15:49:51.806] INFO: [RSI] RSI value: 20.38
+[15:49:51.806] INFO: [RSI] In low since 6 candle(s)
+[15:49:51.825] INFO: [RSI] RSI value: 37.37
+[15:49:51.825] INFO: [RSI] In no trend
+[15:49:51.846] INFO: [RSI] RSI value: 48.32
+[15:49:51.846] INFO: [RSI] In no trend
+[15:49:51.864] INFO: [RSI] RSI value: 55.6
+[15:49:51.864] INFO: [RSI] In no trend
+[15:49:51.875] INFO: [RSI] RSI value: 54.4
+[15:49:51.875] INFO: [RSI] In no trend
+[15:49:51.892] INFO: [RSI] RSI value: 44.48
+[15:49:51.892] INFO: [RSI] In no trend
+[15:49:51.918] INFO: [RSI] RSI value: 45.57
+[15:49:51.918] INFO: [RSI] In no trend
+[15:49:51.947] INFO: [RSI] RSI value: 47.25
+[15:49:51.947] INFO: [RSI] In no trend
+[15:49:51.972] INFO: [RSI] RSI value: 44.12
+[15:49:51.972] INFO: [RSI] In no trend
+[15:49:52.003] INFO: [RSI] RSI value: 43.98
+[15:49:52.003] INFO: [RSI] In no trend
+[15:49:52.033] INFO: [RSI] RSI value: 42.41
+[15:49:52.033] INFO: [RSI] In no trend
+[15:49:52.092] INFO: [RSI] RSI value: 44.85
+[15:49:52.092] INFO: [RSI] In no trend
+[15:49:52.118] INFO: [RSI] RSI value: 43.23
+[15:49:52.118] INFO: [RSI] In no trend
+[15:49:52.148] INFO: [RSI] RSI value: 42.01
+[15:49:52.148] INFO: [RSI] In no trend
+[15:49:52.176] INFO: [RSI] RSI value: 44.69
+[15:49:52.176] INFO: [RSI] In no trend
+[15:49:52.204] INFO: [RSI] RSI value: 48.17
+[15:49:52.204] INFO: [RSI] In no trend
+[15:49:52.232] INFO: [RSI] RSI value: 50.68
+[15:49:52.232] INFO: [RSI] In no trend
+[15:49:52.261] INFO: [RSI] RSI value: 57.36
+[15:49:52.261] INFO: [RSI] In no trend
+[15:49:52.286] INFO: [RSI] RSI value: 55.31
+[15:49:52.286] INFO: [RSI] In no trend
+[15:49:52.311] INFO: [RSI] RSI value: 49.34
+[15:49:52.311] INFO: [RSI] In no trend
+[15:49:52.336] INFO: [RSI] RSI value: 46.23
+[15:49:52.336] INFO: [RSI] In no trend
+[15:49:52.362] INFO: [RSI] RSI value: 44.87
+[15:49:52.362] INFO: [RSI] In no trend
+[15:49:52.388] INFO: [RSI] RSI value: 43.84
+[15:49:52.388] INFO: [RSI] In no trend
+[15:49:52.408] INFO: [RSI] RSI value: 41.18
+[15:49:52.408] INFO: [RSI] In no trend
+[15:49:52.426] INFO: [RSI] RSI value: 46.24
+[15:49:52.426] INFO: [RSI] In no trend
+[15:49:52.440] INFO: [RSI] RSI value: 42.13
+[15:49:52.440] INFO: [RSI] In no trend
+[15:49:52.459] INFO: [RSI] RSI value: 44.13
+[15:49:52.459] INFO: [RSI] In no trend
+[15:49:52.479] INFO: [RSI] RSI value: 41.05
+[15:49:52.479] INFO: [RSI] In no trend
+[15:49:52.493] INFO: [RSI] RSI value: 36.29
+[15:49:52.493] INFO: [RSI] In no trend
+[15:49:52.509] INFO: [RSI] RSI value: 36.72
+[15:49:52.509] INFO: [RSI] In no trend
+[15:49:52.526] INFO: [RSI] RSI value: 33.87
+[15:49:52.526] INFO: [RSI] In no trend
+[15:49:52.541] INFO: [RSI] RSI value: 31.56
+[15:49:52.541] INFO: [RSI] In no trend
+[15:49:52.556] INFO: [RSI] RSI value: 31.08
+[15:49:52.556] INFO: [RSI] In no trend
+[15:49:52.572] INFO: [RSI] RSI value: 41.89
+[15:49:52.572] INFO: [RSI] In no trend
+[15:49:52.588] INFO: [RSI] RSI value: 41.56
+[15:49:52.588] INFO: [RSI] In no trend
+[15:49:52.612] INFO: [RSI] RSI value: 42.03
+[15:49:52.612] INFO: [RSI] In no trend
+[15:49:52.636] INFO: [RSI] RSI value: 39.38
+[15:49:52.636] INFO: [RSI] In no trend
+[15:49:52.660] INFO: [RSI] RSI value: 51.53
+[15:49:52.660] INFO: [RSI] In no trend
+[15:49:52.683] INFO: [RSI] RSI value: 51.02
+[15:49:52.683] INFO: [RSI] In no trend
+[15:49:52.700] INFO: [RSI] RSI value: 48.78
+[15:49:52.700] INFO: [RSI] In no trend
+[15:49:52.723] INFO: [RSI] RSI value: 48.87
+[15:49:52.723] INFO: [RSI] In no trend
+[15:49:52.747] INFO: [RSI] RSI value: 45.91
+[15:49:52.747] INFO: [RSI] In no trend
+[15:49:52.767] INFO: [RSI] RSI value: 48.98
+[15:49:52.767] INFO: [RSI] In no trend
+[15:49:52.785] INFO: [RSI] RSI value: 53.47
+[15:49:52.785] INFO: [RSI] In no trend
+[15:49:52.798] INFO: [RSI] RSI value: 64.93
+[15:49:52.798] INFO: [RSI] In no trend
+[15:49:52.808] INFO: [RSI] RSI value: 63.15
+[15:49:52.808] INFO: [RSI] In no trend
+[15:49:52.820] INFO: [RSI] RSI value: 64.78
+[15:49:52.820] INFO: [RSI] In no trend
+[15:49:52.831] INFO: [RSI] RSI value: 63.69
+[15:49:52.831] INFO: [RSI] In no trend
+[15:49:52.845] INFO: [RSI] RSI value: 64.21
+[15:49:52.845] INFO: [RSI] In no trend
+[15:49:52.870] INFO: [RSI] RSI value: 60.59
+[15:49:52.870] INFO: [RSI] In no trend
+[15:49:52.891] INFO: [RSI] RSI value: 65.07
+[15:49:52.891] INFO: [RSI] In no trend
+[15:49:52.915] INFO: [RSI] RSI value: 65.07
+[15:49:52.915] INFO: [RSI] In no trend
+[15:49:52.940] INFO: [RSI] RSI value: 65.07
+[15:49:52.940] INFO: [RSI] In no trend
+[15:49:52.960] INFO: [RSI] RSI value: 62.54
+[15:49:52.960] INFO: [RSI] In no trend
+[15:49:52.979] INFO: [RSI] RSI value: 62.54
+[15:49:52.979] INFO: [RSI] In no trend
+[15:49:52.999] INFO: [RSI] RSI value: 60.6
+[15:49:52.999] INFO: [RSI] In no trend
+[15:49:53.021] INFO: [RSI] RSI value: 60.98
+[15:49:53.021] INFO: [RSI] In no trend
+[15:49:53.041] INFO: [RSI] RSI value: 60.09
+[15:49:53.041] INFO: [RSI] In no trend
+[15:49:53.057] INFO: [RSI] RSI value: 74.38
+[15:49:53.057] INFO: [RSI] In high since 1 candle(s)
+[15:49:53.057] INFO: [RSI] Advised to SELL
+[15:49:53.077] INFO: [MarketSimulator] Market SELL order was filled at 1.1958 on 2026-10-05T15:00:00
+[15:49:53.077] INFO: [RSI] RSI value: 79.14
+[15:49:53.077] INFO: [RSI] In high since 2 candle(s)
+[15:49:53.097] INFO: [RSI] RSI value: 72.91
+[15:49:53.097] INFO: [RSI] In high since 3 candle(s)
+[15:49:53.112] INFO: [RSI] RSI value: 69.23
+[15:49:53.112] INFO: [RSI] In no trend
+[15:49:53.127] INFO: [RSI] RSI value: 71.45
+[15:49:53.127] INFO: [RSI] In high since 4 candle(s)
+[15:49:53.143] INFO: [RSI] RSI value: 71.24
+[15:49:53.143] INFO: [RSI] In high since 5 candle(s)
+[15:49:53.159] INFO: [RSI] RSI value: 79.45
+[15:49:53.159] INFO: [RSI] In high since 6 candle(s)
+[15:49:53.175] INFO: [RSI] RSI value: 67.01
+[15:49:53.175] INFO: [RSI] In no trend
+[15:49:53.195] INFO: [RSI] RSI value: 67.06
+[15:49:53.196] INFO: [RSI] In no trend
+[15:49:53.217] INFO: [RSI] RSI value: 57.48
+[15:49:53.217] INFO: [RSI] In no trend
+[15:49:53.239] INFO: [RSI] RSI value: 53.85
+[15:49:53.239] INFO: [RSI] In no trend
+[15:49:53.261] INFO: [RSI] RSI value: 57.88
+[15:49:53.261] INFO: [RSI] In no trend
+[15:49:53.284] INFO: [RSI] RSI value: 55.31
+[15:49:53.284] INFO: [RSI] In no trend
+[15:49:53.294] INFO: [RSI] RSI value: 55.24
+[15:49:53.294] INFO: [RSI] In no trend
+[15:49:53.303] INFO: [RSI] RSI value: 53.17
+[15:49:53.303] INFO: [RSI] In no trend
+[15:49:53.311] INFO: [RSI] RSI value: 49.3
+[15:49:53.311] INFO: [RSI] In no trend
+[15:49:53.319] INFO: [RSI] RSI value: 50.67
+[15:49:53.319] INFO: [RSI] In no trend
+[15:49:53.327] INFO: [RSI] RSI value: 48.25
+[15:49:53.327] INFO: [RSI] In no trend
+[15:49:53.335] INFO: [RSI] RSI value: 52.25
+[15:49:53.335] INFO: [RSI] In no trend
+[15:49:53.343] INFO: [RSI] RSI value: 50.07
+[15:49:53.343] INFO: [RSI] In no trend
+[15:49:53.351] INFO: [RSI] RSI value: 48
+[15:49:53.351] INFO: [RSI] In no trend
+[15:49:53.359] INFO: [RSI] RSI value: 48.89
+[15:49:53.359] INFO: [RSI] In no trend
+[15:49:53.369] INFO: [RSI] RSI value: 49.41
+[15:49:53.369] INFO: [RSI] In no trend
+[15:49:53.378] INFO: [RSI] RSI value: 51.07
+[15:49:53.378] INFO: [RSI] In no trend
+[15:49:53.385] INFO: [RSI] RSI value: 49.98
+[15:49:53.385] INFO: [RSI] In no trend
+[15:49:53.393] INFO: [RSI] RSI value: 50.41
+[15:49:53.393] INFO: [RSI] In no trend
+[15:49:53.401] INFO: [RSI] RSI value: 46.4
+[15:49:53.401] INFO: [RSI] In no trend
+[15:49:53.413] INFO: [RSI] RSI value: 51.15
+[15:49:53.413] INFO: [RSI] In no trend
+[15:49:53.425] INFO: [RSI] RSI value: 49.02
+[15:49:53.425] INFO: [RSI] In no trend
+[15:49:53.436] INFO: [RSI] RSI value: 46.56
+[15:49:53.436] INFO: [RSI] In no trend
+[15:49:53.445] INFO: [RSI] RSI value: 44.58
+[15:49:53.445] INFO: [RSI] In no trend
+[15:49:53.455] INFO: [RSI] RSI value: 46.06
+[15:49:53.455] INFO: [RSI] In no trend
+[15:49:53.464] INFO: [RSI] RSI value: 46.87
+[15:49:53.464] INFO: [RSI] In no trend
+[15:49:53.476] INFO: [RSI] RSI value: 45.03
+[15:49:53.476] INFO: [RSI] In no trend
+[15:49:53.489] INFO: [RSI] RSI value: 44.8
+[15:49:53.489] INFO: [RSI] In no trend
+[15:49:53.502] INFO: [RSI] RSI value: 37.12
+[15:49:53.502] INFO: [RSI] In no trend
+[15:49:53.514] INFO: [RSI] RSI value: 42.7
+[15:49:53.514] INFO: [RSI] In no trend
+[15:49:53.523] INFO: [RSI] RSI value: 39.48
+[15:49:53.523] INFO: [RSI] In no trend
+[15:49:53.533] INFO: [RSI] RSI value: 43.6
+[15:49:53.533] INFO: [RSI] In no trend
+[15:49:53.542] INFO: [RSI] RSI value: 54.76
+[15:49:53.542] INFO: [RSI] In no trend
+[15:49:53.550] INFO: [RSI] RSI value: 62.16
+[15:49:53.550] INFO: [RSI] In no trend
+[15:49:53.561] INFO: [RSI] RSI value: 63.72
+[15:49:53.561] INFO: [RSI] In no trend
+[15:49:53.571] INFO: [RSI] RSI value: 74.02
+[15:49:53.571] INFO: [RSI] In high since 7 candle(s)
+[15:49:53.593] INFO: [RSI] RSI value: 82.39
+[15:49:53.593] INFO: [RSI] In high since 8 candle(s)
+[15:49:53.605] INFO: [RSI] RSI value: 78.14
+[15:49:53.605] INFO: [RSI] In high since 9 candle(s)
+[15:49:53.614] INFO: [RSI] RSI value: 73.4
+[15:49:53.614] INFO: [RSI] In high since 10 candle(s)
+[15:49:53.622] INFO: [RSI] RSI value: 61.76
+[15:49:53.622] INFO: [RSI] In no trend
+[15:49:53.629] INFO: [RSI] RSI value: 68.25
+[15:49:53.629] INFO: [RSI] In no trend
+[15:49:53.640] INFO: [RSI] RSI value: 72.99
+[15:49:53.641] INFO: [RSI] In high since 11 candle(s)
+[15:49:53.650] INFO: [RSI] RSI value: 74.07
+[15:49:53.650] INFO: [RSI] In high since 12 candle(s)
+[15:49:53.659] INFO: [RSI] RSI value: 76.1
+[15:49:53.659] INFO: [RSI] In high since 13 candle(s)
+[15:49:53.675] INFO: [RSI] RSI value: 77.71
+[15:49:53.675] INFO: [RSI] In high since 14 candle(s)
+[15:49:53.693] INFO: [RSI] RSI value: 79.54
+[15:49:53.693] INFO: [RSI] In high since 15 candle(s)
+[15:49:53.704] INFO: [RSI] RSI value: 63.17
+[15:49:53.704] INFO: [RSI] In no trend
+[15:49:53.710] INFO: [RSI] RSI value: 65.79
+[15:49:53.710] INFO: [RSI] In no trend
+[15:49:53.719] INFO: [RSI] RSI value: 64.71
+[15:49:53.719] INFO: [RSI] In no trend
+[15:49:53.726] INFO: [RSI] RSI value: 64.16
+[15:49:53.726] INFO: [RSI] In no trend
+[15:49:53.734] INFO: [RSI] RSI value: 66.89
+[15:49:53.735] INFO: [RSI] In no trend
+[15:49:53.742] INFO: [RSI] RSI value: 61.53
+[15:49:53.742] INFO: [RSI] In no trend
+[15:49:53.749] INFO: [RSI] RSI value: 61.74
+[15:49:53.749] INFO: [RSI] In no trend
+[15:49:53.758] INFO: [RSI] RSI value: 56.11
+[15:49:53.758] INFO: [RSI] In no trend
+[15:49:53.765] INFO: [RSI] RSI value: 50
+[15:49:53.765] INFO: [RSI] In no trend
+[15:49:53.773] INFO: [RSI] RSI value: 48.53
+[15:49:53.773] INFO: [RSI] In no trend
+[15:49:53.781] INFO: [RSI] RSI value: 43.97
+[15:49:53.781] INFO: [RSI] In no trend
+[15:49:53.790] INFO: [RSI] RSI value: 44.9
+[15:49:53.790] INFO: [RSI] In no trend
+[15:49:53.797] INFO: [RSI] RSI value: 47.91
+[15:49:53.797] INFO: [RSI] In no trend
+[15:49:53.804] INFO: [RSI] RSI value: 49.37
+[15:49:53.804] INFO: [RSI] In no trend
+[15:49:53.811] INFO: [RSI] RSI value: 58.15
+[15:49:53.811] INFO: [RSI] In no trend
+[15:49:53.819] INFO: [RSI] RSI value: 67.46
+[15:49:53.819] INFO: [RSI] In no trend
+[15:49:53.834] INFO: [RSI] RSI value: 59.08
+[15:49:53.834] INFO: [RSI] In no trend
+[15:49:53.846] INFO: [RSI] RSI value: 62.52
+[15:49:53.846] INFO: [RSI] In no trend
+[15:49:53.855] INFO: [RSI] RSI value: 56.09
+[15:49:53.855] INFO: [RSI] In no trend
+[15:49:53.865] INFO: [RSI] RSI value: 61.71
+[15:49:53.865] INFO: [RSI] In no trend
+[15:49:53.877] INFO: [RSI] RSI value: 54.26
+[15:49:53.877] INFO: [RSI] In no trend
+[15:49:53.887] INFO: [RSI] RSI value: 56.89
+[15:49:53.887] INFO: [RSI] In no trend
+[15:49:53.897] INFO: [RSI] RSI value: 48.61
+[15:49:53.897] INFO: [RSI] In no trend
+[15:49:53.906] INFO: [RSI] RSI value: 48.43
+[15:49:53.906] INFO: [RSI] In no trend
+[15:49:53.915] INFO: [RSI] RSI value: 49.34
+[15:49:53.915] INFO: [RSI] In no trend
+[15:49:53.923] INFO: [RSI] RSI value: 49.17
+[15:49:53.923] INFO: [RSI] In no trend
+[15:49:53.935] INFO: [RSI] RSI value: 49.33
+[15:49:53.935] INFO: [RSI] In no trend
+[15:49:53.953] INFO: [RSI] RSI value: 49.3
+[15:49:53.953] INFO: [RSI] In no trend
+[15:49:53.968] INFO: [RSI] RSI value: 48.95
+[15:49:53.968] INFO: [RSI] In no trend
+[15:49:53.982] INFO: [RSI] RSI value: 45.75
+[15:49:53.982] INFO: [RSI] In no trend
+[15:49:54.002] INFO: [RSI] RSI value: 43.16
+[15:49:54.002] INFO: [RSI] In no trend
+[15:49:54.015] INFO: [RSI] RSI value: 42.82
+[15:49:54.015] INFO: [RSI] In no trend
+[15:49:54.030] INFO: [RSI] RSI value: 40.86
+[15:49:54.030] INFO: [RSI] In no trend
+[15:49:54.059] INFO: [RSI] RSI value: 41.79
+[15:49:54.059] INFO: [RSI] In no trend
+[15:49:54.091] INFO: [RSI] RSI value: 40.46
+[15:49:54.091] INFO: [RSI] In no trend
+[15:49:54.113] INFO: [RSI] RSI value: 51.99
+[15:49:54.113] INFO: [RSI] In no trend
+[15:49:54.127] INFO: [RSI] RSI value: 55.67
+[15:49:54.127] INFO: [RSI] In no trend
+[15:49:54.138] INFO: [RSI] RSI value: 58.49
+[15:49:54.138] INFO: [RSI] In no trend
+[15:49:54.147] INFO: [RSI] RSI value: 60.54
+[15:49:54.147] INFO: [RSI] In no trend
+[15:49:54.162] INFO: [RSI] RSI value: 59.67
+[15:49:54.162] INFO: [RSI] In no trend
+[15:49:54.182] INFO: [RSI] RSI value: 53.43
+[15:49:54.182] INFO: [RSI] In no trend
+[15:49:54.191] INFO: [RSI] RSI value: 58.92
+[15:49:54.191] INFO: [RSI] In no trend
+[15:49:54.200] INFO: [RSI] RSI value: 60.29
+[15:49:54.200] INFO: [RSI] In no trend
+[15:49:54.210] INFO: [RSI] RSI value: 55.05
+[15:49:54.210] INFO: [RSI] In no trend
+[15:49:54.222] INFO: [RSI] RSI value: 51.91
+[15:49:54.222] INFO: [RSI] In no trend
+[15:49:54.230] INFO: [RSI] RSI value: 52.24
+[15:49:54.230] INFO: [RSI] In no trend
+[15:49:54.239] INFO: [RSI] RSI value: 48.49
+[15:49:54.239] INFO: [RSI] In no trend
+[15:49:54.251] INFO: [RSI] RSI value: 46.48
+[15:49:54.251] INFO: [RSI] In no trend
+[15:49:54.260] INFO: [RSI] RSI value: 45.88
+[15:49:54.260] INFO: [RSI] In no trend
+[15:49:54.270] INFO: [RSI] RSI value: 50.98
+[15:49:54.270] INFO: [RSI] In no trend
+[15:49:54.280] INFO: [RSI] RSI value: 55.8
+[15:49:54.280] INFO: [RSI] In no trend
+[15:49:54.290] INFO: [RSI] RSI value: 53.13
+[15:49:54.290] INFO: [RSI] In no trend
+[15:49:54.299] INFO: [RSI] RSI value: 48.11
+[15:49:54.299] INFO: [RSI] In no trend
+[15:49:54.309] INFO: [RSI] RSI value: 41.63
+[15:49:54.309] INFO: [RSI] In no trend
+[15:49:54.324] INFO: [RSI] RSI value: 44.95
+[15:49:54.324] INFO: [RSI] In no trend
+[15:49:54.347] INFO: [RSI] RSI value: 44.21
+[15:49:54.347] INFO: [RSI] In no trend
+[15:49:54.359] INFO: [RSI] RSI value: 43.06
+[15:49:54.359] INFO: [RSI] In no trend
+[15:49:54.371] INFO: [RSI] RSI value: 42.36
+[15:49:54.371] INFO: [RSI] In no trend
+[15:49:54.383] INFO: [RSI] RSI value: 46.59
+[15:49:54.383] INFO: [RSI] In no trend
+[15:49:54.397] INFO: [RSI] RSI value: 43.12
+[15:49:54.397] INFO: [RSI] In no trend
+[15:49:54.407] INFO: [RSI] RSI value: 47.15
+[15:49:54.407] INFO: [RSI] In no trend
+[15:49:54.421] INFO: [RSI] RSI value: 55.83
+[15:49:54.421] INFO: [RSI] In no trend
+[15:49:54.432] INFO: [RSI] RSI value: 59.44
+[15:49:54.432] INFO: [RSI] In no trend
+[15:49:54.444] INFO: [RSI] RSI value: 60.67
+[15:49:54.444] INFO: [RSI] In no trend
+[15:49:54.453] INFO: [RSI] RSI value: 51.03
+[15:49:54.453] INFO: [RSI] In no trend
+[15:49:54.462] INFO: [RSI] RSI value: 50.35
+[15:49:54.462] INFO: [RSI] In no trend
+[15:49:54.472] INFO: [RSI] RSI value: 49.37
+[15:49:54.472] INFO: [RSI] In no trend
+[15:49:54.481] INFO: [RSI] RSI value: 54.61
+[15:49:54.481] INFO: [RSI] In no trend
+[15:49:54.494] INFO: [RSI] RSI value: 52.37
+[15:49:54.494] INFO: [RSI] In no trend
+[15:49:54.503] INFO: [RSI] RSI value: 49.95
+[15:49:54.503] INFO: [RSI] In no trend
+[15:49:54.515] INFO: [RSI] RSI value: 54.89
+[15:49:54.515] INFO: [RSI] In no trend
+[15:49:54.523] INFO: [RSI] RSI value: 54.66
+[15:49:54.523] INFO: [RSI] In no trend
+[15:49:54.535] INFO: [RSI] RSI value: 52.6
+[15:49:54.535] INFO: [RSI] In no trend
+[15:49:54.544] INFO: [RSI] RSI value: 54.48
+[15:49:54.544] INFO: [RSI] In no trend
+[15:49:54.553] INFO: [RSI] RSI value: 54.1
+[15:49:54.553] INFO: [RSI] In no trend
+[15:49:54.563] INFO: [RSI] RSI value: 52.16
+[15:49:54.563] INFO: [RSI] In no trend
+[15:49:54.577] INFO: [RSI] RSI value: 56
+[15:49:54.577] INFO: [RSI] In no trend
+[15:49:54.588] INFO: [RSI] RSI value: 53.62
+[15:49:54.588] INFO: [RSI] In no trend
+[15:49:54.598] INFO: [RSI] RSI value: 52.5
+[15:49:54.598] INFO: [RSI] In no trend
+[15:49:54.607] INFO: [RSI] RSI value: 49.12
+[15:49:54.607] INFO: [RSI] In no trend
+[15:49:54.617] INFO: [RSI] RSI value: 49.63
+[15:49:54.617] INFO: [RSI] In no trend
+[15:49:54.626] INFO: [RSI] RSI value: 48.83
+[15:49:54.626] INFO: [RSI] In no trend
+[15:49:54.636] INFO: [RSI] RSI value: 51.55
+[15:49:54.636] INFO: [RSI] In no trend
+[15:49:54.645] INFO: [RSI] RSI value: 57.3
+[15:49:54.645] INFO: [RSI] In no trend
+[15:49:54.656] INFO: [RSI] RSI value: 44.75
+[15:49:54.656] INFO: [RSI] In no trend
+[15:49:54.667] INFO: [RSI] RSI value: 42.87
+[15:49:54.667] INFO: [RSI] In no trend
+[15:49:54.677] INFO: [RSI] RSI value: 45.74
+[15:49:54.677] INFO: [RSI] In no trend
+[15:49:54.686] INFO: [RSI] RSI value: 47.82
+[15:49:54.686] INFO: [RSI] In no trend
+[15:49:54.695] INFO: [RSI] RSI value: 43.66
+[15:49:54.695] INFO: [RSI] In no trend
+[15:49:54.704] INFO: [RSI] RSI value: 45.32
+[15:49:54.704] INFO: [RSI] In no trend
+[15:49:54.713] INFO: [RSI] RSI value: 39.94
+[15:49:54.713] INFO: [RSI] In no trend
+[15:49:54.722] INFO: [RSI] RSI value: 44.11
+[15:49:54.722] INFO: [RSI] In no trend
+[15:49:54.730] INFO: [RSI] RSI value: 39.44
+[15:49:54.730] INFO: [RSI] In no trend
+[15:49:54.740] INFO: [RSI] RSI value: 39.43
+[15:49:54.740] INFO: [RSI] In no trend
+[15:49:54.750] INFO: [RSI] RSI value: 42.01
+[15:49:54.750] INFO: [RSI] In no trend
+[15:49:54.760] INFO: [RSI] RSI value: 47.04
+[15:49:54.760] INFO: [RSI] In no trend
+[15:49:54.769] INFO: [RSI] RSI value: 50.76
+[15:49:54.769] INFO: [RSI] In no trend
+[15:49:54.777] INFO: [RSI] RSI value: 49.2
+[15:49:54.777] INFO: [RSI] In no trend
+[15:49:54.787] INFO: [RSI] RSI value: 46.61
+[15:49:54.787] INFO: [RSI] In no trend
+[15:49:54.794] INFO: [RSI] RSI value: 48.62
+[15:49:54.794] INFO: [RSI] In no trend
+[15:49:54.804] INFO: [RSI] RSI value: 54.87
+[15:49:54.804] INFO: [RSI] In no trend
+[15:49:54.813] INFO: [RSI] RSI value: 47.62
+[15:49:54.813] INFO: [RSI] In no trend
+[15:49:54.822] INFO: [RSI] RSI value: 47.48
+[15:49:54.822] INFO: [RSI] In no trend
+[15:49:54.832] INFO: [RSI] RSI value: 52.66
+[15:49:54.832] INFO: [RSI] In no trend
+[15:49:54.841] INFO: [RSI] RSI value: 53.28
+[15:49:54.841] INFO: [RSI] In no trend
+[15:49:54.850] INFO: [RSI] RSI value: 54.5
+[15:49:54.850] INFO: [RSI] In no trend
+[15:49:54.857] INFO: [RSI] RSI value: 51.73
+[15:49:54.857] INFO: [RSI] In no trend
+[15:49:54.867] INFO: [RSI] RSI value: 51.7
+[15:49:54.867] INFO: [RSI] In no trend
+[15:49:54.889] INFO: [RSI] RSI value: 49.05
+[15:49:54.889] INFO: [RSI] In no trend
+[15:49:54.899] INFO: [RSI] RSI value: 54.89
+[15:49:54.899] INFO: [RSI] In no trend
+[15:49:54.909] INFO: [RSI] RSI value: 65.12
+[15:49:54.909] INFO: [RSI] In no trend
+[15:49:54.918] INFO: [RSI] RSI value: 65.05
+[15:49:54.918] INFO: [RSI] In no trend
+[15:49:54.927] INFO: [RSI] RSI value: 67.12
+[15:49:54.927] INFO: [RSI] In no trend
+[15:49:54.939] INFO: [RSI] RSI value: 69.43
+[15:49:54.939] INFO: [RSI] In no trend
+[15:49:54.949] INFO: [RSI] RSI value: 71.57
+[15:49:54.949] INFO: [RSI] In high since 16 candle(s)
+[15:49:54.959] INFO: [RSI] RSI value: 66.97
+[15:49:54.959] INFO: [RSI] In no trend
+[15:49:54.968] INFO: [RSI] RSI value: 62.5
+[15:49:54.968] INFO: [RSI] In no trend
+[15:49:54.977] INFO: [RSI] RSI value: 71.44
+[15:49:54.977] INFO: [RSI] In high since 17 candle(s)
+[15:49:54.998] INFO: [RSI] RSI value: 71.54
+[15:49:54.998] INFO: [RSI] In high since 18 candle(s)
+[15:49:55.012] INFO: [RSI] RSI value: 75.25
+[15:49:55.012] INFO: [RSI] In high since 19 candle(s)
+[15:49:55.027] INFO: [RSI] RSI value: 83.58
+[15:49:55.027] INFO: [RSI] In high since 20 candle(s)
+[15:49:55.036] INFO: [RSI] RSI value: 83.96
+[15:49:55.036] INFO: [RSI] In high since 21 candle(s)
+[15:49:55.045] INFO: [RSI] RSI value: 71.94
+[15:49:55.045] INFO: [RSI] In high since 22 candle(s)
+[15:49:55.055] INFO: [RSI] RSI value: 71.87
+[15:49:55.055] INFO: [RSI] In high since 23 candle(s)
+[15:49:55.062] INFO: [RSI] RSI value: 60.06
+[15:49:55.062] INFO: [RSI] In no trend
+[15:49:55.072] INFO: [RSI] RSI value: 60.47
+[15:49:55.072] INFO: [RSI] In no trend
+[15:49:55.080] INFO: [RSI] RSI value: 61.21
+[15:49:55.080] INFO: [RSI] In no trend
+[15:49:55.092] INFO: [RSI] RSI value: 55.54
+[15:49:55.092] INFO: [RSI] In no trend
+[15:49:55.102] INFO: [RSI] RSI value: 57.05
+[15:49:55.102] INFO: [RSI] In no trend
+[15:49:55.113] INFO: [RSI] RSI value: 56.52
+[15:49:55.114] INFO: [RSI] In no trend
+[15:49:55.147] INFO: [RSI] RSI value: 59.38
+[15:49:55.147] INFO: [RSI] In no trend
+[15:49:55.157] INFO: [RSI] RSI value: 65.97
+[15:49:55.157] INFO: [RSI] In no trend
+[15:49:55.168] INFO: [RSI] RSI value: 72.41
+[15:49:55.168] INFO: [RSI] In high since 24 candle(s)
+[15:49:55.177] INFO: [RSI] RSI value: 68.64
+[15:49:55.177] INFO: [RSI] In no trend
+[15:49:55.190] INFO: [RSI] RSI value: 69.56
+[15:49:55.190] INFO: [RSI] In no trend
+[15:49:55.199] INFO: [RSI] RSI value: 70.52
+[15:49:55.199] INFO: [RSI] In high since 25 candle(s)
+[15:49:55.208] INFO: [RSI] RSI value: 71.44
+[15:49:55.208] INFO: [RSI] In high since 26 candle(s)
+[15:49:55.217] INFO: [RSI] RSI value: 70.16
+[15:49:55.217] INFO: [RSI] In high since 27 candle(s)
+[15:49:55.226] INFO: [RSI] RSI value: 66.8
+[15:49:55.226] INFO: [RSI] In no trend
+[15:49:55.237] INFO: [RSI] RSI value: 77.74
+[15:49:55.237] INFO: [RSI] In high since 28 candle(s)
+[15:49:55.245] INFO: [RSI] RSI value: 80.33
+[15:49:55.245] INFO: [RSI] In high since 29 candle(s)
+[15:49:55.255] INFO: [RSI] RSI value: 82.68
+[15:49:55.255] INFO: [RSI] In high since 30 candle(s)
+[15:49:55.264] INFO: [RSI] RSI value: 74.87
+[15:49:55.264] INFO: [RSI] In high since 31 candle(s)
+[15:49:55.273] INFO: [RSI] RSI value: 58.84
+[15:49:55.273] INFO: [RSI] In no trend
+[15:49:55.284] INFO: [RSI] RSI value: 65.49
+[15:49:55.284] INFO: [RSI] In no trend
+[15:49:55.293] INFO: [RSI] RSI value: 66.59
+[15:49:55.293] INFO: [RSI] In no trend
+[15:49:55.304] INFO: [RSI] RSI value: 66.78
+[15:49:55.304] INFO: [RSI] In no trend
+[15:49:55.320] INFO: [RSI] RSI value: 60.94
+[15:49:55.320] INFO: [RSI] In no trend
+[15:49:55.329] INFO: [RSI] RSI value: 59.17
+[15:49:55.329] INFO: [RSI] In no trend
+[15:49:55.342] INFO: [RSI] RSI value: 60.1
+[15:49:55.342] INFO: [RSI] In no trend
+[15:49:55.352] INFO: [RSI] RSI value: 59.21
+[15:49:55.352] INFO: [RSI] In no trend
+[15:49:55.363] INFO: [RSI] RSI value: 64.64
+[15:49:55.363] INFO: [RSI] In no trend
+[15:49:55.375] INFO: [RSI] RSI value: 64.81
+[15:49:55.375] INFO: [RSI] In no trend
+[15:49:55.386] INFO: [RSI] RSI value: 68.31
+[15:49:55.386] INFO: [RSI] In no trend
+[15:49:55.399] INFO: [RSI] RSI value: 68.57
+[15:49:55.399] INFO: [RSI] In no trend
+[15:49:55.409] INFO: [RSI] RSI value: 66.73
+[15:49:55.409] INFO: [RSI] In no trend
+[15:49:55.417] INFO: [RSI] RSI value: 71.23
+[15:49:55.417] INFO: [RSI] In high since 32 candle(s)
+[15:49:55.425] INFO: [RSI] RSI value: 66.47
+[15:49:55.425] INFO: [RSI] In no trend
+[15:49:55.433] INFO: [RSI] RSI value: 67.83
+[15:49:55.433] INFO: [RSI] In no trend
+[15:49:55.441] INFO: [RSI] RSI value: 72.49
+[15:49:55.441] INFO: [RSI] In high since 33 candle(s)
+[15:49:55.449] INFO: [RSI] RSI value: 57.85
+[15:49:55.449] INFO: [RSI] In no trend
+[15:49:55.457] INFO: [RSI] RSI value: 57.4
+[15:49:55.457] INFO: [RSI] In no trend
+[15:49:55.464] INFO: [RSI] RSI value: 55.3
+[15:49:55.464] INFO: [RSI] In no trend
+[15:49:55.472] INFO: [RSI] RSI value: 63.65
+[15:49:55.472] INFO: [RSI] In no trend
+[15:49:55.480] INFO: [RSI] RSI value: 64.9
+[15:49:55.480] INFO: [RSI] In no trend
+[15:49:55.487] INFO: [RSI] RSI value: 60.2
+[15:49:55.487] INFO: [RSI] In no trend
+[15:49:55.495] INFO: [RSI] RSI value: 59.04
+[15:49:55.495] INFO: [RSI] In no trend
+[15:49:55.503] INFO: [RSI] RSI value: 64.11
+[15:49:55.503] INFO: [RSI] In no trend
+[15:49:55.513] INFO: [RSI] RSI value: 62.58
+[15:49:55.513] INFO: [RSI] In no trend
+[15:49:55.520] INFO: [RSI] RSI value: 55.31
+[15:49:55.520] INFO: [RSI] In no trend
+[15:49:55.528] INFO: [RSI] RSI value: 50.11
+[15:49:55.528] INFO: [RSI] In no trend
+[15:49:55.536] INFO: [RSI] RSI value: 47.53
+[15:49:55.536] INFO: [RSI] In no trend
+[15:49:55.544] INFO: [RSI] RSI value: 49.16
+[15:49:55.544] INFO: [RSI] In no trend
+[15:49:55.552] INFO: [RSI] RSI value: 47.66
+[15:49:55.552] INFO: [RSI] In no trend
+[15:49:55.559] INFO: [RSI] RSI value: 42.11
+[15:49:55.559] INFO: [RSI] In no trend
+[15:49:55.567] INFO: [RSI] RSI value: 41.23
+[15:49:55.567] INFO: [RSI] In no trend
+[15:49:55.574] INFO: [RSI] RSI value: 38.17
+[15:49:55.574] INFO: [RSI] In no trend
+[15:49:55.581] INFO: [RSI] RSI value: 35.18
+[15:49:55.581] INFO: [RSI] In no trend
+[15:49:55.589] INFO: [RSI] RSI value: 34.37
+[15:49:55.589] INFO: [RSI] In no trend
+[15:49:55.596] INFO: [RSI] RSI value: 32.92
+[15:49:55.596] INFO: [RSI] In no trend
+[15:49:55.604] INFO: [RSI] RSI value: 30.73
+[15:49:55.604] INFO: [RSI] In no trend
+[15:49:55.613] INFO: [RSI] RSI value: 37.97
+[15:49:55.613] INFO: [RSI] In no trend
+[15:49:55.620] INFO: [RSI] RSI value: 41.61
+[15:49:55.620] INFO: [RSI] In no trend
+[15:49:55.627] INFO: [RSI] RSI value: 39.75
+[15:49:55.627] INFO: [RSI] In no trend
+[15:49:55.636] INFO: [RSI] RSI value: 43.81
+[15:49:55.636] INFO: [RSI] In no trend
+[15:49:55.646] INFO: [RSI] RSI value: 55.32
+[15:49:55.646] INFO: [RSI] In no trend
+[15:49:55.654] INFO: [RSI] RSI value: 50.15
+[15:49:55.654] INFO: [RSI] In no trend
+[15:49:55.662] INFO: [RSI] RSI value: 50.59
+[15:49:55.662] INFO: [RSI] In no trend
+[15:49:55.670] INFO: [RSI] RSI value: 49.25
+[15:49:55.670] INFO: [RSI] In no trend
+[15:49:55.677] INFO: [RSI] RSI value: 49.22
+[15:49:55.677] INFO: [RSI] In no trend
+[15:49:55.684] INFO: [RSI] RSI value: 48.28
+[15:49:55.684] INFO: [RSI] In no trend
+[15:49:55.692] INFO: [RSI] RSI value: 52.72
+[15:49:55.692] INFO: [RSI] In no trend
+[15:49:55.700] INFO: [RSI] RSI value: 57.92
+[15:49:55.700] INFO: [RSI] In no trend
+[15:49:55.707] INFO: [RSI] RSI value: 59.16
+[15:49:55.707] INFO: [RSI] In no trend
+[15:49:55.716] INFO: [RSI] RSI value: 65.47
+[15:49:55.716] INFO: [RSI] In no trend
+[15:49:55.725] INFO: [RSI] RSI value: 60.35
+[15:49:55.725] INFO: [RSI] In no trend
+[15:49:55.733] INFO: [RSI] RSI value: 57.59
+[15:49:55.733] INFO: [RSI] In no trend
+[15:49:55.741] INFO: [RSI] RSI value: 54.84
+[15:49:55.741] INFO: [RSI] In no trend
+[15:49:55.749] INFO: [RSI] RSI value: 53.49
+[15:49:55.749] INFO: [RSI] In no trend
+[15:49:55.757] INFO: [RSI] RSI value: 56.2
+[15:49:55.757] INFO: [RSI] In no trend
+[15:49:55.764] INFO: [RSI] RSI value: 53.27
+[15:49:55.764] INFO: [RSI] In no trend
+[15:49:55.773] INFO: [RSI] RSI value: 53.27
+[15:49:55.773] INFO: [RSI] In no trend
+[15:49:55.780] INFO: [RSI] RSI value: 48.88
+[15:49:55.780] INFO: [RSI] In no trend
+[15:49:55.787] INFO: [RSI] RSI value: 49.19
+[15:49:55.787] INFO: [RSI] In no trend
+[15:49:55.795] INFO: [RSI] RSI value: 48.02
+[15:49:55.795] INFO: [RSI] In no trend
+[15:49:55.802] INFO: [RSI] RSI value: 54.84
+[15:49:55.802] INFO: [RSI] In no trend
+[15:49:55.811] INFO: [RSI] RSI value: 53.36
+[15:49:55.811] INFO: [RSI] In no trend
+[15:49:55.818] INFO: [RSI] RSI value: 51.59
+[15:49:55.818] INFO: [RSI] In no trend
+[15:49:55.828] INFO: [RSI] RSI value: 47.44
+[15:49:55.828] INFO: [RSI] In no trend
+[15:49:55.835] INFO: [RSI] RSI value: 44.59
+[15:49:55.835] INFO: [RSI] In no trend
+[15:49:55.843] INFO: [RSI] RSI value: 43.27
+[15:49:55.843] INFO: [RSI] In no trend
+[15:49:55.852] INFO: [RSI] RSI value: 42.09
+[15:49:55.852] INFO: [RSI] In no trend
+[15:49:55.860] INFO: [RSI] RSI value: 39.51
+[15:49:55.860] INFO: [RSI] In no trend
+[15:49:55.867] INFO: [RSI] RSI value: 38.39
+[15:49:55.867] INFO: [RSI] In no trend
+[15:49:55.875] INFO: [RSI] RSI value: 37.28
+[15:49:55.875] INFO: [RSI] In no trend
+[15:49:55.882] INFO: [RSI] RSI value: 33.52
+[15:49:55.882] INFO: [RSI] In no trend
+[15:49:55.891] INFO: [RSI] RSI value: 32.7
+[15:49:55.891] INFO: [RSI] In no trend
+[15:49:55.899] INFO: [RSI] RSI value: 31.73
+[15:49:55.899] INFO: [RSI] In no trend
+[15:49:55.907] INFO: [RSI] RSI value: 32.46
+[15:49:55.907] INFO: [RSI] In no trend
+[15:49:55.915] INFO: [RSI] RSI value: 39.51
+[15:49:55.915] INFO: [RSI] In no trend
+[15:49:55.923] INFO: [RSI] RSI value: 35.79
+[15:49:55.923] INFO: [RSI] In no trend
+[15:49:55.932] INFO: [RSI] RSI value: 33.02
+[15:49:55.932] INFO: [RSI] In no trend
+[15:49:55.941] INFO: [RSI] RSI value: 31.53
+[15:49:55.941] INFO: [RSI] In no trend
+[15:49:55.948] INFO: [RSI] RSI value: 30.22
+[15:49:55.948] INFO: [RSI] In no trend
+[15:49:55.957] INFO: [RSI] RSI value: 30.15
+[15:49:55.957] INFO: [RSI] In no trend
+Trade replaced. Reason: Sell filled
+[15:49:55.965] INFO: [RSI] RSI value: 29.94
+[15:49:55.965] INFO: [RSI] In low since 1 candle(s)
+[15:49:55.965] INFO: [RSI] Advised to BUY
+[15:49:55.973] INFO: [MarketSimulator] Market BUY order was filled at 1.7183 on 2026-10-17T05:00:00
+[15:49:55.974] INFO: [RSI] RSI value: 41.7
+[15:49:55.974] INFO: [RSI] In no trend
+[15:49:55.981] INFO: [RSI] RSI value: 43.74
+[15:49:55.981] INFO: [RSI] In no trend
+[15:49:55.990] INFO: [RSI] RSI value: 44.35
+[15:49:55.990] INFO: [RSI] In no trend
+[15:49:55.999] INFO: [RSI] RSI value: 42.41
+[15:49:55.999] INFO: [RSI] In no trend
+[15:49:56.007] INFO: [RSI] RSI value: 41.23
+[15:49:56.007] INFO: [RSI] In no trend
+[15:49:56.015] INFO: [RSI] RSI value: 39.85
+[15:49:56.015] INFO: [RSI] In no trend
+[15:49:56.023] INFO: [RSI] RSI value: 36.51
+[15:49:56.023] INFO: [RSI] In no trend
+[15:49:56.031] INFO: [RSI] RSI value: 37.77
+[15:49:56.031] INFO: [RSI] In no trend
+[15:49:56.043] INFO: [RSI] RSI value: 36.36
+[15:49:56.043] INFO: [RSI] In no trend
+[15:49:56.051] INFO: [RSI] RSI value: 36.27
+[15:49:56.051] INFO: [RSI] In no trend
+[15:49:56.059] INFO: [RSI] RSI value: 45
+[15:49:56.059] INFO: [RSI] In no trend
+[15:49:56.067] INFO: [RSI] RSI value: 69.8
+[15:49:56.067] INFO: [RSI] In no trend
+[15:49:56.075] INFO: [RSI] RSI value: 73.39
+[15:49:56.075] INFO: [RSI] In high since 1 candle(s)
+[15:49:56.075] INFO: [RSI] Advised to SELL
+[15:49:56.083] INFO: [MarketSimulator] Market SELL order was filled at 1.8683 on 2026-10-17T18:00:00
+[15:49:56.083] INFO: [RSI] RSI value: 67.97
+[15:49:56.083] INFO: [RSI] In no trend
+[15:49:56.090] INFO: [RSI] RSI value: 66.88
+[15:49:56.090] INFO: [RSI] In no trend
+[15:49:56.098] INFO: [RSI] RSI value: 65.38
+[15:49:56.098] INFO: [RSI] In no trend
+[15:49:56.105] INFO: [RSI] RSI value: 57.39
+[15:49:56.105] INFO: [RSI] In no trend
+[15:49:56.114] INFO: [RSI] RSI value: 61.28
+[15:49:56.114] INFO: [RSI] In no trend
+[15:49:56.122] INFO: [RSI] RSI value: 55.58
+[15:49:56.122] INFO: [RSI] In no trend
+[15:49:56.129] INFO: [RSI] RSI value: 61.23
+[15:49:56.129] INFO: [RSI] In no trend
+[15:49:56.138] INFO: [RSI] RSI value: 55.86
+[15:49:56.138] INFO: [RSI] In no trend
+[15:49:56.146] INFO: [RSI] RSI value: 52.12
+[15:49:56.146] INFO: [RSI] In no trend
+[15:49:56.154] INFO: [RSI] RSI value: 54.29
+[15:49:56.154] INFO: [RSI] In no trend
+[15:49:56.161] INFO: [RSI] RSI value: 51.31
+[15:49:56.161] INFO: [RSI] In no trend
+[15:49:56.169] INFO: [RSI] RSI value: 64.41
+[15:49:56.169] INFO: [RSI] In no trend
+[15:49:56.177] INFO: [RSI] RSI value: 57.65
+[15:49:56.177] INFO: [RSI] In no trend
+[15:49:56.185] INFO: [RSI] RSI value: 54.08
+[15:49:56.185] INFO: [RSI] In no trend
+[15:49:56.193] INFO: [RSI] RSI value: 58.07
+[15:49:56.193] INFO: [RSI] In no trend
+[15:49:56.201] INFO: [RSI] RSI value: 54.99
+[15:49:56.201] INFO: [RSI] In no trend
+[15:49:56.210] INFO: [RSI] RSI value: 51.88
+[15:49:56.210] INFO: [RSI] In no trend
+[15:49:56.222] INFO: [RSI] RSI value: 59.69
+[15:49:56.222] INFO: [RSI] In no trend
+[15:49:56.232] INFO: [RSI] RSI value: 63.32
+[15:49:56.232] INFO: [RSI] In no trend
+[15:49:56.241] INFO: [RSI] RSI value: 64.64
+[15:49:56.241] INFO: [RSI] In no trend
+[15:49:56.254] INFO: [RSI] RSI value: 62.04
+[15:49:56.254] INFO: [RSI] In no trend
+[15:49:56.264] INFO: [RSI] RSI value: 62.69
+[15:49:56.264] INFO: [RSI] In no trend
+[15:49:56.274] INFO: [RSI] RSI value: 64.1
+[15:49:56.274] INFO: [RSI] In no trend
+[15:49:56.284] INFO: [RSI] RSI value: 65.08
+[15:49:56.284] INFO: [RSI] In no trend
+[15:49:56.292] INFO: [RSI] RSI value: 63.1
+[15:49:56.292] INFO: [RSI] In no trend
+[15:49:56.299] INFO: [RSI] RSI value: 63.1
+[15:49:56.299] INFO: [RSI] In no trend
+[15:49:56.307] INFO: [RSI] RSI value: 48.74
+[15:49:56.307] INFO: [RSI] In no trend
+[15:49:56.315] INFO: [RSI] RSI value: 47.02
+[15:49:56.315] INFO: [RSI] In no trend
+[15:49:56.323] INFO: [RSI] RSI value: 52.23
+[15:49:56.323] INFO: [RSI] In no trend
+[15:49:56.330] INFO: [RSI] RSI value: 49.75
+[15:49:56.330] INFO: [RSI] In no trend
+[15:49:56.338] INFO: [RSI] RSI value: 54.97
+[15:49:56.338] INFO: [RSI] In no trend
+[15:49:56.347] INFO: [RSI] RSI value: 48.02
+[15:49:56.347] INFO: [RSI] In no trend
+[15:49:56.355] INFO: [RSI] RSI value: 54.3
+[15:49:56.355] INFO: [RSI] In no trend
+[15:49:56.363] INFO: [RSI] RSI value: 52.18
+[15:49:56.363] INFO: [RSI] In no trend
+[15:49:56.371] INFO: [RSI] RSI value: 49.86
+[15:49:56.371] INFO: [RSI] In no trend
+[15:49:56.379] INFO: [RSI] RSI value: 46.9
+[15:49:56.379] INFO: [RSI] In no trend
+[15:49:56.387] INFO: [RSI] RSI value: 44.49
+[15:49:56.387] INFO: [RSI] In no trend
+[15:49:56.395] INFO: [RSI] RSI value: 43.84
+[15:49:56.395] INFO: [RSI] In no trend
+[15:49:56.402] INFO: [RSI] RSI value: 45.46
+[15:49:56.402] INFO: [RSI] In no trend
+[15:49:56.411] INFO: [RSI] RSI value: 45.46
+[15:49:56.411] INFO: [RSI] In no trend
+[15:49:56.418] INFO: [RSI] RSI value: 43.67
+[15:49:56.418] INFO: [RSI] In no trend
+[15:49:56.426] INFO: [RSI] RSI value: 40.53
+[15:49:56.427] INFO: [RSI] In no trend
+[15:49:56.435] INFO: [RSI] RSI value: 48.33
+[15:49:56.435] INFO: [RSI] In no trend
+[15:49:56.442] INFO: [RSI] RSI value: 45.79
+[15:49:56.442] INFO: [RSI] In no trend
+[15:49:56.451] INFO: [RSI] RSI value: 58.59
+[15:49:56.451] INFO: [RSI] In no trend
+[15:49:56.461] INFO: [RSI] RSI value: 57.77
+[15:49:56.461] INFO: [RSI] In no trend
+[15:49:56.468] INFO: [RSI] RSI value: 52.42
+[15:49:56.468] INFO: [RSI] In no trend
+[15:49:56.476] INFO: [RSI] RSI value: 49.94
+[15:49:56.476] INFO: [RSI] In no trend
+[15:49:56.483] INFO: [RSI] RSI value: 53.5
+[15:49:56.483] INFO: [RSI] In no trend
+[15:49:56.491] INFO: [RSI] RSI value: 63.43
+[15:49:56.491] INFO: [RSI] In no trend
+[15:49:56.499] INFO: [RSI] RSI value: 62.6
+[15:49:56.499] INFO: [RSI] In no trend
+[15:49:56.506] INFO: [RSI] RSI value: 57.32
+[15:49:56.506] INFO: [RSI] In no trend
+[15:49:56.513] INFO: [RSI] RSI value: 57.32
+[15:49:56.513] INFO: [RSI] In no trend
+[15:49:56.521] INFO: [RSI] RSI value: 58.34
+[15:49:56.521] INFO: [RSI] In no trend
+[15:49:56.528] INFO: [RSI] RSI value: 56.87
+[15:49:56.528] INFO: [RSI] In no trend
+[15:49:56.535] INFO: [RSI] RSI value: 58.01
+[15:49:56.535] INFO: [RSI] In no trend
+[15:49:56.543] INFO: [RSI] RSI value: 50.24
+[15:49:56.543] INFO: [RSI] In no trend
+[15:49:56.551] INFO: [RSI] RSI value: 50.84
+[15:49:56.551] INFO: [RSI] In no trend
+[15:49:56.561] INFO: [RSI] RSI value: 55.35
+[15:49:56.561] INFO: [RSI] In no trend
+[15:49:56.568] INFO: [RSI] RSI value: 50.37
+[15:49:56.568] INFO: [RSI] In no trend
+[15:49:56.575] INFO: [RSI] RSI value: 51.68
+[15:49:56.575] INFO: [RSI] In no trend
+[15:49:56.582] INFO: [RSI] RSI value: 51.68
+[15:49:56.582] INFO: [RSI] In no trend
+[15:49:56.589] INFO: [RSI] RSI value: 51.68
+[15:49:56.589] INFO: [RSI] In no trend
+[15:49:56.597] INFO: [RSI] RSI value: 51.68
+[15:49:56.597] INFO: [RSI] In no trend
+[15:49:56.605] INFO: [RSI] RSI value: 51.68
+[15:49:56.605] INFO: [RSI] In no trend
+[15:49:56.613] INFO: [RSI] RSI value: 53.45
+[15:49:56.613] INFO: [RSI] In no trend
+[15:49:56.621] INFO: [RSI] RSI value: 49.54
+[15:49:56.621] INFO: [RSI] In no trend
+[15:49:56.632] INFO: [RSI] RSI value: 51.45
+[15:49:56.632] INFO: [RSI] In no trend
+[15:49:56.643] INFO: [RSI] RSI value: 68.36
+[15:49:56.643] INFO: [RSI] In no trend
+[15:49:56.653] INFO: [RSI] RSI value: 74.76
+[15:49:56.653] INFO: [RSI] In high since 2 candle(s)
+[15:49:56.664] INFO: [RSI] RSI value: 75.36
+[15:49:56.664] INFO: [RSI] In high since 3 candle(s)
+[15:49:56.672] INFO: [RSI] RSI value: 69.95
+[15:49:56.672] INFO: [RSI] In no trend
+[15:49:56.680] INFO: [RSI] RSI value: 65.01
+[15:49:56.680] INFO: [RSI] In no trend
+[15:49:56.688] INFO: [RSI] RSI value: 65.01
+[15:49:56.688] INFO: [RSI] In no trend
+[15:49:56.699] INFO: [RSI] RSI value: 61.51
+[15:49:56.699] INFO: [RSI] In no trend
+[15:49:56.710] INFO: [RSI] RSI value: 59.81
+[15:49:56.710] INFO: [RSI] In no trend
+[15:49:56.719] INFO: [RSI] RSI value: 60.97
+[15:49:56.719] INFO: [RSI] In no trend
+[15:49:56.730] INFO: [RSI] RSI value: 65.27
+[15:49:56.730] INFO: [RSI] In no trend
+[15:49:56.741] INFO: [RSI] RSI value: 63.4
+[15:49:56.741] INFO: [RSI] In no trend
+[15:49:56.749] INFO: [RSI] RSI value: 66.3
+[15:49:56.749] INFO: [RSI] In no trend
+[15:49:56.757] INFO: [RSI] RSI value: 65.55
+[15:49:56.757] INFO: [RSI] In no trend
+[15:49:56.764] INFO: [RSI] RSI value: 66.23
+[15:49:56.764] INFO: [RSI] In no trend
+[15:49:56.772] INFO: [RSI] RSI value: 68.95
+[15:49:56.772] INFO: [RSI] In no trend
+[15:49:56.781] INFO: [RSI] RSI value: 70.07
+[15:49:56.781] INFO: [RSI] In high since 4 candle(s)
+[15:49:56.788] INFO: [RSI] RSI value: 66.22
+[15:49:56.788] INFO: [RSI] In no trend
+[15:49:56.802] INFO: [RSI] RSI value: 70.15
+[15:49:56.802] INFO: [RSI] In high since 5 candle(s)
+[15:49:56.811] INFO: [RSI] RSI value: 70.55
+[15:49:56.811] INFO: [RSI] In high since 6 candle(s)
+[15:49:56.826] INFO: [RSI] RSI value: 76.01
+[15:49:56.826] INFO: [RSI] In high since 7 candle(s)
+[15:49:56.847] INFO: [RSI] RSI value: 78.71
+[15:49:56.847] INFO: [RSI] In high since 8 candle(s)
+[15:49:56.870] INFO: [RSI] RSI value: 81.52
+[15:49:56.870] INFO: [RSI] In high since 9 candle(s)
+[15:49:56.881] INFO: [RSI] RSI value: 84.28
+[15:49:56.881] INFO: [RSI] In high since 10 candle(s)
+[15:49:56.892] INFO: [RSI] RSI value: 82.2
+[15:49:56.892] INFO: [RSI] In high since 11 candle(s)
+[15:49:56.903] INFO: [RSI] RSI value: 77.68
+[15:49:56.903] INFO: [RSI] In high since 12 candle(s)
+[15:49:56.915] INFO: [RSI] RSI value: 62.82
+[15:49:56.916] INFO: [RSI] In no trend
+[15:49:56.926] INFO: [RSI] RSI value: 49.88
+[15:49:56.926] INFO: [RSI] In no trend
+[15:49:56.940] INFO: [RSI] RSI value: 48.62
+[15:49:56.940] INFO: [RSI] In no trend
+[15:49:56.954] INFO: [RSI] RSI value: 55.74
+[15:49:56.954] INFO: [RSI] In no trend
+[15:49:56.971] INFO: [RSI] RSI value: 60.24
+[15:49:56.971] INFO: [RSI] In no trend
+[15:49:56.988] INFO: [RSI] RSI value: 62.92
+[15:49:56.988] INFO: [RSI] In no trend
+[15:49:57.004] INFO: [RSI] RSI value: 62.82
+[15:49:57.004] INFO: [RSI] In no trend
+[15:49:57.018] INFO: [RSI] RSI value: 68.16
+[15:49:57.018] INFO: [RSI] In no trend
+[15:49:57.031] INFO: [RSI] RSI value: 67.95
+[15:49:57.031] INFO: [RSI] In no trend
+[15:49:57.046] INFO: [RSI] RSI value: 62.1
+[15:49:57.046] INFO: [RSI] In no trend
+[15:49:57.065] INFO: [RSI] RSI value: 61.62
+[15:49:57.065] INFO: [RSI] In no trend
+[15:49:57.096] INFO: [RSI] RSI value: 61.85
+[15:49:57.096] INFO: [RSI] In no trend
+[15:49:57.119] INFO: [RSI] RSI value: 65.35
+[15:49:57.119] INFO: [RSI] In no trend
+[15:49:57.141] INFO: [RSI] RSI value: 64.7
+[15:49:57.141] INFO: [RSI] In no trend
+[15:49:57.163] INFO: [RSI] RSI value: 64.78
+[15:49:57.163] INFO: [RSI] In no trend
+[15:49:57.188] INFO: [RSI] RSI value: 53.21
+[15:49:57.189] INFO: [RSI] In no trend
+[15:49:57.222] INFO: [RSI] RSI value: 46.67
+[15:49:57.222] INFO: [RSI] In no trend
+[15:49:57.246] INFO: [RSI] RSI value: 46.37
+[15:49:57.246] INFO: [RSI] In no trend
+[15:49:57.270] INFO: [RSI] RSI value: 44.79
+[15:49:57.270] INFO: [RSI] In no trend
+[15:49:57.292] INFO: [RSI] RSI value: 42.67
+[15:49:57.292] INFO: [RSI] In no trend
+[15:49:57.312] INFO: [RSI] RSI value: 44.23
+[15:49:57.312] INFO: [RSI] In no trend
+[15:49:57.322] INFO: [RSI] RSI value: 48.9
+[15:49:57.322] INFO: [RSI] In no trend
+[15:49:57.332] INFO: [RSI] RSI value: 41.57
+[15:49:57.332] INFO: [RSI] In no trend
+[15:49:57.345] INFO: [RSI] RSI value: 35.37
+[15:49:57.345] INFO: [RSI] In no trend
+[15:49:57.361] INFO: [RSI] RSI value: 31.09
+[15:49:57.361] INFO: [RSI] In no trend
+[15:49:57.386] INFO: [RSI] RSI value: 43.76
+[15:49:57.386] INFO: [RSI] In no trend
+[15:49:57.413] INFO: [RSI] RSI value: 41.53
+[15:49:57.413] INFO: [RSI] In no trend
+[15:49:57.434] INFO: [RSI] RSI value: 41.24
+[15:49:57.434] INFO: [RSI] In no trend
+[15:49:57.464] INFO: [RSI] RSI value: 40.7
+[15:49:57.464] INFO: [RSI] In no trend
+[15:49:57.494] INFO: [RSI] RSI value: 39.76
+[15:49:57.494] INFO: [RSI] In no trend
+[15:49:57.515] INFO: [RSI] RSI value: 45.06
+[15:49:57.515] INFO: [RSI] In no trend
+[15:49:57.538] INFO: [RSI] RSI value: 43.45
+[15:49:57.538] INFO: [RSI] In no trend
+[15:49:57.550] INFO: [RSI] RSI value: 44.81
+[15:49:57.550] INFO: [RSI] In no trend
+[15:49:57.562] INFO: [RSI] RSI value: 44.81
+[15:49:57.562] INFO: [RSI] In no trend
+[15:49:57.575] INFO: [RSI] RSI value: 50.58
+[15:49:57.575] INFO: [RSI] In no trend
+[15:49:57.585] INFO: [RSI] RSI value: 45.44
+[15:49:57.585] INFO: [RSI] In no trend
+[15:49:57.596] INFO: [RSI] RSI value: 38.87
+[15:49:57.596] INFO: [RSI] In no trend
+[15:49:57.605] INFO: [RSI] RSI value: 38.74
+[15:49:57.605] INFO: [RSI] In no trend
+[15:49:57.611] INFO: [RSI] RSI value: 37.97
+[15:49:57.611] INFO: [RSI] In no trend
+[15:49:57.619] INFO: [RSI] RSI value: 34.54
+[15:49:57.619] INFO: [RSI] In no trend
+[15:49:57.627] INFO: [RSI] RSI value: 32.43
+[15:49:57.627] INFO: [RSI] In no trend
+[15:49:57.635] INFO: [RSI] RSI value: 42.66
+[15:49:57.635] INFO: [RSI] In no trend
+[15:49:57.641] INFO: [RSI] RSI value: 38.72
+[15:49:57.641] INFO: [RSI] In no trend
+[15:49:57.648] INFO: [RSI] RSI value: 39.25
+[15:49:57.648] INFO: [RSI] In no trend
+[15:49:57.655] INFO: [RSI] RSI value: 38.77
+[15:49:57.655] INFO: [RSI] In no trend
+[15:49:57.661] INFO: [RSI] RSI value: 41.08
+[15:49:57.661] INFO: [RSI] In no trend
+[15:49:57.671] INFO: [RSI] RSI value: 32.88
+[15:49:57.671] INFO: [RSI] In no trend
+[15:49:57.679] INFO: [RSI] RSI value: 35.35
+[15:49:57.679] INFO: [RSI] In no trend
+[15:49:57.690] INFO: [RSI] RSI value: 33.25
+[15:49:57.690] INFO: [RSI] In no trend
+[15:49:57.699] INFO: [RSI] RSI value: 36.74
+[15:49:57.699] INFO: [RSI] In no trend
+[15:49:57.708] INFO: [RSI] RSI value: 39.57
+[15:49:57.708] INFO: [RSI] In no trend
+[15:49:57.716] INFO: [RSI] RSI value: 46.51
+[15:49:57.716] INFO: [RSI] In no trend
+[15:49:57.730] INFO: [RSI] RSI value: 43.83
+[15:49:57.730] INFO: [RSI] In no trend
+[15:49:57.741] INFO: [RSI] RSI value: 41.73
+[15:49:57.741] INFO: [RSI] In no trend
+[15:49:57.752] INFO: [RSI] RSI value: 45.68
+[15:49:57.752] INFO: [RSI] In no trend
+[15:49:57.760] INFO: [RSI] RSI value: 44.47
+[15:49:57.760] INFO: [RSI] In no trend
+[15:49:57.770] INFO: [RSI] RSI value: 43.77
+[15:49:57.770] INFO: [RSI] In no trend
+[15:49:57.781] INFO: [RSI] RSI value: 42.29
+[15:49:57.781] INFO: [RSI] In no trend
+[15:49:57.792] INFO: [RSI] RSI value: 40.68
+[15:49:57.792] INFO: [RSI] In no trend
+[15:49:57.806] INFO: [RSI] RSI value: 42.28
+[15:49:57.806] INFO: [RSI] In no trend
+[15:49:57.817] INFO: [RSI] RSI value: 40.19
+[15:49:57.817] INFO: [RSI] In no trend
+[15:49:57.839] INFO: [RSI] RSI value: 39.81
+[15:49:57.839] INFO: [RSI] In no trend
+[15:49:57.850] INFO: [RSI] RSI value: 38.12
+[15:49:57.850] INFO: [RSI] In no trend
+[15:49:57.862] INFO: [RSI] RSI value: 37.28
+[15:49:57.862] INFO: [RSI] In no trend
+[15:49:57.873] INFO: [RSI] RSI value: 38.66
+[15:49:57.873] INFO: [RSI] In no trend
+[15:49:57.881] INFO: [RSI] RSI value: 39.33
+[15:49:57.881] INFO: [RSI] In no trend
+[15:49:57.889] INFO: [RSI] RSI value: 38.86
+[15:49:57.889] INFO: [RSI] In no trend
+[15:49:57.907] INFO: [RSI] RSI value: 38.65
+[15:49:57.907] INFO: [RSI] In no trend
+[15:49:57.924] INFO: [RSI] RSI value: 33.29
+[15:49:57.924] INFO: [RSI] In no trend
+Trade replaced. Reason: Sell filled
+[15:49:57.936] INFO: [RSI] RSI value: 28.39
+[15:49:57.936] INFO: [RSI] In low since 1 candle(s)
+[15:49:57.936] INFO: [RSI] Advised to BUY
+[15:49:57.946] INFO: [MarketSimulator] Market BUY order was filled at 1.8671 on 2026-10-24T13:00:00
+[15:49:57.947] INFO: [RSI] RSI value: 24.08
+[15:49:57.947] INFO: [RSI] In low since 2 candle(s)
+[15:49:57.959] INFO: [RSI] RSI value: 21.29
+[15:49:57.960] INFO: [RSI] In low since 3 candle(s)
+[15:49:57.973] INFO: [RSI] RSI value: 30.5
+[15:49:57.973] INFO: [RSI] In no trend
+[15:49:57.984] INFO: [RSI] RSI value: 27.63
+[15:49:57.984] INFO: [RSI] In low since 4 candle(s)
+[15:49:57.993] INFO: [RSI] RSI value: 32.97
+[15:49:57.993] INFO: [RSI] In no trend
+[15:49:58.005] INFO: [RSI] RSI value: 30.84
+[15:49:58.005] INFO: [RSI] In no trend
+[15:49:58.014] INFO: [RSI] RSI value: 41.43
+[15:49:58.014] INFO: [RSI] In no trend
+[15:49:58.028] INFO: [RSI] RSI value: 41.28
+[15:49:58.028] INFO: [RSI] In no trend
+[15:49:58.037] INFO: [RSI] RSI value: 44.31
+[15:49:58.037] INFO: [RSI] In no trend
+[15:49:58.049] INFO: [RSI] RSI value: 44.22
+[15:49:58.049] INFO: [RSI] In no trend
+[15:49:58.059] INFO: [RSI] RSI value: 46.9
+[15:49:58.059] INFO: [RSI] In no trend
+[15:49:58.070] INFO: [RSI] RSI value: 37.55
+[15:49:58.070] INFO: [RSI] In no trend
+[15:49:58.080] INFO: [RSI] RSI value: 36.39
+[15:49:58.080] INFO: [RSI] In no trend
+[15:49:58.094] INFO: [RSI] RSI value: 40.15
+[15:49:58.094] INFO: [RSI] In no trend
+[15:49:58.103] INFO: [RSI] RSI value: 39.07
+[15:49:58.103] INFO: [RSI] In no trend
+[15:49:58.114] INFO: [RSI] RSI value: 39.71
+[15:49:58.114] INFO: [RSI] In no trend
+[15:49:58.124] INFO: [RSI] RSI value: 37.95
+[15:49:58.124] INFO: [RSI] In no trend
+[15:49:58.134] INFO: [RSI] RSI value: 32.14
+[15:49:58.134] INFO: [RSI] In no trend
+[15:49:58.143] INFO: [RSI] RSI value: 33.11
+[15:49:58.143] INFO: [RSI] In no trend
+[15:49:58.169] INFO: [RSI] RSI value: 30.22
+[15:49:58.169] INFO: [RSI] In no trend
+[15:49:58.181] INFO: [RSI] RSI value: 28.02
+[15:49:58.181] INFO: [RSI] In low since 5 candle(s)
+[15:49:58.191] INFO: [RSI] RSI value: 31.86
+[15:49:58.191] INFO: [RSI] In no trend
+[15:49:58.201] INFO: [RSI] RSI value: 39.33
+[15:49:58.201] INFO: [RSI] In no trend
+[15:49:58.210] INFO: [RSI] RSI value: 43.89
+[15:49:58.210] INFO: [RSI] In no trend
+[15:49:58.225] INFO: [RSI] RSI value: 39.56
+[15:49:58.225] INFO: [RSI] In no trend
+[15:49:58.234] INFO: [RSI] RSI value: 52.14
+[15:49:58.235] INFO: [RSI] In no trend
+[15:49:58.244] INFO: [RSI] RSI value: 52.05
+[15:49:58.244] INFO: [RSI] In no trend
+[15:49:58.254] INFO: [RSI] RSI value: 50.36
+[15:49:58.254] INFO: [RSI] In no trend
+[15:49:58.262] INFO: [RSI] RSI value: 50.33
+[15:49:58.262] INFO: [RSI] In no trend
+[15:49:58.271] INFO: [RSI] RSI value: 55.39
+[15:49:58.271] INFO: [RSI] In no trend
+[15:49:58.279] INFO: [RSI] RSI value: 56.3
+[15:49:58.279] INFO: [RSI] In no trend
+[15:49:58.291] INFO: [RSI] RSI value: 55.26
+[15:49:58.291] INFO: [RSI] In no trend
+[15:49:58.304] INFO: [RSI] RSI value: 55.68
+[15:49:58.304] INFO: [RSI] In no trend
+[15:49:58.315] INFO: [RSI] RSI value: 59.16
+[15:49:58.315] INFO: [RSI] In no trend
+[15:49:58.325] INFO: [RSI] RSI value: 52.49
+[15:49:58.325] INFO: [RSI] In no trend
+[15:49:58.335] INFO: [RSI] RSI value: 41.95
+[15:49:58.335] INFO: [RSI] In no trend
+[15:49:58.344] INFO: [RSI] RSI value: 35.69
+[15:49:58.344] INFO: [RSI] In no trend
+[15:49:58.354] INFO: [RSI] RSI value: 33.78
+[15:49:58.354] INFO: [RSI] In no trend
+[15:49:58.364] INFO: [RSI] RSI value: 34.06
+[15:49:58.364] INFO: [RSI] In no trend
+[15:49:58.371] INFO: [RSI] RSI value: 33.88
+[15:49:58.371] INFO: [RSI] In no trend
+[15:49:58.380] INFO: [RSI] RSI value: 33.52
+[15:49:58.380] INFO: [RSI] In no trend
+[15:49:58.388] INFO: [RSI] RSI value: 36.12
+[15:49:58.388] INFO: [RSI] In no trend
+[15:49:58.396] INFO: [RSI] RSI value: 36.09
+[15:49:58.397] INFO: [RSI] In no trend
+[15:49:58.404] INFO: [RSI] RSI value: 39.98
+[15:49:58.404] INFO: [RSI] In no trend
+[15:49:58.414] INFO: [RSI] RSI value: 45.74
+[15:49:58.414] INFO: [RSI] In no trend
+[15:49:58.422] INFO: [RSI] RSI value: 45.42
+[15:49:58.422] INFO: [RSI] In no trend
+[15:49:58.431] INFO: [RSI] RSI value: 49.74
+[15:49:58.431] INFO: [RSI] In no trend
+[15:49:58.439] INFO: [RSI] RSI value: 51.91
+[15:49:58.439] INFO: [RSI] In no trend
+[15:49:58.447] INFO: [RSI] RSI value: 51.89
+[15:49:58.447] INFO: [RSI] In no trend
+[15:49:58.455] INFO: [RSI] RSI value: 53.11
+[15:49:58.455] INFO: [RSI] In no trend
+[15:49:58.463] INFO: [RSI] RSI value: 52.37
+[15:49:58.463] INFO: [RSI] In no trend
+[15:49:58.471] INFO: [RSI] RSI value: 47.24
+[15:49:58.471] INFO: [RSI] In no trend
+[15:49:58.479] INFO: [RSI] RSI value: 35.92
+[15:49:58.479] INFO: [RSI] In no trend
+[15:49:58.488] INFO: [RSI] RSI value: 42.28
+[15:49:58.488] INFO: [RSI] In no trend
+[15:49:58.495] INFO: [RSI] RSI value: 52.4
+[15:49:58.495] INFO: [RSI] In no trend
+[15:49:58.503] INFO: [RSI] RSI value: 57.26
+[15:49:58.503] INFO: [RSI] In no trend
+[15:49:58.518] INFO: [RSI] RSI value: 57.66
+[15:49:58.518] INFO: [RSI] In no trend
+[15:49:58.531] INFO: [RSI] RSI value: 51.86
+[15:49:58.531] INFO: [RSI] In no trend
+[15:49:58.545] INFO: [RSI] RSI value: 49.24
+[15:49:58.545] INFO: [RSI] In no trend
+[15:49:58.557] INFO: [RSI] RSI value: 43.63
+[15:49:58.557] INFO: [RSI] In no trend
+[15:49:58.569] INFO: [RSI] RSI value: 43.73
+[15:49:58.569] INFO: [RSI] In no trend
+[15:49:58.582] INFO: [RSI] RSI value: 42.67
+[15:49:58.582] INFO: [RSI] In no trend
+[15:49:58.596] INFO: [RSI] RSI value: 38.36
+[15:49:58.596] INFO: [RSI] In no trend
+[15:49:58.611] INFO: [RSI] RSI value: 38.11
+[15:49:58.611] INFO: [RSI] In no trend
+[15:49:58.624] INFO: [RSI] RSI value: 38.9
+[15:49:58.624] INFO: [RSI] In no trend
+[15:49:58.634] INFO: [RSI] RSI value: 39.23
+[15:49:58.634] INFO: [RSI] In no trend
+[15:49:58.646] INFO: [RSI] RSI value: 43.63
+[15:49:58.646] INFO: [RSI] In no trend
+[15:49:58.658] INFO: [RSI] RSI value: 41.92
+[15:49:58.658] INFO: [RSI] In no trend
+[15:49:58.671] INFO: [RSI] RSI value: 40.97
+[15:49:58.671] INFO: [RSI] In no trend
+[15:49:58.682] INFO: [RSI] RSI value: 42.64
+[15:49:58.682] INFO: [RSI] In no trend
+[15:49:58.692] INFO: [RSI] RSI value: 38.85
+[15:49:58.692] INFO: [RSI] In no trend
+[15:49:58.701] INFO: [RSI] RSI value: 36.57
+[15:49:58.701] INFO: [RSI] In no trend
+[15:49:58.709] INFO: [RSI] RSI value: 36.74
+[15:49:58.709] INFO: [RSI] In no trend
+[15:49:58.718] INFO: [RSI] RSI value: 34.59
+[15:49:58.718] INFO: [RSI] In no trend
+[15:49:58.729] INFO: [RSI] RSI value: 37.85
+[15:49:58.729] INFO: [RSI] In no trend
+[15:49:58.738] INFO: [RSI] RSI value: 39.21
+[15:49:58.738] INFO: [RSI] In no trend
+[15:49:58.748] INFO: [RSI] RSI value: 43.01
+[15:49:58.748] INFO: [RSI] In no trend
+[15:49:58.758] INFO: [RSI] RSI value: 42.12
+[15:49:58.758] INFO: [RSI] In no trend
+[15:49:58.767] INFO: [RSI] RSI value: 38.26
+[15:49:58.767] INFO: [RSI] In no trend
+[15:49:58.776] INFO: [RSI] RSI value: 47.03
+[15:49:58.776] INFO: [RSI] In no trend
+[15:49:58.790] INFO: [RSI] RSI value: 45.6
+[15:49:58.790] INFO: [RSI] In no trend
+[15:49:58.798] INFO: [RSI] RSI value: 38.9
+[15:49:58.798] INFO: [RSI] In no trend
+[15:49:58.807] INFO: [RSI] RSI value: 39.74
+[15:49:58.807] INFO: [RSI] In no trend
+[15:49:58.815] INFO: [RSI] RSI value: 36.87
+[15:49:58.815] INFO: [RSI] In no trend
+[15:49:58.826] INFO: [RSI] RSI value: 34.98
+[15:49:58.826] INFO: [RSI] In no trend
+[15:49:58.837] INFO: [RSI] RSI value: 31.6
+[15:49:58.837] INFO: [RSI] In no trend
+[15:49:58.846] INFO: [RSI] RSI value: 29.03
+[15:49:58.846] INFO: [RSI] In low since 6 candle(s)
+[15:49:58.854] INFO: [RSI] RSI value: 25.91
+[15:49:58.854] INFO: [RSI] In low since 7 candle(s)
+[15:49:58.864] INFO: [RSI] RSI value: 25.89
+[15:49:58.864] INFO: [RSI] In low since 8 candle(s)
+[15:49:58.874] INFO: [RSI] RSI value: 23.98
+[15:49:58.874] INFO: [RSI] In low since 9 candle(s)
+[15:49:58.885] INFO: [RSI] RSI value: 22.53
+[15:49:58.885] INFO: [RSI] In low since 10 candle(s)
+[15:49:58.893] INFO: [RSI] RSI value: 18.77
+[15:49:58.893] INFO: [RSI] In low since 11 candle(s)
+[15:49:58.903] INFO: [RSI] RSI value: 18.38
+[15:49:58.903] INFO: [RSI] In low since 12 candle(s)
+[15:49:58.910] INFO: [RSI] RSI value: 38.31
+[15:49:58.910] INFO: [RSI] In no trend
+[15:49:58.920] INFO: [RSI] RSI value: 63.55
+[15:49:58.920] INFO: [RSI] In no trend
+[15:49:58.927] INFO: [RSI] RSI value: 66.93
+[15:49:58.927] INFO: [RSI] In no trend
+[15:49:58.937] INFO: [RSI] RSI value: 63.23
+[15:49:58.937] INFO: [RSI] In no trend
+[15:49:58.945] INFO: [RSI] RSI value: 57.45
+[15:49:58.945] INFO: [RSI] In no trend
+[15:49:58.954] INFO: [RSI] RSI value: 51.62
+[15:49:58.954] INFO: [RSI] In no trend
+[15:49:58.963] INFO: [RSI] RSI value: 54.48
+[15:49:58.963] INFO: [RSI] In no trend
+[15:49:58.971] INFO: [RSI] RSI value: 56.95
+[15:49:58.971] INFO: [RSI] In no trend
+[15:49:58.980] INFO: [RSI] RSI value: 57.08
+[15:49:58.980] INFO: [RSI] In no trend
+[15:49:58.988] INFO: [RSI] RSI value: 65.14
+[15:49:58.988] INFO: [RSI] In no trend
+[15:49:58.999] INFO: [RSI] RSI value: 67.1
+[15:49:58.999] INFO: [RSI] In no trend
+[15:49:59.018] INFO: [RSI] RSI value: 69.21
+[15:49:59.018] INFO: [RSI] In no trend
+[15:49:59.028] INFO: [RSI] RSI value: 62.34
+[15:49:59.028] INFO: [RSI] In no trend
+[15:49:59.036] INFO: [RSI] RSI value: 63.93
+[15:49:59.036] INFO: [RSI] In no trend
+[15:49:59.046] INFO: [RSI] RSI value: 55.7
+[15:49:59.046] INFO: [RSI] In no trend
+[15:49:59.056] INFO: [RSI] RSI value: 50.34
+[15:49:59.056] INFO: [RSI] In no trend
+[15:49:59.065] INFO: [RSI] RSI value: 48.24
+[15:49:59.065] INFO: [RSI] In no trend
+[15:49:59.074] INFO: [RSI] RSI value: 46.37
+[15:49:59.074] INFO: [RSI] In no trend
+[15:49:59.082] INFO: [RSI] RSI value: 44.81
+[15:49:59.082] INFO: [RSI] In no trend
+[15:49:59.092] INFO: [RSI] RSI value: 45.23
+[15:49:59.092] INFO: [RSI] In no trend
+[15:49:59.099] INFO: [RSI] RSI value: 48.58
+[15:49:59.099] INFO: [RSI] In no trend
+[15:49:59.108] INFO: [RSI] RSI value: 53.57
+[15:49:59.108] INFO: [RSI] In no trend
+[15:49:59.115] INFO: [RSI] RSI value: 48.98
+[15:49:59.115] INFO: [RSI] In no trend
+[15:49:59.126] INFO: [RSI] RSI value: 51.77
+[15:49:59.126] INFO: [RSI] In no trend
+[15:49:59.135] INFO: [RSI] RSI value: 50.68
+[15:49:59.135] INFO: [RSI] In no trend
+[15:49:59.143] INFO: [RSI] RSI value: 52.72
+[15:49:59.143] INFO: [RSI] In no trend
+[15:49:59.153] INFO: [RSI] RSI value: 53.67
+[15:49:59.153] INFO: [RSI] In no trend
+[15:49:59.162] INFO: [RSI] RSI value: 52.78
+[15:49:59.162] INFO: [RSI] In no trend
+[15:49:59.170] INFO: [RSI] RSI value: 48.66
+[15:49:59.170] INFO: [RSI] In no trend
+[15:49:59.180] INFO: [RSI] RSI value: 56.28
+[15:49:59.180] INFO: [RSI] In no trend
+[15:49:59.188] INFO: [RSI] RSI value: 57.92
+[15:49:59.188] INFO: [RSI] In no trend
+[15:49:59.197] INFO: [RSI] RSI value: 55.69
+[15:49:59.197] INFO: [RSI] In no trend
+[15:49:59.205] INFO: [RSI] RSI value: 50.12
+[15:49:59.205] INFO: [RSI] In no trend
+[15:49:59.213] INFO: [RSI] RSI value: 49.67
+[15:49:59.213] INFO: [RSI] In no trend
+[15:49:59.223] INFO: [RSI] RSI value: 36.33
+[15:49:59.223] INFO: [RSI] In no trend
+[15:49:59.232] INFO: [RSI] RSI value: 33.48
+[15:49:59.232] INFO: [RSI] In no trend
+[15:49:59.241] INFO: [RSI] RSI value: 26.1
+[15:49:59.241] INFO: [RSI] In low since 13 candle(s)
+[15:49:59.249] INFO: [RSI] RSI value: 27.4
+[15:49:59.249] INFO: [RSI] In low since 14 candle(s)
+[15:49:59.258] INFO: [RSI] RSI value: 25.05
+[15:49:59.258] INFO: [RSI] In low since 15 candle(s)
+[15:49:59.266] INFO: [RSI] RSI value: 24.61
+[15:49:59.266] INFO: [RSI] In low since 16 candle(s)
+[15:49:59.274] INFO: [RSI] RSI value: 28.17
+[15:49:59.274] INFO: [RSI] In low since 17 candle(s)
+[15:49:59.282] INFO: [RSI] RSI value: 28.58
+[15:49:59.282] INFO: [RSI] In low since 18 candle(s)
+[15:49:59.290] INFO: [RSI] RSI value: 41.27
+[15:49:59.290] INFO: [RSI] In no trend
+[15:49:59.298] INFO: [RSI] RSI value: 43.63
+[15:49:59.298] INFO: [RSI] In no trend
+[15:49:59.305] INFO: [RSI] RSI value: 53.89
+[15:49:59.305] INFO: [RSI] In no trend
+[15:49:59.313] INFO: [RSI] RSI value: 54.37
+[15:49:59.313] INFO: [RSI] In no trend
+[15:49:59.322] INFO: [RSI] RSI value: 48.43
+[15:49:59.322] INFO: [RSI] In no trend
+[15:49:59.329] INFO: [RSI] RSI value: 43.89
+[15:49:59.329] INFO: [RSI] In no trend
+[15:49:59.337] INFO: [RSI] RSI value: 42.39
+[15:49:59.337] INFO: [RSI] In no trend
+[15:49:59.347] INFO: [RSI] RSI value: 39.49
+[15:49:59.347] INFO: [RSI] In no trend
+[15:49:59.356] INFO: [RSI] RSI value: 37.56
+[15:49:59.356] INFO: [RSI] In no trend
+[15:49:59.367] INFO: [RSI] RSI value: 36.3
+[15:49:59.367] INFO: [RSI] In no trend
+[15:49:59.376] INFO: [RSI] RSI value: 32.13
+[15:49:59.376] INFO: [RSI] In no trend
+[15:49:59.391] INFO: [RSI] RSI value: 40.73
+[15:49:59.391] INFO: [RSI] In no trend
+[15:49:59.403] INFO: [RSI] RSI value: 39.51
+[15:49:59.403] INFO: [RSI] In no trend
+[15:49:59.417] INFO: [RSI] RSI value: 44.69
+[15:49:59.417] INFO: [RSI] In no trend
+[15:49:59.431] INFO: [RSI] RSI value: 41.37
+[15:49:59.431] INFO: [RSI] In no trend
+[15:49:59.441] INFO: [RSI] RSI value: 41.26
+[15:49:59.441] INFO: [RSI] In no trend
+[15:49:59.451] INFO: [RSI] RSI value: 40.89
+[15:49:59.451] INFO: [RSI] In no trend
+[15:49:59.459] INFO: [RSI] RSI value: 39.66
+[15:49:59.459] INFO: [RSI] In no trend
+[15:49:59.468] INFO: [RSI] RSI value: 40.07
+[15:49:59.468] INFO: [RSI] In no trend
+[15:49:59.475] INFO: [RSI] RSI value: 35.97
+[15:49:59.475] INFO: [RSI] In no trend
+[15:49:59.484] INFO: [RSI] RSI value: 42.68
+[15:49:59.484] INFO: [RSI] In no trend
+[15:49:59.492] INFO: [RSI] RSI value: 40.61
+[15:49:59.492] INFO: [RSI] In no trend
+[15:49:59.500] INFO: [RSI] RSI value: 42.04
+[15:49:59.500] INFO: [RSI] In no trend
+[15:49:59.507] INFO: [RSI] RSI value: 42.09
+[15:49:59.507] INFO: [RSI] In no trend
+[15:49:59.516] INFO: [RSI] RSI value: 41.96
+[15:49:59.516] INFO: [RSI] In no trend
+[15:49:59.524] INFO: [RSI] RSI value: 41.47
+[15:49:59.524] INFO: [RSI] In no trend
+[15:49:59.534] INFO: [RSI] RSI value: 37.13
+[15:49:59.534] INFO: [RSI] In no trend
+[15:49:59.545] INFO: [RSI] RSI value: 34.79
+[15:49:59.545] INFO: [RSI] In no trend
+[15:49:59.555] INFO: [RSI] RSI value: 37.08
+[15:49:59.555] INFO: [RSI] In no trend
+[15:49:59.566] INFO: [RSI] RSI value: 35.83
+[15:49:59.566] INFO: [RSI] In no trend
+[15:49:59.575] INFO: [RSI] RSI value: 34.67
+[15:49:59.575] INFO: [RSI] In no trend
+[15:49:59.586] INFO: [RSI] RSI value: 31.89
+[15:49:59.586] INFO: [RSI] In no trend
+[15:49:59.598] INFO: [RSI] RSI value: 31.85
+[15:49:59.598] INFO: [RSI] In no trend
+[15:49:59.608] INFO: [RSI] RSI value: 27.95
+[15:49:59.608] INFO: [RSI] In low since 19 candle(s)
+[15:49:59.617] INFO: [RSI] RSI value: 26.77
+[15:49:59.617] INFO: [RSI] In low since 20 candle(s)
+[15:49:59.626] INFO: [RSI] RSI value: 31.13
+[15:49:59.626] INFO: [RSI] In no trend
+[15:49:59.634] INFO: [RSI] RSI value: 33.6
+[15:49:59.634] INFO: [RSI] In no trend
+[15:49:59.645] INFO: [RSI] RSI value: 31.8
+[15:49:59.645] INFO: [RSI] In no trend
+[15:49:59.653] INFO: [RSI] RSI value: 44.55
+[15:49:59.653] INFO: [RSI] In no trend
+[15:49:59.663] INFO: [RSI] RSI value: 40.99
+[15:49:59.663] INFO: [RSI] In no trend
+[15:49:59.673] INFO: [RSI] RSI value: 42.07
+[15:49:59.673] INFO: [RSI] In no trend
+[15:49:59.684] INFO: [RSI] RSI value: 42.35
+[15:49:59.684] INFO: [RSI] In no trend
+[15:49:59.695] INFO: [RSI] RSI value: 39.43
+[15:49:59.695] INFO: [RSI] In no trend
+[15:49:59.706] INFO: [RSI] RSI value: 42.38
+[15:49:59.706] INFO: [RSI] In no trend
+[15:49:59.716] INFO: [RSI] RSI value: 41.06
+[15:49:59.717] INFO: [RSI] In no trend
+[15:49:59.725] INFO: [RSI] RSI value: 41.24
+[15:49:59.725] INFO: [RSI] In no trend
+[15:49:59.733] INFO: [RSI] RSI value: 38.27
+[15:49:59.733] INFO: [RSI] In no trend
+[15:49:59.743] INFO: [RSI] RSI value: 44.21
+[15:49:59.743] INFO: [RSI] In no trend
+[15:49:59.755] INFO: [RSI] RSI value: 54.47
+[15:49:59.755] INFO: [RSI] In no trend
+[15:49:59.765] INFO: [RSI] RSI value: 56.08
+[15:49:59.765] INFO: [RSI] In no trend
+[15:49:59.776] INFO: [RSI] RSI value: 59.07
+[15:49:59.776] INFO: [RSI] In no trend
+[15:49:59.785] INFO: [RSI] RSI value: 56
+[15:49:59.785] INFO: [RSI] In no trend
+[15:49:59.793] INFO: [RSI] RSI value: 46.39
+[15:49:59.793] INFO: [RSI] In no trend
+[15:49:59.801] INFO: [RSI] RSI value: 50.75
+[15:49:59.801] INFO: [RSI] In no trend
+[15:49:59.809] INFO: [RSI] RSI value: 53.5
+[15:49:59.810] INFO: [RSI] In no trend
+[15:49:59.822] INFO: [RSI] RSI value: 57.52
+[15:49:59.822] INFO: [RSI] In no trend
+[15:49:59.834] INFO: [RSI] RSI value: 54.29
+[15:49:59.834] INFO: [RSI] In no trend
+[15:49:59.846] INFO: [RSI] RSI value: 53.42
+[15:49:59.846] INFO: [RSI] In no trend
+[15:49:59.855] INFO: [RSI] RSI value: 55.64
+[15:49:59.855] INFO: [RSI] In no trend
+[15:49:59.863] INFO: [RSI] RSI value: 58.09
+[15:49:59.863] INFO: [RSI] In no trend
+[15:49:59.871] INFO: [RSI] RSI value: 57.4
+[15:49:59.871] INFO: [RSI] In no trend
+[15:49:59.881] INFO: [RSI] RSI value: 57.69
+[15:49:59.881] INFO: [RSI] In no trend
+[15:49:59.894] INFO: [RSI] RSI value: 56.02
+[15:49:59.895] INFO: [RSI] In no trend
+[15:49:59.903] INFO: [RSI] RSI value: 59.37
+[15:49:59.903] INFO: [RSI] In no trend
+[15:49:59.912] INFO: [RSI] RSI value: 62.48
+[15:49:59.912] INFO: [RSI] In no trend
+[15:49:59.920] INFO: [RSI] RSI value: 58.42
+[15:49:59.920] INFO: [RSI] In no trend
+[15:49:59.927] INFO: [RSI] RSI value: 58.28
+[15:49:59.928] INFO: [RSI] In no trend
+[15:49:59.937] INFO: [RSI] RSI value: 56.22
+[15:49:59.937] INFO: [RSI] In no trend
+[15:49:59.945] INFO: [RSI] RSI value: 55.17
+[15:49:59.945] INFO: [RSI] In no trend
+[15:49:59.954] INFO: [RSI] RSI value: 50.61
+[15:49:59.954] INFO: [RSI] In no trend
+[15:49:59.962] INFO: [RSI] RSI value: 51.44
+[15:49:59.962] INFO: [RSI] In no trend
+[15:49:59.972] INFO: [RSI] RSI value: 53.37
+[15:49:59.972] INFO: [RSI] In no trend
+[15:49:59.981] INFO: [RSI] RSI value: 52.39
+[15:49:59.981] INFO: [RSI] In no trend
+[15:49:59.991] INFO: [RSI] RSI value: 56.34
+[15:49:59.991] INFO: [RSI] In no trend
+[15:50:00.000] INFO: [RSI] RSI value: 53.81
+[15:50:00.000] INFO: [RSI] In no trend
+[15:50:00.009] INFO: [RSI] RSI value: 53.29
+[15:50:00.010] INFO: [RSI] In no trend
+[15:50:00.018] INFO: [RSI] RSI value: 58.08
+[15:50:00.018] INFO: [RSI] In no trend
+[15:50:00.026] INFO: [RSI] RSI value: 56.53
+[15:50:00.027] INFO: [RSI] In no trend
+[15:50:00.035] INFO: [RSI] RSI value: 56.53
+[15:50:00.035] INFO: [RSI] In no trend
+[15:50:00.044] INFO: [RSI] RSI value: 56.61
+[15:50:00.044] INFO: [RSI] In no trend
+[15:50:00.053] INFO: [RSI] RSI value: 60.77
+[15:50:00.053] INFO: [RSI] In no trend
+[15:50:00.061] INFO: [RSI] RSI value: 59.71
+[15:50:00.061] INFO: [RSI] In no trend
+[15:50:00.071] INFO: [RSI] RSI value: 51.57
+[15:50:00.071] INFO: [RSI] In no trend
+[15:50:00.080] INFO: [RSI] RSI value: 42.3
+[15:50:00.080] INFO: [RSI] In no trend
+[15:50:00.088] INFO: [RSI] RSI value: 46.41
+[15:50:00.088] INFO: [RSI] In no trend
+[15:50:00.098] INFO: [RSI] RSI value: 42.8
+[15:50:00.098] INFO: [RSI] In no trend
+[15:50:00.107] INFO: [RSI] RSI value: 35.54
+[15:50:00.107] INFO: [RSI] In no trend
+[15:50:00.115] INFO: [RSI] RSI value: 37.48
+[15:50:00.115] INFO: [RSI] In no trend
+[15:50:00.125] INFO: [RSI] RSI value: 49.48
+[15:50:00.125] INFO: [RSI] In no trend
+[15:50:00.133] INFO: [RSI] RSI value: 50.1
+[15:50:00.133] INFO: [RSI] In no trend
+[15:50:00.141] INFO: [RSI] RSI value: 45.11
+[15:50:00.141] INFO: [RSI] In no trend
+[15:50:00.150] INFO: [RSI] RSI value: 38.1
+[15:50:00.150] INFO: [RSI] In no trend
+[15:50:00.157] INFO: [RSI] RSI value: 38.1
+[15:50:00.157] INFO: [RSI] In no trend
+[15:50:00.166] INFO: [RSI] RSI value: 38.1
+[15:50:00.166] INFO: [RSI] In no trend
+[15:50:00.175] INFO: [RSI] RSI value: 30.97
+[15:50:00.175] INFO: [RSI] In no trend
+[15:50:00.184] INFO: [RSI] RSI value: 29.1
+[15:50:00.184] INFO: [RSI] In low since 21 candle(s)
+[15:50:00.194] INFO: [RSI] RSI value: 25.73
+[15:50:00.194] INFO: [RSI] In low since 22 candle(s)
+[15:50:00.202] INFO: [RSI] RSI value: 29.56
+[15:50:00.202] INFO: [RSI] In low since 23 candle(s)
+[15:50:00.210] INFO: [RSI] RSI value: 25.77
+[15:50:00.210] INFO: [RSI] In low since 24 candle(s)
+[15:50:00.218] INFO: [RSI] RSI value: 21.79
+[15:50:00.218] INFO: [RSI] In low since 25 candle(s)
+[15:50:00.226] INFO: [RSI] RSI value: 23.28
+[15:50:00.226] INFO: [RSI] In low since 26 candle(s)
+[15:50:00.234] INFO: [RSI] RSI value: 24.29
+[15:50:00.234] INFO: [RSI] In low since 27 candle(s)
+[15:50:00.243] INFO: [RSI] RSI value: 24.48
+[15:50:00.243] INFO: [RSI] In low since 28 candle(s)
+[15:50:00.250] INFO: [RSI] RSI value: 23.42
+[15:50:00.250] INFO: [RSI] In low since 29 candle(s)
+[15:50:00.259] INFO: [RSI] RSI value: 27.26
+[15:50:00.259] INFO: [RSI] In low since 30 candle(s)
+[15:50:00.267] INFO: [RSI] RSI value: 26.66
+[15:50:00.267] INFO: [RSI] In low since 31 candle(s)
+[15:50:00.275] INFO: [RSI] RSI value: 44.07
+[15:50:00.275] INFO: [RSI] In no trend
+[15:50:00.288] INFO: [RSI] RSI value: 48.27
+[15:50:00.288] INFO: [RSI] In no trend
+[15:50:00.296] INFO: [RSI] RSI value: 55.37
+[15:50:00.296] INFO: [RSI] In no trend
+[15:50:00.305] INFO: [RSI] RSI value: 58.23
+[15:50:00.305] INFO: [RSI] In no trend
+[15:50:00.313] INFO: [RSI] RSI value: 47
+[15:50:00.313] INFO: [RSI] In no trend
+[15:50:00.322] INFO: [RSI] RSI value: 51.99
+[15:50:00.322] INFO: [RSI] In no trend
+[15:50:00.330] INFO: [RSI] RSI value: 55.11
+[15:50:00.330] INFO: [RSI] In no trend
+[15:50:00.339] INFO: [RSI] RSI value: 51.78
+[15:50:00.339] INFO: [RSI] In no trend
+[15:50:00.348] INFO: [RSI] RSI value: 55.28
+[15:50:00.348] INFO: [RSI] In no trend
+[15:50:00.358] INFO: [RSI] RSI value: 54.51
+[15:50:00.358] INFO: [RSI] In no trend
+[15:50:00.368] INFO: [RSI] RSI value: 53.3
+[15:50:00.368] INFO: [RSI] In no trend
+[15:50:00.376] INFO: [RSI] RSI value: 53.9
+[15:50:00.376] INFO: [RSI] In no trend
+[15:50:00.384] INFO: [RSI] RSI value: 53.9
+[15:50:00.384] INFO: [RSI] In no trend
+[15:50:00.394] INFO: [RSI] RSI value: 49.19
+[15:50:00.394] INFO: [RSI] In no trend
+[15:50:00.402] INFO: [RSI] RSI value: 56.08
+[15:50:00.402] INFO: [RSI] In no trend
+[15:50:00.410] INFO: [RSI] RSI value: 54.79
+[15:50:00.410] INFO: [RSI] In no trend
+[15:50:00.419] INFO: [RSI] RSI value: 52.18
+[15:50:00.419] INFO: [RSI] In no trend
+[15:50:00.426] INFO: [RSI] RSI value: 53.36
+[15:50:00.426] INFO: [RSI] In no trend
+[15:50:00.434] INFO: [RSI] RSI value: 53.33
+[15:50:00.434] INFO: [RSI] In no trend
+[15:50:00.443] INFO: [RSI] RSI value: 53.94
+[15:50:00.443] INFO: [RSI] In no trend
+[15:50:00.452] INFO: [RSI] RSI value: 53.62
+[15:50:00.452] INFO: [RSI] In no trend
+[15:50:00.459] INFO: [RSI] RSI value: 58.88
+[15:50:00.459] INFO: [RSI] In no trend
+[15:50:00.468] INFO: [RSI] RSI value: 50.69
+[15:50:00.468] INFO: [RSI] In no trend
+[15:50:00.476] INFO: [RSI] RSI value: 66.29
+[15:50:00.476] INFO: [RSI] In no trend
+[15:50:00.486] INFO: [RSI] RSI value: 63.65
+[15:50:00.486] INFO: [RSI] In no trend
+[15:50:00.494] INFO: [RSI] RSI value: 62.88
+[15:50:00.494] INFO: [RSI] In no trend
+[15:50:00.503] INFO: [RSI] RSI value: 63.28
+[15:50:00.503] INFO: [RSI] In no trend
+[15:50:00.512] INFO: [RSI] RSI value: 63.74
+[15:50:00.512] INFO: [RSI] In no trend
+[15:50:00.520] INFO: [RSI] RSI value: 67.44
+[15:50:00.520] INFO: [RSI] In no trend
+[15:50:00.529] INFO: [RSI] RSI value: 70.81
+[15:50:00.529] INFO: [RSI] In high since 1 candle(s)
+[15:50:00.529] INFO: [RSI] Advised to SELL
+[15:50:00.537] INFO: [MarketSimulator] Market SELL order was filled at 1.5585 on 2026-11-04T20:00:00
+[15:50:00.537] INFO: [RSI] RSI value: 72.9
+[15:50:00.537] INFO: [RSI] In high since 2 candle(s)
+[15:50:00.546] INFO: [RSI] RSI value: 75.81
+[15:50:00.546] INFO: [RSI] In high since 3 candle(s)
+[15:50:00.555] INFO: [RSI] RSI value: 77.84
+[15:50:00.555] INFO: [RSI] In high since 4 candle(s)
+[15:50:00.563] INFO: [RSI] RSI value: 68.38
+[15:50:00.563] INFO: [RSI] In no trend
+[15:50:00.572] INFO: [RSI] RSI value: 67.62
+[15:50:00.572] INFO: [RSI] In no trend
+[15:50:00.583] INFO: [RSI] RSI value: 71.96
+[15:50:00.583] INFO: [RSI] In high since 5 candle(s)
+[15:50:00.592] INFO: [RSI] RSI value: 75.77
+[15:50:00.592] INFO: [RSI] In high since 6 candle(s)
+[15:50:00.601] INFO: [RSI] RSI value: 73.07
+[15:50:00.601] INFO: [RSI] In high since 7 candle(s)
+[15:50:00.608] INFO: [RSI] RSI value: 73.93
+[15:50:00.608] INFO: [RSI] In high since 8 candle(s)
+[15:50:00.617] INFO: [RSI] RSI value: 78
+[15:50:00.617] INFO: [RSI] In high since 9 candle(s)
+[15:50:00.625] INFO: [RSI] RSI value: 79.65
+[15:50:00.625] INFO: [RSI] In high since 10 candle(s)
+[15:50:00.633] INFO: [RSI] RSI value: 77.12
+[15:50:00.633] INFO: [RSI] In high since 11 candle(s)
+[15:50:00.642] INFO: [RSI] RSI value: 68.02
+[15:50:00.642] INFO: [RSI] In no trend
+[15:50:00.657] INFO: [RSI] RSI value: 73.91
+[15:50:00.657] INFO: [RSI] In high since 12 candle(s)
+[15:50:00.672] INFO: [RSI] RSI value: 75.53
+[15:50:00.672] INFO: [RSI] In high since 13 candle(s)
+[15:50:00.686] INFO: [RSI] RSI value: 64.92
+[15:50:00.686] INFO: [RSI] In no trend
+[15:50:00.701] INFO: [RSI] RSI value: 60.87
+[15:50:00.701] INFO: [RSI] In no trend
+[15:50:00.716] INFO: [RSI] RSI value: 58.68
+[15:50:00.716] INFO: [RSI] In no trend
+[15:50:00.728] INFO: [RSI] RSI value: 52.2
+[15:50:00.729] INFO: [RSI] In no trend
+[15:50:00.742] INFO: [RSI] RSI value: 41.57
+[15:50:00.742] INFO: [RSI] In no trend
+[15:50:00.756] INFO: [RSI] RSI value: 39.64
+[15:50:00.756] INFO: [RSI] In no trend
+[15:50:00.768] INFO: [RSI] RSI value: 52.83
+[15:50:00.768] INFO: [RSI] In no trend
+[15:50:00.785] INFO: [RSI] RSI value: 53.74
+[15:50:00.785] INFO: [RSI] In no trend
+[15:50:00.798] INFO: [RSI] RSI value: 55.18
+[15:50:00.798] INFO: [RSI] In no trend
+[15:50:00.814] INFO: [RSI] RSI value: 56.55
+[15:50:00.814] INFO: [RSI] In no trend
+[15:50:00.835] INFO: [RSI] RSI value: 48.56
+[15:50:00.835] INFO: [RSI] In no trend
+[15:50:00.847] INFO: [RSI] RSI value: 48.81
+[15:50:00.847] INFO: [RSI] In no trend
+[15:50:00.859] INFO: [RSI] RSI value: 50.24
+[15:50:00.859] INFO: [RSI] In no trend
+[15:50:00.871] INFO: [RSI] RSI value: 51.56
+[15:50:00.871] INFO: [RSI] In no trend
+[15:50:00.882] INFO: [RSI] RSI value: 48.3
+[15:50:00.882] INFO: [RSI] In no trend
+[15:50:00.893] INFO: [RSI] RSI value: 51.95
+[15:50:00.893] INFO: [RSI] In no trend
+[15:50:00.905] INFO: [RSI] RSI value: 54.31
+[15:50:00.905] INFO: [RSI] In no trend
+[15:50:00.917] INFO: [RSI] RSI value: 55.44
+[15:50:00.917] INFO: [RSI] In no trend
+[15:50:00.929] INFO: [RSI] RSI value: 56.08
+[15:50:00.929] INFO: [RSI] In no trend
+[15:50:00.942] INFO: [RSI] RSI value: 54.79
+[15:50:00.942] INFO: [RSI] In no trend
+[15:50:00.954] INFO: [RSI] RSI value: 56.62
+[15:50:00.954] INFO: [RSI] In no trend
+[15:50:00.968] INFO: [RSI] RSI value: 59.73
+[15:50:00.968] INFO: [RSI] In no trend
+[15:50:00.984] INFO: [RSI] RSI value: 55.64
+[15:50:00.984] INFO: [RSI] In no trend
+[15:50:01.000] INFO: [RSI] RSI value: 57.51
+[15:50:01.000] INFO: [RSI] In no trend
+[15:50:01.020] INFO: [RSI] RSI value: 55.5
+[15:50:01.020] INFO: [RSI] In no trend
+[15:50:01.039] INFO: [RSI] RSI value: 57.82
+[15:50:01.039] INFO: [RSI] In no trend
+[15:50:01.059] INFO: [RSI] RSI value: 59.52
+[15:50:01.059] INFO: [RSI] In no trend
+[15:50:01.081] INFO: [RSI] RSI value: 61.85
+[15:50:01.081] INFO: [RSI] In no trend
+[15:50:01.100] INFO: [RSI] RSI value: 55.55
+[15:50:01.100] INFO: [RSI] In no trend
+[15:50:01.120] INFO: [RSI] RSI value: 63.19
+[15:50:01.120] INFO: [RSI] In no trend
+[15:50:01.136] INFO: [RSI] RSI value: 71.68
+[15:50:01.136] INFO: [RSI] In high since 14 candle(s)
+[15:50:01.157] INFO: [RSI] RSI value: 74.97
+[15:50:01.157] INFO: [RSI] In high since 15 candle(s)
+[15:50:01.170] INFO: [RSI] RSI value: 67.57
+[15:50:01.170] INFO: [RSI] In no trend
+[15:50:01.184] INFO: [RSI] RSI value: 76.08
+[15:50:01.184] INFO: [RSI] In high since 16 candle(s)
+[15:50:01.198] INFO: [RSI] RSI value: 74.33
+[15:50:01.198] INFO: [RSI] In high since 17 candle(s)
+[15:50:01.208] INFO: [RSI] RSI value: 69.53
+[15:50:01.208] INFO: [RSI] In no trend
+[15:50:01.217] INFO: [RSI] RSI value: 63.87
+[15:50:01.217] INFO: [RSI] In no trend
+[15:50:01.229] INFO: [RSI] RSI value: 64.12
+[15:50:01.229] INFO: [RSI] In no trend
+[15:50:01.241] INFO: [RSI] RSI value: 59.67
+[15:50:01.241] INFO: [RSI] In no trend
+[15:50:01.257] INFO: [RSI] RSI value: 57.88
+[15:50:01.257] INFO: [RSI] In no trend
+[15:50:01.270] INFO: [RSI] RSI value: 54.32
+[15:50:01.270] INFO: [RSI] In no trend
+[15:50:01.280] INFO: [RSI] RSI value: 55.81
+[15:50:01.280] INFO: [RSI] In no trend
+[15:50:01.291] INFO: [RSI] RSI value: 57.26
+[15:50:01.291] INFO: [RSI] In no trend
+[15:50:01.299] INFO: [RSI] RSI value: 55.28
+[15:50:01.299] INFO: [RSI] In no trend
+[15:50:01.307] INFO: [RSI] RSI value: 55.63
+[15:50:01.307] INFO: [RSI] In no trend
+[15:50:01.315] INFO: [RSI] RSI value: 56.98
+[15:50:01.315] INFO: [RSI] In no trend
+[15:50:01.325] INFO: [RSI] RSI value: 58.91
+[15:50:01.325] INFO: [RSI] In no trend
+[15:50:01.334] INFO: [RSI] RSI value: 60.62
+[15:50:01.334] INFO: [RSI] In no trend
+[15:50:01.342] INFO: [RSI] RSI value: 60.36
+[15:50:01.342] INFO: [RSI] In no trend
+[15:50:01.350] INFO: [RSI] RSI value: 57.61
+[15:50:01.350] INFO: [RSI] In no trend
+[15:50:01.358] INFO: [RSI] RSI value: 55.33
+[15:50:01.358] INFO: [RSI] In no trend
+[15:50:01.367] INFO: [RSI] RSI value: 47.13
+[15:50:01.367] INFO: [RSI] In no trend
+[15:50:01.374] INFO: [RSI] RSI value: 40.32
+[15:50:01.374] INFO: [RSI] In no trend
+[15:50:01.383] INFO: [RSI] RSI value: 55.53
+[15:50:01.383] INFO: [RSI] In no trend
+[15:50:01.394] INFO: [RSI] RSI value: 53.76
+[15:50:01.394] INFO: [RSI] In no trend
+[15:50:01.403] INFO: [RSI] RSI value: 52.19
+[15:50:01.403] INFO: [RSI] In no trend
+[15:50:01.411] INFO: [RSI] RSI value: 50.48
+[15:50:01.411] INFO: [RSI] In no trend
+[15:50:01.421] INFO: [RSI] RSI value: 54.53
+[15:50:01.421] INFO: [RSI] In no trend
+[15:50:01.430] INFO: [RSI] RSI value: 54.67
+[15:50:01.430] INFO: [RSI] In no trend
+[15:50:01.438] INFO: [RSI] RSI value: 52.2
+[15:50:01.438] INFO: [RSI] In no trend
+[15:50:01.447] INFO: [RSI] RSI value: 50.88
+[15:50:01.447] INFO: [RSI] In no trend
+[15:50:01.455] INFO: [RSI] RSI value: 55.54
+[15:50:01.455] INFO: [RSI] In no trend
+[15:50:01.464] INFO: [RSI] RSI value: 54.19
+[15:50:01.464] INFO: [RSI] In no trend
+[15:50:01.473] INFO: [RSI] RSI value: 56.91
+[15:50:01.473] INFO: [RSI] In no trend
+[15:50:01.482] INFO: [RSI] RSI value: 52.93
+[15:50:01.482] INFO: [RSI] In no trend
+[15:50:01.497] INFO: [RSI] RSI value: 51.99
+[15:50:01.497] INFO: [RSI] In no trend
+[15:50:01.515] INFO: [RSI] RSI value: 50.12
+[15:50:01.515] INFO: [RSI] In no trend
+[15:50:01.525] INFO: [RSI] RSI value: 47.36
+[15:50:01.525] INFO: [RSI] In no trend
+[15:50:01.536] INFO: [RSI] RSI value: 52.61
+[15:50:01.536] INFO: [RSI] In no trend
+[15:50:01.545] INFO: [RSI] RSI value: 51.34
+[15:50:01.545] INFO: [RSI] In no trend
+[15:50:01.555] INFO: [RSI] RSI value: 54.02
+[15:50:01.555] INFO: [RSI] In no trend
+[15:50:01.563] INFO: [RSI] RSI value: 54.02
+[15:50:01.563] INFO: [RSI] In no trend
+[15:50:01.572] INFO: [RSI] RSI value: 59.68
+[15:50:01.572] INFO: [RSI] In no trend
+[15:50:01.581] INFO: [RSI] RSI value: 55.57
+[15:50:01.581] INFO: [RSI] In no trend
+[15:50:01.590] INFO: [RSI] RSI value: 52.65
+[15:50:01.590] INFO: [RSI] In no trend
+[15:50:01.597] INFO: [RSI] RSI value: 49.88
+[15:50:01.597] INFO: [RSI] In no trend
+[15:50:01.606] INFO: [RSI] RSI value: 50.25
+[15:50:01.606] INFO: [RSI] In no trend
+[15:50:01.614] INFO: [RSI] RSI value: 47.24
+[15:50:01.614] INFO: [RSI] In no trend
+[15:50:01.622] INFO: [RSI] RSI value: 45.09
+[15:50:01.622] INFO: [RSI] In no trend
+[15:50:01.639] INFO: [RSI] RSI value: 47.63
+[15:50:01.639] INFO: [RSI] In no trend
+[15:50:01.652] INFO: [RSI] RSI value: 41.64
+[15:50:01.652] INFO: [RSI] In no trend
+[15:50:01.664] INFO: [RSI] RSI value: 38.05
+[15:50:01.664] INFO: [RSI] In no trend
+[15:50:01.676] INFO: [RSI] RSI value: 37.44
+[15:50:01.676] INFO: [RSI] In no trend
+[15:50:01.686] INFO: [RSI] RSI value: 36.03
+[15:50:01.687] INFO: [RSI] In no trend
+[15:50:01.698] INFO: [RSI] RSI value: 34.8
+[15:50:01.698] INFO: [RSI] In no trend
+Trade replaced. Reason: Sell filled
+[15:50:01.708] INFO: [RSI] RSI value: 29.85
+[15:50:01.708] INFO: [RSI] In low since 1 candle(s)
+[15:50:01.708] INFO: [RSI] Advised to BUY
+[15:50:01.720] INFO: [MarketSimulator] Market BUY order was filled at 1.649 on 2026-11-09T01:00:00
+[15:50:01.721] INFO: [RSI] RSI value: 24.58
+[15:50:01.721] INFO: [RSI] In low since 2 candle(s)
+[15:50:01.731] INFO: [RSI] RSI value: 22.98
+[15:50:01.731] INFO: [RSI] In low since 3 candle(s)
+[15:50:01.742] INFO: [RSI] RSI value: 22.22
+[15:50:01.742] INFO: [RSI] In low since 4 candle(s)
+[15:50:01.755] INFO: [RSI] RSI value: 33.52
+[15:50:01.755] INFO: [RSI] In no trend
+[15:50:01.766] INFO: [RSI] RSI value: 28.45
+[15:50:01.766] INFO: [RSI] In low since 5 candle(s)
+[15:50:01.781] INFO: [RSI] RSI value: 26.39
+[15:50:01.781] INFO: [RSI] In low since 6 candle(s)
+[15:50:01.792] INFO: [RSI] RSI value: 24.63
+[15:50:01.792] INFO: [RSI] In low since 7 candle(s)
+[15:50:01.804] INFO: [RSI] RSI value: 28.23
+[15:50:01.804] INFO: [RSI] In low since 8 candle(s)
+[15:50:01.819] INFO: [RSI] RSI value: 33.5
+[15:50:01.819] INFO: [RSI] In no trend
+[15:50:01.837] INFO: [RSI] RSI value: 30.87
+[15:50:01.837] INFO: [RSI] In no trend
+[15:50:01.847] INFO: [RSI] RSI value: 28.17
+[15:50:01.847] INFO: [RSI] In low since 9 candle(s)
+[15:50:01.862] INFO: [RSI] RSI value: 34.89
+[15:50:01.862] INFO: [RSI] In no trend
+[15:50:01.884] INFO: [RSI] RSI value: 28.75
+[15:50:01.884] INFO: [RSI] In low since 10 candle(s)
+[15:50:01.898] INFO: [RSI] RSI value: 24.77
+[15:50:01.898] INFO: [RSI] In low since 11 candle(s)
+[15:50:01.922] INFO: [RSI] RSI value: 44.96
+[15:50:01.922] INFO: [RSI] In no trend
+[15:50:01.940] INFO: [RSI] RSI value: 41.55
+[15:50:01.940] INFO: [RSI] In no trend
+[15:50:01.956] INFO: [RSI] RSI value: 38.32
+[15:50:01.956] INFO: [RSI] In no trend
+[15:50:01.969] INFO: [RSI] RSI value: 34.46
+[15:50:01.969] INFO: [RSI] In no trend
+[15:50:01.988] INFO: [RSI] RSI value: 39.68
+[15:50:01.988] INFO: [RSI] In no trend
+[15:50:02.007] INFO: [RSI] RSI value: 48.35
+[15:50:02.007] INFO: [RSI] In no trend
+[15:50:02.019] INFO: [RSI] RSI value: 49.14
+[15:50:02.019] INFO: [RSI] In no trend
+[15:50:02.028] INFO: [RSI] RSI value: 49.94
+[15:50:02.028] INFO: [RSI] In no trend
+[15:50:02.037] INFO: [RSI] RSI value: 49.1
+[15:50:02.037] INFO: [RSI] In no trend
+[15:50:02.051] INFO: [RSI] RSI value: 47.35
+[15:50:02.051] INFO: [RSI] In no trend
+[15:50:02.068] INFO: [RSI] RSI value: 48.44
+[15:50:02.068] INFO: [RSI] In no trend
+[15:50:02.083] INFO: [RSI] RSI value: 49.16
+[15:50:02.083] INFO: [RSI] In no trend
+[15:50:02.100] INFO: [RSI] RSI value: 50.79
+[15:50:02.100] INFO: [RSI] In no trend
+[15:50:02.115] INFO: [RSI] RSI value: 51.56
+[15:50:02.116] INFO: [RSI] In no trend
+[15:50:02.133] INFO: [RSI] RSI value: 56.16
+[15:50:02.133] INFO: [RSI] In no trend
+[15:50:02.151] INFO: [RSI] RSI value: 59.4
+[15:50:02.151] INFO: [RSI] In no trend
+[15:50:02.166] INFO: [RSI] RSI value: 57.69
+[15:50:02.166] INFO: [RSI] In no trend
+[15:50:02.184] INFO: [RSI] RSI value: 53.49
+[15:50:02.184] INFO: [RSI] In no trend
+[15:50:02.203] INFO: [RSI] RSI value: 52.45
+[15:50:02.203] INFO: [RSI] In no trend
+[15:50:02.219] INFO: [RSI] RSI value: 46.39
+[15:50:02.219] INFO: [RSI] In no trend
+[15:50:02.227] INFO: [RSI] RSI value: 48.87
+[15:50:02.227] INFO: [RSI] In no trend
+[15:50:02.239] INFO: [RSI] RSI value: 45.77
+[15:50:02.239] INFO: [RSI] In no trend
+[15:50:02.250] INFO: [RSI] RSI value: 41.88
+[15:50:02.250] INFO: [RSI] In no trend
+[15:50:02.262] INFO: [RSI] RSI value: 41.1
+[15:50:02.262] INFO: [RSI] In no trend
+[15:50:02.271] INFO: [RSI] RSI value: 25.92
+[15:50:02.271] INFO: [RSI] In low since 12 candle(s)
+[15:50:02.282] INFO: [RSI] RSI value: 21.23
+[15:50:02.282] INFO: [RSI] In low since 13 candle(s)
+[15:50:02.306] INFO: [RSI] RSI value: 30.99
+[15:50:02.306] INFO: [RSI] In no trend
+[15:50:02.321] INFO: [RSI] RSI value: 31.37
+[15:50:02.321] INFO: [RSI] In no trend
+[15:50:02.329] INFO: [RSI] RSI value: 27.59
+[15:50:02.329] INFO: [RSI] In low since 14 candle(s)
+[15:50:02.343] INFO: [RSI] RSI value: 29.22
+[15:50:02.343] INFO: [RSI] In low since 15 candle(s)
+[15:50:02.360] INFO: [RSI] RSI value: 37.42
+[15:50:02.360] INFO: [RSI] In no trend
+[15:50:02.368] INFO: [RSI] RSI value: 42.17
+[15:50:02.368] INFO: [RSI] In no trend
+[15:50:02.375] INFO: [RSI] RSI value: 46.85
+[15:50:02.375] INFO: [RSI] In no trend
+[15:50:02.383] INFO: [RSI] RSI value: 46.78
+[15:50:02.383] INFO: [RSI] In no trend
+[15:50:02.393] INFO: [RSI] RSI value: 40.42
+[15:50:02.393] INFO: [RSI] In no trend
+[15:50:02.400] INFO: [RSI] RSI value: 47.36
+[15:50:02.400] INFO: [RSI] In no trend
+[15:50:02.408] INFO: [RSI] RSI value: 43.71
+[15:50:02.408] INFO: [RSI] In no trend
+[15:50:02.415] INFO: [RSI] RSI value: 37.99
+[15:50:02.415] INFO: [RSI] In no trend
+[15:50:02.422] INFO: [RSI] RSI value: 34.98
+[15:50:02.422] INFO: [RSI] In no trend
+[15:50:02.430] INFO: [RSI] RSI value: 36.73
+[15:50:02.430] INFO: [RSI] In no trend
+[15:50:02.437] INFO: [RSI] RSI value: 38.06
+[15:50:02.437] INFO: [RSI] In no trend
+[15:50:02.445] INFO: [RSI] RSI value: 39.43
+[15:50:02.445] INFO: [RSI] In no trend
+[15:50:02.452] INFO: [RSI] RSI value: 38.63
+[15:50:02.452] INFO: [RSI] In no trend
+[15:50:02.459] INFO: [RSI] RSI value: 40.64
+[15:50:02.459] INFO: [RSI] In no trend
+[15:50:02.466] INFO: [RSI] RSI value: 40.34
+[15:50:02.466] INFO: [RSI] In no trend
+[15:50:02.475] INFO: [RSI] RSI value: 39.23
+[15:50:02.475] INFO: [RSI] In no trend
+[15:50:02.482] INFO: [RSI] RSI value: 40.85
+[15:50:02.482] INFO: [RSI] In no trend
+[15:50:02.490] INFO: [RSI] RSI value: 42.94
+[15:50:02.490] INFO: [RSI] In no trend
+[15:50:02.497] INFO: [RSI] RSI value: 44.7
+[15:50:02.497] INFO: [RSI] In no trend
+[15:50:02.505] INFO: [RSI] RSI value: 50.59
+[15:50:02.505] INFO: [RSI] In no trend
+[15:50:02.512] INFO: [RSI] RSI value: 51.26
+[15:50:02.512] INFO: [RSI] In no trend
+[15:50:02.520] INFO: [RSI] RSI value: 55.03
+[15:50:02.520] INFO: [RSI] In no trend
+[15:50:02.527] INFO: [RSI] RSI value: 51.9
+[15:50:02.527] INFO: [RSI] In no trend
+[15:50:02.535] INFO: [RSI] RSI value: 60.83
+[15:50:02.535] INFO: [RSI] In no trend
+[15:50:02.544] INFO: [RSI] RSI value: 64.14
+[15:50:02.544] INFO: [RSI] In no trend
+[15:50:02.551] INFO: [RSI] RSI value: 67.65
+[15:50:02.551] INFO: [RSI] In no trend
+[15:50:02.560] INFO: [RSI] RSI value: 54.04
+[15:50:02.560] INFO: [RSI] In no trend
+[15:50:02.567] INFO: [RSI] RSI value: 58.54
+[15:50:02.567] INFO: [RSI] In no trend
+[15:50:02.574] INFO: [RSI] RSI value: 55.58
+[15:50:02.574] INFO: [RSI] In no trend
+[15:50:02.583] INFO: [RSI] RSI value: 52.22
+[15:50:02.583] INFO: [RSI] In no trend
+[15:50:02.590] INFO: [RSI] RSI value: 47.3
+[15:50:02.590] INFO: [RSI] In no trend
+[15:50:02.597] INFO: [RSI] RSI value: 42.46
+[15:50:02.597] INFO: [RSI] In no trend
+[15:50:02.605] INFO: [RSI] RSI value: 38.49
+[15:50:02.605] INFO: [RSI] In no trend
+[15:50:02.612] INFO: [RSI] RSI value: 41.14
+[15:50:02.612] INFO: [RSI] In no trend
+[15:50:02.619] INFO: [RSI] RSI value: 43.45
+[15:50:02.619] INFO: [RSI] In no trend
+[15:50:02.626] INFO: [RSI] RSI value: 44.65
+[15:50:02.626] INFO: [RSI] In no trend
+[15:50:02.634] INFO: [RSI] RSI value: 44.99
+[15:50:02.634] INFO: [RSI] In no trend
+[15:50:02.642] INFO: [RSI] RSI value: 44.56
+[15:50:02.642] INFO: [RSI] In no trend
+[15:50:02.649] INFO: [RSI] RSI value: 42.67
+[15:50:02.649] INFO: [RSI] In no trend
+[15:50:02.657] INFO: [RSI] RSI value: 42.27
+[15:50:02.657] INFO: [RSI] In no trend
+[15:50:02.664] INFO: [RSI] RSI value: 37.92
+[15:50:02.664] INFO: [RSI] In no trend
+[15:50:02.671] INFO: [RSI] RSI value: 22.51
+[15:50:02.671] INFO: [RSI] In low since 16 candle(s)
+[15:50:02.679] INFO: [RSI] RSI value: 39.42
+[15:50:02.679] INFO: [RSI] In no trend
+[15:50:02.686] INFO: [RSI] RSI value: 37.98
+[15:50:02.686] INFO: [RSI] In no trend
+[15:50:02.694] INFO: [RSI] RSI value: 41.63
+[15:50:02.694] INFO: [RSI] In no trend
+[15:50:02.701] INFO: [RSI] RSI value: 39.77
+[15:50:02.701] INFO: [RSI] In no trend
+[15:50:02.708] INFO: [RSI] RSI value: 45.09
+[15:50:02.708] INFO: [RSI] In no trend
+[15:50:02.717] INFO: [RSI] RSI value: 49.54
+[15:50:02.717] INFO: [RSI] In no trend
+[15:50:02.724] INFO: [RSI] RSI value: 45.34
+[15:50:02.724] INFO: [RSI] In no trend
+[15:50:02.731] INFO: [RSI] RSI value: 48.32
+[15:50:02.731] INFO: [RSI] In no trend
+[15:50:02.739] INFO: [RSI] RSI value: 50.6
+[15:50:02.739] INFO: [RSI] In no trend
+[15:50:02.746] INFO: [RSI] RSI value: 50.17
+[15:50:02.746] INFO: [RSI] In no trend
+[15:50:02.753] INFO: [RSI] RSI value: 48.73
+[15:50:02.753] INFO: [RSI] In no trend
+[15:50:02.760] INFO: [RSI] RSI value: 48.2
+[15:50:02.760] INFO: [RSI] In no trend
+[15:50:02.767] INFO: [RSI] RSI value: 45.92
+[15:50:02.767] INFO: [RSI] In no trend
+[15:50:02.774] INFO: [RSI] RSI value: 36.86
+[15:50:02.774] INFO: [RSI] In no trend
+[15:50:02.781] INFO: [RSI] RSI value: 42.2
+[15:50:02.781] INFO: [RSI] In no trend
+[15:50:02.788] INFO: [RSI] RSI value: 45.04
+[15:50:02.788] INFO: [RSI] In no trend
+[15:50:02.797] INFO: [RSI] RSI value: 46.76
+[15:50:02.797] INFO: [RSI] In no trend
+[15:50:02.804] INFO: [RSI] RSI value: 49.51
+[15:50:02.804] INFO: [RSI] In no trend
+[15:50:02.811] INFO: [RSI] RSI value: 53.46
+[15:50:02.811] INFO: [RSI] In no trend
+[15:50:02.818] INFO: [RSI] RSI value: 55.43
+[15:50:02.818] INFO: [RSI] In no trend
+[15:50:02.825] INFO: [RSI] RSI value: 56.53
+[15:50:02.825] INFO: [RSI] In no trend
+[15:50:02.832] INFO: [RSI] RSI value: 56.45
+[15:50:02.832] INFO: [RSI] In no trend
+[15:50:02.844] INFO: [RSI] RSI value: 54.89
+[15:50:02.844] INFO: [RSI] In no trend
+[15:50:02.851] INFO: [RSI] RSI value: 60.23
+[15:50:02.851] INFO: [RSI] In no trend
+[15:50:02.867] INFO: [RSI] RSI value: 54.11
+[15:50:02.867] INFO: [RSI] In no trend
+[15:50:02.880] INFO: [RSI] RSI value: 57.55
+[15:50:02.880] INFO: [RSI] In no trend
+[15:50:02.894] INFO: [RSI] RSI value: 60.16
+[15:50:02.894] INFO: [RSI] In no trend
+[15:50:02.904] INFO: [RSI] RSI value: 66.09
+[15:50:02.904] INFO: [RSI] In no trend
+[15:50:02.913] INFO: [RSI] RSI value: 69.48
+[15:50:02.913] INFO: [RSI] In no trend
+[15:50:02.923] INFO: [RSI] RSI value: 58.74
+[15:50:02.923] INFO: [RSI] In no trend
+[15:50:02.932] INFO: [RSI] RSI value: 56.15
+[15:50:02.932] INFO: [RSI] In no trend
+[15:50:02.943] INFO: [RSI] RSI value: 56.11
+[15:50:02.943] INFO: [RSI] In no trend
+[15:50:02.957] INFO: [RSI] RSI value: 58.2
+[15:50:02.957] INFO: [RSI] In no trend
+[15:50:02.967] INFO: [RSI] RSI value: 59.9
+[15:50:02.967] INFO: [RSI] In no trend
+[15:50:02.976] INFO: [RSI] RSI value: 62.7
+[15:50:02.976] INFO: [RSI] In no trend
+[15:50:02.985] INFO: [RSI] RSI value: 63.71
+[15:50:02.985] INFO: [RSI] In no trend
+[15:50:02.995] INFO: [RSI] RSI value: 59.38
+[15:50:02.995] INFO: [RSI] In no trend
+[15:50:03.007] INFO: [RSI] RSI value: 59.74
+[15:50:03.007] INFO: [RSI] In no trend
+[15:50:03.018] INFO: [RSI] RSI value: 64.94
+[15:50:03.018] INFO: [RSI] In no trend
+[15:50:03.026] INFO: [RSI] RSI value: 62.76
+[15:50:03.026] INFO: [RSI] In no trend
+[15:50:03.035] INFO: [RSI] RSI value: 62.77
+[15:50:03.035] INFO: [RSI] In no trend
+[15:50:03.049] INFO: [RSI] RSI value: 56.06
+[15:50:03.049] INFO: [RSI] In no trend
+[15:50:03.060] INFO: [RSI] RSI value: 53.73
+[15:50:03.060] INFO: [RSI] In no trend
+[15:50:03.072] INFO: [RSI] RSI value: 55.01
+[15:50:03.072] INFO: [RSI] In no trend
+[15:50:03.083] INFO: [RSI] RSI value: 54.64
+[15:50:03.083] INFO: [RSI] In no trend
+[15:50:03.091] INFO: [RSI] RSI value: 53.72
+[15:50:03.091] INFO: [RSI] In no trend
+[15:50:03.100] INFO: [RSI] RSI value: 56.94
+[15:50:03.100] INFO: [RSI] In no trend
+[15:50:03.112] INFO: [RSI] RSI value: 53.2
+[15:50:03.112] INFO: [RSI] In no trend
+[15:50:03.138] INFO: [RSI] RSI value: 43.87
+[15:50:03.138] INFO: [RSI] In no trend
+[15:50:03.148] INFO: [RSI] RSI value: 40.37
+[15:50:03.148] INFO: [RSI] In no trend
+[15:50:03.157] INFO: [RSI] RSI value: 38.4
+[15:50:03.157] INFO: [RSI] In no trend
+[15:50:03.166] INFO: [RSI] RSI value: 46.01
+[15:50:03.166] INFO: [RSI] In no trend
+[15:50:03.175] INFO: [RSI] RSI value: 48.4
+[15:50:03.175] INFO: [RSI] In no trend
+[15:50:03.184] INFO: [RSI] RSI value: 48.85
+[15:50:03.184] INFO: [RSI] In no trend
+[15:50:03.197] INFO: [RSI] RSI value: 44.22
+[15:50:03.197] INFO: [RSI] In no trend
+[15:50:03.209] INFO: [RSI] RSI value: 47.71
+[15:50:03.209] INFO: [RSI] In no trend
+[15:50:03.223] INFO: [RSI] RSI value: 51.2
+[15:50:03.223] INFO: [RSI] In no trend
+[15:50:03.236] INFO: [RSI] RSI value: 54.49
+[15:50:03.236] INFO: [RSI] In no trend
+[15:50:03.250] INFO: [RSI] RSI value: 51.33
+[15:50:03.250] INFO: [RSI] In no trend
+[15:50:03.259] INFO: [RSI] RSI value: 54.29
+[15:50:03.259] INFO: [RSI] In no trend
+[15:50:03.267] INFO: [RSI] RSI value: 56.34
+[15:50:03.267] INFO: [RSI] In no trend
+[15:50:03.276] INFO: [RSI] RSI value: 56.58
+[15:50:03.276] INFO: [RSI] In no trend
+[15:50:03.284] INFO: [RSI] RSI value: 58.56
+[15:50:03.284] INFO: [RSI] In no trend
+[15:50:03.292] INFO: [RSI] RSI value: 54.85
+[15:50:03.292] INFO: [RSI] In no trend
+[15:50:03.300] INFO: [RSI] RSI value: 50.33
+[15:50:03.300] INFO: [RSI] In no trend
+[15:50:03.307] INFO: [RSI] RSI value: 49.47
+[15:50:03.307] INFO: [RSI] In no trend
+[15:50:03.315] INFO: [RSI] RSI value: 53.41
+[15:50:03.315] INFO: [RSI] In no trend
+[15:50:03.323] INFO: [RSI] RSI value: 48.95
+[15:50:03.323] INFO: [RSI] In no trend
+[15:50:03.332] INFO: [RSI] RSI value: 52.88
+[15:50:03.332] INFO: [RSI] In no trend
+[15:50:03.341] INFO: [RSI] RSI value: 47.6
+[15:50:03.341] INFO: [RSI] In no trend
+[15:50:03.349] INFO: [RSI] RSI value: 47.01
+[15:50:03.349] INFO: [RSI] In no trend
+[15:50:03.364] INFO: [RSI] RSI value: 45.12
+[15:50:03.364] INFO: [RSI] In no trend
+[15:50:03.372] INFO: [RSI] RSI value: 46.26
+[15:50:03.372] INFO: [RSI] In no trend
+[15:50:03.380] INFO: [RSI] RSI value: 54.27
+[15:50:03.380] INFO: [RSI] In no trend
+[15:50:03.387] INFO: [RSI] RSI value: 53.69
+[15:50:03.387] INFO: [RSI] In no trend
+[15:50:03.394] INFO: [RSI] RSI value: 52.06
+[15:50:03.394] INFO: [RSI] In no trend
+[15:50:03.402] INFO: [RSI] RSI value: 54.17
+[15:50:03.402] INFO: [RSI] In no trend
+[15:50:03.409] INFO: [RSI] RSI value: 58
+[15:50:03.409] INFO: [RSI] In no trend
+[15:50:03.418] INFO: [RSI] RSI value: 66.8
+[15:50:03.418] INFO: [RSI] In no trend
+[15:50:03.426] INFO: [RSI] RSI value: 74.01
+[15:50:03.426] INFO: [RSI] In high since 1 candle(s)
+[15:50:03.426] INFO: [RSI] Advised to SELL
+[15:50:03.435] INFO: [MarketSimulator] Market SELL order was filled at 1.7884 on 2026-11-15T23:00:00
+[15:50:03.435] INFO: [RSI] RSI value: 80.8
+[15:50:03.435] INFO: [RSI] In high since 2 candle(s)
+[15:50:03.443] INFO: [RSI] RSI value: 83.47
+[15:50:03.443] INFO: [RSI] In high since 3 candle(s)
+[15:50:03.451] INFO: [RSI] RSI value: 53.7
+[15:50:03.451] INFO: [RSI] In no trend
+[15:50:03.458] INFO: [RSI] RSI value: 55.87
+[15:50:03.458] INFO: [RSI] In no trend
+[15:50:03.467] INFO: [RSI] RSI value: 54.22
+[15:50:03.467] INFO: [RSI] In no trend
+[15:50:03.475] INFO: [RSI] RSI value: 53.22
+[15:50:03.475] INFO: [RSI] In no trend
+[15:50:03.483] INFO: [RSI] RSI value: 53.65
+[15:50:03.483] INFO: [RSI] In no trend
+[15:50:03.492] INFO: [RSI] RSI value: 55.13
+[15:50:03.492] INFO: [RSI] In no trend
+[15:50:03.499] INFO: [RSI] RSI value: 57.23
+[15:50:03.499] INFO: [RSI] In no trend
+[15:50:03.506] INFO: [RSI] RSI value: 58.13
+[15:50:03.506] INFO: [RSI] In no trend
+[15:50:03.515] INFO: [RSI] RSI value: 56.57
+[15:50:03.515] INFO: [RSI] In no trend
+[15:50:03.523] INFO: [RSI] RSI value: 53.69
+[15:50:03.523] INFO: [RSI] In no trend
+[15:50:03.531] INFO: [RSI] RSI value: 50.92
+[15:50:03.531] INFO: [RSI] In no trend
+[15:50:03.539] INFO: [RSI] RSI value: 50.51
+[15:50:03.539] INFO: [RSI] In no trend
+[15:50:03.547] INFO: [RSI] RSI value: 51.55
+[15:50:03.547] INFO: [RSI] In no trend
+[15:50:03.554] INFO: [RSI] RSI value: 54.74
+[15:50:03.554] INFO: [RSI] In no trend
+[15:50:03.563] INFO: [RSI] RSI value: 55.1
+[15:50:03.563] INFO: [RSI] In no trend
+[15:50:03.571] INFO: [RSI] RSI value: 58.3
+[15:50:03.571] INFO: [RSI] In no trend
+[15:50:03.578] INFO: [RSI] RSI value: 59.77
+[15:50:03.578] INFO: [RSI] In no trend
+[15:50:03.587] INFO: [RSI] RSI value: 58.12
+[15:50:03.587] INFO: [RSI] In no trend
+[15:50:03.602] INFO: [RSI] RSI value: 60.39
+[15:50:03.602] INFO: [RSI] In no trend
+[15:50:03.616] INFO: [RSI] RSI value: 60.75
+[15:50:03.616] INFO: [RSI] In no trend
+[15:50:03.624] INFO: [RSI] RSI value: 53.27
+[15:50:03.624] INFO: [RSI] In no trend
+[15:50:03.635] INFO: [RSI] RSI value: 44.16
+[15:50:03.635] INFO: [RSI] In no trend
+[15:50:03.655] INFO: [RSI] RSI value: 44.16
+[15:50:03.655] INFO: [RSI] In no trend
+[15:50:03.663] INFO: [RSI] RSI value: 44.19
+[15:50:03.663] INFO: [RSI] In no trend
+[15:50:03.670] INFO: [RSI] RSI value: 44.16
+[15:50:03.670] INFO: [RSI] In no trend
+[15:50:03.678] INFO: [RSI] RSI value: 45.9
+[15:50:03.678] INFO: [RSI] In no trend
+[15:50:03.686] INFO: [RSI] RSI value: 49.31
+[15:50:03.686] INFO: [RSI] In no trend
+[15:50:03.693] INFO: [RSI] RSI value: 55.65
+[15:50:03.693] INFO: [RSI] In no trend
+[15:50:03.702] INFO: [RSI] RSI value: 60.72
+[15:50:03.702] INFO: [RSI] In no trend
+[15:50:03.710] INFO: [RSI] RSI value: 55.23
+[15:50:03.710] INFO: [RSI] In no trend
+[15:50:03.721] INFO: [RSI] RSI value: 55.59
+[15:50:03.721] INFO: [RSI] In no trend
+[15:50:03.728] INFO: [RSI] RSI value: 56.08
+[15:50:03.728] INFO: [RSI] In no trend
+[15:50:03.736] INFO: [RSI] RSI value: 53.13
+[15:50:03.737] INFO: [RSI] In no trend
+[15:50:03.744] INFO: [RSI] RSI value: 51.47
+[15:50:03.744] INFO: [RSI] In no trend
+[15:50:03.754] INFO: [RSI] RSI value: 56.51
+[15:50:03.754] INFO: [RSI] In no trend
+[15:50:03.762] INFO: [RSI] RSI value: 65.12
+[15:50:03.762] INFO: [RSI] In no trend
+[15:50:03.773] INFO: [RSI] RSI value: 65.35
+[15:50:03.774] INFO: [RSI] In no trend
+[15:50:03.784] INFO: [RSI] RSI value: 65.99
+[15:50:03.784] INFO: [RSI] In no trend
+[15:50:03.791] INFO: [RSI] RSI value: 66.36
+[15:50:03.791] INFO: [RSI] In no trend
+[15:50:03.802] INFO: [RSI] RSI value: 68.08
+[15:50:03.802] INFO: [RSI] In no trend
+[15:50:03.810] INFO: [RSI] RSI value: 66.33
+[15:50:03.810] INFO: [RSI] In no trend
+[15:50:03.820] INFO: [RSI] RSI value: 71.23
+[15:50:03.820] INFO: [RSI] In high since 4 candle(s)
+[15:50:03.828] INFO: [RSI] RSI value: 71.81
+[15:50:03.828] INFO: [RSI] In high since 5 candle(s)
+[15:50:03.837] INFO: [RSI] RSI value: 73.36
+[15:50:03.837] INFO: [RSI] In high since 6 candle(s)
+[15:50:03.844] INFO: [RSI] RSI value: 77.62
+[15:50:03.844] INFO: [RSI] In high since 7 candle(s)
+[15:50:03.858] INFO: [RSI] RSI value: 78.08
+[15:50:03.858] INFO: [RSI] In high since 8 candle(s)
+[15:50:03.867] INFO: [RSI] RSI value: 65.88
+[15:50:03.867] INFO: [RSI] In no trend
+[15:50:03.875] INFO: [RSI] RSI value: 58.74
+[15:50:03.875] INFO: [RSI] In no trend
+[15:50:03.885] INFO: [RSI] RSI value: 60.47
+[15:50:03.885] INFO: [RSI] In no trend
+[15:50:03.898] INFO: [RSI] RSI value: 63.89
+[15:50:03.898] INFO: [RSI] In no trend
+[15:50:03.907] INFO: [RSI] RSI value: 66.06
+[15:50:03.907] INFO: [RSI] In no trend
+[15:50:03.917] INFO: [RSI] RSI value: 67.78
+[15:50:03.917] INFO: [RSI] In no trend
+[15:50:03.924] INFO: [RSI] RSI value: 66.63
+[15:50:03.924] INFO: [RSI] In no trend
+[15:50:03.934] INFO: [RSI] RSI value: 74.74
+[15:50:03.934] INFO: [RSI] In high since 9 candle(s)
+[15:50:03.942] INFO: [RSI] RSI value: 69.91
+[15:50:03.942] INFO: [RSI] In no trend
+[15:50:03.952] INFO: [RSI] RSI value: 45.78
+[15:50:03.952] INFO: [RSI] In no trend
+[15:50:03.964] INFO: [RSI] RSI value: 45.78
+[15:50:03.964] INFO: [RSI] In no trend
+[15:50:03.972] INFO: [RSI] RSI value: 45.74
+[15:50:03.972] INFO: [RSI] In no trend
+[15:50:03.981] INFO: [RSI] RSI value: 53.43
+[15:50:03.981] INFO: [RSI] In no trend
+[15:50:03.992] INFO: [RSI] RSI value: 53.05
+[15:50:03.992] INFO: [RSI] In no trend
+[15:50:04.001] INFO: [RSI] RSI value: 56.35
+[15:50:04.001] INFO: [RSI] In no trend
+[15:50:04.009] INFO: [RSI] RSI value: 63.85
+[15:50:04.009] INFO: [RSI] In no trend
+[15:50:04.019] INFO: [RSI] RSI value: 76.94
+[15:50:04.019] INFO: [RSI] In high since 10 candle(s)
+[15:50:04.026] INFO: [RSI] RSI value: 77.84
+[15:50:04.026] INFO: [RSI] In high since 11 candle(s)
+[15:50:04.038] INFO: [RSI] RSI value: 78.12
+[15:50:04.038] INFO: [RSI] In high since 12 candle(s)
+[15:50:04.047] INFO: [RSI] RSI value: 79.92
+[15:50:04.047] INFO: [RSI] In high since 13 candle(s)
+[15:50:04.056] INFO: [RSI] RSI value: 70.76
+[15:50:04.056] INFO: [RSI] In high since 14 candle(s)
+[15:50:04.065] INFO: [RSI] RSI value: 75.83
+[15:50:04.065] INFO: [RSI] In high since 15 candle(s)
+[15:50:04.073] INFO: [RSI] RSI value: 76.22
+[15:50:04.073] INFO: [RSI] In high since 16 candle(s)
+[15:50:04.084] INFO: [RSI] RSI value: 75.15
+[15:50:04.084] INFO: [RSI] In high since 17 candle(s)
+[15:50:04.097] INFO: [RSI] RSI value: 77.67
+[15:50:04.097] INFO: [RSI] In high since 18 candle(s)
+[15:50:04.105] INFO: [RSI] RSI value: 76.07
+[15:50:04.105] INFO: [RSI] In high since 19 candle(s)
+[15:50:04.113] INFO: [RSI] RSI value: 63.73
+[15:50:04.113] INFO: [RSI] In no trend
+[15:50:04.122] INFO: [RSI] RSI value: 59.6
+[15:50:04.122] INFO: [RSI] In no trend
+[15:50:04.131] INFO: [RSI] RSI value: 63.08
+[15:50:04.131] INFO: [RSI] In no trend
+[15:50:04.143] INFO: [RSI] RSI value: 69.11
+[15:50:04.143] INFO: [RSI] In no trend
+[15:50:04.153] INFO: [RSI] RSI value: 59.55
+[15:50:04.153] INFO: [RSI] In no trend
+[15:50:04.161] INFO: [RSI] RSI value: 64.57
+[15:50:04.161] INFO: [RSI] In no trend
+[15:50:04.171] INFO: [RSI] RSI value: 64.67
+[15:50:04.171] INFO: [RSI] In no trend
+[15:50:04.182] INFO: [RSI] RSI value: 64.79
+[15:50:04.182] INFO: [RSI] In no trend
+[15:50:04.191] INFO: [RSI] RSI value: 65.25
+[15:50:04.191] INFO: [RSI] In no trend
+[15:50:04.201] INFO: [RSI] RSI value: 60.84
+[15:50:04.201] INFO: [RSI] In no trend
+[15:50:04.209] INFO: [RSI] RSI value: 54.03
+[15:50:04.209] INFO: [RSI] In no trend
+[15:50:04.225] INFO: [RSI] RSI value: 59.59
+[15:50:04.225] INFO: [RSI] In no trend
+[15:50:04.235] INFO: [RSI] RSI value: 53.98
+[15:50:04.235] INFO: [RSI] In no trend
+[15:50:04.243] INFO: [RSI] RSI value: 59.79
+[15:50:04.243] INFO: [RSI] In no trend
+[15:50:04.254] INFO: [RSI] RSI value: 53.56
+[15:50:04.254] INFO: [RSI] In no trend
+[15:50:04.263] INFO: [RSI] RSI value: 49.56
+[15:50:04.263] INFO: [RSI] In no trend
+[15:50:04.278] INFO: [RSI] RSI value: 42.67
+[15:50:04.278] INFO: [RSI] In no trend
+[15:50:04.289] INFO: [RSI] RSI value: 50.31
+[15:50:04.289] INFO: [RSI] In no trend
+[15:50:04.301] INFO: [RSI] RSI value: 54.35
+[15:50:04.301] INFO: [RSI] In no trend
+[15:50:04.311] INFO: [RSI] RSI value: 52.92
+[15:50:04.311] INFO: [RSI] In no trend
+[15:50:04.323] INFO: [RSI] RSI value: 56.44
+[15:50:04.323] INFO: [RSI] In no trend
+[15:50:04.332] INFO: [RSI] RSI value: 53.24
+[15:50:04.332] INFO: [RSI] In no trend
+[15:50:04.342] INFO: [RSI] RSI value: 48.9
+[15:50:04.342] INFO: [RSI] In no trend
+[15:50:04.352] INFO: [RSI] RSI value: 48.37
+[15:50:04.352] INFO: [RSI] In no trend
+[15:50:04.361] INFO: [RSI] RSI value: 43.06
+[15:50:04.361] INFO: [RSI] In no trend
+[15:50:04.371] INFO: [RSI] RSI value: 39.54
+[15:50:04.371] INFO: [RSI] In no trend
+[15:50:04.381] INFO: [RSI] RSI value: 39.33
+[15:50:04.381] INFO: [RSI] In no trend
+[15:50:04.393] INFO: [RSI] RSI value: 36.3
+[15:50:04.393] INFO: [RSI] In no trend
+[15:50:04.403] INFO: [RSI] RSI value: 35.56
+[15:50:04.403] INFO: [RSI] In no trend
+[15:50:04.411] INFO: [RSI] RSI value: 34.85
+[15:50:04.411] INFO: [RSI] In no trend
+[15:50:04.420] INFO: [RSI] RSI value: 43.05
+[15:50:04.420] INFO: [RSI] In no trend
+[15:50:04.429] INFO: [RSI] RSI value: 42.46
+[15:50:04.429] INFO: [RSI] In no trend
+[15:50:04.439] INFO: [RSI] RSI value: 42.73
+[15:50:04.439] INFO: [RSI] In no trend
+[15:50:04.447] INFO: [RSI] RSI value: 47.79
+[15:50:04.447] INFO: [RSI] In no trend
+[15:50:04.457] INFO: [RSI] RSI value: 47.53
+[15:50:04.457] INFO: [RSI] In no trend
+[15:50:04.468] INFO: [RSI] RSI value: 35.78
+[15:50:04.468] INFO: [RSI] In no trend
+[15:50:04.477] INFO: [RSI] RSI value: 44.72
+[15:50:04.477] INFO: [RSI] In no trend
+[15:50:04.488] INFO: [RSI] RSI value: 47
+[15:50:04.488] INFO: [RSI] In no trend
+[15:50:04.498] INFO: [RSI] RSI value: 42.48
+[15:50:04.498] INFO: [RSI] In no trend
+[15:50:04.507] INFO: [RSI] RSI value: 44.73
+[15:50:04.507] INFO: [RSI] In no trend
+[15:50:04.516] INFO: [RSI] RSI value: 45.15
+[15:50:04.516] INFO: [RSI] In no trend
+[15:50:04.525] INFO: [RSI] RSI value: 51.22
+[15:50:04.525] INFO: [RSI] In no trend
+[15:50:04.534] INFO: [RSI] RSI value: 57.2
+[15:50:04.534] INFO: [RSI] In no trend
+[15:50:04.542] INFO: [RSI] RSI value: 45.21
+[15:50:04.542] INFO: [RSI] In no trend
+[15:50:04.550] INFO: [RSI] RSI value: 43.39
+[15:50:04.550] INFO: [RSI] In no trend
+[15:50:04.558] INFO: [RSI] RSI value: 40.08
+[15:50:04.558] INFO: [RSI] In no trend
+{
+ "which": "rsi",
+ "settings": {
+  "high": 70,
+  "low": 30,
+  "periods": 14,
+  "persistence": 1,
+  "quantity": 818
+ },
+ "sent": 8,
+ "filled": 8,
+ "skipped": 0,
+ "value": 881.6601280348566,
+ "cash": 881.6601280348566,
+ "coins": 0,
+ "holding": 1475.6743730516482,
+ "first": [
+  {
+   "time": "2026-10-02 14:00",
+   "action": "BUY",
+   "price": 1.1153,
+   "value": 987.2275844000002,
+   "source": "BigONE PEARL-USDT",
+   "cash": 81.2983922000002,
+   "coins": 818
+  },
+  {
+   "time": "2026-10-05 15:00",
+   "action": "SELL",
+   "price": 1.1511,
+   "value": 1016.3069936000002,
+   "source": "BigONE PEARL-USDT",
+   "cash": 1016.3069936000002,
+   "coins": 0
+  },
+  {
+   "time": "2026-10-17 05:00",
+   "action": "BUY",
+   "price": 1.6766,
+   "value": 1002.1776014347569,
+   "source": "BigONE PEARL-USDT",
+   "cash": 1.1368683772161603e-13,
+   "coins": 601.9577105555162
+  },
+  {
+   "time": "2026-10-17 18:00",
+   "action": "SELL",
+   "price": 1.8862,
+   "value": 1127.4647452142663,
+   "source": "BigONE PEARL-USDT",
+   "cash": 1127.4647452142663,
+   "coins": 0
+  },
+  {
+   "time": "2026-10-24 13:00",
+   "action": "BUY",
+   "price": 1.91,
+   "value": 1111.789962261933,
+   "source": "BigONE PEARL-USDT",
+   "cash": 0,
+   "coins": 586.1923318000522
+  },
+  {
+   "time": "2026-11-04 20:00",
+   "action": "SELL",
+   "price": 1.5371,
+   "value": 894.7289795773912,
+   "source": "BigONE PEARL-USDT",
+   "cash": 894.7289795773912,
+   "coins": 0
+  }
+ ],
+ "last": [
+  {
+   "time": "2026-10-24 13:00",
+   "action": "BUY",
+   "price": 1.91,
+   "value": 1111.789962261933,
+   "source": "BigONE PEARL-USDT",
+   "cash": 0,
+   "coins": 586.1923318000522
+  },
+  {
+   "time": "2026-11-04 20:00",
+   "action": "SELL",
+   "price": 1.5371,
+   "value": 894.7289795773912,
+   "source": "BigONE PEARL-USDT",
+   "cash": 894.7289795773912,
+   "coins": 0
+  },
+  {
+   "time": "2026-11-09 01:00",
+   "action": "BUY",
+   "price": 1.6813,
+   "value": 882.2898477858487,
+   "source": "BigONE PEARL-USDT",
+   "cash": 0,
+   "coins": 528.4657191944448
+  },
+  {
+   "time": "2026-11-15 23:00",
+   "action": "SELL",
+   "price": 1.6801,
+   "value": 881.6601280348566,
+   "source": "Coinbase PEARL-USD",
+   "cash": 881.6601280348566,
+   "coins": 0
+  }
+ ]
+}
+[15:50:04.567] INFO: [RSI] RSI value: 40.17
+[15:50:04.567] INFO: [RSI] In no trend

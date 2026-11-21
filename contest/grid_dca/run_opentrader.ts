@@ -4,6 +4,8 @@
 // to the server, which keeps the real $1,000 account and charges 0.7% per side. Settings: see NOTES.md.
 //   node_modules/.bin/tsx run_opentrader.ts grid|rsi <port>
 import { spawn } from "node:child_process";
+import http from "node:http";
+import net from "node:net";
 import { readFileSync, appendFileSync } from "node:fs";
 import { createStrategyRunner } from "./downloads/opentrader/packages/bot-processor/src/index.ts";
 import * as templates from "./downloads/opentrader/packages/bot-templates/src/templates/index.ts";
@@ -42,10 +44,15 @@ function history(minutes: number, keep: number): Candle[] {
 
 async function main() {
   const server = spawn("python3", ["price_server.py", "--port", String(port)], { cwd: ROOT, stdio: "ignore" });
-  const base = `http://127.0.0.1:${port}`;
+  // one kept-alive connection: the price server serves one connection at a time
   for (let i = 0; i < 100; i++) {
-    try { await fetch(`${base}/ping`); break; } catch { await new Promise((r) => setTimeout(r, 200)); }
+    const ok = await new Promise<boolean>((res) => { const s = net.connect(port, "127.0.0.1", () => { s.end(); res(true); }); s.on("error", () => res(false)); });
+    if (ok) break; await new Promise((r) => setTimeout(r, 200));
   }
+  const agent = new http.Agent({ keepAlive: true, maxSockets: 1 });
+  const get = (path: string) => new Promise<any>((res, rej) => {
+    http.get({ host: "127.0.0.1", port, path, agent }, (r) => { let b = ""; r.on("data", (d) => (b += d)); r.on("end", () => res(JSON.parse(b))); }).on("error", rej);
+  });
   const sim = new MarketSimulator();
   const store = new MemoryStore(sim);
   const exchange = new MemoryExchange(sim);
@@ -64,7 +71,7 @@ async function main() {
   while (true) {
     let q = "/next?order=NONE";
     if (queue.length) { const [side, qty] = queue.shift()!; q = `/next?order=${side}&qty=${qty}`; sent++; }
-    const m: any = await (await fetch(base + q)).json();
+    const m: any = await get(q);
     if (m.done) { account = m.account; break; }
     const minuteMs = m.ts * 60000;
     const open = prevClose ?? m.close;
@@ -81,7 +88,7 @@ async function main() {
     sim.fulfillOrders();
     sim.smartTrades.forEach((t: any, i: number) => orders(t).forEach((o: any, k: number) => {
       if (o && o.type === "Limit" && before[i]?.[k] === "Placed" && o.status === "Filled")
-        queue.push([o.side === "Buy" ? "BUY" : "SELL", t.entryOrder.quantity]);
+        queue.push([o.side === "Buy" ? "BUY" : "SELL", o.quantity ?? t.entryOrder.quantity]);
     }));
     if (!started) { await runner.start(botState); started = true; }
     else await runner.process(botState, undefined, { candle, candles } as any);
@@ -89,9 +96,10 @@ async function main() {
     sim.placeOrders();
     sim.smartTrades.forEach((t: any, i: number) => orders(t).forEach((o: any, k: number) => {
       if (o && o.type === "Market" && before[i]?.[k] !== "Placed" && o.status === "Placed")
-        queue.push([o.side === "Buy" ? "BUY" : "SELL", t.entryOrder.quantity]);
+        queue.push([o.side === "Buy" ? "BUY" : "SELL", o.quantity ?? t.entryOrder.quantity]);
     }));
   }
+  agent.destroy();
   server.kill();
   const filled = account.trades.length;
   skipped = sent - filled;
