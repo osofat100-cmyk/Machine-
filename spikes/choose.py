@@ -2,11 +2,13 @@
 """
 Search the 27,783 spike robots on the training months only and pick the winner (spikes/PLAN.md).
 
-    python3 spikes/choose.py
-      -> spikes/choose.csv     every robot: choose-period and check-period money, score
-      -> spikes/winner.json    the winning settings
-      -> spikes/spike_types.txt the two kinds of spike at the winner's theta
+    python3 spikes/choose.py            buy/sell chances 1, 5, 10 ... 95, 99%   (27,783 robots)
+      -> spikes/choose.csv, spikes/winner.json, spikes/spike_types.txt
+    python3 spikes/choose.py --every1   buy/sell chances every 1% from 1 to 100%  (630,000 robots)
+      -> spikes/choose_1pct_top.csv (best 2,000), spikes/choose_1pct.npz (all), spikes/winner_1pct.json,
+         spikes/spike_types_1pct.txt
 """
+import sys
 import itertools
 import json
 import os
@@ -20,7 +22,9 @@ from spikes import simulate, tables
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 THETAS = [0.02, 0.03, 0.04, 0.05, 0.07, 0.10, 0.15]
-PS = [0.01] + [i / 100 for i in range(5, 100, 5)] + [0.99]
+EVERY1 = "--every1" in sys.argv
+PS = [i / 100 for i in range(1, 101)] if EVERY1 else [0.01] + [i / 100 for i in range(5, 100, 5)] + [0.99]
+TAG = "_1pct" if EVERY1 else ""
 XS = [0.02, 0.04, 0.08]
 STOPS = [0.0, 0.10, 0.20]
 SPLIT = pd.Timestamp("2026-09-22", tz="UTC")
@@ -90,7 +94,18 @@ def main():
             count[ok] += 1
     r["score"] = (total / count)[idx]
     r = r.sort_values("score", ascending=False)
-    r.drop(columns=["ti", "bi", "si", "xi", "ki"]).to_csv(os.path.join(HERE, "choose.csv"), index=False)
+    if EVERY1:
+        r.drop(columns=["ti", "bi", "si", "xi", "ki"]).head(2000).to_csv(os.path.join(HERE, "choose_1pct_top.csv"),
+                                                                       index=False)
+        money = {}
+        for col in ("choose_$", "check_$"):
+            m = np.full(dims, np.nan, np.float32)
+            m[tuple(r[c].to_numpy() for c in ("ti", "bi", "si", "xi", "ki"))] = r[col].to_numpy()
+            money[col.replace("_$", "")] = m
+        np.savez_compressed(os.path.join(HERE, "choose_1pct.npz"), score=(total / count).astype(np.float32),
+                            both=cube.astype(np.float32), thetas=THETAS, ps=PS, xs=XS, stops=STOPS, **money)
+    else:
+        r.drop(columns=["ti", "bi", "si", "xi", "ki"]).to_csv(os.path.join(HERE, "choose.csv"), index=False)
 
     w = r.iloc[0]
     win = {k: float(w[k]) for k in ("theta", "p_buy", "p_sell", "x", "stop")}
@@ -100,17 +115,17 @@ def main():
     up_o, down_o, ups, downs = tables(full, win["theta"], win["x"])
     v, n = simulate(full, win["theta"], up_o, down_o, win["p_buy"], win["p_sell"], win["stop"])
     win["all_training_$"], win["all_training_trades"] = round(float(v), 2), int(n)
-    with open(os.path.join(HERE, "winner.json"), "w") as f:
+    with open(os.path.join(HERE, f"winner{TAG}.json"), "w") as f:
         json.dump(win, f, indent=2)
 
-    with open(os.path.join(HERE, "spike_types.txt"), "w") as f:
+    with open(os.path.join(HERE, f"spike_types{TAG}.txt"), "w") as f:
         for name, s in (("up", ups), ("down", downs)):
             small, big = two_kinds(s)
             f.write(f"{name}-spikes at theta {win['theta']:.0%}, all training months: {len(s)}\n")
             for kind, part in (("small", small), ("extreme", big)):
                 f.write(f"  {kind:<8} {len(part):>4} spikes, {np.min(part):6.1%} to {np.max(part):6.1%}, "
                         f"middle {np.median(part):6.1%}\n")
-    print(open(os.path.join(HERE, "spike_types.txt")).read())
+    print(open(os.path.join(HERE, f"spike_types{TAG}.txt")).read())
 
     hold_c = choose[-1] / choose[0] * 1000 * (1 - COST_2)
     hold_k = check[-1] / check[0] * 1000 * (1 - COST_2)

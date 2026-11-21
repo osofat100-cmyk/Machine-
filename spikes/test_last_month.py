@@ -7,7 +7,8 @@ starts with $1,000 in USDT. price_server.py hands it one minute at a time from t
 keeps the account; an order fills at the close of the minute after the decision, cost 0.7% per side.
 This program never opens the test prices.
 
-    python3 spikes/test_last_month.py   -> spikes/last_month_trades.csv, spikes/last_month_curve.csv
+    python3 spikes/test_last_month.py           winner.json      -> spikes/last_month_trades.csv, ..._curve.csv
+    python3 spikes/test_last_month.py --every1  winner_1pct.json -> spikes/last_month_1pct_trades.csv, ..._curve.csv
 """
 import csv
 import http.client
@@ -26,10 +27,11 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 PORT = 8790
 SEALED = "data/sealed/PEARL_last_month.csv"
+TAG = "_1pct" if "--every1" in sys.argv else ""
 
 
 def main():
-    with open(os.path.join(HERE, "winner.json")) as f:
+    with open(os.path.join(HERE, f"winner{TAG}.json")) as f:
         w = json.load(f)
     train = pd.read_csv(os.path.join(HERE, "data/train.csv"), parse_dates=["time"])
     assert train["time"].iloc[-1] < pd.Timestamp("2026-10-22", tz="UTC")
@@ -76,14 +78,14 @@ def main():
     print(f"just holding PEARL: $1,000 -> ${acct['holding']:,.2f}")
     print(f"keeping the $1,000 in USDT: $1,000")
 
-    with open(os.path.join(HERE, "last_month_trades.csv"), "w", newline="") as f:
+    with open(os.path.join(HERE, f"last_month{TAG}_trades.csv"), "w", newline="") as f:
         wr = csv.writer(f)
         wr.writerow(["time_utc", "action", "price", "account_$", "source"])
         for t in acct["trades"]:
             wr.writerow([t["time"], t["action"], t["price"], round(t["value"], 2), t["source"]])
         wr.writerow(["end " + acct["last"], "", "", round(acct["value"], 2), ""])
         wr.writerow(["just holding", "", "", round(acct["holding"], 2), ""])
-    with open(os.path.join(HERE, "last_month_curve.csv"), "w", newline="") as f:
+    with open(os.path.join(HERE, f"last_month{TAG}_curve.csv"), "w", newline="") as f:
         wr = csv.writer(f)
         wr.writerow(["time_utc", "source", "price", "account_$"])
         wr.writerows(curve)

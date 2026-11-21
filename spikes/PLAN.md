@@ -37,3 +37,10 @@ theta 2, 3, 4, 5, 7, 10, 15% | p_buy and p_sell 1, 5, 10, 15 ... 95, 99% | x 2, 
    sqrt(growth on choose x growth on check). Safest, not luckiest. Highest score wins.
 3. The winner's odds tables are rebuilt from all training data (25 Jun - 21 Oct). Then the last-month test.
 No setting is changed after the test.
+
+## Second search: every 1% (added after the first test, on the user's request)
+The first search only tried buy/sell chances 1, 5, 10 ... 95, 99%. The user asked for every 1% from 1 to 100%.
+`choose.py --every1` tries 100 x 100 buy/sell chances x 7 spike sizes x 3 x x 3 stops = 630,000 robots,
+with the same choose/check months and the same "safest" score. Its winner (winner_1pct.json) is committed
+before its last-month test. The last month was already used once (first winner: $815.55); both results are
+reported, whichever is better.

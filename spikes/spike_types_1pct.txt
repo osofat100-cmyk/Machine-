@@ -1,0 +1,6 @@
+up-spikes at theta 10%, all training months: 86
+  small      46 spikes,  10.4% to  20.4%, middle  13.2%
+  extreme    40 spikes,  20.8% to  85.8%, middle  27.5%
+down-spikes at theta 10%, all training months: 87
+  small      57 spikes,  10.0% to  17.1%, middle  12.5%
+  extreme    30 spikes,  17.3% to  36.1%, middle  20.6%
