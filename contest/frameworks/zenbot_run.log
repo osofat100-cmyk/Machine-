@@ -7,3 +7,34 @@ ehlers_mama          does not run as shipped  trades        end   Error: Cannot 
 ehlers_trend         ran                      trades     0  end $1,000.00  Zenbot sim; 0 trades (0 sells, 0 losing); end 1000.00 USDT + 0.00 USDT of PEARL (less 0.7% exit cost); Zenbot's own buy&hold 0.00
 ichimoku             ran                      trades    40  end $964.42  Zenbot sim; 40 trades (20 sells, 15 losing); end 317.52 USDT + 651.46 USDT of PEARL (less 0.7% exit cost); Zenbot's own buy&hold 1496.48
 ichimoku_score       does not run as shipped  trades        end   Error: Cannot find module './conf', falling back to conf-sample
+kc                   ran                      trades    96  end $1,614.44  Zenbot sim; 96 trades (47 sells, 11 losing); end 520.22 USDT + 1101.93 USDT of PEARL (less 0.7% exit cost); Zenbot's own buy&hold 1535.97
+macd                 ran                      trades   103  end $1,053.09  Zenbot sim; 103 trades (57 sells, 33 losing); end 1048.92 USDT + 4.19 USDT of PEARL (less 0.7% exit cost); Zenbot's own buy&hold 1487.59
+momentum             ran                      trades   398  end $1,271.25  Zenbot sim; 398 trades (199 sells, 156 losing); end 1271.23 USDT + 0.02 USDT of PEARL (less 0.7% exit cost); Zenbot's own buy&hold 1487.59
+multi                ran                      trades   630  end $1,111.24  Zenbot sim; 630 trades (333 sells, 222 losing); end 1110.64 USDT + 0.61 USDT of PEARL (less 0.7% exit cost); Zenbot's own buy&hold 1496.48
+neural               cannot run here          trades        end   sim did not finish within 20 minutes
+noop                 ran                      trades     0  end $1,000.00  Zenbot sim; 0 trades (0 sells, 0 losing); end 1000.00 USDT + 0.00 USDT of PEARL (less 0.7% exit cost); Zenbot's own buy&hold 0.00
+pivot                ran                      trades   177  end $1,124.09  Zenbot sim; 177 trades (93 sells, 60 losing); end 1121.74 USDT + 2.37 USDT of PEARL (less 0.7% exit cost); Zenbot's own buy&hold 1499.55
+renko                ran                      trades     0  end $1,000.00  Zenbot sim; 0 trades (0 sells, 0 losing); end 1000.00 USDT + 0.00 USDT of PEARL (less 0.7% exit cost); Zenbot's own buy&hold 0.00
+rsi                  ran                      trades   287  end $1,450.62  Zenbot sim; 287 trades (119 sells, 41 losing); end 1083.32 USDT + 369.89 USDT of PEARL (less 0.7% exit cost); Zenbot's own buy&hold 1522.53
+sar                  ran                      trades   692  end $949.99  Zenbot sim; 692 trades (347 sells, 304 losing); end 949.97 USDT + 0.01 USDT of PEARL (less 0.7% exit cost); Zenbot's own buy&hold 1496.48
+speed                ran                      trades   625  end $1,020.67  Zenbot sim; 625 trades (313 sells, 294 losing); end 1020.65 USDT + 0.02 USDT of PEARL (less 0.7% exit cost); Zenbot's own buy&hold 1496.48
+srsi_macd            ran                      trades     0  end $1,000.00  Zenbot sim; 0 trades (0 sells, 0 losing); end 1000.00 USDT + 0.00 USDT of PEARL (less 0.7% exit cost); Zenbot's own buy&hold 0.00
+stddev               ran                      trades   932  end $773.25  Zenbot sim; 932 trades (515 sells, 384 losing); end 773.24 USDT + 0.02 USDT of PEARL (less 0.7% exit cost); Zenbot's own buy&hold 1511.20
+ta_ema               ran                      trades     2  end $1,747.97  Zenbot sim; 2 trades (1 sells, 0 losing); end 24.50 USDT + 1735.62 USDT of PEARL (less 0.7% exit cost); Zenbot's own buy&hold 1790.56
+ta_macd              ran                      trades    90  end $966.15  Zenbot sim; 90 trades (45 sells, 31 losing); end 962.11 USDT + 4.07 USDT of PEARL (less 0.7% exit cost); Zenbot's own buy&hold 1487.59
+ta_macd_ext          does not run as shipped  trades        end   Error: Cannot find module './conf', falling back to conf-sample
+ta_ppo               does not run as shipped  trades        end   Error: Cannot find module './conf', falling back to conf-sample
+ta_srsi_bollinger    ran                      trades   414  end $1,174.07  Zenbot sim; 414 trades (201 sells, 80 losing); end 1172.89 USDT + 1.18 USDT of PEARL (less 0.7% exit cost); Zenbot's own buy&hold 1499.30
+ta_stoch_bollinger   ran                      trades   391  end $1,055.53  Zenbot sim; 391 trades (203 sells, 75 losing); end 992.00 USDT + 63.98 USDT of PEARL (less 0.7% exit cost); Zenbot's own buy&hold 1429.87
+ta_trix              does not run as shipped  trades        end   Error: Cannot find module './conf', falling back to conf-sample
+ta_ultosc            does not run as shipped  trades        end   Error: Cannot find module './conf', falling back to conf-sample
+ti_bollinger         ran                      trades   534  end $1,084.67  Zenbot sim; 534 trades (275 sells, 118 losing); end 1061.99 USDT + 22.84 USDT of PEARL (less 0.7% exit cost); Zenbot's own buy&hold 1479.64
+ti_hma               does not run as shipped  trades        end   Error: Cannot find module './conf', falling back to conf-sample
+ti_stoch             ran                      trades   342  end $1,252.94  Zenbot sim; 342 trades (181 sells, 50 losing); end 945.80 USDT + 309.30 USDT of PEARL (less 0.7% exit cost); Zenbot's own buy&hold 1504.49
+ti_stoch_bollinger   ran                      trades    36  end $1,119.01  Zenbot sim; 36 trades (21 sells, 3 losing); end 1118.92 USDT + 0.10 USDT of PEARL (less 0.7% exit cost); Zenbot's own buy&hold 1455.02
+trend_bollinger      ran                      trades    47  end $1,262.54  Zenbot sim; 47 trades (25 sells, 7 losing); end 1253.37 USDT + 9.24 USDT of PEARL (less 0.7% exit cost); Zenbot's own buy&hold 1462.59
+trend_ema            ran                      trades   749  end $931.77  Zenbot sim; 749 trades (375 sells, 316 losing); end 931.77 USDT + 0.01 USDT of PEARL (less 0.7% exit cost); Zenbot's own buy&hold 1496.48
+trendline            ran                      trades     3  end $1,486.83  Zenbot sim; 3 trades (1 sells, 0 losing); end 10.52 USDT + 1486.71 USDT of PEARL (less 0.7% exit cost); Zenbot's own buy&hold 1499.55
+trust_distrust       ran                      trades    42  end $1,559.15  Zenbot sim; 42 trades (20 sells, 4 losing); end 312.72 USDT + 1255.22 USDT of PEARL (less 0.7% exit cost); Zenbot's own buy&hold 1496.48
+vpt                  ran                      trades     0  end $1,000.00  Zenbot sim; 0 trades (0 sells, 0 losing); end 1000.00 USDT + 0.00 USDT of PEARL (less 0.7% exit cost); Zenbot's own buy&hold 0.00
+wavetrend            ran                      trades     7  end $1,066.44  Zenbot sim; 7 trades (5 sells, 0 losing); end 1066.33 USDT + 0.12 USDT of PEARL (less 0.7% exit cost); Zenbot's own buy&hold 1563.02
