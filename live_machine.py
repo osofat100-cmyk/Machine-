@@ -2,15 +2,15 @@
 """
 Robot 2, live. PRACTICE MODE: fake money, NO real orders.
 
-This runs engine.py, the same code the tests run (checks.py, traj_sweep.py).
+This runs robot2.py, the same code the tests run (python3 robot2.py, python3 robot2.py check).
 
-On start it downloads PEARL's minute history from BigONE and feeds all of it to the engine, so
-the robot starts with its trajectory library, its settings landscape and its interval machines
+On start it downloads PEARL's minute history from BigONE and feeds all of it to the robot, so it
+starts with its 100 lines, its trajectory library, its accuracy record and its timing machines
 already built. Its practice account starts with $1,000 in USDC. Then, every new minute:
-  1. the engine takes the minute and decides (see engine.py)
-  2. if the engine's robot changes position, the practice account buys or sells at the real
-     PEARL-USDC order book, paying the 0.2% fee
-The engine is saved every hour, so a restart continues where it stopped.
+  1. the robot takes the minute and decides (see robot2.py)
+  2. if the robot buys, the practice account puts the same share of its money (Kelly) into PEARL
+     at the real PEARL-USDC order book; if it sells, the practice account sells everything
+The robot is saved every hour, so a restart continues where it stopped.
 
     python3 live_machine.py                         # live
     python3 live_machine.py --reset                 # rebuild from history, new $1,000 practice account
@@ -27,14 +27,14 @@ from datetime import datetime, timezone
 import numpy as np
 import pandas as pd
 
-from engine import Engine, feed
+from robot2 import Robot2, feed
 from fetch_history import fetch, get
 from paper_trader import book_fill
 
 HISTORY = "data/PEARL-USDT_min1.csv"
 STATE_FILE = "data/robot2_state.pkl"
 TRADE_LOG = "logs/robot2_trades.csv"
-ETA = 14.0          # watcher sensitivity, chosen on 25 Jun - 30 Sep only (traj_sweep.py)
+ETA = 14.0          # watcher sensitivity (traj_sweep.py)
 
 
 def log_row(path, header, row):
@@ -87,22 +87,24 @@ def save(engine, acct):
 
 
 def follow(e, acct, pair, fee, log):
-    """Make the practice account match the engine's position, at the real order book."""
+    """Make the practice account follow the robot's buys and sells, at the real order book."""
     want = (e.coins > 0 and e.pending != "SELL") or e.pending == "BUY"
     if want == (acct["coins"] > 0):
         return False
     now = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M")
     if want:
-        coins, avg = book_fill(pair, "buy", acct["cash"])
-        acct.update(coins=coins * (1 - fee / 100), cash=0.0)
+        put = e.f_next * acct["cash"]
+        coins, avg = book_fill(pair, "buy", put)
+        acct.update(coins=coins * (1 - fee / 100), cash=acct["cash"] - put)
     else:
         usdc, avg = book_fill(pair, "sell", acct["coins"])
-        acct.update(cash=usdc * (1 - fee / 100), coins=0.0)
+        acct.update(cash=acct["cash"] + usdc * (1 - fee / 100), coins=0.0)
     acct["trades"] += 1
     s = e.setting or ("", "")
     log_row(TRADE_LOG, ["time_utc", "action", "price", "usdc_after", "buy_pct", "sell_pct", "interval_min"],
             [now, "BUY" if want else "SELL", round(avg, 4), round(acct["cash"], 2), s[0], s[1], e.interval])
-    log(f"*** {'BUY' if want else 'SELL'} at {avg:.4f}  (setting {s[0]}% / {s[1]}%, updating every {e.interval} min)")
+    log(f"*** {'BUY' if want else 'SELL'} at {avg:.4f}  (setting {s[0]}% / {s[1]}%, updating every {e.interval} min"
+        f"{f', putting in {e.f_next:.0%}' if want else ''})")
     return True
 
 
@@ -115,14 +117,15 @@ def main():
     ap.add_argument("--pair", default="PEARL-USDC", help="pair the practice trades are priced on")
     ap.add_argument("--signal-pair", default="PEARL-USDT", help="pair the robot learns from")
     ap.add_argument("--eta", type=float, default=ETA, help="watcher sensitivity")
-    ap.add_argument("--no-resets", action="store_true", help="never reset the data (one trajectory)")
+    ap.add_argument("--risk", default="kelly", help="share of money per buy: kelly, or a number 0.01-1")
     ap.add_argument("--fee", type=float, default=0.2)
     ap.add_argument("--cash", type=float, default=1000.0)
     ap.add_argument("--reset", action="store_true")
     ap.add_argument("--replay-from", help="test mode: learn before this UTC day, replay the rest")
     a = ap.parse_args()
     log = lambda *x: print(*x, flush=True)
-    make = lambda: Engine(eta=a.eta, resets=not a.no_resets)
+    risk = "kelly" if a.risk == "kelly" else float(a.risk)
+    make = lambda: Robot2(eta=a.eta, risk=risk)
 
     # ---------------------------------------------------------------- replay test
     if a.replay_from:
@@ -130,15 +133,15 @@ def main():
         cut = pd.Timestamp(a.replay_from, tz="UTC")
         log(f"learning from the history before {a.replay_from}...")
         e = feed(make(), df[df["time"] < cut], log)
-        e.cash, e.coins, e.pending, e.trades = a.cash, 0.0, None, []
+        e.cash, e.coins, e.pending, e.trades, e.fills = a.cash, 0.0, None, [], []
         rest = df[df["time"] >= cut]
         k0 = e.n - 1
         log(f"replaying {len(rest):,} minutes from {a.replay_from} as if live")
         feed(e, rest, log, every=1440)
         hold = a.cash * e.cl[e.n - 1] * (1 - e.kap[e.n - 1]) / (e.cl[k0] * (1 + e.kap[k0]))
-        for ts, act, price, value, setting, interval in e.trades:
+        for ts, act, price, value, setting, interval, f in e.trades:
             log(f"  {stamp(ts)}  {act:<4} at {price:.4f}  account ${value:,.2f}  "
-                f"setting {setting}  every {interval} min")
+                f"setting {setting}  every {interval} min" + (f"  put in {f:.0%}" if f is not None else ""))
         log(f"replay finished: robot 2 ${e.value():,.2f} after {len(e.trades)} trades; just holding ${hold:,.2f}")
         return
 
@@ -150,14 +153,14 @@ def main():
             with open(STATE_FILE, "rb") as f:
                 st = pickle.load(f)
             e, acct = st["engine"], st["acct"]
-            if e.eta != a.eta or e.resets == a.no_resets:
+            if not isinstance(e, Robot2) or e.eta != a.eta or e.risk != risk:
                 e = acct = None
         except Exception as err:
             log(f"saved state not usable ({err}); rebuilding")
     if e is None:
         log("building the robot from the whole history (a few minutes)...")
         e = feed(make(), df, log)
-        e.cash, e.coins, e.pending, e.trades = a.cash, 0.0, None, []
+        e.cash, e.coins, e.pending, e.trades, e.fills = a.cash, 0.0, None, [], []
         acct = {"cash": a.cash, "coins": 0.0, "start_cash": a.cash, "trades": 0}
     else:
         missed = df[df["time"].values.astype("datetime64[m]").astype(np.int64) > e.ts[e.n - 1]]
@@ -180,7 +183,7 @@ def main():
                 s = e.setting
                 log(f"{stamp(e.ts[e.n - 1])[5:]}  price {e.cl[e.n - 1]:.4f}  "
                     f"setting {f'{s[0]}/{s[1]}' if s else 'none yet'}  every {e.interval} min  "
-                    f"trajectory {len(e.library) + 1} (borrowing {e.w * 100:.0f}%)  "
+                    f"line {e.line + 1}%  trajectory {len(e.library) + 1} (library {e.w * 100:.0f}%)  "
                     f"holding {'PEARL' if acct['coins'] else 'USDC'}  "
                     f"account ${value:,.2f} ({(value / acct['start_cash'] - 1) * 100:+.1f}%)")
                 if time.time() - last_save > 3600:
