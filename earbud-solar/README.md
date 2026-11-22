@@ -171,3 +171,17 @@ Needed cell area to cover the 26.95 mW draw at right-angle sun: 1.08 cm² at 25 
 
 Power on the 29.6 × 13.75 mm rectangle (4.07 cm²) at right-angle full sun vs the bud's 26.95 mW: 8.1 % → 33.0 mW (1.22×, enough up to 35° off-perpendicular); 11.7 % → 47.6 mW (1.77×, to 55°); 20 % → 81.4 mW (3.0×, to 71°); 25 % mono-Si → 101.8 mW (3.8×, to 75°). Indoors (1,000 lux, 31.6 µW/cm² cited device) → 0.13 mW (0.5 %).
 Sources: https://ossila.com/pages/video-guide-to-make-efficient-air-processed-perovskite-devices , https://ossila.com/cdn/shop/files/i101-condensed-perovskite-pv-fabrication-guide.pdf , https://www.ossila.com/en-us/products/triple-cation-perovskite-ink , https://www.osti.gov/biblio/1185932 , https://export.arxiv.org/pdf/2504.18553 , https://koreascience.kr/article/JAKO200903544453074.page , https://environment.ec.europa.eu/system/files/2023-12/COM_2023_760_1_EN_ACT_part1_v4.pdf , https://www.cambridge.org/core/journals/mrs-energy-and-sustainability/article/environment-versus-sustainable-energy-the-case-of-lead-halide-perovskitebased-solar-cells/3EEFAED4B22D67EC12FB2E98AACDB018
+
+## 9. Real cell on the flattened face: ANYSOLAR SM400K10L (`scripts/make_solar_bud.py`, `data/solar_bud_SM400K10L.json`)
+
+| | |
+|---|---|
+| Cell | ANYSOLAR SM400K10L, mono-Si, 10 cells in series, 25 % cell efficiency |
+| Size | **33.00 × 15.00 × 1.80 mm**, 1.7 g |
+| Power (full sun, datasheet) | **85.7 mW** (5.58 V × 15.4 mA at max power; Voc 6.91 V, Isc 16.4 mA) = **3.2×** the bud's 26.95 mW |
+| Fit on the outward face | 99.5 % of the footprint on the face (rotation −0.25°); only the rounded corners overhang |
+| Flattening needed | shave ≤ 0.75 mm off the middle; 95 % of the cell supported, corner gaps up to 2.4 mm filled |
+| Bulk | cell top +1.24 mm above the original face; earbud 29.4 → 30.7 mm thick (+4 %) |
+
+Other ANYSOLAR sizes that fit: KXOB25-05X3F 23 × 8 × 1.8 mm (30.9 mW, 1.1×); two KXOB25-04X3F side by side 22 × 14 mm (44 mW, 1.6×). SM340K10L (34 × 16) overhangs 2.9 %; SM111K04L (43 × 14) and SM141K04LV (45 × 15) are too long.
+Sources: https://www.digikey.ie/en/products/detail/anysolar-ltd/SM400K10L/9990467 , https://gdrectifiers.co.uk/products/solar_cells_and_modules
