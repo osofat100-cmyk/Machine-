@@ -7,9 +7,10 @@
  },
  "walls": {
   "cover_top": 0.8,
-  "floor": 1.0,
-  "side": 1.1,
-  "min_check": 0.8
+  "floor": 0.8,
+  "side": 1.0,
+  "min_check": 0.8,
+  "_note": "prototype: floor 0.8 / sides 1.0 (were 1.0 / 1.1) to give the electronics more height"
  },
  "paddle": {
   "outline_slice_z": -3.0,
@@ -21,7 +22,7 @@
  "parting": {
   "z": "auto",
   "scan": [
-   -6.0,
+   -6.6,
    -3.2
   ],
   "keep_clear_of_side_features": 2.4,
@@ -62,9 +63,10 @@
    "recess": [
     4.4,
     3.6,
-    0.3
+    0.0
    ],
-   "boss_h": 0.6
+   "boss_h": 0.0,
+   "_note": "prototype: no raised boss (it sat right under the board stack). Seal the slot from inside with an adhesive acoustic membrane glued flat on the floor, or clear UV resin if it turns out to be an optical window"
   },
   "led": {
    "hole_d": 0.9,
@@ -81,10 +83,10 @@
    "_note": "membrane recess is open to the cavity so the IP68 acoustic membrane can be placed and pressed"
   },
   "pod_socket": {
-   "_note": "the body narrows to the neck size just above the pod, so there is no room for a socket AROUND the neck without changing the outside. The opening sits inside the neck outline instead: the pod's top face bonds and seals onto a 1.2 mm rim with flexible MS-polymer; the collar centres it. Real pod-to-body joint unknown - measure on the teardown.",
+   "_note": "the body narrows to the neck size just above the pod, so there is no room for a socket AROUND the neck without changing the outside. The opening sits inside the neck outline instead: the pod's top face bonds and seals onto a 1.2 mm rim with flexible MS-polymer; the collar centres it. Real pod-to-body joint unknown - measure on the teardown. Prototype: collar 1.0 mm tall (was 2.0) - it only centres the pod and sat under the board.",
    "rim": 1.2,
    "collar_w": 1.2,
-   "collar_h": 2.0,
+   "collar_h": 1.0,
    "joint": "face bond + seal, MS-polymer (flexible, waterproof)"
   },
   "cell_passthrough": {
@@ -102,6 +104,15 @@
    ],
    "wall": 0.5,
    "h": 1.0
+  },
+  "charger": {
+   "_note": "charger board glued on the cell back beside the + pad, OFF the board/battery stack",
+   "board": [
+    3.2,
+    4.4,
+    1.0
+   ],
+   "gap_to_pad": 0.3
   }
  },
  "hook": {

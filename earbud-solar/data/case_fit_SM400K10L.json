@@ -1,0 +1,33 @@
+{
+ "registration": {
+  "anchor_rms_mm": 0.502,
+  "icp_rms_mm": 0.116,
+  "mirrored": true,
+  "pin_error_mm": [
+   0.205,
+   0.192
+  ]
+ },
+ "original_bud_baseline": {
+  "case_surface_voxels_inside_bud": 44612,
+  "max_penetration_mm": 1.73
+ },
+ "solar_bud": {
+  "case_surface_voxels_inside_bud": 67656,
+  "max_penetration_mm": 2.04
+ },
+ "cell_min_gap_to_case_mm": 0.0,
+ "lid_clearance_along_cell_normal_mm": {
+  "original_face": {
+   "median": -0.26,
+   "p5": -0.44
+  },
+  "solar_cell_top": {
+   "median": -1.46,
+   "p5": -1.7
+  },
+  "extra_interference_vs_original_mm": 1.26,
+  "note": "first case surface along the cell normal; the original bud is the reference (it closes in the real case)"
+ },
+ "cell": "SM400K10L"
+}

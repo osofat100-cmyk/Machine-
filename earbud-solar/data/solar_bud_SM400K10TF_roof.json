@@ -1,0 +1,21 @@
+{
+ "cell": "ANYSOLAR SM400K10TF",
+ "cell_mm": [
+  33.0,
+  15.0,
+  1.5
+ ],
+ "seat_extra_mm": null,
+ "seat_mode": "roof: cell replaces a 0.8 mm roof wall",
+ "footprint_on_face_pct": 99.5,
+ "rotation_deg": -0.25,
+ "shaved_mm": 0.8,
+ "corner_overhang_share_pct": 5.0,
+ "max_gap_under_corners_mm": 2.35,
+ "cell_top_above_original_face_top_mm": 0.89,
+ "earbud_depth_along_face_normal_mm": [
+  29.43,
+  30.33
+ ],
+ "vertices_moved": 2354
+}

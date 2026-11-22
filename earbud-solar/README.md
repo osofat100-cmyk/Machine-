@@ -195,92 +195,134 @@ hollow two-half shell that the original EP3 parts move into. Outside shape = JBL
 cell is flat. Everything is generated from scripts, so it can be regenerated once a real bud is measured.
 The meshes (STL/3MF/GLB) are made from JBL's model and are **not** in this public repo — run the commands at the end.
 
-**Fit in the JBL case** (`scripts/case_fit.py`, `data/case_fit_SM400K10TF.json`): the loose bud was registered to the
-bud sitting in the closed case (pin error 0.21 / 0.19 mm, surface RMS 0.12 mm). The SM400K10TF bud touches the closed case
-no deeper than the original bud already does (max overlap 1.75 vs 1.76 mm for the original — the soft eartip/hook squeeze),
-so the lid still closes and the two charging pins still land. The 1.8 mm SM400K10L went 0.76 mm into the rigid lid, so it
-was dropped. Cell seat sunk 0.75 mm deeper (total shave 1.5 mm); cell top only +0.19 mm above the original face; bud
-29.43 → 29.63 mm.
+**Prototype goal and version (v2)**: the only question is "can the panel power the bud" — pair to the phone, play, phone
+controls. So: **no touch control needed** (whatever happens to it under the cell is fine), and the **cell replaces the
+roof at the original roof height** (`make_solar_bud.py … roof:0.8`): its bottom sits where the 0.8 mm roof's inner face
+was at the face's highest point, so the inside keeps the original height, and the cell sticks out **+0.89 mm** above the
+original face (bud 29.43 → 30.33 mm). The first version (v1) sank the cell 0.7 mm deeper to suit the case lid.
+
+**Fit in the JBL case** (`scripts/case_fit.py`, `data/case_fit_*.json`): the loose bud is registered to the bud sitting
+in the case (pin error 0.21 / 0.19 mm, surface RMS 0.12 mm), so the **charging pins still land** in every version. The lid
+is checked by measuring, along the cell normal, from the cell's outer face to the closed lid, and comparing with the
+**original bud's face measured the same way** (the closed lid is modelled by a hinge rotation, which itself puts the
+original face 0.26 mm "into" the lid, so only the difference counts):
+
+| Version | Cell top vs original face | Extra tightness under the lid vs the original bud |
+|---|---|---|
+| SM400K10L 1.8 mm, sunk 0.75 mm | +1.24 mm | 1.26 mm |
+| SM400K10TF 1.5 mm, sunk (v1) | +0.19 mm | 0.30 mm — within the lid model's error; **not proven to close** (v1 text said it closes: that was based on a weaker check) |
+| **SM400K10TF 1.5 mm, roof height (v2)** | +0.89 mm | **0.96 mm — the JBL lid will not close** |
+
+With v2 the bud still drops into the case cradle on its pins; whether the case charges it with the lid open is a test
+for the real bud. The solar charger does not need the case at all.
 
 | Part | What it is |
 |---|---|
-| **Cover** (upper half) | flat 1.2 mm ledge all round the face: the **solar cell is the lid**, bonded and sealed on that ledge (MS-polymer, no IPA on the cell). Side walls 1.1 mm, LED light-pipe sleeve, both mic bosses with Ø0.9 ports and Ø3.2 membrane seats, the tongue of the seal, 2 screw pillars with M1.2 inserts, and at the pod end a pillar with the clear hole + flush counterbore for the third screw. |
-| **Base** (ear-side half) | floor 1.0 mm, walls 1.1 mm; **2 charging-pin holes Ø1.4 exactly where JBL's pins are** (so the case contacts still line up), the window port beside them (slot + membrane recess), gasket groove, 2 screw bosses (screws from the ear side, heads in Ø2.4 × 0.8 counterbores), the insert boss for the third screw, the opening for the original eartip/driver pod with a 1.2 mm rim + centring collar. |
+| **Cover** (upper half) | flat 1.2 mm ledge all round the face: the **solar cell is the lid**, bonded and sealed on that ledge (MS-polymer, no IPA on the cell). Side walls 1.0 mm, LED light-pipe sleeve, both mic plugs with Ø0.9 ports and Ø3.2 membrane seats (grown from the real skin, solid all the way to the seat), the tongue of the seal, 2 screw pillars with M1.2 inserts, and at the pod end a pillar with the clear hole + flush counterbore for the third screw. |
+| **Base** (ear-side half) | floor 0.8 mm, walls 1.0 mm; **2 charging-pin holes Ø1.4 exactly where JBL's pins are** (so the case contacts still line up), the window port beside them (plain slot; a membrane or clear UV resin is glued flat over it inside), gasket groove, 2 screw bosses (screws from the ear side, heads in Ø2.4 × 0.8 counterbores), the insert boss for the third screw, the opening for the original eartip/driver pod with a 1.2 mm rim + 1.0 mm centring collar. |
 | **Hook arm** | printed in flexible resin (fallback if JBL's hook cannot be moved over): its peg drops into a socket in the rigid stub (part of the shell, outside the seal); the socket is open to the seam, so closing the cover traps the peg. Pocket for the hook-tip magnet that switches the bud on/off. |
-| Parting line | flat, parallel to the cell, picked automatically: the biggest opening that keeps the mic/LED bosses and membranes wholly in the cover (seam ≥ 2.4 mm from their centres). |
+| Parting line | flat, parallel to the cell, picked automatically: the biggest opening that keeps the mic/LED plugs and membranes wholly in the cover (seam ≥ 2.4 mm from their centres). |
 | Seal | tongue 0.80 × 0.60 in a groove 1.10 × 1.20 (0.15 mm side play, 0.6 mm bottom gap). **Cured-in-place**: lay a bead of MS-polymer (or neutral-cure silicone) in the groove at final assembly, close, screw, cure 24 h. For dry fits use a 0.8 mm silicone cord. |
-| Closure | 3 non-magnetic M1.2 screws (titanium or A4 — they sit near the hook's magnet sensor) into brass inserts, each ≥ 0.6 mm inboard of the gasket groove, seal (O-ring or sealant) under every head. Two M1.2 × 4 go in from the ear side at the hook end. The third, an **M1.2 × 6, goes in from the face at the pod end, head flush in a counterbore just past the cell**: under the seam there the paddle tapers into the nozzle neck under a ~45°, 1.1 mm wall, so it gets only ~1.3 mm of thread (the script checks: insert hole ≥ 0.6 mm from the outside, ≥ 0.6 mm from the groove, head clear of the cell; if any fails it leaves this screw out and says why). That screw is only just possible, which is why the seal is cured-in-place and does not depend on clamping force there. |
+| Closure | 3 non-magnetic M1.2 screws (titanium or A4 — they sit near the hook's magnet sensor) into brass inserts, each ≥ 0.6 mm inboard of the gasket groove, seal (O-ring or sealant) under every head. Two M1.2 × 4 go in from the ear side at the hook end. The third, an **M1.2 × 6, goes in from the face at the pod end, head flush in a counterbore just past the cell**: under the seam there the paddle tapers into the nozzle neck under a ~45° wall, so it gets only ~1.3 mm of thread (the script checks: insert hole ≥ 0.6 mm from the outside, ≥ 0.6 mm from the groove, head clear of the cell; if any fails it leaves this screw out and says why). The seal is cured-in-place, so it does not depend on clamping force there. |
 | Pod joint | JBL's body narrows to the neck size right above the eartip pod, so there is no room for a socket around the neck without changing the outside. The opening sits **inside** the neck outline instead: the pod's top face bonds and seals onto a 1.2 mm rim (MS-polymer); the collar centres it. |
 
-**Wiring the panel** (`scripts/wiring_diagram.py`): cell + → TI **BQ25185** IN, cell − → GND; BAT → battery + and GND → battery −
-**on the battery side of the bud's PCB** (the battery pads, after its protection IC). VSET 24 kΩ → 4.20 V, ISET 15 kΩ →
-20 mA, CE → GND, 10 kΩ β3435 NTC on the battery at TS; C_IN ≥ 1 µF, C_SYS ≥ 10 µF, C_BAT 1 µF. The board (~4 × 5 mm) is
-glued on the back of the cell next to its + pad, so only two wires go to the battery. Expected at full sun: ~16 mA into
-the battery vs the bud's ~27 mW average use. **Never connect the solar to the two case charging pins**: the bud reads
-voltage there as "I'm in the case" and would switch off or reboot. Check every pin number against TI's datasheet
-(https://www.ti.com/product/BQ25185) before ordering a board.
+**Charger and wiring** (`scripts/wiring_diagram.py`): cell + → charger IN, cell − → GND; BAT → battery + and GND → battery −
+**on the battery side of the bud's PCB** (the battery pads, after its protection IC); 10 kΩ NTC taped to the battery at TS.
+The board (design target ≈ 3.2 × 4.4 mm) is glued on the back of the cell **beside its + pad, not on top of the
+board/battery stack** (in v1 it sat over the stack, which the height check did not even count).
+**Never connect the solar to the two case charging pins**: the bud reads voltage there as "I'm in the case" and would
+switch off or reboot.
+
+| Charger | Size | Setup | Weak-source behaviour | Into the battery at full sun |
+|---|---|---|---|---|
+| **TI BQ25188 (recommended)** | DSBGA-8, **1.6 × 1.1 mm** | none: powers up at **4.20 V / 10 mA** (register resets 0x46 and 0x05); optional: set 15 mA once over I2C | input voltage regulation (VINDPM) for high-impedance sources; register reset 0x24 = 4.5 V (the field table says "disabled" — check on the bench) | ≈ 10 mA × 3.9 V ≈ **39 mW** (≈ 58 mW at 15 mA) vs the bud's ~27 mW |
+| TI BQ25185 | WSON-10, 2.2 × 2.0 mm | resistors: VSET 24 kΩ → 4.20 V, ISET sets 5 mA – 1 A | not checked | ≈ 15 mA → ≈ 58 mW |
+
+Both: input 3–18 V, 25 V absolute maximum (cell Voc 6.91 V, ~7.7 V when cold); C_IN ≥ 1 µF effective (35 V-rated part
+recommended), C_SYS ≥ 10 µF, C_BAT 1 µF. Sources: TI BQ25188 datasheet SLUSFJ3 (Nov 2024) and product page
+https://www.ti.com/product/BQ25188 ; https://www.ti.com/product/BQ25185 .
+
+**Does the electronics fit?** (`shell_check.py`, two boxes — battery and PCB-with-parts — each free to slide, either one at
+the bottom). With the FCC-photo **estimates** (battery 25 × 9 × 3.8 mm, PCB 23 × 9.5 mm, 3.2 mm with parts):
+
+| | v1 (cell sunk) | v2 (cell at roof height, 0.8 floor, no window boss, low collar, charger moved) |
+|---|---|---|
+| Inside height, cell back to floor (median) | 6.6 mm | **7.44 mm** |
+| Stack result | short 1.1 mm (single-column check) | **short 0.28 mm** (battery bottom, PCB on top) |
+
+0.28 mm is smaller than the error of the guessed thicknesses (the battery thickness is a pure guess), so: **measure the
+real battery and PCB first**. If they really are that thick, either lift the cell 0.3 mm more (`roof:0.5` — it then sticks
+out ~1.2 mm) or fit a battery 0.3 mm thinner.
+
+**What's next — fastest path to "does solar power the bud?"**
+1. **Bench test, no printing, no teardown**: an SM400K10TF + a BQ25188 (or BQ25185) board + any small 3.7 V LiPo + a
+   multimeter. In real sun measure the cell's open-circuit voltage, short-circuit current and the current flowing into the
+   LiPo. That gives the real mW into a battery, to compare with the bud's ~27 mW.
+2. **Real EP3, unopened**: full charge, play at a fixed volume until it dies → the bud's real consumption (JBL claims 10 h
+   from 70 mAh ≈ 27 mW).
+3. **Teardown + measure** the checklist below; photos of the battery pads and the pod/hook joints.
+4. **Proof test with the bud open**: solder the charger to the bud's battery pads, cell in the sun, play music for an
+   hour and log the battery voltage. If it holds or rises, solar is powering the bud — that answers the question before
+   any shell is printed.
+5. Put the measured sizes in `data/components.json`, re-run the scripts (~10 min), print the coupon, then the shell, and
+   assemble (below).
 
 **Assembly order**
 1. Print the tolerance coupon (`scripts/shell_coupon.py`): the tongue must drop into the groove with a little play, the
    Ø1.4 holes must take the pins, the Ø1.6 holes must take the inserts. Adjust `data/shell_params.json` if not.
-2. Open a real EP3 and measure everything in the checklist below → put the numbers in `data/components.json` →
-   re-run the scripts. Until then all internal sizes are **estimates from FCC photos**.
-3. Print cover + base in tough resin, hook arm in flexible resin; post-cure fully (uncured resin stops silicone curing).
-4. Base: push the contact block's pins through the Ø1.4 holes flush with the outside, pot from inside with epoxy;
-   membranes in the window/mic recesses; bond the pod onto the rim, wires through the opening.
-5. Battery + PCB into the base; solder the charger to the battery pads (pack side) and the NTC onto the battery.
-6. Solder the cell pads to the charger (< 5 s, < 400 °C), then bond the cell onto the cover's 1.2 mm ledge.
-7. Dry-fit cover on base with the 3 screws (cord or nothing in the groove): test case charging, touch, LED, mics, hook
-   switch, Bluetooth, solar current.
-8. Final: hook-arm peg into its socket (a drop of flexible glue), magnet in the tip pocket; MS-polymer bead in the
+2. Print cover + base in tough resin, hook arm in flexible resin; post-cure fully (uncured resin stops silicone curing).
+3. Base: push the contact block's pins through the Ø1.4 holes flush with the outside, pot from inside with epoxy;
+   membrane/clear resin over the window and the mic seats; bond the pod onto the rim, wires through the opening.
+4. Battery + PCB into the base; solder the charger to the battery pads (pack side) and the NTC onto the battery.
+5. Solder the cell pads to the charger (< 5 s, < 400 °C), glue the charger beside the + pad, bond the cell onto the
+   cover's 1.2 mm ledge.
+6. Dry-fit cover on base with the 3 screws (cord or nothing in the groove): test pairing, music, mics, hook on/off,
+   solar current.
+7. Final: hook-arm peg into its socket (a drop of flexible glue), magnet in the tip pocket; MS-polymer bead in the
    groove, close, 3 screws with sealant under the heads, cure 24 h. Leak test (bubble test under light vacuum).
 
 **Measure on the real bud** (checklist): battery L × W × T and wire exit; PCB outline, thickness and tallest parts on
-both sides; positions of LED, hall sensor/magnet, mics, touch electrode; how the pod is joined to the body (neck
-diameter, flange, glue/clips); contact-block size; original wall thickness and how the two halves are joined;
-hook root and tip magnet size; what sits behind the window by the pins; SM400K10TF back-pad positions.
+both sides; positions of LED, hall sensor/magnet, mics; how the pod is joined to the body (neck diameter, flange,
+glue/clips); contact-block size; original wall thickness and how the two halves are joined; hook root and tip magnet
+size; what sits behind the window by the pins; SM400K10TF back-pad positions and polarity.
 
-**Validation** (`scripts/shell_check.py` → `data/shell_check.json`, pitch 0.12 mm) — all checks pass:
+**Validation** (`scripts/shell_check.py` → `data/shell_check.json`, v2, pitch 0.12 mm) — all checks pass:
 
 | Check | Result |
 |---|---|
-| Cover / base / hook arm watertight, one body each | 1.144 / 0.929 / 1.657 cm³ → **4.29 g of resin** (original bud 12.5 g with electronics) |
+| Cover / base / hook arm watertight, one body each | 1.149 / 0.851 / 1.656 cm³ → **4.20 g of resin** (original bud 12.5 g with electronics) |
 | Halves overlap | 0 voxels |
-| Walls thinner than 0.6 mm (not counting the slivers every sharp edge shows in an opening test) | 0.000 % cover, 0.001 % base |
-| Cell ledge flatness | **0.011 mm RMS** over 5 491 points |
+| Walls thinner than 0.6 mm (not counting the slivers every sharp edge shows in an opening test) | 0.000 % cover, 0.03 % base |
+| Cell ledge flatness | **0.012 mm RMS** over 5 390 points |
 | Tongue never touches the base (sealant path open) | min 0.17 mm, median 0.36 mm (design 0.15) |
-| Mic and LED ports: solid from the skin to the membrane seat, no way round it | mics 1.92 / 1.80 mm (need 1.55), LED 2.4 mm (need 1.95) |
-| Seam | Z = −4.8 mm below the cell seat, opening 405 mm² |
-| Screws | ear side M1.2 × 4 at (−20.1, −1.7) and (−17.2, −5.1), 1.7 / 1.3 mm thread; face M1.2 × 6 at (17.9, −0.3), 1.3 mm thread, hole 0.65 mm from the outside, head 0.24 mm from the cell |
-| Pod opening | 48.9 mm² inside an 82.9 mm² neck, 1.2 mm rim |
-| Free height inside (cell back to floor) | median 6.6 mm, 10th percentile 6.4 mm |
+| Mic and LED ports: solid from the skin to the seat, no way round it | mics 1.68 / 1.68 mm (need 1.45), LED 2.76 mm (need 1.85) |
+| Seam | Z = −5.52 mm below the cell seat, opening 404 mm² |
+| Screws | ear side M1.2 × 4 at (−20.1, −1.7) and (−17.2, −5.1); face M1.2 × 6 at (17.9, −0.2), 1.3 mm thread, hole 0.65 mm from the outside, head 0.24 mm from the cell |
+| Pod opening | 49.2 mm² inside an 83.2 mm² neck, 1.2 mm rim |
 
 `scripts/test_sdf.py` (geometry library) passes too: hollow sphere radii within 0.03 mm, flat seat 0.0000 mm, tongue
 clearance 0.125 mm, a sharp block is not flagged as thin and a 0.36 mm fin is.
 
-**Open risks (say it plainly)**
-- **Electronics height is an estimate and it does not fit yet**: FCC-photo sizes give PCB with parts 3.2 mm + battery 3.8 mm
-  = 7.0 mm, the free height over the PCB footprint is 5.88 mm → **short by 1.1 mm**. Measure the real parts first; the
-  battery thickness is a guess. If it is really short: put the battery beside the PCB instead of under it, or use a
-  thinner cell seat (Fallback A in the plan: +0.75 mm).
-- **Touch control** sits under the face, now under the solar cell. Test on the real bud whether touch still works through
-  the cell; otherwise move the electrode (copper tape) to the uncovered end.
+**Open risks**
+- **Part sizes are estimates** (FCC photos): on them the stack is 0.28 mm short — measure before printing.
+- **JBL case lid will not close on v2** (cell ~1 mm too tall for it); test whether the case charges with the lid open.
 - **Pod and hook transplant**: how JBL joins the eartip pod and the hook to the body is not public. The rim + bond and
   the printed flexible hook are the plan B; check on the teardown.
-- **End screw is marginal** (1.3 mm thread, 0.02 mm from the clearance limit). It helps hold the pod end while the bead
-  cures; the bead, not the screw, makes the seal.
+- **End screw is marginal** (1.3 mm thread). It helps hold the pod end while the bead cures; the bead makes the seal.
+- The BQ25188's default input regulation is ambiguous in its datasheet (4.5 V vs disabled) — see it on the bench test.
 - Resin in sun: use a tough resin with HDT ≥ 60–70 °C and a UV clear coat; fully post-cure before any silicone.
 
 **Reproduce**
 
 ```bash
-python3 scripts/make_solar_bud.py models/EP3_earbud_measured_mm.glb data models SM400K10TF 0.75   # flat-face bud
-python3 scripts/case_fit.py models data SM400K10TF          # still fits the closed case?
+python3 scripts/make_solar_bud.py models/EP3_earbud_measured_mm.glb data models SM400K10TF roof:0.8   # v2 bud
+python3 scripts/case_fit.py models data SM400K10TF_roof     # pins + lid clearance vs the original bud
 python3 scripts/test_sdf.py                                  # geometry library tests
-python3 scripts/shell_frame.py models/EP3_earbud_flat_face_SM400K10TF.glb data
-python3 scripts/shell_build.py models/EP3_earbud_flat_face_SM400K10TF.glb data models/shell   # ~4 min
-python3 scripts/shell_check.py models/shell data
+python3 scripts/shell_frame.py models/EP3_earbud_flat_face_SM400K10TF_roof.glb data
+python3 scripts/shell_build.py models/EP3_earbud_flat_face_SM400K10TF_roof.glb data models/shell   # ~4 min
+python3 scripts/shell_check.py models/shell data            # ~5 min
 python3 scripts/render_shell.py models/shell <png dir>
 python3 scripts/shell_coupon.py models/shell/coupon 0.1     # printer test pieces (no JBL data)
 python3 scripts/wiring_diagram.py <png>
+# v1 (cell sunk for the lid): make_solar_bud.py ... SM400K10TF 0.75, then the same steps with _SM400K10TF
 ```

@@ -19,13 +19,18 @@ import sdf
 
 glb, data, out = sys.argv[1:4]
 PR = json.load(open(os.path.join(data, "shell_params.json")))
+# bud-relative heights (pod cut, outline slices, hook/crop limits) were tuned with the cell sunk 1.5 mm (shave 1.5).
+# A different seat moves the whole bud along Z in the seat frame S, so shift them by the same amount.
+_tag = os.path.basename(glb).replace("EP3_earbud_flat_face_", "").replace(".glb", "")
+_sb = os.path.join(data, f"solar_bud_{_tag}.json")
+DZ = -(PR["paddle"].get("tuned_for_shave_mm", 1.5) - json.load(open(_sb))["shaved_mm"]) if os.path.exists(_sb) else 0.0
 A = json.load(open(os.path.join(data, "shell_anchors.json")))
 FR = json.load(open(os.path.join(data, "shell_frame.json")))
 p = float(sys.argv[4]) if len(sys.argv) > 4 else PR["pitch"]
 os.makedirs(out, exist_ok=True)
 o, R = np.array(FR["origin_measured_frame"]), np.array(FR["R_rows_XYZ"])
 W, SE, FE, HK, SC = PR["walls"], PR["seal"], PR["features"], PR["hook"], PR["screws"]
-rep = dict(pitch=p)
+rep = dict(pitch=p, bud_dz_mm=round(DZ, 3))
 log = lambda *a: print(*a, flush=True)
 
 # ---------------- 1. closed solid of the whole bud in S ----------------
@@ -44,7 +49,7 @@ lo = np.floor((skin.reshape(-1, 3).min(0) - 1.5) / p) * p
 hi = skin.reshape(-1, 3).max(0) + 1.5
 G0 = sdf.Grid(lo, hi, p)
 phi_all = sdf.skin_sdf(skin, G0, seal_mm=PR["paddle"].get("seal_mm", 1.0), sigma_vox=1.0)   # seal model slits (underside plate gap)
-kz = int(round((-16.5 - G0.lo[2]) / p))
+kz = int(round((-16.5 + DZ - G0.lo[2]) / p))
 sl = (slice(None), slice(None), slice(max(kz, 0), None))
 phi = np.ascontiguousarray(phi_all[sl]); g = G0.sub(sl); del phi_all
 ax = g.axes(); X, Y, Z = g.xyz()
@@ -57,12 +62,12 @@ def kslice(z):
 
 
 # ---------------- 2. paddle outline (stadium) & regions ----------------
-s3 = solid[:, :, kslice(PR["paddle"]["outline_slice_z"])]
+s3 = solid[:, :, kslice(PR["paddle"]["outline_slice_z"] + DZ)]
 cols = np.where(np.abs(ax[0]) < 8)[0]
 ymins = [ax[1][s3[i]].min() for i in cols if s3[i].any()]
 ymaxs = [ax[1][s3[i]].max() for i in cols if s3[i].any()]
 yc = float(np.mean((np.array(ymins) + np.array(ymaxs)) / 2)); r = float(np.mean((np.array(ymaxs) - np.array(ymins)) / 2))
-s15 = solid[:, :, kslice(PR["paddle"]["ends_slice_z"])]
+s15 = solid[:, :, kslice(PR["paddle"]["ends_slice_z"] + DZ)]
 rows = np.abs(ax[1] - yc) < 1.0
 xs = ax[0][s15[:, rows].any(1)]
 xa, xb = float(xs.min() + r), float(xs.max() - r)
@@ -72,10 +77,10 @@ tt = np.clip((XX - xa) / (xb - xa), 0, 1)
 d2 = (np.hypot(XX - (xa + tt * (xb - xa)), YY - yc) - rst).astype(np.float32)     # 2-D stadium SDF
 rep["paddle_outline"] = dict(centre_y=round(yc, 3), half_width=round(r, 3), centres_x=[round(xa, 3), round(xb, 3)])
 log("paddle stadium: y", round(yc, 2), "r", round(r, 2), "x", round(xa, 2), round(xb, 2))
-zc = PR["paddle"]["z_cut_bottom"]
+zc = PR["paddle"]["z_cut_bottom"] + DZ
 phi_pad = np.maximum(np.maximum(phi, d2[:, :, None]), (zc - Z).astype(np.float32))
 
-hook = solid & (d2[:, :, None] > 0) & (Z >= -15.5)
+hook = solid & (d2[:, :, None] > 0) & (Z >= -15.5 + DZ)
 lab, nl = ndimage.label(hook)
 hook = lab == (np.argmax(ndimage.sum(hook, lab, range(1, nl + 1))) + 1)
 neck2d = solid[:, :, kslice(zc - 0.3)] & (d2 < 0)                                # pod neck section under the cut
@@ -194,11 +199,13 @@ for pin in A["pins"]:                                               # charging c
     cut(base, cyl([pin["centre"][0], pin["centre"][1], pin["centre"][2] - 0.5], [0, 0, 1], FE["pin_hole_d"], 5.0))
 wd = A["window"]; slot = FE["window"]["slot"]; rec = FE["window"]["recess"]
 wb = FE["window"].get("boss_h", 0.6)
-add(base, sdf.box(g, np.array([wd["centre"][0], wd["centre"][1], wd["centre"][2] + W["floor"] + wb / 2 - 0.05]), np.eye(3),
-                  [rec[0] / 2 + 0.8, rec[1] / 2 + 0.8, wb / 2 + 0.05]))
+if wb > 0:                                                          # raised boss with a membrane recess on top
+    add(base, sdf.box(g, np.array([wd["centre"][0], wd["centre"][1], wd["centre"][2] + W["floor"] + wb / 2 - 0.05]), np.eye(3),
+                      [rec[0] / 2 + 0.8, rec[1] / 2 + 0.8, wb / 2 + 0.05]))
 cut(base, sdf.box(g, np.array(wd["centre"]) + [0, 0, 0.0], np.eye(3), [slot[0] / 2, slot[1] / 2, 2.0 + wb]))
-cut(base, sdf.box(g, np.array([wd["centre"][0], wd["centre"][1], wd["centre"][2] + W["floor"] + wb - rec[2] / 2]), np.eye(3),
-                  [rec[0] / 2, rec[1] / 2, rec[2] / 2 + 0.05]))
+if rec[2] > 0:
+    cut(base, sdf.box(g, np.array([wd["centre"][0], wd["centre"][1], wd["centre"][2] + W["floor"] + wb - rec[2] / 2]), np.eye(3),
+                      [rec[0] / 2, rec[1] / 2, rec[2] / 2 + 0.05]))
 def skin_t(c, d):
     """Distance along unit d from anchor c to the outer skin (+ = the skin lies outward of the anchor)."""
     for t in np.arange(3.0, -5.0, -p / 2):
@@ -243,7 +250,11 @@ if LID["enabled"]:
     # its back pads face straight into the cavity (no pass-through holes), the charger board sits on the cell back
     lip = LID["lip"]
     cut(cover, sdf.box(g, np.array([0.0, 0.0, -1.0]), np.eye(3), [16.5 - lip, 7.5 - lip, 1.05]))
-    ch_c = np.array([A["cell"]["pads"][1]["centre"][0] - 4.0, 0.0, -0.7])
+    CB = FE["charger"]                                              # beside the + pad, off the board stack
+    pad = A["cell"]["pads"][1]["centre"]
+    ch_c = np.array([pad[0], pad[1] + 1.5 + CB["gap_to_pad"] + CB["board"][1] / 2, -CB["board"][2] / 2])
+    assert abs(ch_c[1]) + CB["board"][1] / 2 <= 7.5 - lip and abs(ch_c[0]) + CB["board"][0] / 2 <= 16.5 - lip, \
+        "charger board does not fit in the lid opening beside the pad"
     rep["cell_as_lid"] = dict(lip_mm=lip, opening_mm=[33.0 - 2 * lip, 15.0 - 2 * lip], charger="on the cell back, next to the + pad")
 else:
     for pad in A["cell"]["pads"]:                                  # wire pass-throughs + solder relief + potting cups
@@ -298,7 +309,7 @@ ex_circle(wd["centre"][0], wd["centre"][1], 3.5)
 for mp in A["mic_ports"] + [A["led"]]: ex_circle(mp["centre"][0], mp["centre"][1], 4.0)
 excl |= ndimage.binary_dilation(neck2d, iterations=int((SC["boss_od"] / 2 + 0.3) / p))    # collar is inside the neck outline
 ex_circle(tip[0], tip[1], SC["min_dist_to_hall_area"])
-ex_circle(ch_c[0], ch_c[1], max(CH["inner"]) / 2 + CH["wall"] + SC["boss_od"] / 2 + 0.3)
+ex_circle(ch_c[0], ch_c[1], max(FE["charger"]["board"][:2]) / 2 + SC["boss_od"] / 2 + 0.3)
 ok2 = inner_ok & ~excl
 pts = np.c_[XX[ok2], YY[ok2]]
 screws = []

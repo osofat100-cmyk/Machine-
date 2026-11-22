@@ -1,10 +1,54 @@
 {
- "_note": "Replace each 'FCC estimate' with calipers measurements of the real EP3 (see README section 10 checklist).",
- "battery": {"size": [25.0, 9.0, 3.8], "source": "FCC estimate (photo + ruler); thickness unknown"},
- "pcb": {"size": [23.0, 9.5, 1.0], "parts_top": 1.2, "parts_bottom": 1.0, "source": "FCC estimate (photo + ruler)"},
- "contact_block": {"size": [6.4, 3.8, 3.0], "source": "estimate from JBL model pin spacing + FCC photo"},
- "charger_board": {"size": [3.6, 5.0, 1.4], "source": "design target: BQ25185 WSON-10 2.2x2.0 + 0201 passives"},
- "solar_cell": {"model": "ANYSOLAR SM400K10TF", "size": [33.0, 15.0, 1.5], "pads": "Ø3.0 at 3.0 mm from each short end, centred",
-                "source": "DigiKey listing (TF thickness) + ANYSOLAR SM400K10L datasheet R3.5 (pads)"},
- "magnet": {"size": [3.0, 1.5], "source": "placeholder - measure the hook-tip magnet"}
+ "_note": "Replace each 'FCC estimate' with calipers measurements of the real EP3 (README section 10 checklist).",
+ "battery": {
+  "size": [
+   25.0,
+   9.0,
+   3.8
+  ],
+  "source": "FCC estimate (photo + ruler); thickness unknown"
+ },
+ "pcb": {
+  "size": [
+   23.0,
+   9.5,
+   1.0
+  ],
+  "parts_top": 1.2,
+  "parts_bottom": 1.0,
+  "source": "FCC estimate (photo + ruler)"
+ },
+ "contact_block": {
+  "size": [
+   6.4,
+   3.8,
+   3.0
+  ],
+  "source": "estimate from JBL model pin spacing + FCC photo"
+ },
+ "charger_board": {
+  "size": [
+   3.2,
+   4.4,
+   1.0
+  ],
+  "source": "design target for a small flex board: TI BQ25188 (DSBGA 1.6 x 1.1 mm, defaults 4.20 V / 10 mA with no programming) or BQ25185 (WSON 2.2 x 2.0 mm, resistor-set) + caps + 10 kOhm NTC lead"
+ },
+ "solar_cell": {
+  "model": "ANYSOLAR SM400K10TF",
+  "size": [
+   33.0,
+   15.0,
+   1.5
+  ],
+  "pads": "\u00d83.0 at 3.0 mm from each short end, centred",
+  "source": "DigiKey listing (TF thickness) + ANYSOLAR SM400K10L datasheet R3.5 (pads)"
+ },
+ "magnet": {
+  "size": [
+   3.0,
+   1.5
+  ],
+  "source": "placeholder - measure the hook-tip magnet"
+ }
 }

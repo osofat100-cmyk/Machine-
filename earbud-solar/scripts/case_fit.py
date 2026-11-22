@@ -130,6 +130,40 @@ for label, tri in (("original_bud_baseline", base_tri), ("solar_bud", solar_tri)
 cp, _, _ = sample_triangles(cell_tri, PITCH * 0.5)
 ijk = np.clip(np.floor((cp - lo) / PITCH).astype(int), 0, shape - 1)
 out["cell_min_gap_to_case_mm"] = round(float(dist_to_case[tuple(ijk.T)].min()), 2)
+# clearance between the cell's outer face and the closed lid, measured straight out along the cell normal:
+# march from 2 mm under each top point (inside the bud) outward to the first case surface; that distance - 2 mm is the
+# clearance (negative = the case surface is below the cell top, i.e. the cell would push into the lid).
+cv = cell_tri.reshape(-1, 3); _, _, Vc = np.linalg.svd(cv - cv.mean(0)); cn = Vc[2]
+if np.dot(cv.mean(0) - solar_tri.reshape(-1, 3).mean(0), cn) < 0: cn = -cn
+hcp = cp @ cn
+top = cp[hcp > hcp.max() - 0.25]
+top = top[np.random.default_rng(0).choice(len(top), min(4000, len(top)), replace=False)]
+ts = np.arange(-2.0, 4.0, PITCH / 2)
+q = np.floor((top[:, None, :] + ts[None, :, None] * cn - lo) / PITCH).astype(int)
+ok = np.all((q >= 0) & (q < shape), axis=2)
+q = np.clip(q, 0, shape - 1)
+hitm = case_surf[q[..., 0], q[..., 1], q[..., 2]] & ok
+first = np.where(hitm.any(1), ts[np.argmax(hitm, 1)], np.nan)
+def clearance(pts):
+    q = np.floor((pts[:, None, :] + ts[None, :, None] * cn - lo) / PITCH).astype(int)
+    ok_ = np.all((q >= 0) & (q < shape), axis=2); q = np.clip(q, 0, shape - 1)
+    h_ = case_surf[q[..., 0], q[..., 1], q[..., 2]] & ok_
+    return np.where(h_.any(1), ts[np.argmax(h_, 1)], np.nan)
+# calibration: the ORIGINAL bud's outer face under the same footprint, measured the same way (the closed-lid pose is
+# modelled by a hinge rotation, so absolute numbers carry its error; only the difference to the original counts)
+cu = Vc[0]; cw = np.cross(cn, cu); cc0 = cv.mean(0)
+bp, _, _ = sample_triangles(base_tri, PITCH * 0.5)
+du, dw = (bp - cc0) @ cu, (bp - cc0) @ cw
+inf = (np.abs(du) < 15.5) & (np.abs(dw) < 6.5); bp = bp[inf]
+key = np.floor(((bp - cc0) @ cu) / 0.5).astype(int) * 1000 + np.floor(((bp - cc0) @ cw) / 0.5).astype(int)
+hb = bp @ cn; order = np.lexsort((-hb, key)); firsts = order[np.r_[True, key[order][1:] != key[order][:-1]]]
+face = bp[firsts]                                                     # top-most original-face point per 0.5 mm column
+cl_cell, cl_face = clearance(top), clearance(face)
+out["lid_clearance_along_cell_normal_mm"] = dict(
+    original_face=dict(median=round(float(np.nanmedian(cl_face)), 2), p5=round(float(np.nanpercentile(cl_face, 5)), 2)),
+    solar_cell_top=dict(median=round(float(np.nanmedian(cl_cell)), 2), p5=round(float(np.nanpercentile(cl_cell, 5)), 2)),
+    extra_interference_vs_original_mm=round(float(np.nanpercentile(cl_face, 5) - np.nanpercentile(cl_cell, 5)), 2),
+    note="first case surface along the cell normal; the original bud is the reference (it closes in the real case)")
 out["cell"] = CELL
 json.dump(out, open(os.path.join(data, f"case_fit_{CELL}.json"), "w"), indent=1)
 np.savez_compressed(os.path.join(models, "case_fit_pose.npz"), R=R, t=t, m_loose=m_loose)

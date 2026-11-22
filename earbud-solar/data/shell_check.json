@@ -4,7 +4,7 @@
   "value": {
    "watertight": true,
    "bodies": 1,
-   "volume_cm3": 1.144
+   "volume_cm3": 1.149
   }
  },
  "base: watertight, one body, positive volume": {
@@ -12,7 +12,7 @@
   "value": {
    "watertight": true,
    "bodies": 1,
-   "volume_cm3": 0.929
+   "volume_cm3": 0.851
   }
  },
  "hook_arm: watertight, one body, positive volume": {
@@ -20,34 +20,65 @@
   "value": {
    "watertight": true,
    "bodies": 1,
-   "volume_cm3": 1.657
+   "volume_cm3": 1.656
   }
  },
  "printed parts lighter than the original bud (12.5 g incl. electronics)": {
   "passed": true,
-  "value": "4.29 g of resin"
+  "value": "4.20 g of resin"
  },
  "cover and base do not overlap": {
   "passed": true,
   "value": 0
  },
- "cover_share_thinner_than_0.8mm": 0.0466,
- "base_share_thinner_than_0.8mm": 0.1782,
- "cover_share_thinner_than_0.6mm": 0.0254,
- "base_share_thinner_than_0.6mm": 0.0272,
+ "cover_share_thinner_than_0.8mm": 0.0455,
+ "base_share_thinner_than_0.8mm": 0.1963,
+ "cover_share_thinner_than_0.6mm": 0.0249,
+ "base_share_thinner_than_0.6mm": 0.03,
  "cover_thin_wall_share_0.6mm": 0.0,
- "base_thin_wall_share_0.6mm": 1e-05,
- "thin_spots": [],
+ "base_thin_wall_share_0.6mm": 0.00028,
+ "thin_spots": [
+  {
+   "part": "base",
+   "voxels": 67,
+   "mm3": 0.116,
+   "at": [
+    14.25,
+    3.18,
+    -7.5
+   ]
+  },
+  {
+   "part": "base",
+   "voxels": 49,
+   "mm3": 0.085,
+   "at": [
+    13.41,
+    -4.03,
+    -7.5
+   ]
+  },
+  {
+   "part": "base",
+   "voxels": 17,
+   "mm3": 0.029,
+   "at": [
+    16.2,
+    -2.17,
+    -7.5
+   ]
+  }
+ ],
  "no thin walls below 0.6 mm (sharp-edge slivers excluded)": {
   "passed": true,
   "value": [
    0.0,
-   1e-05
+   0.00028
   ]
  },
  "cell ledge flat (RMS from the seat plane)": {
   "passed": true,
-  "value": "0.0112 mm over 5491 vertices"
+  "value": "0.0121 mm over 5390 vertices"
  },
  "tongue never touches the base (gasket path open, side gap > 0)": {
   "passed": true,
@@ -66,26 +97,21 @@
   "passed": true,
   "value": {
    "led": {
-    "min_solid_from_skin_mm": 2.4,
-    "needed_mm": 1.95
+    "min_solid_from_skin_mm": 2.76,
+    "needed_mm": 1.85
    },
    "mic0": {
-    "min_solid_from_skin_mm": 1.92,
-    "needed_mm": 1.55
+    "min_solid_from_skin_mm": 1.68,
+    "needed_mm": 1.45
    },
    "mic1": {
-    "min_solid_from_skin_mm": 1.8,
-    "needed_mm": 1.55
+    "min_solid_from_skin_mm": 1.68,
+    "needed_mm": 1.45
    }
   }
  },
  "stack": {
   "needed_mm": 7.0,
-  "free_height_over_pcb_footprint_mm": 5.88,
-  "at": [
-   -0.5,
-   0.25
-  ],
   "battery": [
    25.0,
    9.0,
@@ -96,6 +122,19 @@
    9.5,
    1.0
   ],
+  "pcb_with_parts_h": 3.2,
+  "best_layout": {
+   "order": "battery_bottom",
+   "bottom_box_centre": [
+    0.5,
+    0.199
+   ],
+   "top_box_centre": [
+    -3.5,
+    -0.8009999999999999
+   ]
+  },
+  "battery_thickness_margin_mm": -0.28,
   "source": "FCC estimates - measure the real parts"
  },
  "all_passed": true
