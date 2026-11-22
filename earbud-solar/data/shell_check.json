@@ -12,7 +12,7 @@
   "value": {
    "watertight": true,
    "bodies": 1,
-   "volume_cm3": 1.061
+   "volume_cm3": 1.079
   }
  },
  "hook_arm: watertight, one body, positive volume": {
@@ -20,26 +20,26 @@
   "value": {
    "watertight": true,
    "bodies": 1,
-   "volume_cm3": 1.716
+   "volume_cm3": 1.723
   }
  },
  "printed parts lighter than the original bud (12.5 g incl. electronics)": {
   "passed": true,
-  "value": "4.22 g of resin"
+  "value": "4.25 g of resin"
  },
  "cover and base do not overlap": {
   "passed": true,
   "value": 0
  },
  "cover_share_thinner_than_0.8mm": 0.0653,
- "base_share_thinner_than_0.8mm": 0.1648,
+ "base_share_thinner_than_0.8mm": 0.1617,
  "cover_share_thinner_than_0.6mm": 0.0353,
- "base_share_thinner_than_0.6mm": 0.0358,
+ "base_share_thinner_than_0.6mm": 0.0365,
  "no region thinner than 0.6 mm (groove side walls are the thinnest by design)": {
   "passed": false,
   "value": [
    0.0353,
-   0.0358
+   0.0365
   ]
  },
  "cell ledge flat (RMS from the seat plane)": {
@@ -61,7 +61,7 @@
  },
  "stack": {
   "needed_mm": 7.0,
-  "free_height_over_pcb_footprint_mm": 6.12,
+  "free_height_over_pcb_footprint_mm": 5.88,
   "at": [
    -1.5,
    0.0
