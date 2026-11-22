@@ -188,8 +188,11 @@ def floor_outer_z(x, y):
 for pin in A["pins"]:                                               # charging contacts (case pins line up)
     cut(base, cyl([pin["centre"][0], pin["centre"][1], pin["centre"][2] - 0.5], [0, 0, 1], FE["pin_hole_d"], 5.0))
 wd = A["window"]; slot = FE["window"]["slot"]; rec = FE["window"]["recess"]
-cut(base, sdf.box(g, np.array(wd["centre"]) + [0, 0, 0.0], np.eye(3), [slot[0] / 2, slot[1] / 2, 2.0]))
-cut(base, sdf.box(g, np.array([wd["centre"][0], wd["centre"][1], wd["centre"][2] + W["floor"] - rec[2] / 2]), np.eye(3),
+wb = FE["window"].get("boss_h", 0.6)
+add(base, sdf.box(g, np.array([wd["centre"][0], wd["centre"][1], wd["centre"][2] + W["floor"] + wb / 2 - 0.05]), np.eye(3),
+                  [rec[0] / 2 + 0.8, rec[1] / 2 + 0.8, wb / 2 + 0.05]))
+cut(base, sdf.box(g, np.array(wd["centre"]) + [0, 0, 0.0], np.eye(3), [slot[0] / 2, slot[1] / 2, 2.0 + wb]))
+cut(base, sdf.box(g, np.array([wd["centre"][0], wd["centre"][1], wd["centre"][2] + W["floor"] + wb - rec[2] / 2]), np.eye(3),
                   [rec[0] / 2, rec[1] / 2, rec[2] / 2 + 0.05]))
 L = FE["led"]; ld = np.array(A["led"]["dir"]); lc = np.array(A["led"]["centre"])
 add(cover, cyl(lc - ld * (W["side"] + L["sleeve_len"] / 2), ld, L["sleeve_od"], L["sleeve_len"]))
@@ -240,7 +243,7 @@ rep["clear_height_final_mm"] = dict(median=round(float(np.nanmedian(clear2)), 2)
 log("final inside clear height (cell back or cover to floor):", rep["clear_height_final_mm"])
 
 # ---------------- 9. hook arm: peg into the stub, magnet pocket at the free tip ----------------
-add(arm, cyl(ic + peg_axis * (HK["peg_len"] - 0.2) / 2, peg_axis, HK["peg_d"], HK["peg_len"] - 0.2))
+add(arm, cyl(ic + peg_axis * (HK["peg_len"] - 0.2 - 0.8) / 2, peg_axis, HK["peg_d"], HK["peg_len"] - 0.2 + 0.8))  # 0.8 mm into the arm
 hv = np.argwhere(arm); hp = g.lo + (hv + 0.5) * p
 far = np.linalg.norm(hp - ic, axis=1) > 15.0
 dpad = ndimage.distance_transform_edt(~inside) * p
@@ -316,8 +319,9 @@ rep["tab"] = dict(end_x=round(float(end_x), 2), width=TB["width"], hook=TB["hook
 del slot, tab, foot, zone
 
 # ---------------- 10b. rigid hook stub joins the halves (outside the seal) + peg socket ----------------
-cover |= stub & ~below
-base |= stub & below
+stub_f = stub | (ndimage.binary_dilation(stub, iterations=3) & inside & ~cavity)    # fuse into the wall, not the cavity
+cover |= stub_f & ~below
+base |= stub_f & below
 sock = cyl(ic + peg_axis * (HK["peg_len"] + 0.1) / 2, peg_axis, HK["peg_d"] + 2 * HK["socket_clearance"], HK["peg_len"] + 0.1)
 s_, v_ = sock
 assert not (cavity[s_] & (v_ <= 0)).any(), "hook peg socket would break into the sealed cavity - shorten peg_len"

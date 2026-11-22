@@ -60,7 +60,8 @@
     4.4,
     3.6,
     0.3
-   ]
+   ],
+   "boss_h": 0.6
   },
   "led": {
    "hole_d": 0.9,
@@ -77,7 +78,7 @@
   },
   "pod_socket": {
    "clearance": 0.1,
-   "collar_w": 1.2,
+   "collar_w": 1.6,
    "collar_h": 2.0,
    "oring_groove_w": 0.8,
    "oring_groove_d": 0.6
