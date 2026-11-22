@@ -145,3 +145,16 @@ python3 scripts/harvest_compare.py
 - Jaw/ear canal — https://www.osti.gov/etdeweb/biblio/22483829 , https://techxplore.com/news/2014-09-piezoelectric-chin-device-harvests-jaw.html
 - Ambient RF — https://t4awstest.cc.ic.ac.uk/media/imperial-college/faculty-of-engineering/electrical-and-electronic-engineering/public/optical-and-semiconductor-devices/pubs/2013_07_TMTT.pdf , https://arxiv.org/pdf/1408.3198
 - Real-world solar earbud case mod — https://hackaday.com/2021/08/11/wireless-earbuds-charge-themselves
+
+## 7. One flat solar rectangle on the outward face (`scripts/flat_face.py`, `render_flat_face.py`, `data/flat_face*.json`)
+
+Outward face = the rounded panel carrying the "JBL" letters, on the side away from the ear tip (found by searching 4,000 directions for the most outer skin facing one way). Panel outline 41.1 × 16.7 mm, 5.98 cm². JBL letters (0.63 cm², recessed ≤ 0.25 mm) treated as flat filler. The panel is a gentle dome: radii 37.8 mm across × 240 mm along (quadric fit RMS 0.17 mm), surface spans −0.84…+0.31 mm around the best plane.
+
+| Rectangle (gap under a flat cell ≤ tolerance) | Size | Area | 25 % cell at right-angle sun | Still ≥ 26.95 mW up to |
+|---|---|---|---|---|
+| Flat within 0.5 mm | 26.75 × 4.2 mm | 1.12 cm² | 28.1 mW (1.04×) | 16° off-perpendicular |
+| **Flat within 1.0 mm** | **29.6 × 13.75 mm** | **4.07 cm²** | **101.8 mW (3.78×)** | **75°** |
+| Whole panel, cell bent to the 37.8 mm curve | 33.2 × 13.65 mm | 4.53 cm² | 113.3 mW (4.20×) | 76° |
+| Off-the-shelf ANYSOLAR KXOB25-05X3F tile | 23 × 8 × 1.8 mm | 1.84 cm² | 30.1–30.7 mW (1.12–1.14×) | 26–29° |
+
+Needed cell area to cover the 26.95 mW draw at right-angle sun: 1.08 cm² at 25 %, 0.81 cm² at 33.35 %. One silicon sheet over the whole dome would need 0.59 % stretch (> 0.024 % limit) → split into ≤ 7.2 mm tiles, or use a thin-film/stretchable cell. Model dimensions are true scale; the datasheet fit (×1.0315) would enlarge each rectangle side by 3 %. No charging/boost-converter losses included (not published for this design).

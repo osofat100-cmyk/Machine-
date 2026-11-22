@@ -1,0 +1,119 @@
+{
+ "view_normal": [
+  -0.031,
+  -0.051,
+  0.9982
+ ],
+ "panel_area_cm2": 5.978,
+ "panel_tilt_vs_view_deg": 1.25,
+ "letters_area_cm2": 0.627,
+ "letters_depth_mm_p5_p95": [
+  -0.251,
+  -0.024
+ ],
+ "panel_deviation_mm_p5_p95": [
+  -0.837,
+  0.305
+ ],
+ "rectangles": {
+  "0.05": {
+   "flat_region_cm2": 0.541,
+   "rect_mm": [
+    7.2,
+    1.4
+   ],
+   "rect_cm2": 0.101,
+   "angle_deg": 0.0,
+   "rect_rot": [
+    135,
+    671,
+    144,
+    28
+   ]
+  },
+  "0.1": {
+   "flat_region_cm2": 1.128,
+   "rect_mm": [
+    20.3,
+    0.7
+   ],
+   "rect_cm2": 0.142,
+   "angle_deg": 86.5,
+   "rect_rot": [
+    256,
+    325,
+    406,
+    14
+   ]
+  },
+  "0.2": {
+   "flat_region_cm2": 1.939,
+   "rect_mm": [
+    22.65,
+    1.45
+   ],
+   "rect_cm2": 0.328,
+   "angle_deg": 4.0,
+   "rect_rot": [
+    110,
+    352,
+    29,
+    453
+   ]
+  },
+  "0.3": {
+   "flat_region_cm2": 2.584,
+   "rect_mm": [
+    24.6,
+    2.2
+   ],
+   "rect_cm2": 0.541,
+   "angle_deg": 3.0,
+   "rect_rot": [
+    97,
+    305,
+    44,
+    492
+   ]
+  },
+  "0.5": {
+   "flat_region_cm2": 3.926,
+   "rect_mm": [
+    27.6,
+    4.05
+   ],
+   "rect_cm2": 1.118,
+   "angle_deg": 5.5,
+   "rect_rot": [
+    116,
+    304,
+    81,
+    552
+   ]
+  },
+  "1.0": {
+   "flat_region_cm2": 5.27,
+   "rect_mm": [
+    29.55,
+    13.75
+   ],
+   "rect_cm2": 4.063,
+   "angle_deg": -1.0,
+   "rect_rot": [
+    70,
+    234,
+    275,
+    591
+   ]
+  }
+ },
+ "panel_principal_radii_mm": [
+  37.8,
+  239.5
+ ],
+ "panel_quadric_rms_mm": 0.166,
+ "panel_rectangle_mm": [
+  33.2,
+  13.65
+ ]
+}
