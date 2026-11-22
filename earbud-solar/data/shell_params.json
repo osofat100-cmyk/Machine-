@@ -1,0 +1,128 @@
+{
+ "_note": "All sizes in mm, seat frame S (Z = out of the face, seat at Z = 0). Edit and re-run shell_build.py.",
+ "pitch": 0.12,
+ "print": {
+  "material": "tough/ABS-like resin, HDT >= 60-70 C, UV clear coat",
+  "density_g_cm3": 1.15
+ },
+ "walls": {
+  "cover_top": 0.8,
+  "floor": 1.0,
+  "side": 1.1,
+  "min_check": 0.8
+ },
+ "paddle": {
+  "outline_slice_z": -3.0,
+  "ends_slice_z": -1.5,
+  "outline_margin": 0.4,
+  "z_cut_bottom": -9.2,
+  "seal_mm": 1.0
+ },
+ "parting": {
+  "z": "auto",
+  "scan": [
+   -5.5,
+   -3.2
+  ],
+  "keep_clear_of_side_features": 1.2
+ },
+ "seal": {
+  "groove_w": 1.1,
+  "groove_d": 1.2,
+  "groove_wall_out": 0.6,
+  "land_t": 2.4,
+  "tongue_w": 0.8,
+  "tongue_h": 0.6,
+  "land_h_base": 2.0,
+  "land_h_cover": 1.2,
+  "gasket": "seamless cast 0.8 x 0.8 silicone (or 0.8 mm cord, 50-60 ShA): ~25 % squeeze"
+ },
+ "screws": {
+  "type": "M1.2 x 4 titanium or A4 stainless (must be NON-magnetic: they sit near the hook-switch sensor)",
+  "max_count": 4,
+  "clear_hole": 1.3,
+  "head_cbore_d": 2.4,
+  "head_cbore_h": 0.8,
+  "boss_od": 3.2,
+  "insert_hole_d": 1.6,
+  "insert_hole_h": 2.2,
+  "min_dist_to_hall_area": 2.0
+ },
+ "features": {
+  "pin_hole_d": 1.4,
+  "window": {
+   "mode": "membrane_port",
+   "slot": [
+    3.1,
+    2.4
+   ],
+   "recess": [
+    4.4,
+    3.6,
+    0.3
+   ]
+  },
+  "led": {
+   "hole_d": 0.9,
+   "sleeve_od": 2.0,
+   "sleeve_id": 1.1,
+   "sleeve_len": 2.0
+  },
+  "mic": {
+   "hole_d": 0.9,
+   "recess_d": 3.2,
+   "recess_h": 0.3,
+   "boss_od": 4.2,
+   "boss_h": 0.9
+  },
+  "pod_socket": {
+   "clearance": 0.1,
+   "collar_w": 1.2,
+   "collar_h": 2.0,
+   "oring_groove_w": 0.8,
+   "oring_groove_d": 0.6
+  },
+  "cell_passthrough": {
+   "hole_d": 0.9,
+   "relief_d": 3.0,
+   "relief_h": 0.4,
+   "cup_id": 4.0,
+   "cup_wall": 0.6,
+   "cup_h": 2.0
+  },
+  "charger_pocket": {
+   "inner": [
+    3.6,
+    5.0
+   ],
+   "wall": 0.5,
+   "h": 1.0
+  }
+ },
+ "hook": {
+  "mode": "printed_flex",
+  "material": "flexible resin ~80A (arm); stub is printed with the rigid halves",
+  "stub_len": 3.0,
+  "peg_d": 2.0,
+  "peg_len": 2.2,
+  "socket_clearance": 0.1,
+  "magnet": [
+   3.0,
+   1.5
+  ],
+  "magnet_skin": 0.8
+ },
+ "cell_as_lid": {
+  "enabled": true,
+  "lip": 1.2,
+  "bond": "cell bonded + sealed on the 1.2 mm lip with clear MS-polymer or 2-part epoxy bead (no IPA on the cell); pads face the cavity"
+ },
+ "tab": {
+  "_note": "hook-in tab at the screw-less end: hook this end in first, swing the cover down, then screw the other end",
+  "width": 3.6,
+  "t": 0.8,
+  "hook": 0.7,
+  "hook_h": 0.6,
+  "depth": 2.8
+ }
+}
