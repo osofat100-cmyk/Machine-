@@ -1,0 +1,5 @@
+# JBL's 3D model and anything derived from it stay local (JBL's property; this repo is public).
+# Recreate with: python3 scripts/fetch_jbl_model.py && python3 scripts/export_measured.py
+models/*.glb
+models/*.stl
+__pycache__/
