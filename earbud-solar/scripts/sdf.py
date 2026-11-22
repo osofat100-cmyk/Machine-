@@ -146,3 +146,17 @@ def thin_regions(solid, min_t, p):
     g = np.indices(ball.shape) - r
     ball[(g ** 2).sum(0) <= r * r] = True
     return solid & ~ndimage.binary_opening(solid, structure=ball)
+
+
+def thin_walls(solid, min_t, p):
+    """Voxels of genuinely thin material (sheets, fins, needles thinner than min_t).
+    An opening also shaves every sharp convex edge of a thick part; those slivers lie right next to
+    material that survives the opening.  Material of a real thin wall has no survivor nearby, so only
+    removed voxels farther than (ball radius + 1 voxel) from the opened solid are reported."""
+    r = max(1, int(round(min_t / 2 / p)))
+    ball = np.zeros((2 * r + 1,) * 3, bool)
+    g = np.indices(ball.shape) - r
+    ball[(g ** 2).sum(0) <= r * r] = True
+    opened = ndimage.binary_opening(solid, structure=ball)
+    far = ndimage.distance_transform_edt(~opened) > r + 1
+    return solid & ~opened & far

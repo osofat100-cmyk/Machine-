@@ -5,9 +5,10 @@ Input: the flat-face solar bud (make_solar_bud.py), data/shell_frame.json + shel
 (Z = out of the face, seat at Z = 0) on a voxel grid whose faces fall on multiples of the pitch, so the
 seat plane and the parting plane are exact.
 Steps: solid -> paddle / hook split (stadium outline) -> exact flat seat -> re-distance -> hollow
-(0.8 under cell, 1.0 floor, 1.1 sides) -> parting plane (auto) -> lands, groove, tongue -> screws ->
-openings (charging pins, window port, LED, mics, pod socket, cell wire pass-throughs + potting cups,
-charger pocket) -> hook peg/socket + magnet pocket -> meshes (STL + 3MF) + report.
+(0.8 under cell, 1.0 floor, 1.1 sides) -> parting plane (auto, clear of the mic/LED bosses) -> lands, groove,
+tongue -> openings (charging pins, window port, LED, mics, pod opening + rim + collar, cell-as-lid opening) ->
+hook peg + magnet pocket -> screws (2 from the ear side, inboard of the gasket; a 3rd at the pod end only if the wall
+allows) -> hook stub fused to the walls -> meshes (STL + 3MF) + report.
 Usage: python3 shell_build.py <solar bud glb> <data dir> <out dir> [pitch override]
 """
 import os, sys, json
@@ -144,14 +145,15 @@ for zp in np.arange(PR["parting"]["scan"][0], PR["parting"]["scan"][1] + 1e-6, p
     cands.append((int(opening.sum()), zp))
 zp = float(max(cands)[1]) if PR["parting"]["z"] == "auto" else float(PR["parting"]["z"])
 rep["parting_z"] = round(zp, 3)
+rep["parting_scan_opening_mm2"] = {f"{z_:.2f}": round(n_ * p * p, 1) for n_, z_ in sorted(cands, key=lambda c: c[1])}
 log("parting plane Z =", round(zp, 3), "(", len(cands), "valid candidates)")
 
 # ---------------- 7. halves, lands, groove, tongue ----------------
 below = zgrid < zp
-# in-slice (horizontal) distance from the outer skin: lands, groove, tongue and tab follow the side walls only,
+# in-slice (horizontal) distance from the outer skin: lands, groove and tongue follow the side walls only,
 # never the floor/top (a 3-D distance would spread the land across the shallow floor)
 D2 = np.full(inside.shape, np.float32(1e3))
-k0, k1 = kslice(zp - PR["tab"]["depth"] - 1.0), kslice(zp + SE["land_h_cover"] + 0.5) + 1
+k0, k1 = kslice(zp - SE["land_h_base"] - 1.0), kslice(zp + SE["land_h_cover"] + 0.5) + 1
 for kk in range(k0, k1):
     D2[:, :, kk] = (ndimage.distance_transform_edt(inside[:, :, kk]) - 0.5) * p
 land = inside & (D2 < SE["land_t"])
@@ -197,28 +199,44 @@ add(base, sdf.box(g, np.array([wd["centre"][0], wd["centre"][1], wd["centre"][2]
 cut(base, sdf.box(g, np.array(wd["centre"]) + [0, 0, 0.0], np.eye(3), [slot[0] / 2, slot[1] / 2, 2.0 + wb]))
 cut(base, sdf.box(g, np.array([wd["centre"][0], wd["centre"][1], wd["centre"][2] + W["floor"] + wb - rec[2] / 2]), np.eye(3),
                   [rec[0] / 2, rec[1] / 2, rec[2] / 2 + 0.05]))
-L = FE["led"]; ld = np.array(A["led"]["dir"]); lc = np.array(A["led"]["centre"])
-add(cover, cyl(lc - ld * (W["side"] + L["sleeve_len"] / 2), ld, L["sleeve_od"], L["sleeve_len"]))
-cut(cover, cyl(lc - ld * (W["side"] + L["sleeve_len"]) / 2, ld, L["hole_d"], W["side"] + L["sleeve_len"] + 2.0))
+def skin_t(c, d):
+    """Distance along unit d from anchor c to the outer skin (+ = the skin lies outward of the anchor)."""
+    for t in np.arange(3.0, -5.0, -p / 2):
+        i = g.index(c + t * d)
+        if np.all(i >= 0) and np.all(i < np.array(g.shape)) and inside[tuple(i)]:
+            return float(t)
+    raise ValueError("port axis never meets the skin")
+
+
+# side ports: each boss / sleeve is one solid plug grown from the REAL skin inward (the anchor point is not always
+# on the skin), so the hole -> membrane seat path is backed by solid material with no gap to the cavity
+rep["ports"] = {}
+L = FE["led"]; ld = np.array(A["led"]["dir"], float); ld /= np.linalg.norm(ld); lc = np.array(A["led"]["centre"], float)
+sk = lc + ld * skin_t(lc, ld); Ls = W["side"] + L["sleeve_len"]
+add(cover, cyl(sk - ld * (Ls / 2 - 0.25), ld, L["sleeve_od"], Ls + 0.5))
+cut(cover, cyl(sk - ld * (Ls / 2), ld, L["hole_d"], Ls + 2.0))
+rep["ports"]["led"] = dict(skin_point=sk.round(2).tolist(), dir=ld.round(3).tolist(), anchor_to_skin_mm=round(skin_t(lc, ld), 2),
+                           seal_depth_mm=W["side"] + 1.0)        # clear-resin plug depth; the cell-lid cut trims the sleeve end
 Mi = FE["mic"]
-for mp in A["mic_ports"]:
-    md, mc = np.array(mp["dir"]), np.array(mp["centre"])
-    add(cover, cyl(mc - md * (W["side"] + Mi["boss_h"] / 2), md, Mi["boss_od"], Mi["boss_h"]))
-    cut(cover, cyl(mc, md, Mi["hole_d"], 2 * (W["side"] + Mi["boss_h"]) + 2.0))
-    cut(cover, cyl(mc - md * (W["side"] + Mi["boss_h"] - Mi["recess_h"] / 2), md, Mi["recess_d"], Mi["recess_h"] + 0.1))
-# pod socket: opening = neck section + clearance, collar with an inner O-ring groove
+for n_, mp in enumerate(A["mic_ports"]):
+    md = np.array(mp["dir"], float); md /= np.linalg.norm(md); mc = np.array(mp["centre"], float)
+    sk = mc + md * skin_t(mc, md); Lm = W["side"] + Mi["boss_h"]; seat = Lm - Mi["recess_h"]
+    add(cover, cyl(sk - md * (Lm / 2 - 0.25), md, Mi["boss_od"], Lm + 0.5))
+    cut(cover, cyl(sk, md, Mi["hole_d"], 2 * Lm + 2.0))
+    cut(cover, cyl(sk - md * (seat + 1.5), md, Mi["recess_d"], 3.0))   # membrane seat, open toward the cavity
+    rep["ports"][f"mic{n_}"] = dict(skin_point=sk.round(2).tolist(), dir=md.round(3).tolist(),
+                                    anchor_to_skin_mm=round(skin_t(mc, md), 2), seat_depth_mm=round(seat, 2))
+# pod socket: opening inset inside the neck outline (rim), collar centres the pod; pod face bonded + sealed on the rim
 PS = FE["pod_socket"]
-dn = ndimage.distance_transform_edt(~neck2d) * p
-open2d = dn <= PS["clearance"]
-collar2d = (dn > PS["clearance"]) & (dn <= PS["clearance"] + PS["collar_w"])
-oring2d = (dn > PS["clearance"]) & (dn <= PS["clearance"] + PS["oring_groove_d"])
+din = ndimage.distance_transform_edt(neck2d) * p                    # depth inside the neck outline
+open2d = din > PS["rim"]                                            # opening inset by the rim: outer skin untouched
+collar2d = neck2d & (din > PS["rim"] - PS["collar_w"]) & ~open2d     # ring around the opening, inside the cavity
 zf_in = zc + W["floor"]
 zz = ax[2][None, None, :]
 base |= collar2d[:, :, None] & (zz >= zc) & (zz <= zf_in + PS["collar_h"]) & inside
 base &= ~(open2d[:, :, None] & (zz <= zf_in + PS["collar_h"] + 0.5))
-zm = zf_in + PS["collar_h"] / 2
-base &= ~(oring2d[:, :, None] & (np.abs(zz - zm) <= PS["oring_groove_w"] / 2))
-rep["pod_socket"] = dict(opening_area_mm2=round(float(open2d.sum() * p * p), 1), oring_groove_z=round(zm, 2))
+rep["pod_socket"] = dict(neck_area_mm2=round(float(neck2d.sum() * p * p), 1),
+                         opening_area_mm2=round(float(open2d.sum() * p * p), 1), rim_mm=PS["rim"], joint=PS["joint"])
 CP = FE["cell_passthrough"]; CH = FE["charger_pocket"]; LID = PR.get("cell_as_lid", {"enabled": False})
 if LID["enabled"]:
     # the solar cell IS the lid: open the top wall inside a lip of `lip` mm; the cell is bonded + sealed on the lip,
@@ -263,8 +281,8 @@ del dpad
 
 # ---------------- 10. screws ----------------
 k = kslice(zp)
-# a screw hole must stay inboard of the gasket line: skin -> 0.6 wall -> 1.1 groove -> 0.3 -> hole radius
-seal_safe = SE["groove_wall_out"] + SE["groove_w"] + 0.3 + SC["clear_hole"] / 2
+# a screw hole must stay inboard of the gasket line: skin -> 0.6 wall -> 1.1 groove -> web -> hole radius
+seal_safe = SE["groove_wall_out"] + SE["groove_w"] + SC["web_to_groove"] + SC["clear_hole"] / 2
 inner_ok = ndimage.distance_transform_edt(inside[:, :, k]) * p >= seal_safe
 excl = np.zeros_like(inner_ok)
 def ex_circle(x, y, rr):
@@ -278,7 +296,7 @@ for pad in A["cell"]["pads"]: ex_circle(pad["centre"][0], pad["centre"][1], CP["
 for pin in A["pins"]: ex_circle(pin["centre"][0], pin["centre"][1], 3.5)
 ex_circle(wd["centre"][0], wd["centre"][1], 3.5)
 for mp in A["mic_ports"] + [A["led"]]: ex_circle(mp["centre"][0], mp["centre"][1], 4.0)
-excl |= ndimage.binary_dilation(neck2d, iterations=int((PS["clearance"] + PS["collar_w"] + SC["boss_od"] / 2 + 0.3) / p))
+excl |= ndimage.binary_dilation(neck2d, iterations=int((SC["boss_od"] / 2 + 0.3) / p))    # collar is inside the neck outline
 ex_circle(tip[0], tip[1], SC["min_dist_to_hall_area"])
 ex_circle(ch_c[0], ch_c[1], max(CH["inner"]) / 2 + CH["wall"] + SC["boss_od"] / 2 + 0.3)
 ok2 = inner_ok & ~excl
@@ -301,25 +319,54 @@ base &= inside
 rep["screws"] = [[round(float(a), 2), round(float(b), 2)] for a, b in screws]
 log("screws at", rep["screws"])
 
-# ---------------- 10a. hook-in tab at the end without screws (cover tab hooks under a base ledge) ----------------
-TB = PR["tab"]
-end_x = xb if np.mean([s_[0] for s_ in screws]) < 0 else xa                 # the end opposite the screws
+# ---------------- 10a. optional third screw at the pod end (from the face, head flush beside the cell) ----------------
+ES = PR["end_screw"]
+end_x = xb if np.mean([s_[0] for s_ in screws]) < 0 else xa                 # the end opposite the bottom screws
 sgn = 1.0 if end_x == xb else -1.0
-zone = (sgn * (X - end_x) > 0) & (np.abs(Y - yc) <= TB["width"] / 2 + 1.4)
-rin = SE["land_t"]                                                          # inner face of the land, from the skin
-base |= inside & zone & (D2 < rin) & (zgrid >= zp - TB["depth"] - 0.6) & below          # deeper land here
-slot = zone & (np.abs(Y - yc) <= TB["width"] / 2 + 0.15) & (D2 < rin + 0.01) & (D2 >= rin - TB["hook"] - 0.1) \
-       & (zgrid >= zp - TB["depth"]) & (zgrid < zp - TB["depth"] + TB["hook_h"] + 0.15)
-base &= ~slot
-tz = (zgrid >= zp - TB["depth"] + 0.05) & (zgrid < zp)
-tab = zone & (np.abs(Y - yc) <= TB["width"] / 2) & (D2 >= rin + 0.15) & (D2 < rin + 0.15 + TB["t"]) & tz
-foot = zone & (np.abs(Y - yc) <= TB["width"] / 2) & (D2 >= rin - TB["hook"]) & (D2 < rin + 0.15) \
-       & (zgrid >= zp - TB["depth"] + 0.05) & (zgrid < zp - TB["depth"] + TB["hook_h"])
-bridge = zone & (np.abs(Y - yc) <= TB["width"] / 2) & (D2 >= rin - 0.4) & (D2 < rin + 0.15 + TB["t"]) \
-         & (zgrid >= zp) & (zgrid < zp + SE["land_h_cover"])                  # ties the tab to the cover land
-cover |= (tab | foot | bridge) & inside & ~ndimage.binary_dilation(base)   # keep one voxel of play to the base
-rep["tab"] = dict(end_x=round(float(end_x), 2), width=TB["width"], hook=TB["hook"], depth_below_seam=TB["depth"])
-del slot, tab, foot, zone
+dseam = ndimage.distance_transform_edt(inside[:, :, k]) * p                  # in-slice distance from the skin at the seam
+x_head = 16.5 + ES["gap_to_cell"] + SC["head_cbore_d"] / 2                  # counterbore fully outside the cell
+seal_safe_e = SE["groove_wall_out"] + SE["groove_w"] + SC["web_to_groove"] + SC["insert_hole_d"] / 2   # insert sits in the base
+score = np.minimum(dseam - seal_safe_e, sgn * XX - x_head)
+score[(np.abs(YY - yc) > ES["max_dy_from_axis"]) | (dseam < seal_safe_e) | (sgn * XX < x_head)] = -np.inf
+assert np.isfinite(score).any(), "no spot for the end screw that is inboard of the gasket AND outside the cell"
+ie, je = np.unravel_index(np.argmax(score), score.shape)
+ex_, ey_ = float(XX[ie, je]), float(YY[ie, je])
+col = inside[ie, je]; z_top = float(ax[2][len(col) - 1 - np.argmax(col[::-1])]) + p / 2     # outer face above the screw
+# deepest insert hole that keeps min_wall to the outside (the end wall slopes), then the longest stock screw
+bsl = g.block([ex_ - 3, ey_ - 3, zc - 1], [ex_ + 3, ey_ + 3, zp + 1], 1.0)
+din3 = ndimage.distance_transform_edt(inside[bsl]) * p
+def hole_mask(depth):
+    hs, hv = cyl([ex_, ey_, zp - depth / 2 + 0.05], [0, 0, 1], SC["insert_hole_d"], depth + 0.1)
+    hm = np.zeros(inside.shape, bool); hm[hs] = hv <= 0
+    return hm[bsl]
+hole_max = 0.0
+for depth in np.arange(SC["insert_hole_d"], 6.0, p):
+    if din3[hole_mask(depth)].min() < ES["min_wall_around_hole"]:
+        break
+    hole_max = float(depth)
+engage = hole_max - ES["tip_room"]
+L_ = next((L for L in ES["stock_lengths"] if zp - engage + L <= z_top - ES["head_h"]), None)
+if engage < ES["min_engagement"] or L_ is None:
+    rep["end_screw"] = dict(added=False, at=[round(ex_, 2), round(ey_, 2)], deepest_safe_hole_mm=round(hole_max, 2),
+                            reason=f"only {max(engage, 0):.2f} mm of thread possible below the seam (need "
+                                   f"{ES['min_engagement']}) - the end wall over the pod is too thin/sloped")
+else:
+    under_head = zp - engage + L_
+    cb_h = z_top - under_head                                              # counterbore: head flush or sunk
+    z_bot = zp - hole_max - 0.8
+    add(cover, cyl([ex_, ey_, (zp + z_top) / 2], [0, 0, 1], SC["boss_od"], z_top - zp))        # pillar under the face
+    add(base, cyl([ex_, ey_, (z_bot + zp) / 2], [0, 0, 1], SC["boss_od"], zp - z_bot))          # insert boss
+    cover &= inside; base &= inside
+    cut(cover, cyl([ex_, ey_, (zp + z_top) / 2], [0, 0, 1], SC["clear_hole"], z_top - zp + 2.0))
+    cut(cover, cyl([ex_, ey_, z_top - cb_h / 2 + 0.5], [0, 0, 1], SC["head_cbore_d"], cb_h + 1.0))
+    cut(base, cyl([ex_, ey_, zp - hole_max / 2 + 0.05], [0, 0, 1], SC["insert_hole_d"], hole_max + 0.1))
+    base &= ~(open2d[:, :, None] & (zz <= zf_in + PS["collar_h"] + 0.5))    # keep the pod opening clear
+    rep["end_screw"] = dict(added=True, at=[round(ex_, 2), round(ey_, 2)], head_face_z=round(z_top, 2), screw=f"M1.2 x {L_}",
+                            counterbore_depth=round(cb_h, 2), thread_engagement_mm=round(engage, 2),
+                            min_wall_hole_to_outside_mm=round(float(din3[hole_mask(hole_max)].min()), 2),
+                            margin_to_gasket_mm=round(float(dseam[ie, je] - seal_safe_e), 2),
+                            gap_head_to_cell_mm=round(float(sgn * ex_ - SC["head_cbore_d"] / 2 - 16.5), 2))
+log("end screw:", rep["end_screw"])
 
 # ---------------- 10b. rigid hook stub joins the halves (outside the seal) + peg socket ----------------
 stub_f = stub | (ndimage.binary_dilation(stub, iterations=3) & inside & ~cavity)    # fuse into the wall, not the cavity
@@ -334,6 +381,16 @@ rep["hook_joint"]["socket_wall_cover_share"] = round(float(shell_solid[s2][v2 <=
 rep["hook_joint"]["joint_depth_in_hook_mm"] = round(rep_hook_depth, 2)
 cut(cover, sock); cut(base, sock)
 rep["hook_joint"]["socket_in"] = "cover" if ic[2] >= zp else "base"
+# a socket just under (over) the seam would leave a skin thinner than the walls: open it to the seam instead, so the
+# peg drops in from the seam side and the other half's stub closes over it (captive peg, outside the seal)
+r_s = HK["peg_d"] / 2 + HK["socket_clearance"]
+roof = (zp - (ic[2] + r_s)) if ic[2] < zp else ((ic[2] - r_s) - zp)
+if 0 < roof < W["min_check"]:
+    half, sgz = (base, 1.0) if ic[2] < zp else (cover, -1.0)
+    for dz in np.arange(0.0, abs(zp - ic[2]) + 2 * p, p):
+        cut(half, cyl(ic + peg_axis * (HK["peg_len"] + 0.1) / 2 + [0, 0, sgz * dz], peg_axis,
+                      HK["peg_d"] + 2 * HK["socket_clearance"], HK["peg_len"] + 0.1))
+    rep["hook_joint"]["socket"] = f"open to the seam (roof would have been {roof:.2f} mm): peg captured by the other half"
 
 # ---------------- 10c. final guards: the gasket groove stays open, the halves never overlap ----------------
 base &= ~groove

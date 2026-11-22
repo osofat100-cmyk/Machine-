@@ -44,9 +44,25 @@ for t in (0.8, 0.6):
         share = float(sdf.thin_regions(mask, t, p).sum() / mask.sum())
         out[f"{k}_share_thinner_than_{t}mm"] = round(share, 4)
         print(f"INFO  {k}: share thinner than {t} mm = {share:.4f}")
-check("no region thinner than 0.6 mm (groove side walls are the thinnest by design)",
-      max(out["cover_share_thinner_than_0.6mm"], out["base_share_thinner_than_0.6mm"]) < 0.01,
-      [out["cover_share_thinner_than_0.6mm"], out["base_share_thinner_than_0.6mm"]])
+# The opening shares above also count the slivers shaved off every sharp convex edge (lid-cut rim, seam faces),
+# so the pass/fail test uses sdf.thin_walls: removed material with no surviving thick material nearby.
+spots = []
+for k, m_ in (("cover", cover), ("base", base)):
+    tw = sdf.thin_walls(m_, 0.6, p)
+    out[f"{k}_thin_wall_share_0.6mm"] = round(float(tw.sum() / m_.sum()), 5)
+    lab, n = ndimage.label(tw, structure=np.ones((3, 3, 3)))
+    for j in range(1, n + 1):
+        c = np.argwhere(lab == j)
+        if len(c) >= 10:
+            spots.append(dict(part=k, voxels=int(len(c)), mm3=round(len(c) * p ** 3, 3),
+                              at=[round(float(v), 2) for v in lo + (c.mean(0) + 0.5) * p]))
+    print(f"INFO  {k}: genuinely thin (<0.6 mm) share = {tw.sum() / m_.sum():.5f}")
+out["thin_spots"] = sorted(spots, key=lambda d: -d["voxels"])[:12]
+for d in out["thin_spots"]:
+    print("      thin spot", d)
+check("no thin walls below 0.6 mm (sharp-edge slivers excluded)",
+      max(out["cover_thin_wall_share_0.6mm"], out["base_thin_wall_share_0.6mm"]) < 0.002,
+      [out["cover_thin_wall_share_0.6mm"], out["base_thin_wall_share_0.6mm"]])
 
 # 4. flat cell ledge: top face of the cover lies on Z = 0
 mc = trimesh.load(os.path.join(src, "EP3_shell_cover.stl"))
@@ -66,6 +82,34 @@ check("tongue never touches the base (gasket path open, side gap > 0)", np.nanmi
       dict(min_mm=round(float(np.nanmin(g_)), 3), median_mm=round(float(np.nanmedian(g_)), 3), design_mm=0.15))
 out["gasket"] = dict(gap_height_mm=PR["seal"]["groove_d"] - PR["seal"]["tongue_h"], cord_mm=0.8,
                      squeeze_pct=round(100 * (1 - (PR["seal"]["groove_d"] - PR["seal"]["tongue_h"]) / 0.8), 1))
+
+# 5b. side ports: every ray between the hole and the seat edge must run through solid material from the skin to the
+#     seat depth (no gap that lets water around the membrane / light-pipe seal)
+FE = PR["features"]; W = PR["walls"]
+def lab_(q):
+    i = tuple(((np.asarray(q) - lo) / p).astype(int))
+    return 1 if (cover[i] or base[i]) else (2 if inside[i] else 0)
+port_res = {}
+for name, pr_ in REP.get("ports", {}).items():
+    sk, d = np.array(pr_["skin_point"]), np.array(pr_["dir"])
+    need = pr_.get("seat_depth_mm", pr_.get("seal_depth_mm"))
+    r_in = (FE["mic"]["hole_d"] if name.startswith("mic") else FE["led"]["hole_d"]) / 2 + 0.15
+    r_out = (FE["mic"]["recess_d"] / 2 if name.startswith("mic") else FE["led"]["sleeve_od"] / 2) - 0.15
+    u = np.cross(d, [0, 0, 1.0]); u /= np.linalg.norm(u); v = np.cross(d, u)
+    worst = np.inf
+    for rr in np.linspace(r_in, r_out, 3):
+        for ang in np.linspace(0, 2 * np.pi, 16, endpoint=False):
+            q0 = sk + rr * (np.cos(ang) * u + np.sin(ang) * v)
+            ts = np.arange(0.5, -(need + 1.0), -p / 2)
+            labs = [lab_(q0 + t_ * d) for t_ in ts]
+            k1 = next((j for j, l_ in enumerate(labs) if l_ == 1), None)
+            if k1 is None:
+                worst = 0.0; continue
+            k2 = next((j for j in range(k1, len(labs)) if labs[j] != 1), len(labs))
+            worst = min(worst, (k2 - k1) * p / 2)
+    port_res[name] = dict(min_solid_from_skin_mm=round(float(worst), 2), needed_mm=round(need - 0.15, 2))
+check("side ports backed by solid material from the skin to the seat (no bypass gap)",
+      all(r_["min_solid_from_skin_mm"] >= r_["needed_mm"] for r_ in port_res.values()), port_res)
 
 # 6. do the estimated electronics fit?  free space = inside minus shell parts; PCB under the cell, battery below
 free = inside & ~cover & ~base

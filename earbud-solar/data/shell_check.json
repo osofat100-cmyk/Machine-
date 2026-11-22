@@ -4,7 +4,7 @@
   "value": {
    "watertight": true,
    "bodies": 1,
-   "volume_cm3": 0.893
+   "volume_cm3": 1.144
   }
  },
  "base: watertight, one body, positive volume": {
@@ -12,7 +12,7 @@
   "value": {
    "watertight": true,
    "bodies": 1,
-   "volume_cm3": 1.079
+   "volume_cm3": 0.929
   }
  },
  "hook_arm: watertight, one body, positive volume": {
@@ -20,26 +20,29 @@
   "value": {
    "watertight": true,
    "bodies": 1,
-   "volume_cm3": 1.723
+   "volume_cm3": 1.657
   }
  },
  "printed parts lighter than the original bud (12.5 g incl. electronics)": {
   "passed": true,
-  "value": "4.25 g of resin"
+  "value": "4.29 g of resin"
  },
  "cover and base do not overlap": {
   "passed": true,
   "value": 0
  },
- "cover_share_thinner_than_0.8mm": 0.0653,
- "base_share_thinner_than_0.8mm": 0.1617,
- "cover_share_thinner_than_0.6mm": 0.0353,
- "base_share_thinner_than_0.6mm": 0.0365,
- "no region thinner than 0.6 mm (groove side walls are the thinnest by design)": {
-  "passed": false,
+ "cover_share_thinner_than_0.8mm": 0.0466,
+ "base_share_thinner_than_0.8mm": 0.1782,
+ "cover_share_thinner_than_0.6mm": 0.0254,
+ "base_share_thinner_than_0.6mm": 0.0272,
+ "cover_thin_wall_share_0.6mm": 0.0,
+ "base_thin_wall_share_0.6mm": 1e-05,
+ "thin_spots": [],
+ "no thin walls below 0.6 mm (sharp-edge slivers excluded)": {
+  "passed": true,
   "value": [
-   0.0353,
-   0.0365
+   0.0,
+   1e-05
   ]
  },
  "cell ledge flat (RMS from the seat plane)": {
@@ -49,7 +52,7 @@
  "tongue never touches the base (gasket path open, side gap > 0)": {
   "passed": true,
   "value": {
-   "min_mm": 0.12,
+   "min_mm": 0.17,
    "median_mm": 0.36,
    "design_mm": 0.15
   }
@@ -59,12 +62,29 @@
   "cord_mm": 0.8,
   "squeeze_pct": 25.0
  },
+ "side ports backed by solid material from the skin to the seat (no bypass gap)": {
+  "passed": true,
+  "value": {
+   "led": {
+    "min_solid_from_skin_mm": 2.4,
+    "needed_mm": 1.95
+   },
+   "mic0": {
+    "min_solid_from_skin_mm": 1.92,
+    "needed_mm": 1.55
+   },
+   "mic1": {
+    "min_solid_from_skin_mm": 1.8,
+    "needed_mm": 1.55
+   }
+  }
+ },
  "stack": {
   "needed_mm": 7.0,
   "free_height_over_pcb_footprint_mm": 5.88,
   "at": [
-   -1.5,
-   0.0
+   -0.5,
+   0.25
   ],
   "battery": [
    25.0,
@@ -78,5 +98,5 @@
   ],
   "source": "FCC estimates - measure the real parts"
  },
- "all_passed": false
+ "all_passed": true
 }

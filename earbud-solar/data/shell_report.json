@@ -1,38 +1,52 @@
 {
- "pitch": 0.2,
+ "pitch": 0.12,
  "paddle_outline": {
-  "centre_y": 0.212,
-  "half_width": 8.477,
+  "centre_y": 0.211,
+  "half_width": 8.511,
   "centres_x": [
-   -14.422,
-   13.023
+   -14.469,
+   13.029
   ]
  },
  "clear_height_mm": {
-  "median": 5.8,
-  "p10": 5.6,
-  "p90": 7.4
+  "median": 5.76,
+  "p10": 5.52,
+  "p90": 7.32
  },
  "hook_joint": {
   "centre": [
-   -20.5,
-   -11.3,
-   -6.1
+   -20.46,
+   -11.34,
+   -6.18
   ],
   "axis_into_stub": [
-   0.4734,
-   0.8809,
-   -0.0003
+   0.4593,
+   0.8883,
+   -0.0005
   ],
-  "stub_volume_mm3": 304.9,
-  "arm_volume_mm3": 1693.1,
-  "socket_wall_cover_share": 0.933,
-  "joint_depth_in_hook_mm": 3.69,
-  "socket_in": "base"
+  "stub_volume_mm3": 301.4,
+  "arm_volume_mm3": 1688.4,
+  "socket_wall_cover_share": 0.946,
+  "joint_depth_in_hook_mm": 3.7,
+  "socket_in": "base",
+  "socket": "open to the seam (roof would have been 0.28 mm): peg captured by the other half"
  },
- "parting_z": -3.6,
+ "parting_z": -4.8,
+ "parting_scan_opening_mm2": {
+  "-6.00": 341.5,
+  "-5.88": 350.3,
+  "-5.76": 366.0,
+  "-5.64": 366.0,
+  "-5.52": 379.2,
+  "-5.40": 379.2,
+  "-5.28": 391.2,
+  "-5.16": 391.2,
+  "-5.04": 400.6,
+  "-4.92": 400.6,
+  "-4.80": 404.9
+ },
  "seal": {
-  "seam_length_mm": 93.4,
+  "seam_length_mm": 92.3,
   "groove": [
    1.1,
    1.2
@@ -43,9 +57,55 @@
   ],
   "gasket_gap_mm": 0.6
  },
+ "ports": {
+  "led": {
+   "skin_point": [
+    11.91,
+    -8.61,
+    -2.35
+   ],
+   "dir": [
+    -0.025,
+    -0.998,
+    -0.058
+   ],
+   "anchor_to_skin_mm": -0.18,
+   "seal_depth_mm": 2.1
+  },
+  "mic0": {
+   "skin_point": [
+    9.51,
+    8.22,
+    -2.36
+   ],
+   "dir": [
+    0.031,
+    0.997,
+    -0.077
+   ],
+   "anchor_to_skin_mm": 0.24,
+   "seat_depth_mm": 1.7
+  },
+  "mic1": {
+   "skin_point": [
+    9.04,
+    -8.38,
+    -2.32
+   ],
+   "dir": [
+    -0.032,
+    -0.997,
+    -0.071
+   ],
+   "anchor_to_skin_mm": -0.3,
+   "seat_depth_mm": 1.7
+  }
+ },
  "pod_socket": {
-  "opening_area_mm2": 82.7,
-  "oring_groove_z": -7.2
+  "neck_area_mm2": 82.9,
+  "opening_area_mm2": 48.9,
+  "rim_mm": 1.2,
+  "joint": "face bond + seal, MS-polymer (flexible, waterproof)"
  },
  "cell_as_lid": {
   "lip_mm": 1.2,
@@ -62,20 +122,20 @@
  ],
  "clear_height_final_mm": {
   "median": 6.6,
-  "p10": 6.4
+  "p10": 6.36
  },
  "hook": {
   "mode": "printed_flex",
   "tip": [
-   15.7,
-   -8.3,
-   -8.9
+   15.54,
+   -8.34,
+   -9.06
   ],
-  "tip_gap_to_paddle_mm": 0.2,
+  "tip_gap_to_paddle_mm": 0.12,
   "magnet_centre": [
-   15.7,
-   -9.82,
-   -9.21
+   15.54,
+   -9.86,
+   -9.37
   ],
   "magnet_axis": [
    -0.0,
@@ -85,58 +145,66 @@
  },
  "screws": [
   [
-   -20.5,
-   -1.1
+   -20.1,
+   -1.74
   ],
   [
-   -17.3,
-   -5.3
+   -17.22,
+   -5.1
   ]
  ],
- "tab": {
-  "end_x": 13.02,
-  "width": 3.6,
-  "hook": 0.7,
-  "depth_below_seam": 2.8
+ "end_screw": {
+  "added": true,
+  "at": [
+   17.94,
+   -0.3
+  ],
+  "head_face_z": 1.2,
+  "screw": "M1.2 x 6",
+  "counterbore_depth": 1.3,
+  "thread_engagement_mm": 1.3,
+  "min_wall_hole_to_outside_mm": 0.65,
+  "margin_to_gasket_mm": 0.02,
+  "gap_head_to_cell_mm": 0.24
  },
- "overlap_voxels_resolved": 187,
+ "overlap_voxels_resolved": 0,
  "cover": {
   "watertight": true,
   "bodies_before_cleanup": 1,
-  "volume_cm3": 0.902,
-  "mass_g": 1.04,
-  "triangles": 110456,
+  "volume_cm3": 1.144,
+  "mass_g": 1.32,
+  "triangles": 369956,
   "extents_mm": [
-   46.39,
-   21.2,
-   7.58
+   46.56,
+   21.44,
+   6.6
   ],
-  "thinner_than_min_share": 0.1439
+  "thinner_than_min_share": 0.0466
  },
  "base": {
   "watertight": true,
-  "bodies_before_cleanup": 3,
-  "volume_cm3": 1.128,
-  "mass_g": 1.3,
-  "triangles": 143860,
+  "bodies_before_cleanup": 1,
+  "volume_cm3": 0.929,
+  "mass_g": 1.07,
+  "triangles": 360900,
   "extents_mm": [
-   46.36,
-   21.19,
-   6.36
+   45.89,
+   20.85,
+   5.21
   ],
-  "thinner_than_min_share": 0.169
+  "thinner_than_min_share": 0.1782
  },
  "hook_arm": {
   "watertight": true,
   "bodies_before_cleanup": 1,
-  "volume_cm3": 1.658,
+  "volume_cm3": 1.657,
   "mass_g": 1.91,
-  "triangles": 91860,
+  "triangles": 255392,
   "extents_mm": [
-   50.2,
-   23.8,
-   11.87
+   50.28,
+   23.88,
+   11.84
   ],
-  "thinner_than_min_share": 0.0082
+  "thinner_than_min_share": 0.0054
  }
 }

@@ -47,5 +47,14 @@ gfull = np.full(g3.shape, 1e3, np.float32); sdf.union(gfull, groove)
 d = -g3.sample(gfull, pts)                      # depth of tongue face inside groove cavity = clearance
 check("tongue face to groove wall, measured on the field (mm)", float(d.mean()), 0.15, 0.03)
 
+# thin-wall detector: a sharp-edged 4 mm block must score ~0, a 0.36 mm fin standing on it must be caught
+g = sdf.Grid([-5, -5, -1], [5, 5, 6], 0.12)
+x, y, z = g.xyz((slice(None),) * 3)
+block = (np.abs(x) < 4) & (np.abs(y) < 4) & (z > 0) & (z < 4)
+fin = (np.abs(x) < 3) & (np.abs(y) < 0.18) & (z >= 4) & (z < 5.5)
+check("sharp block: share flagged as thin wall", sdf.thin_walls(block, 0.6, 0.12).sum() / block.sum(), 0.0, 0.001)
+tw = sdf.thin_walls(block | fin, 0.6, 0.12)
+fin_up = fin & (z > 4.5)          # the root within ~0.4 mm of the block is excluded by design
+check("0.36 mm fin (>0.5 mm above its root): share flagged", (tw & fin_up).sum() / fin_up.sum(), 1.0, 0.05)
 print("ALL PASS" if ok else "SOME CHECKS FAILED")
 sys.exit(0 if ok else 1)

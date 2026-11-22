@@ -21,10 +21,11 @@
  "parting": {
   "z": "auto",
   "scan": [
-   -5.5,
+   -6.0,
    -3.2
   ],
-  "keep_clear_of_side_features": 1.2
+  "keep_clear_of_side_features": 2.4,
+  "_note": "seam at least mic-boss radius (2.1) + 0.3 below the mic/LED centres, so each boss, membrane seat and LED sleeve sits wholly in the cover and the membrane never bridges the seam"
  },
  "seal": {
   "groove_w": 1.1,
@@ -35,7 +36,8 @@
   "tongue_h": 0.6,
   "land_h_base": 2.0,
   "land_h_cover": 1.2,
-  "gasket": "seamless cast 0.8 x 0.8 silicone (or 0.8 mm cord, 50-60 ShA): ~25 % squeeze"
+  "gasket": "seamless cast 0.8 x 0.8 silicone (or 0.8 mm cord, 50-60 ShA): ~25 % squeeze",
+  "type": "cured-in-place: bead of MS-polymer (or neutral-cure silicone) laid in the groove at final assembly; the tongue displaces it into a 0.15 mm side gap and 0.6 mm bottom gap; screws hold the halves while it cures (24 h). Dry-fit without sealant first. Alternative for test fits: 0.8 mm silicone cord."
  },
  "screws": {
   "type": "M1.2 x 4 titanium or A4 stainless (must be NON-magnetic: they sit near the hook-switch sensor)",
@@ -46,7 +48,8 @@
   "boss_od": 3.2,
   "insert_hole_d": 1.6,
   "insert_hole_h": 2.2,
-  "min_dist_to_hall_area": 2.0
+  "min_dist_to_hall_area": 2.0,
+  "web_to_groove": 0.6
  },
  "features": {
   "pin_hole_d": 1.4,
@@ -74,14 +77,15 @@
    "recess_d": 3.2,
    "recess_h": 0.3,
    "boss_od": 4.2,
-   "boss_h": 0.9
+   "boss_h": 0.9,
+   "_note": "membrane recess is open to the cavity so the IP68 acoustic membrane can be placed and pressed"
   },
   "pod_socket": {
-   "clearance": 0.1,
-   "collar_w": 1.6,
+   "_note": "the body narrows to the neck size just above the pod, so there is no room for a socket AROUND the neck without changing the outside. The opening sits inside the neck outline instead: the pod's top face bonds and seals onto a 1.2 mm rim with flexible MS-polymer; the collar centres it. Real pod-to-body joint unknown - measure on the teardown.",
+   "rim": 1.2,
+   "collar_w": 1.2,
    "collar_h": 2.0,
-   "oring_groove_w": 0.8,
-   "oring_groove_d": 0.6
+   "joint": "face bond + seal, MS-polymer (flexible, waterproof)"
   },
   "cell_passthrough": {
    "hole_d": 0.9,
@@ -118,12 +122,20 @@
   "lip": 1.2,
   "bond": "cell bonded + sealed on the 1.2 mm lip with clear MS-polymer or 2-part epoxy bead (no IPA on the cell); pads face the cavity"
  },
- "tab": {
-  "_note": "hook-in tab at the screw-less end: hook this end in first, swing the cover down, then screw the other end",
-  "width": 3.6,
-  "t": 0.8,
-  "hook": 0.7,
-  "hook_h": 0.6,
-  "depth": 2.8
+ "end_screw": {
+  "_note": "optional third screw at the pod end, from the outer face into an insert in the base. Added only if the base under the seam has room for >= min_engagement of thread with min_wall to the outside; on the JBL-model geometry it does not (the paddle tapers into the nozzle neck under a ~45 deg, 1.1 mm wall), so the seam is sealed with a cured-in-place bead and needs no clamping force there.",
+  "gap_to_cell": 0.2,
+  "max_dy_from_axis": 3.0,
+  "tip_room": 0.3,
+  "min_wall_around_hole": 0.6,
+  "stock_lengths": [
+   8,
+   6,
+   5,
+   4
+  ],
+  "head_h": 0.8,
+  "min_engagement": 1.2,
+  "screw": "M1.2 (titanium or A4), longest stock length that fits - see shell_report.json end_screw"
  }
 }

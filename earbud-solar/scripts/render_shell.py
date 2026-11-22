@@ -36,8 +36,8 @@ Z = np.array([0, 0, 1.0]); Yv = np.array([0, 1.0, 0])
 
 fig, axs = plt.subplots(2, 3, figsize=(21, 11))
 splat(axs[0, 0], *Pp["cover"], Z, Yv, "COVER from outside: 1.2 mm ledge, the solar cell is bonded on it")
-splat(axs[0, 1], *Pp["cover"], -Z, Yv, "COVER from inside: tongue, screw pillars, hook-in tab, LED sleeve, mic bosses")
-splat(axs[0, 2], *Pp["base"], Z, Yv, "BASE from inside: gasket groove, screw bosses, nozzle socket collar, tab slot")
+splat(axs[0, 1], *Pp["cover"], -Z, Yv, "COVER from inside: tongue, screw pillars, LED sleeve, mic bosses")
+splat(axs[0, 2], *Pp["base"], Z, Yv, "BASE from inside: gasket groove, screw/insert bosses, nozzle collar + rim")
 splat(axs[1, 0], *Pp["base"], -Z, Yv, "BASE from outside (ear side): charging-pin holes, port, screw heads, nozzle opening")
 P3 = np.vstack([Pp["hook_arm"][0]]); splat(axs[1, 1], *Pp["hook_arm"], Z + 0.4 * Yv, Yv, "HOOK ARM (flexible resin): peg end + magnet pocket at tip")
 # exploded view
@@ -62,7 +62,9 @@ fig, axs = plt.subplots(1, 2, figsize=(16, 6.5))
 for a, xs in zip(axs, (0.0, 8.0)):
     i = int((xs - lo[0]) / p)
     img = np.ones(D["cover"].shape[1:] + (3,))
-    img[D["inside"][i] & ~D["cover"][i] & ~D["base"][i] & ~D["cavity"][i]] = (0.95, 0.85, 0.3)   # gasket gap / tolerances
+    zs = lo[2] + (np.arange(img.shape[1]) + 0.5) * p
+    near_seam = (np.abs(zs - zp) < 2.0)[None, :]
+    img[D["inside"][i] & ~D["cover"][i] & ~D["base"][i] & ~D["cavity"][i] & near_seam] = (0.95, 0.85, 0.3)   # gasket space
     img[D["base"][i]] = col["base"]; img[D["cover"][i]] = col["cover"]
     ext = [lo[1], lo[1] + img.shape[0] * p, lo[2], lo[2] + img.shape[1] * p]
     a.imshow(np.transpose(img, (1, 0, 2)), origin="lower", extent=ext, interpolation="nearest")
