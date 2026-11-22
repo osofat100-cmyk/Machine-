@@ -1,0 +1,21 @@
+{
+ "registration": {
+  "anchor_rms_mm": 0.502,
+  "icp_rms_mm": 0.116,
+  "mirrored": true,
+  "pin_error_mm": [
+   0.205,
+   0.192
+  ]
+ },
+ "original_bud_baseline": {
+  "case_surface_voxels_inside_bud": 44735,
+  "max_penetration_mm": 1.76
+ },
+ "solar_bud": {
+  "case_surface_voxels_inside_bud": 62743,
+  "max_penetration_mm": 1.75
+ },
+ "cell_min_gap_to_case_mm": 0.0,
+ "cell": "SM400K10TF"
+}

@@ -6,8 +6,10 @@ Pmax 85.7 mW, Vmax 5.58 V, Voc 6.91 V, Isc 16.4 mA, 1.7 g (distributor table of 
 2. Flat seat = plane parallel to the face's best-fit plane, at the lowest surface point under the
    footprint; every earbud vertex above it inside the footprint (+0.3 mm) is pushed down onto it.
 3. Cell = 10 strips on a thin base, 1.8 mm total, sitting on the seat.
-Seat level = 5th percentile of the surface under the footprint (95 % supported).
-Usage: python3 make_solar_bud.py <earbud glb> <data dir> <out dir>
+Seat level = 5th percentile of the surface under the footprint (95 % supported), minus SEAT_EXTRA.
+Usage: python3 make_solar_bud.py <earbud glb> <data dir> <out dir> [cell model] [extra seat depth mm]
+  defaults: SM400K10TF (same 33 x 15 footprint and 85.7 mW, 1.50 mm thick per DigiKey) sunk 0.75 mm deeper,
+  chosen by case_fit.py so the closed JBL lid clears the cell. SM400K10L = 1.80 mm.
 """
 import os, sys, json
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -17,7 +19,10 @@ from scipy.signal import fftconvolve
 from matplotlib.path import Path
 
 glb, data, out = sys.argv[1:4]
-CELL_L, CELL_W, CELL_H, N_CELLS = 33.0, 15.0, 1.8, 10
+CELL = sys.argv[4] if len(sys.argv) > 4 else "SM400K10TF"
+SEAT_EXTRA = float(sys.argv[5]) if len(sys.argv) > 5 else 0.75
+CELL_L, CELL_W, N_CELLS = 33.0, 15.0, 10
+CELL_H = {"SM400K10L": 1.80, "SM400K10TF": 1.50}[CELL]
 F = json.load(open(os.path.join(data, "flat_face.json")))
 M = np.load(os.path.join(data, "flat_face_maps.npz"))
 H, D, res = M["H"], M["D"], float(M["res"])
@@ -50,7 +55,7 @@ overlap = (inside & panel).sum() / inside.sum()
 
 # ---- 2. seat plane (parallel to the fitted plane, through the lowest point under the footprint) ----
 dlow, dmax = np.nanmin(D[inside]), np.nanmax(D[inside])
-dmin = np.nanpercentile(D[inside], 5)          # seat level: 95 % of the footprint supported, rounded corners overhang
+dmin = np.nanpercentile(D[inside], 5) - SEAT_EXTRA   # 95 % of the footprint supported, then sunk for lid clearance
 s = trimesh.load(glb, force="scene")
 allv = np.vstack([s.geometry[s.graph[nd][1]].vertices @ s.graph[nd][0][:3, :3].T + s.graph[nd][0][:3, 3] for nd in s.graph.nodes_geometry])
 x0, y0 = (allv @ u).min(), (allv @ v).min()
@@ -83,24 +88,26 @@ def box3d(c2, L, W, z0, z1, along, across):
     Fc = [[0, 1, 2], [0, 2, 3], [4, 6, 5], [4, 7, 6], [0, 4, 5], [0, 5, 1], [1, 5, 6], [1, 6, 2], [2, 6, 7], [2, 7, 3], [3, 7, 4], [3, 4, 0]]
     mm = trimesh.Trimesh(V, Fc); mm.fix_normals(); return mm
 c_mm = centre * res; la, sa = long_axis, short_axis
-base = box3d(c_mm, CELL_L, CELL_W, 0.0, 1.5, la, sa)        # PCB + encapsulation body
+body_h = CELL_H - 0.3
+base = box3d(c_mm, CELL_L, CELL_W, 0.0, body_h, la, sa)     # PCB + encapsulation body
 base.visual = trimesh.visual.ColorVisuals(base, face_colors=np.tile([40, 40, 45, 255], (12, 1)))
-new.add_geometry(base, node_name="SM400K10L_body")
+new.add_geometry(base, node_name=f"{CELL}_body")
 pitch = (CELL_L - 1.0) / N_CELLS
 for c in range(N_CELLS):
     cc = c_mm + (-CELL_L / 2 + 0.5 + pitch * (c + 0.5)) * la
-    strip = box3d(cc, pitch - 0.25, CELL_W - 1.0, 1.5, CELL_H, la, sa)
+    strip = box3d(cc, pitch - 0.25, CELL_W - 1.0, body_h, CELL_H, la, sa)
     strip.visual = trimesh.visual.ColorVisuals(strip, face_colors=np.tile([25, 45, 120, 255], (12, 1)))
-    new.add_geometry(strip, node_name=f"SM400K10L_cell_{c+1}")
-new.export(os.path.join(out, "EP3_earbud_flat_face_SM400K10L.glb"))
+    new.add_geometry(strip, node_name=f"{CELL}_cell_{c+1}")
+new.export(os.path.join(out, f"EP3_earbud_flat_face_{CELL}.glb"))
 
 orig_h = np.concatenate(orig_h)
 new_top = max((g.vertices @ n).max() for g in new.dump())
-res_out = dict(cell="ANYSOLAR SM400K10L", cell_mm=[CELL_L, CELL_W, CELL_H], footprint_on_face_pct=round(100 * overlap, 1),
+res_out = dict(cell=f"ANYSOLAR {CELL}", cell_mm=[CELL_L, CELL_W, CELL_H], seat_extra_mm=SEAT_EXTRA,
+               footprint_on_face_pct=round(100 * overlap, 1),
                rotation_deg=float(ang), shaved_mm=round(float(dmax - dmin), 2), corner_overhang_share_pct=5.0,
                max_gap_under_corners_mm=round(float(dmin - dlow), 2),
                cell_top_above_original_face_top_mm=round(float(new_top - orig_h.max()), 2),
                earbud_depth_along_face_normal_mm=[round(float(np.ptp(orig_h)), 2), round(float(new_top - orig_h.min()), 2)],
                vertices_moved=moved)
-json.dump(res_out, open(os.path.join(data, "solar_bud_SM400K10L.json"), "w"), indent=1)
+json.dump(res_out, open(os.path.join(data, f"solar_bud_{CELL}.json"), "w"), indent=1)
 print(json.dumps(res_out))
