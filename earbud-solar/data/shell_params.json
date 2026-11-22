@@ -103,7 +103,7 @@
  "hook": {
   "mode": "printed_flex",
   "material": "flexible resin ~80A (arm); stub is printed with the rigid halves",
-  "stub_len": 3.0,
+  "stub_len": 4.0,
   "peg_d": 2.0,
   "peg_len": 2.2,
   "socket_clearance": 0.1,

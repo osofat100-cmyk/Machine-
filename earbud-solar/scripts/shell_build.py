@@ -120,11 +120,14 @@ arm = hook & ~stub
 la_, na_ = ndimage.label(arm)
 arm = la_ == (np.argmax(ndimage.sum(arm, la_, range(1, na_ + 1))) + 1)
 iface = arm & ndimage.binary_dilation(stub, iterations=2)
-ri = np.argwhere(iface); ic = g.lo + (ri.mean(0) + 0.5) * p
-gx2, gy2 = np.gradient(d2, p)
-ii, jj = g.index(ic)[:2]
-nrm = np.array([gx2[ii, jj], gy2[ii, jj], 0.0]); nrm /= np.linalg.norm(nrm)
-peg_axis = -nrm                                                    # from the arm into the stub (towards the paddle)
+# joint centre = the interface voxel deepest inside the hook's cross-section (always on material)
+depth = ndimage.distance_transform_edt(arm | stub)
+ri = np.argwhere(iface); ic = g.lo + (ri[np.argmax(depth[tuple(ri.T)])] + 0.5) * p
+rep_hook_depth = float(depth[tuple(ri.T)].max() * p); del depth
+# peg axis = the hook's own direction at the joint: from the interface towards the nearby stub material
+sv = np.argwhere(stub); sp_ = g.lo + (sv + 0.5) * p
+nb = np.linalg.norm(sp_ - ic, axis=1) < 3.0
+peg_axis = sp_[nb].mean(0) - ic; peg_axis /= np.linalg.norm(peg_axis)
 rep["hook_joint"] = dict(centre=ic.round(3).tolist(), axis_into_stub=peg_axis.round(4).tolist(),
                          stub_volume_mm3=round(float(stub.sum() * p ** 3), 1), arm_volume_mm3=round(float(arm.sum() * p ** 3), 1))
 log("hook joint at", ic.round(2), "axis", peg_axis.round(2))
@@ -325,6 +328,10 @@ base |= stub_f & below
 sock = cyl(ic + peg_axis * (HK["peg_len"] + 0.1) / 2, peg_axis, HK["peg_d"] + 2 * HK["socket_clearance"], HK["peg_len"] + 0.1)
 s_, v_ = sock
 assert not (cavity[s_] & (v_ <= 0)).any(), "hook peg socket would break into the sealed cavity - shorten peg_len"
+shell_solid = cover | base
+s2, v2 = cyl(ic + peg_axis * (HK["peg_len"] + 0.1) / 2, peg_axis, HK["peg_d"] + 2 * HK["socket_clearance"] + 1.2, HK["peg_len"] + 0.1)
+rep["hook_joint"]["socket_wall_cover_share"] = round(float(shell_solid[s2][v2 <= 0].mean()), 3)
+rep["hook_joint"]["joint_depth_in_hook_mm"] = round(rep_hook_depth, 2)
 cut(cover, sock); cut(base, sock)
 rep["hook_joint"]["socket_in"] = "cover" if ic[2] >= zp else "base"
 
