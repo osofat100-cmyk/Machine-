@@ -4,7 +4,7 @@
   "value": {
    "watertight": true,
    "bodies": 1,
-   "volume_cm3": 0.887
+   "volume_cm3": 0.893
   }
  },
  "base: watertight, one body, positive volume": {
@@ -12,7 +12,7 @@
   "value": {
    "watertight": true,
    "bodies": 1,
-   "volume_cm3": 1.059
+   "volume_cm3": 1.061
   }
  },
  "hook_arm: watertight, one body, positive volume": {
@@ -20,7 +20,7 @@
   "value": {
    "watertight": true,
    "bodies": 1,
-   "volume_cm3": 1.725
+   "volume_cm3": 1.716
   }
  },
  "printed parts lighter than the original bud (12.5 g incl. electronics)": {
@@ -31,26 +31,26 @@
   "passed": true,
   "value": 0
  },
- "cover_share_thinner_than_0.8mm": 0.1461,
- "base_share_thinner_than_0.8mm": 0.1805,
- "cover_share_thinner_than_0.6mm": 0.0332,
- "base_share_thinner_than_0.6mm": 0.0334,
+ "cover_share_thinner_than_0.8mm": 0.0653,
+ "base_share_thinner_than_0.8mm": 0.1648,
+ "cover_share_thinner_than_0.6mm": 0.0353,
+ "base_share_thinner_than_0.6mm": 0.0358,
  "no region thinner than 0.6 mm (groove side walls are the thinnest by design)": {
   "passed": false,
   "value": [
-   0.0332,
-   0.0334
+   0.0353,
+   0.0358
   ]
  },
  "cell ledge flat (RMS from the seat plane)": {
-  "passed": false,
-  "value": "0.0233 mm over 2086 vertices"
+  "passed": true,
+  "value": "0.0112 mm over 5491 vertices"
  },
  "tongue never touches the base (gasket path open, side gap > 0)": {
   "passed": true,
   "value": {
-   "min_mm": 0.2,
-   "median_mm": 0.4,
+   "min_mm": 0.12,
+   "median_mm": 0.36,
    "design_mm": 0.15
   }
  },
@@ -61,9 +61,9 @@
  },
  "stack": {
   "needed_mm": 7.0,
-  "free_height_over_pcb_footprint_mm": 6.0,
+  "free_height_over_pcb_footprint_mm": 6.12,
   "at": [
-   -2.0,
+   -1.5,
    0.0
   ],
   "battery": [

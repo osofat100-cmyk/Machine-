@@ -1,36 +1,36 @@
 {
- "pitch": 0.2,
+ "pitch": 0.12,
  "paddle_outline": {
-  "centre_y": 0.212,
-  "half_width": 8.477,
+  "centre_y": 0.211,
+  "half_width": 8.511,
   "centres_x": [
-   -14.422,
-   13.023
+   -14.469,
+   13.029
   ]
  },
  "clear_height_mm": {
-  "median": 5.8,
-  "p10": 5.6,
-  "p90": 7.4
+  "median": 5.76,
+  "p10": 5.52,
+  "p90": 7.32
  },
  "hook_joint": {
   "centre": [
-   -20.62,
-   -9.785,
+   -20.604,
+   -9.789,
    -5.39
   ],
   "axis_into_stub": [
-   0.535,
-   0.8449,
+   0.5218,
+   0.8531,
    -0.0
   ],
-  "stub_volume_mm3": 238.7,
-  "arm_volume_mm3": 1759.3,
+  "stub_volume_mm3": 236.3,
+  "arm_volume_mm3": 1753.5,
   "socket_in": "base"
  },
  "parting_z": -3.6,
  "seal": {
-  "seam_length_mm": 93.4,
+  "seam_length_mm": 93.6,
   "groove": [
    1.1,
    1.2
@@ -42,7 +42,7 @@
   "gasket_gap_mm": 0.6
  },
  "pod_socket": {
-  "opening_area_mm2": 82.7,
+  "opening_area_mm2": 82.9,
   "oring_groove_z": -7.2
  },
  "cell_as_lid": {
@@ -60,20 +60,20 @@
  ],
  "clear_height_final_mm": {
   "median": 6.6,
-  "p10": 6.4
+  "p10": 6.36
  },
  "hook": {
   "mode": "printed_flex",
   "tip": [
-   15.7,
-   -8.3,
-   -8.9
+   15.54,
+   -8.34,
+   -9.06
   ],
-  "tip_gap_to_paddle_mm": 0.2,
+  "tip_gap_to_paddle_mm": 0.12,
   "magnet_centre": [
-   15.7,
-   -9.82,
-   -9.21
+   15.54,
+   -9.86,
+   -9.37
   ],
   "magnet_axis": [
    -0.0,
@@ -83,58 +83,58 @@
  },
  "screws": [
   [
-   -20.5,
-   -1.1
+   -20.58,
+   -1.26
   ],
   [
-   -17.3,
-   -5.3
+   -17.22,
+   -5.34
   ]
  ],
  "tab": {
-  "end_x": 13.02,
+  "end_x": 13.03,
   "width": 3.6,
   "hook": 0.7,
   "depth_below_seam": 2.8
  },
- "overlap_voxels_resolved": 187,
+ "overlap_voxels_resolved": 790,
  "cover": {
   "watertight": true,
-  "bodies_before_cleanup": 1,
-  "volume_cm3": 0.887,
-  "mass_g": 1.02,
-  "triangles": 109328,
+  "bodies_before_cleanup": 2,
+  "volume_cm3": 0.893,
+  "mass_g": 1.03,
+  "triangles": 307094,
   "extents_mm": [
-   46.36,
+   46.39,
    20.4,
-   7.58
+   7.56
   ],
-  "thinner_than_min_share": 0.1461
+  "thinner_than_min_share": 0.0653
  },
  "base": {
   "watertight": true,
   "bodies_before_cleanup": 3,
-  "volume_cm3": 1.059,
+  "volume_cm3": 1.061,
   "mass_g": 1.22,
-  "triangles": 141012,
+  "triangles": 399476,
   "extents_mm": [
-   46.16,
-   20.19,
-   6.0
+   46.19,
+   20.33,
+   6.09
   ],
-  "thinner_than_min_share": 0.1805
+  "thinner_than_min_share": 0.1648
  },
  "hook_arm": {
   "watertight": true,
-  "bodies_before_cleanup": 1,
-  "volume_cm3": 1.725,
-  "mass_g": 1.98,
-  "triangles": 94848,
+  "bodies_before_cleanup": 2,
+  "volume_cm3": 1.716,
+  "mass_g": 1.97,
+  "triangles": 260596,
   "extents_mm": [
-   50.2,
-   23.8,
-   12.27
+   50.28,
+   23.88,
+   12.22
   ],
-  "thinner_than_min_share": 0.0081
+  "thinner_than_min_share": 0.0056
  }
 }
