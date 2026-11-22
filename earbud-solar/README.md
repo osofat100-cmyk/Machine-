@@ -185,3 +185,5 @@ Sources: https://ossila.com/pages/video-guide-to-make-efficient-air-processed-pe
 
 Other ANYSOLAR sizes that fit: KXOB25-05X3F 23 × 8 × 1.8 mm (30.9 mW, 1.1×); two KXOB25-04X3F side by side 22 × 14 mm (44 mW, 1.6×). SM340K10L (34 × 16) overhangs 2.9 %; SM111K04L (43 × 14) and SM141K04LV (45 × 15) are too long.
 Sources: https://www.digikey.ie/en/products/detail/anysolar-ltd/SM400K10L/9990467 , https://gdrectifiers.co.uk/products/solar_cells_and_modules
+
+**Florida sunlight** (NREL PVWatts v8 summary: 5.48 peak sun hours/day statewide average, 6.6 in May, 3.9 in December; 1 peak sun hour = 1 kWh/m² = one hour of full test sun): the SM400K10L makes 85.7 mW × sun-hours = **470 mWh/day on average** (566 in May, 334 in December), i.e. **17.4 h of listening per day** (21.0 h / 12.4 h) on top of the 269.5 mWh (10 h) battery. Source: https://www.thegreenwatt.com/florida-peak-sun-hours/
