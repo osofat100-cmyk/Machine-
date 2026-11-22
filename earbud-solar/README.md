@@ -275,7 +275,7 @@ out ~1.2 mm) or fit a battery 0.3 mm thinner.
 | TI BQ25188EVM | https://www.digikey.com/en/products/detail/texas-instruments/BQ25188EVM/25796444 |
 | Battery: 3.7 V LiPo with JST-PH 2 mm plug | — |
 
-Connections (names from TI SLUUD46): panel + → **J2 VIN**, panel − → **J2 GND**; battery → **J4** (or **J3 VBAT / GND**).
+Connections: panel **+ pad** (right, with the printed text upright — ANYSOLAR datasheet back view) → **J2 pin 2 (VIN)**; **− pad** (left) → **J2 pin 1 (GND)**; battery red → **J4 pin 1 (+)**, black → **J4 pin 2 (−)** (TI SLUUD46 Fig. 3-2); jumper **J5 stays on** as shipped. The JBL earbud battery has two wires only (red to its (+) tab, black to its (−) tab — JBL FCC internal photos).
 
 **Assembly order**
 1. Print the tolerance coupon (`scripts/shell_coupon.py`): the tongue must drop into the groove with a little play, the
