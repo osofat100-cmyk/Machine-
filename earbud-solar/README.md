@@ -267,28 +267,15 @@ out ~1.2 mm) or fit a battery 0.3 mm thinner.
 5. Put the measured sizes in `data/components.json`, re-run the scripts (~10 min), print the coupon, then the shell, and
    assemble (below).
 
-**Bench test — parts ordered** (`scripts/bench_test_diagram.py` draws the wiring)
+**Bench test — parts ordered** (`scripts/bench_test_diagram.py` draws the connections)
 
-| Part | Link | Notes |
-|---|---|---|
-| ANYSOLAR SM400K10TF (×2–3, they crack) | https://www.digikey.com/en/products/detail/anysolar-ltd/SM400K10TF/14311427 | 33 × 15 mm, 85.7 mW; datasheet thickness 1.2 ± 0.3 mm (DigiKey lists 1.5) — measure it |
-| TI BQ25188EVM | https://www.digikey.com/en/products/detail/texas-instruments/BQ25188EVM/25796444 | charges at 4.20 V / 10 mA with no setup; USB2ANY not needed |
-| Small LiPo, 3.7 V 50–150 mAh, JST-PH 2 mm | any | check + / − against J4 before plugging in |
-| Multimeter (mA range), 30 AWG wire, fine-tip iron | any | — |
-
-Wiring (connector names from TI SLUUD46): panel + → **J2 VIN**, panel − → **J2 GND**; LiPo → **J4** (or **J3 VBAT / GND**);
-meter on mA in series in the battery + wire; jumpers as shipped, **J7 off**; no USB. Expect ≈ 10 mA into the LiPo in full sun.
-
-Results to fill in (and send back):
-
-| Measurement | Value |
+| Part | Link |
 |---|---|
-| Panel open-circuit voltage in full sun (V), time + weather | |
-| Panel short-circuit current in full sun (mA) | |
-| Charge current into the LiPo in full sun (mA) | |
-| Charge current in shade / cloud (mA) | |
-| Panel thickness (mm, caliper) | |
-| Earbud play time from full at a fixed volume (h:mm), volume level | |
+| Solar panel ANYSOLAR SM400K10TF | https://www.digikey.com/en/products/detail/anysolar-ltd/SM400K10TF/14311427 |
+| TI BQ25188EVM | https://www.digikey.com/en/products/detail/texas-instruments/BQ25188EVM/25796444 |
+| Battery: 3.7 V LiPo with JST-PH 2 mm plug | — |
+
+Connections (names from TI SLUUD46): panel + → **J2 VIN**, panel − → **J2 GND**; battery → **J4** (or **J3 VBAT / GND**).
 
 **Assembly order**
 1. Print the tolerance coupon (`scripts/shell_coupon.py`): the tongue must drop into the groove with a little play, the
