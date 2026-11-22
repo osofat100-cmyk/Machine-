@@ -2,4 +2,5 @@
 # Recreate with: python3 scripts/fetch_jbl_model.py && python3 scripts/export_measured.py
 models/*.glb
 models/*.stl
+data/*.npz
 __pycache__/
