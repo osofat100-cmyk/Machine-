@@ -3,7 +3,7 @@
 Working notes for one question: **could earbuds run on energy from their own surface?**
 Rule used throughout: only numbers a source states (or exact math on them); anything not found is marked "not found".
 
-Status (2026-11-22): earbud chosen, true areas measured from the maker's 3D model, every harvesting type compared → **solar wins**. Next step in progress: which solar technology can physically fit a small, irregular, doubly-curved shape.
+Status (2026-11-22): earbud chosen, true areas measured from the maker's 3D model, every harvesting type compared → **solar wins**; curvature mapped and every solar technology ranked by what it can really cover (sections 5–6).
 
 ---
 
@@ -82,7 +82,41 @@ No charging losses included (none published for these parts). Real sun is often 
 
 **Conclusion:** solar is the only source that can run the bud on its own; heat/motion/sweat add percent-level top-ups at best.
 
-## 5. Next: which solar technology can fit a small doubly-curved shape — in progress
+## 5. Where can a cell physically go? Curvature map (`scripts/curvature.py`, `run_curvature.py`)
+
+A flat sheet can bend in one direction but cannot wrap a doubly-curved spot without stretching (Gauss). A flat tile of size L on Gaussian curvature K needs in-plane strain **ε = L²|K| / 24** (geodesic circle C = 2πρ(1 − Kρ²/6), ρ = L/2). Principal curvatures were fitted on a clean outer-skin mesh (validated: sphere R 10 → median |k| 0.1001, p10–p90 0.0956–0.1047; cylinder R 5 → 0.207 / ~0).
+
+| Share of skin coverable | Earbud | Case |
+|---|---|---|
+| Sheet bending no tighter than 2 / 5 / 10 / 20 mm | 88 / 41 / 14 / 8 % | 91 / 81 / 72 / 49 % |
+| 1 mm / 2 mm / 5 mm / 10 mm tiles at 1 % strain | 97 / 87 / 48 / 28 % | 99 / 96 / 87 / 76 % |
+
+## 6. Which solar technology can do the job (`scripts/tech_ranking.py`, `data/tech_ranking.json`)
+
+Each technology's **sourced** efficiency, bend radius and stretch limit applied to the curvature map; a z-buffer over 150 sun directions keeps only lit, coverable skin. Power = exact shadow × coverable-lit share × 100 mW/cm² × efficiency. Silicon tile strain limit 0.024 % derived from Yamada 2022 (≤3-inch 180 µm cell uncracked on a 1 m sphere; 6-inch cracked). "Upper bound" = a limit the sources don't publish was not applied.
+
+| Technology (efficiency used) | Earbud: covers | Earbud power avg / best | × bud's 26.95 mW | Case: covers | Case power avg / best | Status |
+|---|---|---|---|---|---|---|
+| Spray-coated perovskite on the part (23.2 %) | 100 % | 213 / 275 mW | **7.9×** (upper bound) | 100 % | 884 / 1134 mW | Lab; tightest curvature *shown* is R 64 mm (→ 0.5 % of earbud, 0.02×) |
+| Stretchable perovskite skin (21.44 %, 40 % stretch) | 93 % | 190 / 251 mW | **7.1×** (upper bound) | 98 % | 805 / 1048 mW | Lab; bend radius not published |
+| Flexible CIGS (22.2 %, Fraunhofer-confirmed) | 71 % | 145 / 197 mW | 5.4× (upper bound) | 86 % | 740 / 1081 mW | Lab cell; 3 mm bend unverified, stretch limit not published |
+| **Stretchable GaAs micro-cells (19 % × 67 % fill)** | 94 % | 114 / 148 mW | **4.2×** | 94 % | 465 / 621 mW | Lab; fully demonstrated: 1.5 mm wrap, 60 % biaxial stretch, printed onto a sphere |
+| Stretchable organic PV (>10 % at 100 % strain) | 97 % | 91 / 118 mW | 3.4× | 99 % | 379 / 489 mW | Lab |
+| Corrugated back-contact Si (18.93 %, 18.5 mm sphere) | 9 % | 18 / 51 mW | 0.66× | 52 % | 387 / 524 mW | Lab (KAUST) |
+| Flexible perovskite/Si tandem tiles (33.35 %, NREL-cert., bend 15 mm) | 1.3 % | 4 / 12 mW | 0.16× | 32 % | 418 / 862 mW | Lab (LONGi) |
+| Flexible a-Si (PowerFilm, ~6 %, <1 in bend) | 6 % | 4 / 12 mW | 0.15× | 43 % | 101 / 157 mW | **Commercial** |
+| Rigid mono-Si tiles (ANYSOLAR KXOB25, 25 %) | 0 % | 0 | 0 | 28 % (flat lid/bottom) | 274 / 593 mW | **Commercial**, DigiKey ~€3 |
+| Exeger Powerfoyle (dye cell; 60–200 mm bend, ≥15 cm²) | 0.5 % | efficiency not published | – | 30 % | not published | **Commercial**, already on an earbud case |
+
+All values: bud in open direct sun (not worn), standard test sun, no charging losses.
+
+**Findings**
+- **Earbud:** nothing commercial fits — the best off-the-shelf option covers ≤ 6 %. Only stretchable/printed lab technologies cover > 90 %; stretchable GaAs micro-cells are the only one demonstrated at earbud-scale curvature and still give 4.2× the bud's draw.
+- **Case:** buildable today — rigid 25 % mono-Si tiles on the flat lid/bottom give 0.27–0.59 W (one hour of sun ≈ 5–11 h of listening for both buds; refill both buds in ≥ 55 min at best angle).
+- No shipping earbud or hearing aid has PV on the bud itself; every solar earbud product puts it on the case.
+- Manufacturing routes you asked about: spray-coating (perovskite 23.2 % on a doubly-curved part; quantum-dot 5.0 % on a sphere), transfer printing (GaAs onto a sphere), corrugation/kirigami (Si sphere 18.93 %), injection-moulding (OPV 4.58 → 4.52 %, flat parts only), electroplating (CIGS 17.3 % cell, never on a 3D part), dip-coated fibres (13.18 %, unverified), 3D-printed PV (no efficiency found).
+
+Key sources: certified tables v66 https://publica-rest.fraunhofer.de/server/api/core/bitstreams/bb6bb0ce-e14b-4811-a740-96bbe7cc0b65/content ; LONGi 33.35 % http://www.pv-magazine-india.com/2025/11/27/longi-achieves-33-35-efficiency-for-flexible-perovskite-silicon-tandem-solar-cell/ ; Yamada curved Si https://www.jstage.jst.go.jp/article/jsaprev/2022/0/2022_220402/_article/-char/en ; KAUST sphere https://www.cambridge.org/core/journals/mrs-communications/article/natureinspired-spherical-silicon-solar-cell-for-threedimensional-light-harvesting-improved-dust-and-thermal-management/0EE382BEDC3D233365B27E4C3777FDC4 ; stretchable GaAs https://rogersgroup.northwestern.edu/files/2012/smallnotched.pdf , https://laserfocusworld.com/detectors-imaging/article/16559162/1mthick-gaas-photovoltaic-cells-have-a-14-mm-bending-radius , https://pmc.ncbi.nlm.nih.gov/articles/PMC10371014 ; spray perovskite on curved https://english.cas.cn/newsroom/research_news/chem/202512/t20251216_1137165.shtml , https://pmc.ncbi.nlm.nih.gov/articles/PMC9412839/ ; stretchable perovskite https://www.polyu.edu.hk/rcoe/research-publication/ja0013/ ; stretchable OPV https://pure.uj.ac.za/en/publications/molecularly-interlocked-interfaces-enable-record-efficiency-stret/ ; flexible CIGS https://www.solarserver.de/2022/10/11/wirkungsgrad-rekord-fuer-flexible-cigs-solarzellen/ ; PowerFilm https://www.powerfilmsolar.com/technology ; ANYSOLAR https://www.digikey.com/en/products/detail/anysolar-ltd/KXOB25-05X3F-TR/9990478 ; Powerfoyle https://www.exeger.com/powerfoyle/customization/ ; quantum-dot sphere https://light.utoronto.ca/wp-content/uploads/2023/01/1_4898635.pdf ; in-mould OPV https://pmc.ncbi.nlm.nih.gov/articles/PMC10646225/ ; sheet-on-sphere coverage https://pmc.ncbi.nlm.nih.gov/articles/PMC10115424/
 
 ## Reproduce
 
