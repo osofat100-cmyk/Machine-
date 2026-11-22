@@ -158,3 +158,16 @@ Outward face = the rounded panel carrying the "JBL" letters, on the side away fr
 | Off-the-shelf ANYSOLAR KXOB25-05X3F tile | 23 × 8 × 1.8 mm | 1.84 cm² | 30.1–30.7 mW (1.12–1.14×) | 26–29° |
 
 Needed cell area to cover the 26.95 mW draw at right-angle sun: 1.08 cm² at 25 %, 0.81 cm² at 33.35 %. One silicon sheet over the whole dome would need 0.59 % stretch (> 0.024 % limit) → split into ≤ 7.2 mm tiles, or use a thin-film/stretchable cell. Model dimensions are true scale; the datasheet fit (×1.0315) would enlarge each rectangle side by 3 %. No charging/boost-converter losses included (not published for this design).
+
+## 8. Could a liquid perovskite ink make that rectangle? (checked claims)
+
+| Claim checked | Finding |
+|---|---|
+| Ossila I101 (air-processed MAPbI₃-Cl ink) | Ossila reports **peak 11.7 %**, ">10 %" routinely (a 13.7 % figure was not found); anneal **90 °C for 90–120 min**, 30–40 % RH; designed for spin coating |
+| Ossila I301 (triple-cation ink) | **$338 ex. VAT** for 10 × 0.5 mL; N₂/inert handling, refrigerated; built for ITO-glass/SnO₂/perovskite/Spiro-OMeTAD/**Au** (gold electrode = vacuum evaporation); a 19 % figure and 150 °C anneal were not confirmed in what was retrieved |
+| Spray-coated flexible perovskite | Das et al., ACS Photonics 2015: **8.1 % on ITO-PET** (13 % on glass), 60–90 % kept after 1,000 bends |
+| Will a cell on 125 µm PET survive bending to the face's 37.8 mm curve? | Surface strain = t / 2R = 0.125 / 75.6 = **0.17 %**, below ITO-on-PET crack onset (~0.7–0.9 %) and single-crystal perovskite failure (~0.36 %) |
+| Lead in a consumer earbud | EU RoHS excludes PV **panels**; whether a lead-perovskite cell built into an earbud is covered was **not settled** by any authoritative source found; lead is ~⅓ of the absorber by weight |
+
+Power on the 29.6 × 13.75 mm rectangle (4.07 cm²) at right-angle full sun vs the bud's 26.95 mW: 8.1 % → 33.0 mW (1.22×, enough up to 35° off-perpendicular); 11.7 % → 47.6 mW (1.77×, to 55°); 20 % → 81.4 mW (3.0×, to 71°); 25 % mono-Si → 101.8 mW (3.8×, to 75°). Indoors (1,000 lux, 31.6 µW/cm² cited device) → 0.13 mW (0.5 %).
+Sources: https://ossila.com/pages/video-guide-to-make-efficient-air-processed-perovskite-devices , https://ossila.com/cdn/shop/files/i101-condensed-perovskite-pv-fabrication-guide.pdf , https://www.ossila.com/en-us/products/triple-cation-perovskite-ink , https://www.osti.gov/biblio/1185932 , https://export.arxiv.org/pdf/2504.18553 , https://koreascience.kr/article/JAKO200903544453074.page , https://environment.ec.europa.eu/system/files/2023-12/COM_2023_760_1_EN_ACT_part1_v4.pdf , https://www.cambridge.org/core/journals/mrs-energy-and-sustainability/article/environment-versus-sustainable-energy-the-case-of-lead-halide-perovskitebased-solar-cells/3EEFAED4B22D67EC12FB2E98AACDB018
