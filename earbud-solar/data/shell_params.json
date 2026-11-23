@@ -1,0 +1,152 @@
+{
+ "_note": "All sizes in mm, seat frame S (Z = out of the face, seat at Z = 0). Edit and re-run shell_build.py.",
+ "pitch": 0.12,
+ "print": {
+  "material": "tough/ABS-like resin, HDT >= 60-70 C, UV clear coat",
+  "density_g_cm3": 1.15
+ },
+ "walls": {
+  "cover_top": 0.8,
+  "floor": 0.8,
+  "side": 1.0,
+  "min_check": 0.8,
+  "_note": "prototype: floor 0.8 / sides 1.0 (were 1.0 / 1.1) to give the electronics more height"
+ },
+ "paddle": {
+  "outline_slice_z": -3.0,
+  "ends_slice_z": -1.5,
+  "outline_margin": 0.4,
+  "z_cut_bottom": -9.2,
+  "seal_mm": 1.0
+ },
+ "parting": {
+  "z": "auto",
+  "scan": [
+   -6.6,
+   -3.2
+  ],
+  "keep_clear_of_side_features": 2.4,
+  "_note": "seam at least mic-boss radius (2.1) + 0.3 below the mic/LED centres, so each boss, membrane seat and LED sleeve sits wholly in the cover and the membrane never bridges the seam"
+ },
+ "seal": {
+  "groove_w": 1.1,
+  "groove_d": 1.2,
+  "groove_wall_out": 0.6,
+  "land_t": 2.4,
+  "tongue_w": 0.8,
+  "tongue_h": 0.6,
+  "land_h_base": 2.0,
+  "land_h_cover": 1.2,
+  "gasket": "seamless cast 0.8 x 0.8 silicone (or 0.8 mm cord, 50-60 ShA): ~25 % squeeze",
+  "type": "cured-in-place: bead of MS-polymer (or neutral-cure silicone) laid in the groove at final assembly; the tongue displaces it into a 0.15 mm side gap and 0.6 mm bottom gap; screws hold the halves while it cures (24 h). Dry-fit without sealant first. Alternative for test fits: 0.8 mm silicone cord."
+ },
+ "screws": {
+  "type": "M1.2 x 4 titanium or A4 stainless (must be NON-magnetic: they sit near the hook-switch sensor)",
+  "max_count": 4,
+  "clear_hole": 1.3,
+  "head_cbore_d": 2.4,
+  "head_cbore_h": 0.8,
+  "boss_od": 3.2,
+  "insert_hole_d": 1.6,
+  "insert_hole_h": 2.2,
+  "min_dist_to_hall_area": 2.0,
+  "web_to_groove": 0.6
+ },
+ "features": {
+  "pin_hole_d": 1.4,
+  "window": {
+   "mode": "membrane_port",
+   "slot": [
+    3.1,
+    2.4
+   ],
+   "recess": [
+    4.4,
+    3.6,
+    0.0
+   ],
+   "boss_h": 0.0,
+   "_note": "prototype: no raised boss (it sat right under the board stack). Seal the slot from inside with an adhesive acoustic membrane glued flat on the floor, or clear UV resin if it turns out to be an optical window"
+  },
+  "led": {
+   "hole_d": 0.9,
+   "sleeve_od": 2.0,
+   "sleeve_id": 1.1,
+   "sleeve_len": 2.0
+  },
+  "mic": {
+   "hole_d": 0.9,
+   "recess_d": 3.2,
+   "recess_h": 0.3,
+   "boss_od": 4.2,
+   "boss_h": 0.9,
+   "_note": "membrane recess is open to the cavity so the IP68 acoustic membrane can be placed and pressed"
+  },
+  "pod_socket": {
+   "_note": "the body narrows to the neck size just above the pod, so there is no room for a socket AROUND the neck without changing the outside. The opening sits inside the neck outline instead: the pod's top face bonds and seals onto a 1.2 mm rim with flexible MS-polymer; the collar centres it. Real pod-to-body joint unknown - measure on the teardown. Prototype: collar 1.0 mm tall (was 2.0) - it only centres the pod and sat under the board.",
+   "rim": 1.2,
+   "collar_w": 1.2,
+   "collar_h": 1.0,
+   "joint": "face bond + seal, MS-polymer (flexible, waterproof)"
+  },
+  "cell_passthrough": {
+   "hole_d": 0.9,
+   "relief_d": 3.0,
+   "relief_h": 0.4,
+   "cup_id": 4.0,
+   "cup_wall": 0.6,
+   "cup_h": 2.0
+  },
+  "charger_pocket": {
+   "inner": [
+    3.6,
+    5.0
+   ],
+   "wall": 0.5,
+   "h": 1.0
+  },
+  "charger": {
+   "_note": "charger board glued on the cell back beside the + pad, OFF the board/battery stack",
+   "board": [
+    3.2,
+    4.4,
+    1.0
+   ],
+   "gap_to_pad": 0.3
+  }
+ },
+ "hook": {
+  "mode": "printed_flex",
+  "material": "flexible resin ~80A (arm); stub is printed with the rigid halves",
+  "stub_len": 4.0,
+  "peg_d": 2.0,
+  "peg_len": 2.2,
+  "socket_clearance": 0.1,
+  "magnet": [
+   3.0,
+   1.5
+  ],
+  "magnet_skin": 0.8
+ },
+ "cell_as_lid": {
+  "enabled": true,
+  "lip": 1.2,
+  "bond": "cell bonded + sealed on the 1.2 mm lip with clear MS-polymer or 2-part epoxy bead (no IPA on the cell); pads face the cavity"
+ },
+ "end_screw": {
+  "_note": "optional third screw at the pod end, from the outer face into an insert in the base. Added only if the base under the seam has room for >= min_engagement of thread with min_wall to the outside; on the JBL-model geometry it does not (the paddle tapers into the nozzle neck under a ~45 deg, 1.1 mm wall), so the seam is sealed with a cured-in-place bead and needs no clamping force there.",
+  "gap_to_cell": 0.2,
+  "max_dy_from_axis": 3.0,
+  "tip_room": 0.3,
+  "min_wall_around_hole": 0.6,
+  "stock_lengths": [
+   8,
+   6,
+   5,
+   4
+  ],
+  "head_h": 0.8,
+  "min_engagement": 1.2,
+  "screw": "M1.2 (titanium or A4), longest stock length that fits - see shell_report.json end_screw"
+ }
+}

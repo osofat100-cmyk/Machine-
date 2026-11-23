@@ -1,0 +1,204 @@
+{
+ "earbud": [
+  {
+   "tech": "Flexible perovskite/Si tandem tiles (LONGi, NREL-cert.)",
+   "eff": 0.3335,
+   "skin_share": 0.013125556617242235,
+   "lit_share_mean": 0.014308154856319522,
+   "power_mean_mW": 4.390028073015956,
+   "power_best_mW": 11.702674493752694,
+   "note": "1 cm2 cell, bends to 15 mm; Si strain limit from Yamada"
+  },
+  {
+   "tech": "Corrugated IBC silicon (KAUST sphere)",
+   "eff": 0.1893,
+   "skin_share": 0.08973672619677331,
+   "lit_share_mean": 0.10252895579734747,
+   "power_mean_mW": 17.856032825842846,
+   "power_best_mW": 51.01092628177509,
+   "note": "formed onto an 18.5 mm-radius sphere; not certified"
+  },
+  {
+   "tech": "Stretchable GaAs micro-cells (Rogers, dual-junction)",
+   "eff": 0.1273,
+   "skin_share": 0.9433074146085376,
+   "lit_share_mean": 0.9688778400865636,
+   "power_mean_mW": 113.47109711957796,
+   "power_best_mW": 147.57130465316672,
+   "note": "19 % cells x 67 % fill; 60 % biaxial stretch; wraps 1.5 mm"
+  },
+  {
+   "tech": "Spray-coated perovskite, sprayed on the part",
+   "eff": 0.232,
+   "skin_share": 1.0,
+   "lit_share_mean": 1.0,
+   "power_mean_mW": 213.44,
+   "power_best_mW": 274.456,
+   "note": "23.2 % on a doubly-curved part (its curvature not stated)"
+  },
+  {
+   "tech": "  same, only curvature actually demonstrated (R 64.4 mm lens)",
+   "eff": 0.125,
+   "skin_share": 0.003988876513295815,
+   "lit_share_mean": 0.004774683532805973,
+   "power_mean_mW": 0.5490886062726869,
+   "power_best_mW": 1.7643257216716932,
+   "note": "12.5 % on a 64.4 mm-radius lens"
+  },
+  {
+   "tech": "Stretchable perovskite skin (PolyU)",
+   "eff": 0.2144,
+   "skin_share": 0.9307991281301257,
+   "lit_share_mean": 0.9651610749609135,
+   "power_mean_mW": 190.37609171389028,
+   "power_best_mW": 250.70149487289962,
+   "note": "40 % stretch; bend radius not published"
+  },
+  {
+   "tech": "Stretchable organic PV",
+   "eff": 0.1,
+   "skin_share": 0.9668768213752404,
+   "lit_share_mean": 0.9874148300461318,
+   "power_mean_mW": 90.84216436424413,
+   "power_best_mW": 117.66876346402415,
+   "note": ">10 % at 100 % strain; bend radius not published"
+  },
+  {
+   "tech": "Flexible CIGS (Empa, Fraunhofer-confirmed)",
+   "eff": 0.222,
+   "skin_share": 0.7069795431880984,
+   "lit_share_mean": 0.7095589612813785,
+   "power_mean_mW": 144.92032225210872,
+   "power_best_mW": 197.2763162429987,
+   "note": "3 mm bend is Ascent's (unverified); stretch limit not published"
+  },
+  {
+   "tech": "Flexible a-Si (PowerFilm)",
+   "eff": 0.06,
+   "skin_share": 0.061823202106487514,
+   "lit_share_mean": 0.07098442330815374,
+   "power_mean_mW": 3.9183401666100854,
+   "power_best_mW": 12.093864713485567,
+   "note": "<1 inch bend; stretch limit not published"
+  },
+  {
+   "tech": "Exeger Powerfoyle (dye cell)",
+   "eff": null,
+   "skin_share": 0.005122443586042915,
+   "lit_share_mean": 0.00614824596162995,
+   "power_mean_mW": null,
+   "power_best_mW": null,
+   "note": "efficiency not published; min 15 cm2 per cell"
+  },
+  {
+   "tech": "Rigid mono-Si tiles (ANYSOLAR)",
+   "eff": 0.25,
+   "skin_share": 3.0461937100929087e-05,
+   "lit_share_mean": 3.349459942162208e-05,
+   "power_mean_mW": 0.007703757866973079,
+   "power_best_mW": 0.0490090478242137,
+   "note": "rigid: only flat spots (200 mm = flat at this curvature resolution)"
+  }
+ ],
+ "case": [
+  {
+   "tech": "Flexible perovskite/Si tandem tiles (LONGi, NREL-cert.)",
+   "eff": 0.3335,
+   "skin_share": 0.3220251283071616,
+   "lit_share_mean": 0.3291264982422158,
+   "power_mean_mW": 418.3094117811617,
+   "power_best_mW": 861.9916044219499,
+   "note": "1 cm2 cell, bends to 15 mm; Si strain limit from Yamada"
+  },
+  {
+   "tech": "Corrugated IBC silicon (KAUST sphere)",
+   "eff": 0.1893,
+   "skin_share": 0.5194207406425084,
+   "lit_share_mean": 0.5359480063791539,
+   "power_mean_mW": 386.6448434424638,
+   "power_best_mW": 524.1963079914757,
+   "note": "formed onto an 18.5 mm-radius sphere; not certified"
+  },
+  {
+   "tech": "Stretchable GaAs micro-cells (Rogers, dual-junction)",
+   "eff": 0.1273,
+   "skin_share": 0.9442942464418647,
+   "lit_share_mean": 0.9574603027528024,
+   "power_mean_mW": 464.50257851558536,
+   "power_best_mW": 621.3132185135855,
+   "note": "19 % cells x 67 % fill; 60 % biaxial stretch; wraps 1.5 mm"
+  },
+  {
+   "tech": "Spray-coated perovskite, sprayed on the part",
+   "eff": 0.232,
+   "skin_share": 1.0,
+   "lit_share_mean": 1.0,
+   "power_mean_mW": 884.152,
+   "power_best_mW": 1133.5520000000001,
+   "note": "23.2 % on a doubly-curved part (its curvature not stated)"
+  },
+  {
+   "tech": "  same, only curvature actually demonstrated (R 64.4 mm lens)",
+   "eff": 0.125,
+   "skin_share": 0.3004363828613033,
+   "lit_share_mean": 0.30777811068291844,
+   "power_mean_mW": 146.61779747657528,
+   "power_best_mW": 308.7683137986148,
+   "note": "12.5 % on a 64.4 mm-radius lens"
+  },
+  {
+   "tech": "Stretchable perovskite skin (PolyU)",
+   "eff": 0.2144,
+   "skin_share": 0.9770165468822984,
+   "lit_share_mean": 0.985423883681892,
+   "power_mean_mW": 805.1685702005865,
+   "power_best_mW": 1047.5584000000001,
+   "note": "40 % stretch; bend radius not published"
+  },
+  {
+   "tech": "Stretchable organic PV",
+   "eff": 0.1,
+   "skin_share": 0.9912264026596901,
+   "lit_share_mean": 0.9951339676416201,
+   "power_mean_mW": 379.24555506822145,
+   "power_best_mW": 488.6,
+   "note": ">10 % at 100 % strain; bend radius not published"
+  },
+  {
+   "tech": "Flexible CIGS (Empa, Fraunhofer-confirmed)",
+   "eff": 0.222,
+   "skin_share": 0.8559090842585446,
+   "lit_share_mean": 0.8741119774159557,
+   "power_mean_mW": 739.5354455969501,
+   "power_best_mW": 1080.6880756526368,
+   "note": "3 mm bend is Ascent's (unverified); stretch limit not published"
+  },
+  {
+   "tech": "Flexible a-Si (PowerFilm)",
+   "eff": 0.06,
+   "skin_share": 0.4304431291645842,
+   "lit_share_mean": 0.442845635568517,
+   "power_mean_mW": 101.2610830290971,
+   "power_best_mW": 156.88265849760256,
+   "note": "<1 inch bend; stretch limit not published"
+  },
+  {
+   "tech": "Exeger Powerfoyle (dye cell)",
+   "eff": null,
+   "skin_share": 0.3037765075199488,
+   "lit_share_mean": 0.3111852971054386,
+   "power_mean_mW": null,
+   "power_best_mW": null,
+   "note": "efficiency not published; min 15 cm2 per cell"
+  },
+  {
+   "tech": "Rigid mono-Si tiles (ANYSOLAR)",
+   "eff": 0.25,
+   "skin_share": 0.280216622855061,
+   "lit_share_mean": 0.2876915876599353,
+   "power_mean_mW": 274.0981601430033,
+   "power_best_mW": 592.574853489611,
+   "note": "rigid: only flat spots (200 mm = flat at this curvature resolution)"
+  }
+ ]
+}

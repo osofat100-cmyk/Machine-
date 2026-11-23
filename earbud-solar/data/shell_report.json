@@ -1,0 +1,210 @@
+{
+ "pitch": 0.12,
+ "bud_dz_mm": -0.7,
+ "paddle_outline": {
+  "centre_y": 0.199,
+  "half_width": 8.524,
+  "centres_x": [
+   -14.456,
+   13.016
+  ]
+ },
+ "clear_height_mm": {
+  "median": 6.6,
+  "p10": 6.48,
+  "p90": 8.28
+ },
+ "hook_joint": {
+  "centre": [
+   -20.46,
+   -11.46,
+   -6.9
+  ],
+  "axis_into_stub": [
+   0.4575,
+   0.8892,
+   0.0002
+  ],
+  "stub_volume_mm3": 300.9,
+  "arm_volume_mm3": 1687.7,
+  "socket_wall_cover_share": 0.908,
+  "joint_depth_in_hook_mm": 3.7,
+  "socket_in": "base",
+  "socket": "open to the seam (roof would have been 0.28 mm): peg captured by the other half"
+ },
+ "parting_z": -5.52,
+ "parting_scan_opening_mm2": {
+  "-6.60": 348.8,
+  "-6.48": 357.0,
+  "-6.36": 364.7,
+  "-6.24": 371.4,
+  "-6.12": 378.3,
+  "-6.00": 384.9,
+  "-5.88": 390.2,
+  "-5.76": 395.3,
+  "-5.64": 400.1,
+  "-5.52": 404.3
+ },
+ "seal": {
+  "seam_length_mm": 92.3,
+  "groove": [
+   1.1,
+   1.2
+  ],
+  "tongue": [
+   0.8,
+   0.6
+  ],
+  "gasket_gap_mm": 0.6
+ },
+ "ports": {
+  "led": {
+   "skin_point": [
+    11.92,
+    -8.74,
+    -3.05
+   ],
+   "dir": [
+    -0.025,
+    -0.998,
+    -0.058
+   ],
+   "anchor_to_skin_mm": -0.06,
+   "seal_depth_mm": 2.0
+  },
+  "mic0": {
+   "skin_point": [
+    9.52,
+    8.27,
+    -3.06
+   ],
+   "dir": [
+    0.031,
+    0.997,
+    -0.077
+   ],
+   "anchor_to_skin_mm": 0.3,
+   "seat_depth_mm": 1.6
+  },
+  "mic1": {
+   "skin_point": [
+    9.05,
+    -8.4,
+    -3.02
+   ],
+   "dir": [
+    -0.032,
+    -0.997,
+    -0.071
+   ],
+   "anchor_to_skin_mm": -0.3,
+   "seat_depth_mm": 1.6
+  }
+ },
+ "pod_socket": {
+  "neck_area_mm2": 83.2,
+  "opening_area_mm2": 49.2,
+  "rim_mm": 1.2,
+  "joint": "face bond + seal, MS-polymer (flexible, waterproof)"
+ },
+ "cell_as_lid": {
+  "lip_mm": 1.2,
+  "opening_mm": [
+   30.6,
+   12.6
+  ],
+  "charger": "on the cell back, next to the + pad"
+ },
+ "charger_centre": [
+  13.5,
+  4.0,
+  -0.5
+ ],
+ "clear_height_final_mm": {
+  "median": 7.44,
+  "p10": 7.32
+ },
+ "hook": {
+  "mode": "printed_flex",
+  "tip": [
+   15.42,
+   -8.46,
+   -9.78
+  ],
+  "tip_gap_to_paddle_mm": 0.12,
+  "magnet_centre": [
+   15.42,
+   -9.98,
+   -10.09
+  ],
+  "magnet_axis": [
+   -0.0,
+   0.979,
+   0.203
+  ]
+ },
+ "screws": [
+  [
+   -20.1,
+   -1.74
+  ],
+  [
+   -17.22,
+   -5.1
+  ]
+ ],
+ "end_screw": {
+  "added": true,
+  "at": [
+   17.94,
+   -0.18
+  ],
+  "head_face_z": 0.48,
+  "screw": "M1.2 x 6",
+  "counterbore_depth": 1.3,
+  "thread_engagement_mm": 1.3,
+  "min_wall_hole_to_outside_mm": 0.65,
+  "margin_to_gasket_mm": 0.02,
+  "gap_head_to_cell_mm": 0.24
+ },
+ "overlap_voxels_resolved": 0,
+ "cover": {
+  "watertight": true,
+  "bodies_before_cleanup": 1,
+  "volume_cm3": 1.149,
+  "mass_g": 1.32,
+  "triangles": 388116,
+  "extents_mm": [
+   46.56,
+   21.47,
+   6.6
+  ],
+  "thinner_than_min_share": 0.0455
+ },
+ "base": {
+  "watertight": true,
+  "bodies_before_cleanup": 1,
+  "volume_cm3": 0.851,
+  "mass_g": 0.98,
+  "triangles": 361660,
+  "extents_mm": [
+   45.87,
+   20.85,
+   5.16
+  ],
+  "thinner_than_min_share": 0.1963
+ },
+ "hook_arm": {
+  "watertight": true,
+  "bodies_before_cleanup": 1,
+  "volume_cm3": 1.656,
+  "mass_g": 1.9,
+  "triangles": 255096,
+  "extents_mm": [
+   50.28,
+   23.76,
+   11.85
+  ],
+  "thinner_than_min_share": 0.0054
+ }
+}
