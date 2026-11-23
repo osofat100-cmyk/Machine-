@@ -2627,3 +2627,70 @@ time,decision,reason,note,position_before,news_shown,seconds,invalid,raw
 2026-11-04 14:15,HOLD,recent swing is not large enough to cover costs,,1,6,0.31,0,HOLD - recent swing is not large enough to cover costs
 2026-11-04 14:16,HOLD,recent swing is too small to cover 0.10% cost,,1,6,0.36,0,HOLD - recent swing is too small to cover 0.10% cost
 2026-11-04 14:17,HOLD,recent swing is not large enough to cover costs,,1,6,0.31,0,HOLD - recent swing is not large enough to cover costs
+2026-11-04 14:18,HOLD,recent swing is not large enough to cover costs,,1,6,0.31,0,HOLD - recent swing is not large enough to cover costs
+2026-11-04 14:19,HOLD,recent swing is not large enough to cover costs,,1,6,0.31,0,HOLD - recent swing is not large enough to cover costs
+2026-11-04 14:20,HOLD,recent swing is not large enough to cover costs,,1,6,0.31,0,HOLD - recent swing is not large enough to cover costs
+2026-11-04 14:21,HOLD,Recent swing is not large enough to cover costs,,1,6,0.32,0,HOLD - Recent swing is not large enough to cover costs
+2026-11-04 14:22,HOLD,recent swing is not large enough to cover costs,,1,6,0.31,0,HOLD - recent swing is not large enough to cover costs
+2026-11-04 14:23,HOLD,Recent swing is small and no clear breakout/reversal signal,,1,6,0.36,0,HOLD - Recent swing is small and no clear breakout/reversal signal
+2026-11-04 14:24,HOLD,recent swing is not large enough to cover costs,,1,6,0.31,0,HOLD - recent swing is not large enough to cover costs
+2026-11-04 14:25,HOLD,recent swing is not large enough to cover costs,,1,6,0.31,0,HOLD - recent swing is not large enough to cover costs
+2026-11-04 14:26,HOLD,recent swing is too small for 0.10% profit target,,1,6,0.40,0,HOLD - recent swing is too small for 0.10% profit target
+2026-11-04 14:27,HOLD,No clear swing above 0.10% threshold,,1,6,0.33,0,HOLD - No clear swing above 0.10% threshold
+2026-11-04 14:28,HOLD,recent swing is not large enough to cover costs,,1,6,0.33,0,HOLD - recent swing is not large enough to cover costs
+2026-11-04 14:29,HOLD,Recent swing is not large enough to cover costs,,1,6,0.31,0,HOLD - Recent swing is not large enough to cover costs
+2026-11-04 14:30,HOLD,recent swing is not large enough to cover costs,,1,6,0.32,0,HOLD - recent swing is not large enough to cover costs
+2026-11-04 14:31,HOLD,recent swing is not large enough to cover costs,,1,6,0.31,0,HOLD - recent swing is not large enough to cover costs
+2026-11-04 14:32,HOLD,Recent swing is not large enough to cover costs,,1,6,0.31,0,HOLD - Recent swing is not large enough to cover costs
+2026-11-04 14:33,HOLD,Recent swing is small and no clear move over 0.10% expected,,1,6,0.38,0,HOLD - Recent swing is small and no clear move over 0.10% expected
+2026-11-04 14:34,HOLD,recent swing too small for 0.10% profit target,,1,6,0.37,0,HOLD - recent swing too small for 0.10% profit target
+2026-11-04 14:35,HOLD,recent swing is not large enough to cover 0.10% cost,,1,6,0.38,0,HOLD - recent swing is not large enough to cover 0.10% cost
+2026-11-04 14:36,HOLD,recent swing is small and no clear breakout/breakdown signal,,1,6,0.35,0,HOLD - recent swing is small and no clear breakout/breakdown signal
+2026-11-04 14:37,HOLD,Recent swing is not large enough to cover 0.10% cost,,1,6,0.37,0,HOLD - Recent swing is not large enough to cover 0.10% cost
+2026-11-04 14:38,HOLD,recent swing is not large enough to cover 0.10% cost,,1,6,0.37,0,HOLD - recent swing is not large enough to cover 0.10% cost
+2026-11-04 14:39,HOLD,Recent swing is not large enough to cover 0.10% cost,,1,6,0.37,0,HOLD - Recent swing is not large enough to cover 0.10% cost
+2026-11-04 14:40,HOLD,recent swing is not large enough to cover costs,,1,6,0.31,0,HOLD - recent swing is not large enough to cover costs
+2026-11-04 14:41,HOLD,recent swing is not large enough to cover 0.10% cost,,1,6,0.37,0,HOLD - recent swing is not large enough to cover 0.10% cost
+2026-11-04 14:42,HOLD,Recent swing is not large enough to cover 0.10% cost,,1,6,0.37,0,HOLD - Recent swing is not large enough to cover 0.10% cost
+2026-11-04 14:43,HOLD,Recent swing is not large enough to cover 0.10% cost,,1,6,0.38,0,HOLD - Recent swing is not large enough to cover 0.10% cost
+2026-11-04 14:44,HOLD,"Recent high reached, but no clear reversal signal for >0.10% move",,1,6,0.40,0,"HOLD - Recent high reached, but no clear reversal signal for >0.10% move"
+2026-11-04 14:45,HOLD,recent swing is not large enough to cover 0.10% cost,,1,6,0.37,0,HOLD - recent swing is not large enough to cover 0.10% cost
+2026-11-04 14:46,HOLD,Price is near recent high but momentum is cooling slightly,,1,6,0.32,0,HOLD - Price is near recent high but momentum is cooling slightly
+2026-11-04 14:47,HOLD,Recent swing is positive but not large enough for guaranteed profit over costs,,1,6,0.35,0,HOLD - Recent swing is positive but not large enough for guaranteed profit over costs
+2026-11-04 14:48,HOLD,Recent swing is not large enough to cover 0.10% cost,,1,6,0.37,0,HOLD - Recent swing is not large enough to cover 0.10% cost
+2026-11-04 14:49,HOLD,Price is near recent high but no clear reversal signal for >0.10% move,,1,6,0.40,0,HOLD - Price is near recent high but no clear reversal signal for >0.10% move
+2026-11-04 14:50,HOLD,Price is near recent high but no clear reversal signal for >0.10% move,,1,6,0.40,0,HOLD - Price is near recent high but no clear reversal signal for >0.10% move
+2026-11-04 14:51,HOLD,Price is near recent high but no clear reversal signal for >0.10% gain,,1,6,0.40,0,HOLD - Price is near recent high but no clear reversal signal for >0.10% gain
+2026-11-04 14:52,HOLD,Price is near recent high but momentum is cooling,,1,6,0.31,0,HOLD - Price is near recent high but momentum is cooling
+2026-11-04 14:53,HOLD,Price is near recent high but no clear reversal signal,,1,6,0.32,0,HOLD - Price is near recent high but no clear reversal signal
+2026-11-04 14:54,HOLD,Price is near recent high but no clear reversal signal for >0.10% move,,1,6,0.41,0,HOLD - Price is near recent high but no clear reversal signal for >0.10% move
+2026-11-04 14:55,HOLD,Recent swing is not large enough to cover 0.10% cost,,1,6,0.37,0,HOLD - Recent swing is not large enough to cover 0.10% cost
+2026-11-04 14:56,HOLD,Price is near recent high but not a clear reversal signal,,1,6,0.33,0,HOLD - Price is near recent high but not a clear reversal signal
+2026-11-04 14:57,HOLD,recent swing is not large enough to cover costs,,1,6,0.32,0,HOLD - recent swing is not large enough to cover costs
+2026-11-04 14:58,HOLD,Recent swing is not large enough to cover 0.10% cost,,1,6,0.37,0,HOLD - Recent swing is not large enough to cover 0.10% cost
+2026-11-04 14:59,HOLD,Recent swing is not large enough to cover 0.10% cost,,1,6,0.37,0,HOLD - Recent swing is not large enough to cover 0.10% cost
+2026-11-04 15:00,HOLD,Recent swing is not large enough to cover 0.10% cost,,1,6,0.38,0,HOLD - Recent swing is not large enough to cover 0.10% cost
+2026-11-04 15:01,HOLD,recent swing is not large enough to cover costs,,1,6,0.31,0,HOLD - recent swing is not large enough to cover costs
+2026-11-04 15:02,HOLD,Recent high reached and momentum is cooling slightly,,1,6,0.30,0,HOLD - Recent high reached and momentum is cooling slightly
+2026-11-04 15:03,HOLD,Price is near recent high but no clear reversal signal for >0.10% move,,1,6,0.40,0,HOLD - Price is near recent high but no clear reversal signal for >0.10% move
+2026-11-04 15:04,HOLD,Recent high reached and momentum is cooling slightly,,1,6,0.31,0,HOLD - Recent high reached and momentum is cooling slightly
+2026-11-04 15:05,HOLD,recent swing is not large enough to cover 0.10% cost,,1,6,0.37,0,HOLD - recent swing is not large enough to cover 0.10% cost
+2026-11-04 15:06,HOLD,Recent swing is not large enough to cover 0.10% cost,,1,6,0.40,0,HOLD - Recent swing is not large enough to cover 0.10% cost
+2026-11-04 15:07,HOLD,recent swing is not large enough to cover costs,,1,6,0.31,0,HOLD - recent swing is not large enough to cover costs
+2026-11-04 15:08,HOLD,Recent swing is not large enough to cover 0.10% cost,,1,6,0.39,0,HOLD - Recent swing is not large enough to cover 0.10% cost
+2026-11-04 15:09,HOLD,"Price is near recent high but has pulled back slightly, not a clear sell signal yet",,1,6,0.40,0,"HOLD - Price is near recent high but has pulled back slightly, not a clear sell signal yet"
+2026-11-04 15:10,HOLD,recent swing is not large enough to cover costs,,1,6,0.31,0,HOLD - recent swing is not large enough to cover costs
+2026-11-04 15:11,HOLD,recent swing is not large enough to cover costs,,1,6,0.31,0,HOLD - recent swing is not large enough to cover costs
+2026-11-04 15:12,HOLD,Recent swing is not large enough to cover 0.10% cost,,1,6,0.45,0,HOLD - Recent swing is not large enough to cover 0.10% cost
+2026-11-04 15:13,HOLD,recent swing is not large enough to cover 0.10% cost,,1,6,0.39,0,HOLD - recent swing is not large enough to cover 0.10% cost
+2026-11-04 15:14,HOLD,recent swing is not large enough to cover costs,,1,6,0.31,0,HOLD - recent swing is not large enough to cover costs
+2026-11-04 15:15,HOLD,Recent swing is not large enough to cover 0.10% cost,,1,6,0.37,0,HOLD - Recent swing is not large enough to cover 0.10% cost
+2026-11-04 15:16,HOLD,recent swing is not large enough to cover costs,,1,6,0.31,0,HOLD - recent swing is not large enough to cover costs
+2026-11-04 15:17,HOLD,recent swing is small and no clear breakout/reversal signal,,1,6,0.34,0,HOLD - recent swing is small and no clear breakout/reversal signal
+2026-11-04 15:18,HOLD,Recent swing is not large enough to cover 0.10% cost,,1,6,0.37,0,HOLD - Recent swing is not large enough to cover 0.10% cost
+2026-11-04 15:19,HOLD,Price is near recent high but no clear reversal signal for >0.10% gain,,1,6,0.41,0,HOLD - Price is near recent high but no clear reversal signal for >0.10% gain
+2026-11-04 15:20,HOLD,recent swing is not large enough to cover costs,,1,6,0.31,0,HOLD - recent swing is not large enough to cover costs
+2026-11-04 15:21,HOLD,Price is at today's high with recent positive momentum,,1,6,0.33,0,HOLD - Price is at today's high with recent positive momentum
+2026-11-04 15:22,HOLD,recent swing is not large enough to cover costs,,1,6,0.32,0,HOLD - recent swing is not large enough to cover costs
+2026-11-04 15:23,HOLD,recent high reached no clear reason to sell yet,,1,6,0.31,0,HOLD - recent high reached no clear reason to sell yet
+2026-11-04 15:24,HOLD,Recent swing is not large enough to cover 0.10% cost,,1,6,0.38,0,HOLD - Recent swing is not large enough to cover 0.10% cost
