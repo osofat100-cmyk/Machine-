@@ -110,7 +110,8 @@ class Exchange:
         while self.n_news < len(self.news) and self.news[self.n_news]["known"] <= m["time"]:
             new.append(self.news[self.n_news])
             self.n_news += 1
-        out = {"minute": m, "news": new, "values": {n: a["value"] for n, a in self.acc.items()}}
+        out = {"minute": m, "news": new, "values": {n: a["value"] for n, a in self.acc.items()},
+               "books": {n: {"trades": a["trades"], "costs": a["costs"]} for n, a in self.acc.items()}}
         if self.k == 0 or self.mins[self.k - 1]["time"][:10] != m["time"][:10]:
             out["day_context"] = day_context(m["time"][:10], self.daily, self.sec)
         out["last_minute"] = self.k + 1 == len(self.mins)
