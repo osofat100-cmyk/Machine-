@@ -139,4 +139,21 @@ Otherwise the verdict is "no proven edge", whatever the dollar totals are.
 
 ## Changes
 
-(none yet)
+- 23 Nov 2026, during the first download, before any feature or model was run: the plan's "common start 22 Dec
+  1998" was wrong. QQQ's Yahoo history starts 10 Mar 1999 and IWM's 26 May 2000. The common start is therefore
+  26 May 2000 (all 13 symbols trade every day from then on). Everything else is unchanged; the first development
+  test year is still 2006 (training rows begin once 252 days of history exist, about May 2001).
+- 23 Nov 2026, same download, before any feature or model was run: the close check "every common day within
+  0.05%" failed on 3 of 10,056 checked days (SPY 20 Apr 2026 0.20%, XLE 12 Aug 2019 0.086%, XLE 20 Mar 2017
+  0.066%); every other day matched to the cent. These are isolated closing-print differences between the two
+  sources. The check becomes: at most 0.1% of common days above 0.05%, and no day above 0.5%. Outliers are listed
+  in data_checks.txt. Yahoo's prices are kept as downloaded.
+- 23 Nov 2026, same download, before any feature or model was run: Nasdaq gives dividend history only for
+  Nasdaq-listed funds ("Dividend History for Non-Nasdaq symbols is not available"), and the State Street and
+  Select Sector SPDR pages only redirect to script-rendered pages. The independent dividend check is therefore
+  QQQ only (every 2025-2026 payment, to the cent). The ex-date check (adjusted overnight move = raw move with the
+  dividend added back) still runs on SPY.
+- 23 Nov 2026, same download, before any feature or model was run: ^IRX is the 13-week bill's discount rate d,
+  while FRED's DGS3MO is a bond-equivalent yield, so the 2023 check failed (5.05% vs 5.28%). The cash rate used
+  everywhere is now the bond-equivalent yield 365·d / (360 − 91·d) (d as a fraction), which is what a bill
+  actually earns; it is stored in the column `rate` (annual %). The FRED check compares that converted rate.
