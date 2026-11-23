@@ -342,8 +342,9 @@ def graphs(curves, yrs, names, decisions):
         ax.plot(x, curves[k], label=f"{k} (\\${curves[k].iloc[-1]:,.0f})", **style)
     ax.axhline(1000, color="black", lw=0.6, ls="--")
     ax.set_yscale("log")
-    ax.set_ylabel("\\$ (start \\$1,000 on 4 Jan 2016, log scale)")
-    ax.set_title("Sealed test 2016 - 20 Nov 2026: 9 machine-learning strategies vs holding SPY and the yardsticks")
+    ax.set_ylabel(f"\\$ (start \\$1,000 on {curves.index[0]}, log scale)")
+    ax.set_title(f"Sealed test {curves.index[0]} to {curves.index[-1]}: 9 machine-learning strategies vs holding SPY "
+                 "and the yardsticks")
     ax.legend(fontsize=8, ncol=2)
     ax.grid(alpha=0.3, which="both")
     fig.tight_layout()
