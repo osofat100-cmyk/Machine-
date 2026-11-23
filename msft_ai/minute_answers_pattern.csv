@@ -1025,3 +1025,384 @@ time,decision,reason,note,position_before,news_shown,seconds,invalid,raw
 2026-10-29 13:33,HOLD,Small recent move not enough to cover 0.10% cost,,1,0,0.34,0,HOLD - Small recent move not enough to cover 0.10% cost
 2026-10-29 13:34,HOLD,"Price is consolidating near recent highs, no clear move above break-even.",,1,0,0.36,0,"HOLD - Price is consolidating near recent highs, no clear move above break-even."
 2026-10-29 13:35,HOLD,"Price is consolidating near recent highs, no clear move over 0.10% expected.",,1,0,0.40,0,"HOLD - Price is consolidating near recent highs, no clear move over 0.10% expected."
+2026-10-29 13:36,HOLD,Small recent gain not enough to cover costs,,1,0,0.28,0,HOLD - Small recent gain not enough to cover costs
+2026-10-29 13:37,HOLD,"Small recent move, wait for clearer trend confirmation",,1,0,0.29,0,"HOLD - Small recent move, wait for clearer trend confirmation"
+2026-10-29 13:38,HOLD,Small recent upward movement not enough to justify selling for a small gain,,1,0,0.34,0,HOLD - Small recent upward movement not enough to justify selling for a small gain
+2026-10-29 13:39,HOLD,Small recent upward movement not enough to justify selling now,,1,0,0.31,0,HOLD - Small recent upward movement not enough to justify selling now
+2026-10-29 13:40,HOLD,"Small recent movement, no clear trend for >0.10% gain",,1,0,0.35,0,"HOLD - Small recent movement, no clear trend for >0.10% gain"
+2026-10-29 13:41,HOLD,Price is consolidating near recent highs,,1,0,0.26,0,HOLD - Price is consolidating near recent highs
+2026-10-29 13:42,HOLD,Small recent upward movement not enough to justify selling now,,1,0,0.33,0,HOLD - Small recent upward movement not enough to justify selling now
+2026-10-29 13:43,HOLD,"Small recent movement, not enough to justify selling now.",,1,0,0.32,0,"HOLD - Small recent movement, not enough to justify selling now."
+2026-10-29 13:44,HOLD,Small recent upward movement not enough for 0.10% target,,1,0,0.35,0,HOLD - Small recent upward movement not enough for 0.10% target
+2026-10-29 13:45,HOLD,small recent movement not enough to cover costs,,1,0,0.29,0,HOLD - small recent movement not enough to cover costs
+2026-10-29 13:46,HOLD,Small recent movement not enough to cover costs,,1,0,0.29,0,HOLD - Small recent movement not enough to cover costs
+2026-10-29 13:47,HOLD,"Small recent movement, no clear trend to reverse trade.",,1,0,0.32,0,"HOLD - Small recent movement, no clear trend to reverse trade."
+2026-10-29 13:48,HOLD,Small recent gains not enough to cover costs,,1,0,0.28,0,HOLD - Small recent gains not enough to cover costs
+2026-10-29 13:49,HOLD,Recent price action is consolidating near the current level,,1,0,0.30,0,HOLD - Recent price action is consolidating near the current level
+2026-10-29 13:50,HOLD,"Small recent movement, wait for clearer trend confirmation",,1,0,0.29,0,"HOLD - Small recent movement, wait for clearer trend confirmation"
+2026-10-29 13:51,HOLD,"Small recent movement, no clear trend to exceed 0.10% gain",,1,0,0.37,0,"HOLD - Small recent movement, no clear trend to exceed 0.10% gain"
+2026-10-29 13:52,HOLD,Small recent gains not enough to cover costs for a quick flip,,1,0,0.33,0,HOLD - Small recent gains not enough to cover costs for a quick flip
+2026-10-29 13:53,HOLD,Small recent movement not enough to cover costs,,1,0,0.29,0,HOLD - Small recent movement not enough to cover costs
+2026-10-29 13:54,HOLD,Price movement is too small to justify trading costs,,1,0,0.29,0,HOLD - Price movement is too small to justify trading costs
+2026-10-29 13:55,HOLD,Small recent movement not enough to cover 0.10% cost,,1,0,0.34,0,HOLD - Small recent movement not enough to cover 0.10% cost
+2026-10-29 13:56,HOLD,"Price is consolidating near recent highs, no clear move over 0.10% expected.",,1,0,0.40,0,"HOLD - Price is consolidating near recent highs, no clear move over 0.10% expected."
+2026-10-29 13:57,HOLD,Price is near recent highs and showing slight upward momentum over 60 min,,1,0,0.36,0,HOLD - Price is near recent highs and showing slight upward momentum over 60 min
+2026-10-29 13:58,HOLD,Small recent gains not enough to cover costs,,1,0,0.29,0,HOLD - Small recent gains not enough to cover costs
+2026-10-29 13:59,HOLD,"Small recent move, not enough to cover 0.10% cost",,1,0,0.36,0,"HOLD - Small recent move, not enough to cover 0.10% cost"
+2026-10-29 14:00,HOLD,"Small recent move, wait for clearer trend",,1,0,0.29,0,"HOLD - Small recent move, wait for clearer trend"
+2026-10-29 14:01,HOLD,Small recent upward movement not enough to justify selling now,,1,0,0.30,0,HOLD - Small recent upward movement not enough to justify selling now
+2026-10-29 14:02,HOLD,"Small recent movement, wait for clearer trend",,1,0,0.29,0,"HOLD - Small recent movement, wait for clearer trend"
+2026-10-29 14:03,HOLD,"Small recent movement, wait for clearer trend",,1,0,0.28,0,"HOLD - Small recent movement, wait for clearer trend"
+2026-10-29 14:04,HOLD,Small recent movement not enough to cover costs,,1,0,0.28,0,HOLD - Small recent movement not enough to cover costs
+2026-10-29 14:05,HOLD,Small recent movement not enough to cover 0.10% cost,,1,0,0.38,0,HOLD - Small recent movement not enough to cover 0.10% cost
+2026-10-29 14:06,HOLD,small recent move not enough to cover costs,,1,0,0.37,0,HOLD - small recent move not enough to cover costs
+2026-10-29 14:07,HOLD,Small recent upward movement not enough to justify selling now,,1,0,0.30,0,HOLD - Small recent upward movement not enough to justify selling now
+2026-10-29 14:08,HOLD,Price is moving up but not strongly enough to justify selling now,,1,0,0.33,0,HOLD - Price is moving up but not strongly enough to justify selling now
+2026-10-29 14:09,HOLD,Recent upward momentum is not strong enough to justify selling now,,1,0,0.32,0,HOLD - Recent upward momentum is not strong enough to justify selling now
+2026-10-29 14:10,HOLD,Recent upward momentum slowing down,,1,0,0.25,0,HOLD - Recent upward momentum slowing down
+2026-10-29 14:11,HOLD,"Small recent upward movement, no strong signal to exit yet",,1,0,0.32,0,"HOLD - Small recent upward movement, no strong signal to exit yet"
+2026-10-29 14:12,HOLD,Recent price action is consolidating near the current level,,1,0,0.29,0,HOLD - Recent price action is consolidating near the current level
+2026-10-29 14:13,HOLD,Recent small gains not enough to cover 0.10% cost threshold,,1,0,0.35,0,HOLD - Recent small gains not enough to cover 0.10% cost threshold
+2026-10-29 14:14,HOLD,Recent upward momentum is not strong enough to justify selling now,,1,0,0.31,0,HOLD - Recent upward momentum is not strong enough to justify selling now
+2026-10-29 14:15,HOLD,Recent upward momentum is slowing down,,1,0,0.26,0,HOLD - Recent upward momentum is slowing down
+2026-10-29 14:16,HOLD,Recent upward momentum is not strong enough to justify selling now,,1,0,0.31,0,HOLD - Recent upward momentum is not strong enough to justify selling now
+2026-10-29 14:17,HOLD,"Small recent gains, no strong momentum signal for immediate exit",,1,0,0.31,0,"HOLD - Small recent gains, no strong momentum signal for immediate exit"
+2026-10-29 14:18,HOLD,Price is trending up but not strongly enough to justify selling now,,1,0,0.32,0,HOLD - Price is trending up but not strongly enough to justify selling now
+2026-10-29 14:19,SELL,Target profit reached and momentum slowing,,1,0,0.26,0,SELL - Target profit reached and momentum slowing
+2026-10-29 14:20,BUY,Strong upward momentum in recent minutes,,0,0,0.26,0,BUY - Strong upward momentum in recent minutes
+2026-10-29 14:21,HOLD,Price is moving up but not strongly enough to cover costs,,1,0,0.32,0,HOLD - Price is moving up but not strongly enough to cover costs
+2026-10-29 14:22,HOLD,"Price is consolidating near recent highs, no clear move above break-even.",,1,0,0.35,0,"HOLD - Price is consolidating near recent highs, no clear move above break-even."
+2026-10-29 14:23,HOLD,"Recent price action is choppy, no clear move over 0.10% expected.",,1,0,0.38,0,"HOLD - Recent price action is choppy, no clear move over 0.10% expected."
+2026-10-29 14:24,HOLD,No clear upward momentum to justify selling now,,1,0,0.29,0,HOLD - No clear upward momentum to justify selling now
+2026-10-29 14:25,HOLD,"Price is consolidating near recent lows, no clear move above break-even",,1,0,0.35,0,"HOLD - Price is consolidating near recent lows, no clear move above break-even"
+2026-10-29 14:26,HOLD,"Price is consolidating after a dip, no clear move above break-even.",,1,0,0.38,0,"HOLD - Price is consolidating after a dip, no clear move above break-even."
+2026-10-29 14:27,HOLD,"Price is consolidating near recent lows, no clear move above break-even.",,1,0,0.36,0,"HOLD - Price is consolidating near recent lows, no clear move above break-even."
+2026-10-29 14:28,HOLD,Price is trending down but not strongly enough to warrant selling now,,1,0,0.34,0,HOLD - Price is trending down but not strongly enough to warrant selling now
+2026-10-29 14:29,HOLD,"Recent price action is choppy, no clear move above break-even.",,1,0,0.35,0,"HOLD - Recent price action is choppy, no clear move above break-even."
+2026-10-29 14:30,HOLD,"Price is consolidating near recent lows, no clear move above break-even.",,1,0,0.35,0,"HOLD - Price is consolidating near recent lows, no clear move above break-even."
+2026-10-29 14:31,HOLD,"Price is consolidating near recent lows, no clear move above break-even.",,1,0,0.36,0,"HOLD - Price is consolidating near recent lows, no clear move above break-even."
+2026-10-29 14:32,HOLD,"Price is consolidating near recent lows, no clear move above break-even.",,1,0,0.35,0,"HOLD - Price is consolidating near recent lows, no clear move above break-even."
+2026-10-29 14:33,HOLD,"Price is consolidating near recent lows, no clear move above break-even.",,1,0,0.36,0,"HOLD - Price is consolidating near recent lows, no clear move above break-even."
+2026-10-29 14:34,HOLD,"Price is consolidating near recent lows, no clear move above 0.10% expected.",,1,0,0.40,0,"HOLD - Price is consolidating near recent lows, no clear move above 0.10% expected."
+2026-10-29 14:35,HOLD,"Price is consolidating near recent lows, no clear move above break-even.",,1,0,0.36,0,"HOLD - Price is consolidating near recent lows, no clear move above break-even."
+2026-10-29 14:36,HOLD,"Price is consolidating near recent lows, no clear move above break-even.",,1,0,0.36,0,"HOLD - Price is consolidating near recent lows, no clear move above break-even."
+2026-10-29 14:37,HOLD,"Price is consolidating near recent lows, no clear move above break-even.",,1,0,0.36,0,"HOLD - Price is consolidating near recent lows, no clear move above break-even."
+2026-10-29 14:38,HOLD,Price is slightly down but not enough to cover costs,,1,0,0.31,0,HOLD - Price is slightly down but not enough to cover costs
+2026-10-29 14:39,HOLD,"Price is consolidating near recent lows, no clear move above break-even.",,1,0,0.37,0,"HOLD - Price is consolidating near recent lows, no clear move above break-even."
+2026-10-29 14:40,HOLD,"Price is consolidating near recent lows, no clear move above break-even.",,1,0,0.37,0,"HOLD - Price is consolidating near recent lows, no clear move above break-even."
+2026-10-29 14:41,HOLD,"Price is consolidating near recent lows, no clear move above break-even.",,1,0,0.36,0,"HOLD - Price is consolidating near recent lows, no clear move above break-even."
+2026-10-29 14:42,HOLD,"Price is consolidating near recent lows, no clear move above break-even.",,1,0,0.36,0,"HOLD - Price is consolidating near recent lows, no clear move above break-even."
+2026-10-29 14:43,HOLD,Price is consolidating near recent lows,,1,0,0.27,0,HOLD - Price is consolidating near recent lows
+2026-10-29 14:44,HOLD,"Price is consolidating near recent lows, no clear move above break-even.",,1,0,0.35,0,"HOLD - Price is consolidating near recent lows, no clear move above break-even."
+2026-10-29 14:45,HOLD,"Price is consolidating near recent lows, no clear move above break-even.",,1,0,0.35,0,"HOLD - Price is consolidating near recent lows, no clear move above break-even."
+2026-10-29 14:46,HOLD,Price is consolidating near recent lows,,1,0,0.26,0,HOLD - Price is consolidating near recent lows
+2026-10-29 14:47,HOLD,No clear upward momentum to justify selling now,,1,0,0.29,0,HOLD - No clear upward momentum to justify selling now
+2026-10-29 14:48,HOLD,"Price is consolidating near recent lows, no clear move above 0.10% expected.",,1,0,0.40,0,"HOLD - Price is consolidating near recent lows, no clear move above 0.10% expected."
+2026-10-29 14:49,HOLD,"Price is consolidating near recent lows, no clear move above break-even.",,1,0,0.36,0,"HOLD - Price is consolidating near recent lows, no clear move above break-even."
+2026-10-29 14:50,HOLD,Price is slightly up but not enough to cover costs,,1,0,0.33,0,HOLD - Price is slightly up but not enough to cover costs
+2026-10-29 14:51,HOLD,"Price is consolidating near recent lows, no clear move above break-even.",,1,0,0.37,0,"HOLD - Price is consolidating near recent lows, no clear move above break-even."
+2026-10-29 14:52,HOLD,"Price is consolidating near recent lows, no clear move above break-even.",,1,0,0.37,0,"HOLD - Price is consolidating near recent lows, no clear move above break-even."
+2026-10-29 14:53,HOLD,"Price is consolidating near recent lows, no clear move above break-even.",,1,0,0.36,0,"HOLD - Price is consolidating near recent lows, no clear move above break-even."
+2026-10-29 14:54,HOLD,"Price is consolidating near recent highs, no clear move above break-even.",,1,0,0.36,0,"HOLD - Price is consolidating near recent highs, no clear move above break-even."
+2026-10-29 14:55,HOLD,"Price is consolidating near recent highs, no clear move above break-even.",,1,0,0.36,0,"HOLD - Price is consolidating near recent highs, no clear move above break-even."
+2026-10-29 14:56,HOLD,Price is consolidating near recent highs,,1,0,0.27,0,HOLD - Price is consolidating near recent highs
+2026-10-29 14:57,HOLD,"Price is consolidating near recent highs, no clear move above break-even.",,1,0,0.36,0,"HOLD - Price is consolidating near recent highs, no clear move above break-even."
+2026-10-29 14:58,HOLD,"Price is consolidating near recent highs, no clear move above break-even.",,1,0,0.36,0,"HOLD - Price is consolidating near recent highs, no clear move above break-even."
+2026-10-29 14:59,HOLD,Price is consolidating near recent highs,,1,0,0.26,0,HOLD - Price is consolidating near recent highs
+2026-10-29 15:00,HOLD,Price is consolidating near recent highs,,1,0,0.26,0,HOLD - Price is consolidating near recent highs
+2026-10-29 15:01,HOLD,Price is consolidating near recent highs,,1,0,0.26,0,HOLD - Price is consolidating near recent highs
+2026-10-29 15:02,HOLD,Price is consolidating near recent highs,,1,0,0.27,0,HOLD - Price is consolidating near recent highs
+2026-10-29 15:03,HOLD,"Price is consolidating near recent highs, no clear move above break-even.",,1,0,0.36,0,"HOLD - Price is consolidating near recent highs, no clear move above break-even."
+2026-10-29 15:04,HOLD,"Price is consolidating near recent lows, no clear move above break-even.",,1,0,0.36,0,"HOLD - Price is consolidating near recent lows, no clear move above break-even."
+2026-10-29 15:05,HOLD,Recent price action is flat near the low of the last 15 mins,,1,0,0.42,0,HOLD - Recent price action is flat near the low of the last 15 mins
+2026-10-29 15:06,HOLD,"Price is consolidating near recent highs, no clear move above break-even.",,1,0,0.36,0,"HOLD - Price is consolidating near recent highs, no clear move above break-even."
+2026-10-29 15:07,HOLD,Price is consolidating near recent highs,,1,0,0.27,0,HOLD - Price is consolidating near recent highs
+2026-10-29 15:08,HOLD,"Price is consolidating near recent highs, no clear move above break-even.",,1,0,0.37,0,"HOLD - Price is consolidating near recent highs, no clear move above break-even."
+2026-10-29 15:09,HOLD,Price is consolidating near recent highs,,1,0,0.27,0,HOLD - Price is consolidating near recent highs
+2026-10-29 15:10,HOLD,Price is consolidating near recent highs,,1,0,0.27,0,HOLD - Price is consolidating near recent highs
+2026-10-29 15:11,HOLD,"Price is consolidating near recent lows, no clear move above break-even",,1,0,0.35,0,"HOLD - Price is consolidating near recent lows, no clear move above break-even"
+2026-10-29 15:12,HOLD,"Price is consolidating near recent lows, no clear move above break-even.",,1,0,0.36,0,"HOLD - Price is consolidating near recent lows, no clear move above break-even."
+2026-10-29 15:13,HOLD,Price is trending down but not strongly enough to warrant selling now,,1,0,0.32,0,HOLD - Price is trending down but not strongly enough to warrant selling now
+2026-10-29 15:14,HOLD,"Price is consolidating near recent lows, no clear move above break-even.",,1,0,0.36,0,"HOLD - Price is consolidating near recent lows, no clear move above break-even."
+2026-10-29 15:15,HOLD,"Price is consolidating near recent lows, no clear move above break-even.",,1,0,0.37,0,"HOLD - Price is consolidating near recent lows, no clear move above break-even."
+2026-10-29 15:16,HOLD,Price is trending down but not strongly enough to warrant selling now,,1,0,0.32,0,HOLD - Price is trending down but not strongly enough to warrant selling now
+2026-10-29 15:17,HOLD,Price is trending down but not strongly enough to warrant selling now,,1,0,0.33,0,HOLD - Price is trending down but not strongly enough to warrant selling now
+2026-10-29 15:18,HOLD,"Price is consolidating near recent lows, no clear move above break-even.",,1,0,0.36,0,"HOLD - Price is consolidating near recent lows, no clear move above break-even."
+2026-10-29 15:19,HOLD,"Price is consolidating near recent lows, no clear move expected.",,1,0,0.33,0,"HOLD - Price is consolidating near recent lows, no clear move expected."
+2026-10-29 15:20,HOLD,"Price is consolidating near recent lows, no clear move above break-even.",,1,0,0.36,0,"HOLD - Price is consolidating near recent lows, no clear move above break-even."
+2026-10-29 15:21,HOLD,"Price is consolidating near recent lows, no clear move above break-even.",,1,0,0.35,0,"HOLD - Price is consolidating near recent lows, no clear move above break-even."
+2026-10-29 15:22,HOLD,No clear upward momentum to justify selling now,,1,0,0.28,0,HOLD - No clear upward momentum to justify selling now
+2026-10-29 15:23,HOLD,"Price is consolidating near recent lows, no clear move above break-even.",,1,0,0.36,0,"HOLD - Price is consolidating near recent lows, no clear move above break-even."
+2026-10-29 15:24,HOLD,"Price is consolidating near recent lows, no clear move above break-even.",,1,0,0.39,0,"HOLD - Price is consolidating near recent lows, no clear move above break-even."
+2026-10-29 15:25,HOLD,"Price is consolidating near recent lows, no clear move above break-even.",,1,0,0.36,0,"HOLD - Price is consolidating near recent lows, no clear move above break-even."
+2026-10-29 15:26,HOLD,"Price is consolidating near recent lows, no clear move above break-even.",,1,0,0.36,0,"HOLD - Price is consolidating near recent lows, no clear move above break-even."
+2026-10-29 15:27,HOLD,No clear upward momentum to justify selling now,,1,0,0.29,0,HOLD - No clear upward momentum to justify selling now
+2026-10-29 15:28,HOLD,"Price is consolidating near recent highs, no clear move above break-even.",,1,0,0.35,0,"HOLD - Price is consolidating near recent highs, no clear move above break-even."
+2026-10-29 15:29,HOLD,No clear upward momentum to justify selling at a loss,,1,0,0.40,0,HOLD - No clear upward momentum to justify selling at a loss
+2026-10-29 15:30,HOLD,Price is trending down but not strongly enough to justify selling now,,1,0,0.32,0,HOLD - Price is trending down but not strongly enough to justify selling now
+2026-10-29 15:31,HOLD,Price is consolidating near recent lows,,1,0,0.27,0,HOLD - Price is consolidating near recent lows
+2026-10-29 15:32,HOLD,"Price is consolidating near recent lows, no clear move expected",,1,0,0.32,0,"HOLD - Price is consolidating near recent lows, no clear move expected"
+2026-10-29 15:33,HOLD,"Price is consolidating near recent lows, no clear move above break-even.",,1,0,0.36,0,"HOLD - Price is consolidating near recent lows, no clear move above break-even."
+2026-10-29 15:34,HOLD,Price is trending down but not strongly enough to warrant selling at a loss,,1,0,0.35,0,HOLD - Price is trending down but not strongly enough to warrant selling at a loss
+2026-10-29 15:35,HOLD,Price is trending down but not strongly enough to warrant selling now,,1,0,0.33,0,HOLD - Price is trending down but not strongly enough to warrant selling now
+2026-10-29 15:36,HOLD,"Price is consolidating near recent lows, no clear move above break-even.",,1,0,0.36,0,"HOLD - Price is consolidating near recent lows, no clear move above break-even."
+2026-10-29 15:37,HOLD,Price is trending down but not strongly enough to warrant selling now,,1,0,0.34,0,HOLD - Price is trending down but not strongly enough to warrant selling now
+2026-10-29 15:38,HOLD,"Price is consolidating near recent lows, no clear move above break-even.",,1,0,0.38,0,"HOLD - Price is consolidating near recent lows, no clear move above break-even."
+2026-10-29 15:39,HOLD,Price is trending down but not strongly enough to warrant selling now,,1,0,0.33,0,HOLD - Price is trending down but not strongly enough to warrant selling now
+2026-10-29 15:40,HOLD,"Price is consolidating near recent lows, no clear move above break-even.",,1,0,0.35,0,"HOLD - Price is consolidating near recent lows, no clear move above break-even."
+2026-10-29 15:41,HOLD,"Price is consolidating near recent lows, no clear move above break-even.",,1,0,0.36,0,"HOLD - Price is consolidating near recent lows, no clear move above break-even."
+2026-10-29 15:42,HOLD,"Price is consolidating near recent lows, no clear move above break-even.",,1,0,0.35,0,"HOLD - Price is consolidating near recent lows, no clear move above break-even."
+2026-10-29 15:43,HOLD,"Price is consolidating near recent lows, no clear move above break-even.",,1,0,0.36,0,"HOLD - Price is consolidating near recent lows, no clear move above break-even."
+2026-10-29 15:44,HOLD,"Price is consolidating near recent lows, no clear move above break-even.",,1,0,0.36,0,"HOLD - Price is consolidating near recent lows, no clear move above break-even."
+2026-10-29 15:45,HOLD,"Price is consolidating near recent lows, no clear move expected.",,1,0,0.33,0,"HOLD - Price is consolidating near recent lows, no clear move expected."
+2026-10-29 15:46,HOLD,Price is consolidating near recent highs,,1,0,0.27,0,HOLD - Price is consolidating near recent highs
+2026-10-29 15:47,HOLD,Price is slightly up but not enough to justify selling now,,1,0,0.32,0,HOLD - Price is slightly up but not enough to justify selling now
+2026-10-29 15:48,HOLD,Price is slightly down but not enough to cover costs,,1,0,0.31,0,HOLD - Price is slightly down but not enough to cover costs
+2026-10-29 15:49,HOLD,"Price is consolidating near recent highs, no clear move above break-even.",,1,0,0.36,0,"HOLD - Price is consolidating near recent highs, no clear move above break-even."
+2026-10-29 15:50,HOLD,"Price is consolidating near recent highs, no clear move above break-even.",,1,0,0.36,0,"HOLD - Price is consolidating near recent highs, no clear move above break-even."
+2026-10-29 15:51,HOLD,"Price is consolidating near recent highs, no clear move above break-even.",,1,0,0.36,0,"HOLD - Price is consolidating near recent highs, no clear move above break-even."
+2026-10-29 15:52,HOLD,Price is consolidating near recent highs,,1,0,0.28,0,HOLD - Price is consolidating near recent highs
+2026-10-29 15:53,HOLD,"Price is consolidating near recent highs, no clear move above break-even.",,1,0,0.36,0,"HOLD - Price is consolidating near recent highs, no clear move above break-even."
+2026-10-29 15:54,HOLD,"Price is consolidating near recent highs, no clear move over 0.10% expected.",,1,0,0.41,0,"HOLD - Price is consolidating near recent highs, no clear move over 0.10% expected."
+2026-10-29 15:55,HOLD,Price is moving up but not clearly enough to justify selling now,,1,0,0.33,0,HOLD - Price is moving up but not clearly enough to justify selling now
+2026-10-29 15:56,HOLD,Price is moving slowly and not clearly above break-even,,1,0,0.32,0,HOLD - Price is moving slowly and not clearly above break-even
+2026-10-29 15:57,HOLD,Price is moving slowly near recent highs,,1,0,0.27,0,HOLD - Price is moving slowly near recent highs
+2026-10-29 15:58,HOLD,Price is consolidating near recent highs,,1,0,0.27,0,HOLD - Price is consolidating near recent highs
+2026-10-29 15:59,HOLD,Price is moving slightly up but not enough to cover costs,,1,0,0.32,0,HOLD - Price is moving slightly up but not enough to cover costs
+2026-10-30 09:30,SELL,Price is significantly down and below break-even,,1,6,0.31,0,SELL - Price is significantly down and below break-even
+2026-10-30 09:31,BUY,Recent price action is volatile but showing upward momentum in the last few minutes,,0,6,0.36,0,BUY - Recent price action is volatile but showing upward momentum in the last few minutes
+2026-10-30 09:32,HOLD,Price is volatile but not showing clear upward momentum to cover costs,,1,6,0.38,0,HOLD - Price is volatile but not showing clear upward momentum to cover costs
+2026-10-30 09:33,HOLD,"Price is consolidating after a drop, no clear move above 0.10% expected",,1,6,0.40,0,"HOLD - Price is consolidating after a drop, no clear move above 0.10% expected"
+2026-10-30 09:34,HOLD,Price is trending down but not decisively enough to warrant selling at a loss,,1,6,0.36,0,HOLD - Price is trending down but not decisively enough to warrant selling at a loss
+2026-10-30 09:35,HOLD,Price is trending down but not decisively enough to warrant selling at a loss,,1,6,0.36,0,HOLD - Price is trending down but not decisively enough to warrant selling at a loss
+2026-10-30 09:36,SELL,Price is significantly down and below break-even,,1,6,0.31,0,SELL - Price is significantly down and below break-even
+2026-10-30 09:37,BUY,Recent price drop suggests a potential short-term bounce,,0,6,0.32,0,BUY - Recent price drop suggests a potential short-term bounce
+2026-10-30 09:38,HOLD,Recent small gain not enough to cover 0.10% cost,,1,6,0.35,0,HOLD - Recent small gain not enough to cover 0.10% cost
+2026-10-30 09:39,HOLD,Recent price action is volatile but not strong enough for a guaranteed 0.10% gain,,1,6,0.41,0,HOLD - Recent price action is volatile but not strong enough for a guaranteed 0.10% gain
+2026-10-30 09:40,HOLD,Recent small gains not enough to justify selling now,,1,6,0.30,0,HOLD - Recent small gains not enough to justify selling now
+2026-10-30 09:41,SELL,Realized profit exceeds 0.10% threshold,,1,6,0.32,0,SELL - Realized profit exceeds 0.10% threshold
+2026-10-30 09:42,BUY,Strong recent upward momentum and positive news,,0,6,0.29,0,BUY - Strong recent upward momentum and positive news
+2026-10-30 09:43,HOLD,"Price is consolidating near recent lows, no clear breakout signal",,1,6,0.34,0,"HOLD - Price is consolidating near recent lows, no clear breakout signal"
+2026-10-30 09:44,HOLD,Price is volatile but not showing a clear move >0.10% in favor of selling,,1,6,0.44,0,HOLD - Price is volatile but not showing a clear move >0.10% in favor of selling
+2026-10-30 09:45,HOLD,"Price is consolidating after a dip, no clear move > 0.10% expected",,1,0,0.39,0,"HOLD - Price is consolidating after a dip, no clear move > 0.10% expected"
+2026-10-30 09:46,HOLD,Recent upward move is not strong enough to justify selling now,,1,0,0.31,0,HOLD - Recent upward move is not strong enough to justify selling now
+2026-10-30 09:47,HOLD,"Price is consolidating near recent lows, no clear move above break-even.",,1,0,0.36,0,"HOLD - Price is consolidating near recent lows, no clear move above break-even."
+2026-10-30 09:48,HOLD,Small gain not worth trading cost,,1,0,0.26,0,HOLD - Small gain not worth trading cost
+2026-10-30 09:49,HOLD,Recent upward move is small compared to cost threshold,,1,0,0.30,0,HOLD - Recent upward move is small compared to cost threshold
+2026-10-30 09:50,HOLD,Price is consolidating near recent highs,,1,0,0.26,0,HOLD - Price is consolidating near recent highs
+2026-10-30 09:51,HOLD,Recent upward momentum is not strong enough to justify selling now,,1,6,0.32,0,HOLD - Recent upward momentum is not strong enough to justify selling now
+2026-10-30 09:52,HOLD,Recent price action is mixed and not strong enough for a guaranteed 0.10% gain,,1,6,0.41,0,HOLD - Recent price action is mixed and not strong enough for a guaranteed 0.10% gain
+2026-10-30 09:53,HOLD,Recent upward momentum is not strong enough to justify selling now,,1,6,0.32,0,HOLD - Recent upward momentum is not strong enough to justify selling now
+2026-10-30 09:54,HOLD,No clear move above 0.10% expected,,1,6,0.33,0,HOLD - No clear move above 0.10% expected
+2026-10-30 09:55,HOLD,recent upward momentum is not strong enough to justify selling now,,1,6,0.33,0,HOLD - recent upward momentum is not strong enough to justify selling now
+2026-10-30 09:56,HOLD,Price is slightly down but not enough to cover costs for a quick flip,,1,0,0.34,0,HOLD - Price is slightly down but not enough to cover costs for a quick flip
+2026-10-30 09:57,HOLD,Small recent gain not enough to cover costs,,1,0,0.29,0,HOLD - Small recent gain not enough to cover costs
+2026-10-30 09:58,HOLD,Recent upward move is small compared to cost,,1,0,0.28,0,HOLD - Recent upward move is small compared to cost
+2026-10-30 09:59,HOLD,Recent upward momentum slowing after a small gain,,1,0,0.29,0,HOLD - Recent upward momentum slowing after a small gain
+2026-10-30 10:00,HOLD,Recent upward momentum slowing down,,1,0,0.26,0,HOLD - Recent upward momentum slowing down
+2026-10-30 10:01,HOLD,Price is moving sideways after a recent rise,,1,0,0.29,0,HOLD - Price is moving sideways after a recent rise
+2026-10-30 10:02,HOLD,Price is moving sideways after a recent dip,,1,0,0.28,0,HOLD - Price is moving sideways after a recent dip
+2026-10-30 10:03,HOLD,Recent upward momentum stalled and short-term trend is mixed,,1,0,0.32,0,HOLD - Recent upward momentum stalled and short-term trend is mixed
+2026-10-30 10:04,HOLD,"Price is consolidating near recent highs, no strong signal to exit yet.",,1,0,0.35,0,"HOLD - Price is consolidating near recent highs, no strong signal to exit yet."
+2026-10-30 10:05,HOLD,Small recent upward move not enough to cover costs,,1,0,0.30,0,HOLD - Small recent upward move not enough to cover costs
+2026-10-30 10:06,SELL,Profit exceeds 0.10% threshold,,1,0,0.30,0,SELL - Profit exceeds 0.10% threshold
+2026-10-30 10:07,BUY,Short term bounce possible after recent dip,,0,0,0.27,0,BUY - Short term bounce possible after recent dip
+2026-10-30 10:08,HOLD,"recent small pullback, no clear reversal signal",,1,0,0.29,0,"HOLD - recent small pullback, no clear reversal signal"
+2026-10-30 10:09,HOLD,No clear upward momentum to justify selling now,,1,0,0.28,0,HOLD - No clear upward momentum to justify selling now
+2026-10-30 10:10,HOLD,"Recent minor pullback, no clear move above 0.10% expected",,1,0,0.46,0,"HOLD - Recent minor pullback, no clear move above 0.10% expected"
+2026-10-30 10:11,HOLD,No clear upward momentum to justify selling now,,1,0,0.28,0,HOLD - No clear upward momentum to justify selling now
+2026-10-30 10:12,HOLD,Price is consolidating after a larger drop,,1,0,0.27,0,HOLD - Price is consolidating after a larger drop
+2026-10-30 10:13,HOLD,"Price is consolidating after a drop, no clear move above 0.10% expected.",,1,0,0.40,0,"HOLD - Price is consolidating after a drop, no clear move above 0.10% expected."
+2026-10-30 10:14,HOLD,Price is trending down but not strongly enough to warrant selling now,,1,0,0.34,0,HOLD - Price is trending down but not strongly enough to warrant selling now
+2026-10-30 10:15,HOLD,Price is trending down but not strongly enough to warrant selling now,,1,0,0.33,0,HOLD - Price is trending down but not strongly enough to warrant selling now
+2026-10-30 10:16,HOLD,Price is trending down but not strongly enough to warrant selling now,,1,0,0.33,0,HOLD - Price is trending down but not strongly enough to warrant selling now
+2026-10-30 10:17,HOLD,"Price is consolidating after a drop, no clear move above 0.10% expected.",,1,0,0.40,0,"HOLD - Price is consolidating after a drop, no clear move above 0.10% expected."
+2026-10-30 10:18,HOLD,Recent price action is consolidating near the entry point,,1,0,0.30,0,HOLD - Recent price action is consolidating near the entry point
+2026-10-30 10:19,HOLD,No clear upward move expected to cover costs,,1,0,0.29,0,HOLD - No clear upward move expected to cover costs
+2026-10-30 10:20,HOLD,Recent price action is consolidating near the low of the last 15 mins,,1,0,0.36,0,HOLD - Recent price action is consolidating near the low of the last 15 mins
+2026-10-30 10:21,HOLD,Price is trending down but not strongly enough to warrant selling now,,1,0,0.33,0,HOLD - Price is trending down but not strongly enough to warrant selling now
+2026-10-30 10:22,HOLD,Price is trending down but not strongly enough to warrant selling now,,1,0,0.33,0,HOLD - Price is trending down but not strongly enough to warrant selling now
+2026-10-30 10:23,HOLD,Price is trending down but not strongly enough to warrant selling now,,1,0,0.33,0,HOLD - Price is trending down but not strongly enough to warrant selling now
+2026-10-30 10:24,HOLD,Price is trending down but not strongly enough to warrant selling now,,1,0,0.32,0,HOLD - Price is trending down but not strongly enough to warrant selling now
+2026-10-30 10:25,HOLD,Price is trending down but not strongly enough to warrant selling now,,1,0,0.41,0,HOLD - Price is trending down but not strongly enough to warrant selling now
+2026-10-30 10:26,HOLD,Recent price action is choppy and not clearly trending up to cover costs,,1,0,0.34,0,HOLD - Recent price action is choppy and not clearly trending up to cover costs
+2026-10-30 10:27,HOLD,Recent price action is weak and not strong enough to justify selling now,,1,0,0.34,0,HOLD - Recent price action is weak and not strong enough to justify selling now
+2026-10-30 10:28,HOLD,"Price is consolidating after a drop, no clear move above 0.10% expected.",,1,0,0.40,0,"HOLD - Price is consolidating after a drop, no clear move above 0.10% expected."
+2026-10-30 10:29,HOLD,Recent price action is choppy and not showing a clear move over 0.10%,,1,0,0.38,0,HOLD - Recent price action is choppy and not showing a clear move over 0.10%
+2026-10-30 10:30,HOLD,"Price is consolidating near recent lows, no clear move above break-even.",,1,0,0.38,0,"HOLD - Price is consolidating near recent lows, no clear move above break-even."
+2026-10-30 10:31,HOLD,Price movement is too small to cover 0.10% cost,,1,0,0.36,0,HOLD - Price movement is too small to cover 0.10% cost
+2026-10-30 10:32,HOLD,"Price is consolidating near recent lows, no clear move above 0.10% expected.",,1,0,0.40,0,"HOLD - Price is consolidating near recent lows, no clear move above 0.10% expected."
+2026-10-30 10:33,HOLD,"Small recent gain, no strong trend signal",,1,0,0.29,0,"HOLD - Small recent gain, no strong trend signal"
+2026-10-30 10:34,HOLD,Small recent move not enough to cover costs,,1,0,0.32,0,HOLD - Small recent move not enough to cover costs
+2026-10-30 10:35,HOLD,Small gain not worth trading cost,,1,0,0.26,0,HOLD - Small gain not worth trading cost
+2026-10-30 10:36,HOLD,Price is near recent highs but no strong momentum for a quick reversal,,1,0,0.34,0,HOLD - Price is near recent highs but no strong momentum for a quick reversal
+2026-10-30 10:37,HOLD,"Price is consolidating near recent highs, no clear move > 0.10% expected.",,1,0,0.48,0,"HOLD - Price is consolidating near recent highs, no clear move > 0.10% expected."
+2026-10-30 10:38,HOLD,Small recent gain not enough to cover 0.10% trade cost,,1,6,0.37,0,HOLD - Small recent gain not enough to cover 0.10% trade cost
+2026-10-30 10:39,HOLD,Recent upward momentum is not strong enough to justify selling now,,1,0,0.31,0,HOLD - Recent upward momentum is not strong enough to justify selling now
+2026-10-30 10:40,HOLD,Small recent gains not enough to justify selling now,,1,6,0.30,0,HOLD - Small recent gains not enough to justify selling now
+2026-10-30 10:41,HOLD,"Small positive move, not enough to justify selling now",,1,0,0.30,0,"HOLD - Small positive move, not enough to justify selling now"
+2026-10-30 10:42,HOLD,Price is not moving clearly enough to cover 0.10% cost,,1,0,0.36,0,HOLD - Price is not moving clearly enough to cover 0.10% cost
+2026-10-30 10:43,HOLD,Price is not clearly moving past break-even,,1,0,0.31,0,HOLD - Price is not clearly moving past break-even
+2026-10-30 10:44,HOLD,"Price is consolidating near recent highs, no clear move over 0.10% yet.",,1,0,0.40,0,"HOLD - Price is consolidating near recent highs, no clear move over 0.10% yet."
+2026-10-30 10:45,HOLD,No clear upward momentum to justify selling now,,1,0,0.28,0,HOLD - No clear upward momentum to justify selling now
+2026-10-30 10:46,HOLD,"Price is consolidating near recent lows, no clear move expected.",,1,0,0.32,0,"HOLD - Price is consolidating near recent lows, no clear move expected."
+2026-10-30 10:47,HOLD,"Small recent movement, no clear trend for >0.10% move",,1,0,0.36,0,"HOLD - Small recent movement, no clear trend for >0.10% move"
+2026-10-30 10:48,HOLD,Price is near recent highs and showing slight upward momentum over 60 min,,1,0,0.35,0,HOLD - Price is near recent highs and showing slight upward momentum over 60 min
+2026-10-30 10:49,HOLD,Price is slightly down but not enough to cover costs,,1,0,0.30,0,HOLD - Price is slightly down but not enough to cover costs
+2026-10-30 10:50,HOLD,"Price is consolidating near recent lows, no clear move expected.",,1,0,0.32,0,"HOLD - Price is consolidating near recent lows, no clear move expected."
+2026-10-30 10:51,HOLD,Price is trending down but not strongly enough to warrant selling now,,1,0,0.33,0,HOLD - Price is trending down but not strongly enough to warrant selling now
+2026-10-30 10:52,HOLD,"Price is consolidating near recent lows, no clear move above break-even.",,1,0,0.42,0,"HOLD - Price is consolidating near recent lows, no clear move above break-even."
+2026-10-30 10:53,HOLD,No clear upward momentum to justify selling now,,1,0,0.28,0,HOLD - No clear upward momentum to justify selling now
+2026-10-30 10:54,HOLD,"Price is consolidating near recent lows, no clear move above break-even.",,1,0,0.36,0,"HOLD - Price is consolidating near recent lows, no clear move above break-even."
+2026-10-30 10:55,HOLD,"Price is consolidating near recent highs, no strong directional move yet",,1,0,0.33,0,"HOLD - Price is consolidating near recent highs, no strong directional move yet"
+2026-10-30 10:56,HOLD,Price is slightly down but not enough to cover costs,,1,0,0.31,0,HOLD - Price is slightly down but not enough to cover costs
+2026-10-30 10:57,HOLD,Recent price action is choppy and not showing a clear move over 0.10%,,1,0,0.39,0,HOLD - Recent price action is choppy and not showing a clear move over 0.10%
+2026-10-30 10:58,HOLD,"Price is consolidating near recent lows, no clear move above 0.10% expected.",,1,0,0.41,0,"HOLD - Price is consolidating near recent lows, no clear move above 0.10% expected."
+2026-10-30 10:59,HOLD,Price is trending down but not enough to justify selling now,,1,0,0.33,0,HOLD - Price is trending down but not enough to justify selling now
+2026-10-30 11:00,HOLD,Price is trending down but not strongly enough to warrant selling now,,1,0,0.33,0,HOLD - Price is trending down but not strongly enough to warrant selling now
+2026-10-30 11:01,HOLD,"Recent price action is choppy, not strong enough for a clear move over 0.10%",,1,0,0.41,0,"HOLD - Recent price action is choppy, not strong enough for a clear move over 0.10%"
+2026-10-30 11:02,HOLD,No clear upward momentum to justify selling at a loss,,1,0,0.31,0,HOLD - No clear upward momentum to justify selling at a loss
+2026-10-30 11:03,HOLD,"Price is consolidating near recent lows, no clear move above 0.10% expected.",,1,0,0.40,0,"HOLD - Price is consolidating near recent lows, no clear move above 0.10% expected."
+2026-10-30 11:04,HOLD,Price is trending down but not strongly enough to warrant selling now,,1,0,0.33,0,HOLD - Price is trending down but not strongly enough to warrant selling now
+2026-10-30 11:05,HOLD,"Price is consolidating near recent lows, no clear move above break-even.",,1,0,0.36,0,"HOLD - Price is consolidating near recent lows, no clear move above break-even."
+2026-10-30 11:06,HOLD,Price is trending down but not strongly enough to warrant selling now,,1,0,0.32,0,HOLD - Price is trending down but not strongly enough to warrant selling now
+2026-10-30 11:07,HOLD,Price is trending down but not strongly enough to warrant selling now,,1,0,0.32,0,HOLD - Price is trending down but not strongly enough to warrant selling now
+2026-10-30 11:08,HOLD,"Price is consolidating near recent lows, no clear move above 0.10% expected.",,1,0,0.41,0,"HOLD - Price is consolidating near recent lows, no clear move above 0.10% expected."
+2026-10-30 11:09,HOLD,Price is consolidating near recent highs,,1,0,0.26,0,HOLD - Price is consolidating near recent highs
+2026-10-30 11:10,HOLD,"Price is consolidating near recent lows, no clear move above break-even.",,1,0,0.36,0,"HOLD - Price is consolidating near recent lows, no clear move above break-even."
+2026-10-30 11:11,HOLD,Recent price action is choppy and not showing a clear move >0.10%,,1,0,0.39,0,HOLD - Recent price action is choppy and not showing a clear move >0.10%
+2026-10-30 11:12,HOLD,Price is trending down but not strongly enough to warrant selling now,,1,0,0.34,0,HOLD - Price is trending down but not strongly enough to warrant selling now
+2026-10-30 11:13,HOLD,"Price is consolidating near recent lows, no clear move above break-even.",,1,0,0.36,0,"HOLD - Price is consolidating near recent lows, no clear move above break-even."
+2026-10-30 11:14,HOLD,Price is slightly down but not enough to cover 0.10% cost,,1,0,0.37,0,HOLD - Price is slightly down but not enough to cover 0.10% cost
+2026-10-30 11:15,HOLD,"Price is consolidating near recent lows, no clear move above 0.10% expected.",,1,0,0.40,0,"HOLD - Price is consolidating near recent lows, no clear move above 0.10% expected."
+2026-10-30 11:16,HOLD,"Price is consolidating near recent lows, no clear move expected.",,1,0,0.34,0,"HOLD - Price is consolidating near recent lows, no clear move expected."
+2026-10-30 11:17,HOLD,Price is consolidating near recent lows,,1,0,0.29,0,HOLD - Price is consolidating near recent lows
+2026-10-30 11:18,HOLD,"Price is consolidating near recent lows, no clear move above break-even.",,1,0,0.35,0,"HOLD - Price is consolidating near recent lows, no clear move above break-even."
+2026-10-30 11:19,HOLD,"Price is consolidating near recent lows, no clear move above 0.10% expected.",,1,0,0.40,0,"HOLD - Price is consolidating near recent lows, no clear move above 0.10% expected."
+2026-10-30 11:20,HOLD,Price is slightly down but not enough to cover costs,,1,0,0.30,0,HOLD - Price is slightly down but not enough to cover costs
+2026-10-30 11:21,HOLD,"Price is consolidating near recent lows, no clear move above 0.10% expected",,1,0,0.39,0,"HOLD - Price is consolidating near recent lows, no clear move above 0.10% expected"
+2026-10-30 11:22,HOLD,Recent price action is consolidating near the low of the last 15 minutes.,,1,0,0.37,0,HOLD - Recent price action is consolidating near the low of the last 15 minutes.
+2026-10-30 11:23,HOLD,No clear upward move expected to cover costs,,1,0,0.30,0,HOLD - No clear upward move expected to cover costs
+2026-10-30 11:24,HOLD,"Price is consolidating near recent lows, no clear move above 0.10% expected.",,1,0,0.40,0,"HOLD - Price is consolidating near recent lows, no clear move above 0.10% expected."
+2026-10-30 11:25,HOLD,"Price is consolidating near recent lows, no clear move above break-even.",,1,0,0.36,0,"HOLD - Price is consolidating near recent lows, no clear move above break-even."
+2026-10-30 11:26,HOLD,Price is consolidating near recent lows,,1,0,0.26,0,HOLD - Price is consolidating near recent lows
+2026-10-30 11:27,HOLD,small recent movement not enough to cover costs,,1,0,0.28,0,HOLD - small recent movement not enough to cover costs
+2026-10-30 11:28,HOLD,"Price is consolidating near recent lows, no clear move above 0.10% expected.",,1,0,0.40,0,"HOLD - Price is consolidating near recent lows, no clear move above 0.10% expected."
+2026-10-30 11:29,HOLD,Price is trending down but not strongly enough to warrant selling now,,1,0,0.33,0,HOLD - Price is trending down but not strongly enough to warrant selling now
+2026-10-30 11:30,HOLD,Price is consolidating near recent lows,,1,0,0.26,0,HOLD - Price is consolidating near recent lows
+2026-10-30 11:31,HOLD,Price is consolidating near recent highs,,1,0,0.26,0,HOLD - Price is consolidating near recent highs
+2026-10-30 11:32,HOLD,"Price is consolidating near recent lows, no clear move above break-even.",,1,0,0.36,0,"HOLD - Price is consolidating near recent lows, no clear move above break-even."
+2026-10-30 11:33,HOLD,Price is consolidating near recent highs,,1,0,0.26,0,HOLD - Price is consolidating near recent highs
+2026-10-30 11:34,HOLD,Price is consolidating near recent highs,,1,0,0.27,0,HOLD - Price is consolidating near recent highs
+2026-10-30 11:35,HOLD,Recent price action is consolidating near the entry point,,1,0,0.29,0,HOLD - Recent price action is consolidating near the entry point
+2026-10-30 11:36,HOLD,"Price is consolidating near recent highs, no clear move yet",,1,0,0.32,0,"HOLD - Price is consolidating near recent highs, no clear move yet"
+2026-10-30 11:37,HOLD,Recent price action is consolidating near the current level,,1,0,0.29,0,HOLD - Recent price action is consolidating near the current level
+2026-10-30 11:38,HOLD,"Price is consolidating near recent lows, no clear move above 0.10% expected",,1,0,0.39,0,"HOLD - Price is consolidating near recent lows, no clear move above 0.10% expected"
+2026-10-30 11:39,HOLD,Price is consolidating near recent lows,,1,0,0.27,0,HOLD - Price is consolidating near recent lows
+2026-10-30 11:40,HOLD,No clear upward momentum to justify selling at a loss,,1,0,0.31,0,HOLD - No clear upward momentum to justify selling at a loss
+2026-10-30 11:41,HOLD,"Price is consolidating near recent lows, no clear move above break-even.",,1,0,0.36,0,"HOLD - Price is consolidating near recent lows, no clear move above break-even."
+2026-10-30 11:42,HOLD,"Price is consolidating near recent lows, no clear move above 0.10% expected.",,1,0,0.40,0,"HOLD - Price is consolidating near recent lows, no clear move above 0.10% expected."
+2026-10-30 11:43,HOLD,recent price action is choppy and not strong enough to warrant a trade,,1,0,0.33,0,HOLD - recent price action is choppy and not strong enough to warrant a trade
+2026-10-30 11:44,HOLD,No clear upward momentum to justify selling now,,1,0,0.30,0,HOLD - No clear upward momentum to justify selling now
+2026-10-30 11:45,HOLD,"Price is consolidating near recent lows, no clear move above break-even.",,1,0,0.36,0,"HOLD - Price is consolidating near recent lows, no clear move above break-even."
+2026-10-30 11:46,HOLD,Price is trending down but not strongly enough to warrant selling now,,1,0,0.32,0,HOLD - Price is trending down but not strongly enough to warrant selling now
+2026-10-30 11:47,HOLD,Price is trending down but not strongly enough to warrant selling now,,1,0,0.33,0,HOLD - Price is trending down but not strongly enough to warrant selling now
+2026-10-30 11:48,HOLD,"Price is consolidating near recent lows, no clear move above 0.10% expected.",,1,0,0.40,0,"HOLD - Price is consolidating near recent lows, no clear move above 0.10% expected."
+2026-10-30 11:49,HOLD,Price is trending down but not strongly enough to warrant selling now,,1,0,0.32,0,HOLD - Price is trending down but not strongly enough to warrant selling now
+2026-10-30 11:50,HOLD,"Price is consolidating near recent lows, no clear move above break-even.",,1,0,0.36,0,"HOLD - Price is consolidating near recent lows, no clear move above break-even."
+2026-10-30 11:51,HOLD,"Price is consolidating near recent lows, no clear move expected.",,1,0,0.35,0,"HOLD - Price is consolidating near recent lows, no clear move expected."
+2026-10-30 11:52,HOLD,Price is consolidating near recent lows,,1,0,0.27,0,HOLD - Price is consolidating near recent lows
+2026-10-30 11:53,HOLD,"Price is consolidating near recent lows, no clear move above 0.10% expected.",,1,0,0.40,0,"HOLD - Price is consolidating near recent lows, no clear move above 0.10% expected."
+2026-10-30 11:54,HOLD,recent price action is choppy and not strong enough to justify a trade,,1,0,0.33,0,HOLD - recent price action is choppy and not strong enough to justify a trade
+2026-10-30 11:55,HOLD,"Price is consolidating near recent highs, no clear move above 0.10% expected.",,1,0,0.40,0,"HOLD - Price is consolidating near recent highs, no clear move above 0.10% expected."
+2026-10-30 11:56,HOLD,Price is consolidating near recent highs,,1,0,0.26,0,HOLD - Price is consolidating near recent highs
+2026-10-30 11:57,HOLD,Price is consolidating near recent highs,,1,0,0.26,0,HOLD - Price is consolidating near recent highs
+2026-10-30 11:58,HOLD,"Price is consolidating near recent highs, no clear breakout.",,1,0,0.32,0,"HOLD - Price is consolidating near recent highs, no clear breakout."
+2026-10-30 11:59,HOLD,Price is consolidating near recent highs,,1,0,0.27,0,HOLD - Price is consolidating near recent highs
+2026-10-30 12:00,HOLD,"Price is consolidating near recent highs, no clear move above break-even.",,1,0,0.37,0,"HOLD - Price is consolidating near recent highs, no clear move above break-even."
+2026-10-30 12:01,HOLD,"Price is consolidating near recent lows, no clear move above break-even.",,1,0,0.36,0,"HOLD - Price is consolidating near recent lows, no clear move above break-even."
+2026-10-30 12:02,HOLD,"Price is consolidating near recent highs, no clear move over 0.10% yet",,1,0,0.39,0,"HOLD - Price is consolidating near recent highs, no clear move over 0.10% yet"
+2026-10-30 12:03,HOLD,"Price is consolidating near recent lows, no clear move above break-even.",,1,0,0.36,0,"HOLD - Price is consolidating near recent lows, no clear move above break-even."
+2026-10-30 12:04,HOLD,No clear move expected beyond costs,,1,0,0.26,0,HOLD - No clear move expected beyond costs
+2026-10-30 12:05,HOLD,"Price is consolidating near recent lows, no clear move expected.",,1,0,0.33,0,"HOLD - Price is consolidating near recent lows, no clear move expected."
+2026-10-30 12:06,HOLD,No clear upward move expected to cover costs,,1,0,0.38,0,HOLD - No clear upward move expected to cover costs
+2026-10-30 12:07,HOLD,Price is consolidating near recent lows,,1,0,0.26,0,HOLD - Price is consolidating near recent lows
+2026-10-30 12:08,HOLD,No clear upward move expected,,1,0,0.26,0,HOLD - No clear upward move expected
+2026-10-30 12:09,HOLD,recent price action is choppy and not clearly trending up or down enough to cover costs,,1,0,0.37,0,HOLD - recent price action is choppy and not clearly trending up or down enough to cover costs
+2026-10-30 12:10,HOLD,Price is trending down but not strongly enough to warrant selling now,,1,0,2.67,0,HOLD - Price is trending down but not strongly enough to warrant selling now
+2026-10-30 12:11,HOLD,Price is trending down but not strongly enough to warrant selling now,,1,0,0.33,0,HOLD - Price is trending down but not strongly enough to warrant selling now
+2026-10-30 12:12,HOLD,Price is trending down but not strongly enough to warrant selling now,,1,0,0.33,0,HOLD - Price is trending down but not strongly enough to warrant selling now
+2026-10-30 12:13,HOLD,"Price is consolidating near recent lows, no clear move above break-even.",,1,0,0.36,0,"HOLD - Price is consolidating near recent lows, no clear move above break-even."
+2026-10-30 12:14,HOLD,No clear upward momentum to justify selling at a loss,,1,0,0.30,0,HOLD - No clear upward momentum to justify selling at a loss
+2026-10-30 12:15,HOLD,"Price is consolidating near recent lows, no clear move above 0.10% expected",,1,0,0.39,0,"HOLD - Price is consolidating near recent lows, no clear move above 0.10% expected"
+2026-10-30 12:16,HOLD,"Price is consolidating near recent lows, no clear move above 0.10% expected.",,1,0,0.49,0,"HOLD - Price is consolidating near recent lows, no clear move above 0.10% expected."
+2026-10-30 12:17,HOLD,"Price is consolidating near recent lows, no clear move expected.",,1,0,0.33,0,"HOLD - Price is consolidating near recent lows, no clear move expected."
+2026-10-30 12:18,HOLD,"Price is consolidating near recent lows, no clear move expected.",,1,0,0.33,0,"HOLD - Price is consolidating near recent lows, no clear move expected."
+2026-10-30 12:19,HOLD,"Price is consolidating near recent lows, no clear move above 0.10% expected.",,1,0,0.40,0,"HOLD - Price is consolidating near recent lows, no clear move above 0.10% expected."
+2026-10-30 12:20,HOLD,"Price is consolidating near recent lows, no clear move expected.",,1,0,0.33,0,"HOLD - Price is consolidating near recent lows, no clear move expected."
+2026-10-30 12:21,HOLD,No clear upward momentum to justify selling at a loss,,1,0,0.31,0,HOLD - No clear upward momentum to justify selling at a loss
+2026-10-30 12:22,HOLD,Price is slightly down but not enough to warrant selling at a loss,,1,0,0.34,0,HOLD - Price is slightly down but not enough to warrant selling at a loss
+2026-10-30 12:23,HOLD,"Price is consolidating near recent lows, no clear move above 0.10% expected.",,1,0,1.58,0,"HOLD - Price is consolidating near recent lows, no clear move above 0.10% expected."
+2026-10-30 12:24,HOLD,No clear upward momentum to justify selling at a loss,,1,0,0.34,0,HOLD - No clear upward momentum to justify selling at a loss
+2026-10-30 12:25,HOLD,Price is consolidating near recent highs,,1,0,0.26,0,HOLD - Price is consolidating near recent highs
+2026-10-30 12:26,HOLD,"Price is consolidating near recent highs, no clear move above 0.10% expected.",,1,0,0.40,0,"HOLD - Price is consolidating near recent highs, no clear move above 0.10% expected."
+2026-10-30 12:27,HOLD,Small recent upward movement not enough to cover costs,,1,0,0.30,0,HOLD - Small recent upward movement not enough to cover costs
+2026-10-30 12:28,HOLD,Price is consolidating near recent highs,,1,0,0.28,0,HOLD - Price is consolidating near recent highs
+2026-10-30 12:29,HOLD,Price is moving slowly and not clearly above break-even,,1,0,0.32,0,HOLD - Price is moving slowly and not clearly above break-even
+2026-10-30 12:30,HOLD,"Price is consolidating near recent highs, no strong move yet",,1,0,0.31,0,"HOLD - Price is consolidating near recent highs, no strong move yet"
+2026-10-30 12:31,HOLD,"Price is consolidating near recent highs, no clear move expected.",,1,0,0.32,0,"HOLD - Price is consolidating near recent highs, no clear move expected."
+2026-10-30 12:32,HOLD,No clear move above 0.10% expected,,1,0,0.32,0,HOLD - No clear move above 0.10% expected
+2026-10-30 12:33,HOLD,"Price is consolidating near recent lows, no clear move above break-even.",,1,0,0.35,0,"HOLD - Price is consolidating near recent lows, no clear move above break-even."
+2026-10-30 12:34,HOLD,"Price is consolidating near recent lows, no clear move above break-even.",,1,0,0.35,0,"HOLD - Price is consolidating near recent lows, no clear move above break-even."
+2026-10-30 12:35,HOLD,"Price is consolidating near recent highs, no clear breakout signal",,1,0,0.31,0,"HOLD - Price is consolidating near recent highs, no clear breakout signal"
+2026-10-30 12:36,HOLD,"Price is consolidating near recent lows, no clear move expected.",,1,0,0.32,0,"HOLD - Price is consolidating near recent lows, no clear move expected."
+2026-10-30 12:37,HOLD,Price is consolidating near recent lows,,1,0,0.26,0,HOLD - Price is consolidating near recent lows
+2026-10-30 12:38,HOLD,"Price is consolidating near recent highs, no clear move above 0.10% expected.",,1,0,0.40,0,"HOLD - Price is consolidating near recent highs, no clear move above 0.10% expected."
+2026-10-30 12:39,HOLD,Price is consolidating near recent lows,,1,0,0.26,0,HOLD - Price is consolidating near recent lows
+2026-10-30 12:40,HOLD,Recent price action is consolidating near the current level,,1,0,0.29,0,HOLD - Recent price action is consolidating near the current level
+2026-10-30 12:41,HOLD,Price is consolidating near recent lows,,1,0,0.26,0,HOLD - Price is consolidating near recent lows
+2026-10-30 12:42,HOLD,"Price is consolidating near recent lows, no clear move above break-even",,1,0,0.34,0,"HOLD - Price is consolidating near recent lows, no clear move above break-even"
+2026-10-30 12:43,HOLD,"Price is consolidating near recent lows, no clear move above 0.10% expected.",,1,0,0.40,0,"HOLD - Price is consolidating near recent lows, no clear move above 0.10% expected."
+2026-10-30 12:44,HOLD,Price is consolidating near recent lows,,1,0,0.26,0,HOLD - Price is consolidating near recent lows
+2026-10-30 12:45,HOLD,"Price is consolidating near recent lows, no clear move above 0.10% expected.",,1,0,0.40,0,"HOLD - Price is consolidating near recent lows, no clear move above 0.10% expected."
+2026-10-30 12:46,HOLD,Price is trending down but not strongly enough to warrant a trade,,1,0,0.32,0,HOLD - Price is trending down but not strongly enough to warrant a trade
+2026-10-30 12:47,HOLD,"Price is consolidating near recent lows, no clear move above break-even.",,1,0,0.36,0,"HOLD - Price is consolidating near recent lows, no clear move above break-even."
+2026-10-30 12:48,HOLD,Price is trending down but not strongly enough to warrant selling now,,1,0,0.33,0,HOLD - Price is trending down but not strongly enough to warrant selling now
+2026-10-30 12:49,HOLD,"Price is consolidating near recent lows, no clear move above break-even.",,1,0,0.36,0,"HOLD - Price is consolidating near recent lows, no clear move above break-even."
+2026-10-30 12:50,HOLD,"Price is consolidating near recent lows, no clear move above 0.10% expected.",,1,0,0.40,0,"HOLD - Price is consolidating near recent lows, no clear move above 0.10% expected."
+2026-10-30 12:51,HOLD,Recent price action is choppy and not showing a clear move over 0.10%,,1,0,0.39,0,HOLD - Recent price action is choppy and not showing a clear move over 0.10%
+2026-10-30 12:52,HOLD,"Price is consolidating near recent lows, no clear move above 0.10% expected.",,1,0,0.40,0,"HOLD - Price is consolidating near recent lows, no clear move above 0.10% expected."
+2026-10-30 12:53,HOLD,No clear upward momentum to justify selling now,,1,0,0.31,0,HOLD - No clear upward momentum to justify selling now
+2026-10-30 12:54,HOLD,Price is trending down but not strongly enough to warrant selling now,,1,0,0.33,0,HOLD - Price is trending down but not strongly enough to warrant selling now
+2026-10-30 12:55,HOLD,Recent price action is choppy and not showing a clear move over 0.10%,,1,0,0.38,0,HOLD - Recent price action is choppy and not showing a clear move over 0.10%
+2026-10-30 12:56,HOLD,No clear upward momentum to justify selling at a loss,,1,0,0.34,0,HOLD - No clear upward momentum to justify selling at a loss
+2026-10-30 12:57,HOLD,Price is consolidating near recent lows,,1,0,0.26,0,HOLD - Price is consolidating near recent lows
+2026-10-30 12:58,HOLD,No clear upward momentum to justify selling at a loss,,1,0,0.31,0,HOLD - No clear upward momentum to justify selling at a loss
+2026-10-30 12:59,HOLD,Price is trending down but not strongly enough to warrant selling now,,1,0,0.32,0,HOLD - Price is trending down but not strongly enough to warrant selling now
+2026-10-30 13:00,HOLD,No clear upward momentum to justify selling at a loss,,1,0,0.30,0,HOLD - No clear upward momentum to justify selling at a loss
+2026-10-30 13:01,HOLD,"Price is consolidating near recent lows, no clear move above 0.10% expected.",,1,0,0.41,0,"HOLD - Price is consolidating near recent lows, no clear move above 0.10% expected."
+2026-10-30 13:02,HOLD,Price is consolidating near recent highs,,1,0,0.26,0,HOLD - Price is consolidating near recent highs
+2026-10-30 13:03,HOLD,"Price is consolidating near recent lows, no clear move above 0.10% expected.",,1,0,0.39,0,"HOLD - Price is consolidating near recent lows, no clear move above 0.10% expected."
+2026-10-30 13:04,HOLD,"Price is consolidating near recent lows, no clear move expected.",,1,0,0.34,0,"HOLD - Price is consolidating near recent lows, no clear move expected."
+2026-10-30 13:05,HOLD,No clear upward momentum to justify selling now,,1,0,0.28,0,HOLD - No clear upward momentum to justify selling now
+2026-10-30 13:06,HOLD,Price is consolidating near recent lows,,1,0,0.26,0,HOLD - Price is consolidating near recent lows
+2026-10-30 13:07,HOLD,Price is consolidating near recent lows,,1,0,0.26,0,HOLD - Price is consolidating near recent lows
+2026-10-30 13:08,HOLD,"Price is consolidating near recent lows, no clear move above 0.10% expected.",,1,0,0.40,0,"HOLD - Price is consolidating near recent lows, no clear move above 0.10% expected."
+2026-10-30 13:09,HOLD,No clear upward move expected to cover costs,,1,0,0.28,0,HOLD - No clear upward move expected to cover costs
+2026-10-30 13:10,HOLD,"Price is consolidating near recent lows, no clear move expected.",,1,0,0.32,0,"HOLD - Price is consolidating near recent lows, no clear move expected."
+2026-10-30 13:11,HOLD,Price is trending down but not strongly enough to warrant selling now,,1,0,0.33,0,HOLD - Price is trending down but not strongly enough to warrant selling now
+2026-10-30 13:12,HOLD,"Price is consolidating near recent lows, no clear move above 0.10% expected.",,1,0,0.40,0,"HOLD - Price is consolidating near recent lows, no clear move above 0.10% expected."
+2026-10-30 13:13,HOLD,Price is consolidating near recent lows,,1,0,0.27,0,HOLD - Price is consolidating near recent lows
+2026-10-30 13:14,HOLD,"Price is consolidating near recent lows, no clear move above break-even.",,1,0,0.35,0,"HOLD - Price is consolidating near recent lows, no clear move above break-even."
+2026-10-30 13:15,HOLD,"Price is consolidating near recent lows, no clear move above break-even.",,1,0,0.36,0,"HOLD - Price is consolidating near recent lows, no clear move above break-even."
+2026-10-30 13:16,HOLD,"Price is consolidating near recent lows, no clear move above 0.10% expected.",,1,0,0.40,0,"HOLD - Price is consolidating near recent lows, no clear move above 0.10% expected."
+2026-10-30 13:17,HOLD,Price is consolidating near recent lows,,1,0,0.26,0,HOLD - Price is consolidating near recent lows
+2026-10-30 13:18,HOLD,Price is trending down but not strongly enough to warrant selling now,,1,0,0.32,0,HOLD - Price is trending down but not strongly enough to warrant selling now
+2026-10-30 13:19,HOLD,Price is trending down but not strongly enough to warrant selling now,,1,0,0.32,0,HOLD - Price is trending down but not strongly enough to warrant selling now
+2026-10-30 13:20,HOLD,Price is trending down but not strongly enough to warrant selling now,,1,0,0.32,0,HOLD - Price is trending down but not strongly enough to warrant selling now
+2026-10-30 13:21,HOLD,No clear upward momentum to justify selling at a loss,,1,0,0.30,0,HOLD - No clear upward momentum to justify selling at a loss
+2026-10-30 13:22,HOLD,Price is trending down but not strongly enough to warrant selling now,,1,0,0.36,0,HOLD - Price is trending down but not strongly enough to warrant selling now
+2026-10-30 13:23,HOLD,Price is trending down but not strongly enough to warrant selling now,,1,0,0.32,0,HOLD - Price is trending down but not strongly enough to warrant selling now
+2026-10-30 13:24,HOLD,Recent price action is flat and no clear move above 0.10% expected,,1,0,0.38,0,HOLD - Recent price action is flat and no clear move above 0.10% expected
+2026-10-30 13:25,HOLD,No clear upward momentum to justify selling at a loss,,1,0,0.34,0,HOLD - No clear upward momentum to justify selling at a loss
+2026-10-30 13:26,HOLD,"Price is consolidating near recent lows, no clear move expected.",,1,0,0.38,0,"HOLD - Price is consolidating near recent lows, no clear move expected."
