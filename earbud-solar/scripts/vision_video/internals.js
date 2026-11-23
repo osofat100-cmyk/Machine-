@@ -27,6 +27,25 @@ function wire(points, radius, color, gloss = 0.45) {
     new THREE.MeshPhysicalMaterial({ color, roughness: gloss, clearcoat: 0.6, clearcoatRoughness: 0.3 }));
   m.castShadow = true; return m;
 }
+function tubeGeo(points, radius) {
+  const curve = new THREE.CatmullRomCurve3(points.map(p => new THREE.Vector3(...p)), false, "centripetal");
+  return new THREE.TubeGeometry(curve, Math.max(60, points.length * 10), radius, 10, false);
+}
+// point lists of two leads twisted around `path` (all of it), then each to its own end points
+function twistedPoints(path, pitch, ends, radius) {
+  const c = new THREE.CatmullRomCurve3(path.map(p => new THREE.Vector3(...p)), false, "centripetal");
+  const L = c.getLength(), n = Math.max(30, Math.round(L / 0.5)), frames = c.computeFrenetFrames(n, false);
+  const out = [[], []];
+  for (let i = 0; i <= n; i++) {
+    const u = i / n, p = c.getPointAt(u), th = (2 * Math.PI * u * L) / pitch;
+    for (let k = 0; k < 2; k++) {
+      const a = th + k * Math.PI;
+      out[k].push(p.clone().add(frames.normals[i].clone().multiplyScalar(Math.cos(a) * radius * 1.05))
+        .add(frames.binormals[i].clone().multiplyScalar(Math.sin(a) * radius * 1.05)).toArray());
+    }
+  }
+  return [0, 1].map(k => [...out[k], ...ends[k]]);
+}
 // two leads twisted around one path for the first `twistLen` mm, then each to its own end point
 function twistedPair(path, twistLen, pitch, ends, radius, colors) {
   const c = new THREE.CatmullRomCurve3(path.map(p => new THREE.Vector3(...p)), false, "centripetal");
@@ -113,6 +132,8 @@ async function pcb(P, parts, pads, kicadUnits) {
     g.fillStyle = "#d8b45a";                                                                // ENIG pads
     for (const q of parts) { g.save(); g.translate(q.xy[0] + ox, q.xy[1] + oy); g.rotate((q.rot * Math.PI) / 180); FOOT[q.model](g); g.restore(); }
     for (const k of Object.keys(pads)) { const [x, y] = pads[k]; g.beginPath(); g.ellipse(x + ox, y + oy, 0.75, 0.6, 0, 0, 7); g.fill(); }
+    g.fillStyle = "#1a1a1a";
+    for (const k of ["bat_plus", "bat_minus"]) { const [x, y] = pads[k]; g.beginPath(); g.arc(x + ox, y + oy, 0.32, 0, 7); g.fill(); }   // lead holes
     g.fillStyle = "#0e3a1f"; for (const v of [[-1.0, 0.4], [6.6, 3.4], [6.6, -3.1], [10.6, 0.6], [0.8, -2.0], [5.0, 1.8]]) { g.beginPath(); g.arc(v[0] + ox, v[1] + oy, 0.16, 0, 7); g.fill(); }
     g.strokeStyle = "#eef2ee"; g.lineWidth = 0.09;                                           // silkscreen
     for (const q of parts) {
@@ -159,9 +180,10 @@ async function pcb(P, parts, pads, kicadUnits) {
   // solder fillets on the lead pads
   const solder = new THREE.MeshPhysicalMaterial({ color: 0xcfd2d4, roughness: 0.2, metalness: 1.0 });
   grp.userData.solderPads = Object.fromEntries(Object.entries(pads).map(([k, [x, y]]) => [k, [x, y, P.centre[2] + T / 2]]));
+  grp.userData.solder = [];
   for (const k of ["bat_plus", "bat_minus"]) {
-    const b = new THREE.Mesh(new THREE.SphereGeometry(0.55, 16, 10), solder); b.scale.z = 0.45;
-    b.position.set(pads[k][0] - cx, pads[k][1] - cy, T / 2 + 0.12); grp.add(b);
+    const b = new THREE.Mesh(new THREE.SphereGeometry(0.55, 16, 10), solder); b.scale.set(1, 1, 0.45);
+    b.position.set(pads[k][0] - cx, pads[k][1] - cy, T / 2 + 0.12); grp.add(b); grp.userData.solder.push(b);
   }
   return grp;
 }
@@ -179,7 +201,7 @@ function speaker(S) {
   add(new THREE.CylinderGeometry(3.1, 3.1, 1.35, 40), nickel, h / 2 - 0.68);             // magnet cup
   add(new THREE.TorusGeometry(3.1, 0.12, 8, 40), nickel, h / 2).rotation.x = 0;
   const gold = new THREE.MeshPhysicalMaterial({ color: 0xd8b45a, roughness: 0.25, metalness: 1.0 });
-  for (const sx of [-1, 1]) { const t = new THREE.Mesh(new THREE.BoxGeometry(0.9, 1.3, 0.2), gold); t.position.set(sx * 3.85, 0, -h / 2 + 1.75); g.add(t); }
+  for (const a of [-0.61, 0.61]) { const t = new THREE.Mesh(new THREE.BoxGeometry(0.9, 1.3, 0.2), gold); t.position.set(3.85 * Math.cos(a), 3.85 * Math.sin(a), -h / 2 + 1.75); t.rotation.z = a; g.add(t); }
   g.position.set(...S.centre);
   return g;
 }
@@ -188,19 +210,71 @@ export async function buildInternals(L) {
   const B = L.battery, P = L.pcb, S = L.speaker, pads = L.pads;
   const bat = battery(B), board = await pcb(P, L.parts, pads, L.kicad.units_mm), spk = speaker(S);
   const pcbTop = P.centre[2] + P.size[2] / 2, batTop = B.centre[2] + B.size[2] / 2, xEnd = B.centre[0] - B.size[0] / 2;
-  // battery leads: out of the kapton end, up and back over the label, twisted, up onto the board pads
-  const path = [[xEnd + 0.4, B.centre[1], B.centre[2] + 0.3], [xEnd - 0.7, B.centre[1] + 0.2, B.centre[2] + 0.9],
-    [xEnd + 0.4, B.centre[1] + 0.4, batTop + 0.35], [xEnd + 6, B.centre[1] + 0.5, batTop + 0.33], [P.centre[0] - P.size[0] / 2 - 2.8, 0.2, batTop + 0.35]];
-  const [red, blk] = twistedPair(path, 15.5, 2.6, [
-    [[P.centre[0] - P.size[0] / 2 - 0.9, pads.bat_plus[1] * 0.7, pcbTop + 0.35], [pads.bat_plus[0], pads.bat_plus[1], pcbTop + 0.25]],
-    [[P.centre[0] - P.size[0] / 2 - 0.9, pads.bat_minus[1] * 0.7, pcbTop + 0.35], [pads.bat_minus[0], pads.bat_minus[1], pcbTop + 0.25]],
-  ], 0.26, [0xc81e1e, 0x141414]);
-  for (const w of [red, blk]) { w.position.sub(bat.position); bat.add(w); }
-  // speaker leads: from the tabs up to the board's underside
+  const yc = B.centre[1], zc = B.centre[2], pcbLeft = P.centre[0] - P.size[0] / 2;
+  // speaker leads: from the two tabs (on the +x side) straight up to the board's underside pads
   const tabZ = S.centre[2] - S.h / 2 + 1.85, under = P.centre[2] - P.size[2] / 2 - 0.1;
-  const sr = wire([[S.centre[0] + 3.85, S.centre[1], tabZ], [S.centre[0] + 4.3, S.centre[1] + 0.8, tabZ + 0.9], [pads.spk_plus[0] + 0.3, pads.spk_plus[1], under - 0.4], [pads.spk_plus[0], pads.spk_plus[1], under]], 0.13, 0xb52020);
-  const sb = wire([[S.centre[0] - 3.85, S.centre[1], tabZ], [S.centre[0] - 3.2, S.centre[1] - 1.2, tabZ + 1.0], [pads.spk_minus[0] - 1.5, pads.spk_minus[1], under - 0.5], [pads.spk_minus[0], pads.spk_minus[1], under]], 0.13, 0x1a1a1a);
-  for (const w of [sr, sb]) { w.position.sub(spk.position); spk.add(w); }
+  const tab = a => [S.centre[0] + 3.85 * Math.cos(a), S.centre[1] + 3.85 * Math.sin(a), tabZ];
+  const sl = [[tab(0.61), pads.spk_plus, 0xb52020], [tab(-0.61), pads.spk_minus, 0x1a1a1a]].map(([t0, pd, col]) =>
+    wire([t0, [t0[0] + 0.25, t0[1], t0[2] + 0.9], [pd[0] + 0.3, pd[1], under - 0.6], [pd[0], pd[1], under]], 0.13, col));
+  for (const w of sl) { w.position.sub(spk.position); spk.add(w); }
   for (const o of [bat, board, spk]) o.userData.final = o.position.clone();
-  return { speaker: spk, battery: bat, pcb: board };
+
+  // battery leads (twisted red/black pair), rebuilt every frame:
+  //   blend 0 = standing up out of the window, ends in the air;  blend 1 = bent over and soldered into the board pads
+  const leadMats = [0xc81e1e, 0x141414].map(c => new THREE.MeshPhysicalMaterial({ color: c, roughness: 0.4, clearcoat: 0.6, clearcoatRoughness: 0.3 }));
+  const leads = new THREE.Group();
+  const leadMeshes = leadMats.map(m => { const o = new THREE.Mesh(new THREE.BufferGeometry(), m); o.castShadow = true; leads.add(o); return o; });
+  const lerp3 = (a, b, k) => a.map((v, i) => v + (b[i] - v) * k);
+  function updateLeads({ batOff, pcbOff, blend, lift = 0, sway = 0 }) {
+    const A = xEnd + batOff[0], y0 = yc + batOff[1], z0 = zc + batOff[2], T = batTop + batOff[2];
+    const pl = pcbLeft + pcbOff[0], pT = pcbTop + pcbOff[2];
+    const head = [[A + 0.4, y0, z0 + 0.3], [A - 0.7, y0 + 0.2, z0 + 0.9], [A + 0.4, y0 + 0.4, T + 0.35]];
+    const up = [[A + 4.6, y0 + 0.5, T + 0.4], [A + 6.0, y0 + 0.5 + 0.4 * sway, T + 3.5 + 0.5 * lift], [A + 6.6, y0 + 0.4 + sway, T + 8.5 + lift]];
+    const fin = [[A + 5.6, y0 + 0.5, T + 0.33], [pl - 2.8, 0.2, T + 0.35], [pl - 1.6, 0.25, pT + 0.2]];
+    const mid = up.map((p, i) => lerp3(p, fin[i], blend));
+    const ends = [pads.bat_plus, pads.bat_minus].map((pd, k) => {
+      const s = k ? -1 : 1;
+      const eu = [[A + 6.8, y0 + s * 0.45 + sway, T + 9.8 + lift], [A + 6.9, y0 + s * 0.55 + sway, T + 10.5 + lift]];
+      const ef = [[pl - 0.9, pd[1] * 0.7 + pcbOff[1], pT + 0.35], [pd[0] + pcbOff[0], pd[1] + pcbOff[1], pT + 0.25 - 0.35 * blend]];
+      return eu.map((p, i) => lerp3(p, ef[i], blend));
+    });
+    const pts = twistedPoints([...head, ...mid], 2.6, ends, 0.26);
+    leadMeshes.forEach((m, k) => { m.geometry.dispose(); m.geometry = tubeGeo(pts[k], 0.26); });
+  }
+  return { speaker: spk, battery: bat, pcb: board, leads, updateLeads };
+}
+
+// ---------------- the solar panel (ANYSOLAR SM400K10TF look) ----------------
+// front: near-black monocrystalline cells with a fine regular dot pattern, 5 x 2 cells (datasheet drawing: 6.00 x 6.80 mm
+// cells, 0.30 gaps, 0.90 side margins), slim grey edge; back: black board, two gold pads, white IXOLAR print (DigiKey photo)
+export function buildPanel(cx, cy, ct) {
+  const front = canvasTex(33, 15, 72, g => {
+    g.fillStyle = "#3a3e45"; g.fillRect(0, 0, 33, 15);
+    g.fillStyle = "#0b0c0e"; g.fillRect(0.25, 0.25, 32.5, 14.5);
+    for (let i = 0; i < 5; i++) for (let j = 0; j < 2; j++) {
+      const x0 = 0.9 + i * 6.3, y0 = 0.55 + j * 7.1;
+      const gr = g.createLinearGradient(x0, y0, x0 + 6, y0 + 6.8);
+      gr.addColorStop(0, "#0f1013"); gr.addColorStop(0.5, "#0a0b0d"); gr.addColorStop(1, "#0e0f12");
+      g.fillStyle = gr; g.fillRect(x0, y0, 6.0, 6.8);
+      g.fillStyle = "rgba(140,150,170,0.11)";
+      for (let a = 0; a < 6.0 / 0.28; a++) for (let b = 0; b < 6.8 / 0.28; b++) {
+        const x = x0 + 0.14 + a * 0.28 + ((b % 2) ? 0.14 : 0), y = y0 + 0.14 + b * 0.28;
+        if (x < x0 + 5.95) { g.beginPath(); g.arc(x, y, 0.055, 0, 7); g.fill(); }
+      }
+    }
+  });
+  const back = canvasTex(33, 15, 48, g => {
+    g.fillStyle = "#141517"; g.fillRect(0, 0, 33, 15);
+    g.fillStyle = "#d6b25a";
+    for (const x of [3.0, 30.0]) { g.beginPath(); g.arc(x, 7.5, 1.5, 0, 7); g.fill(); }
+    text(g, "\u2212", 5.6, 7.5, 2.0, "#f2f2f2", "center", true); text(g, "+", 27.4, 7.5, 2.0, "#f2f2f2", "center", true);
+    text(g, "IXOLAR\u2122", 16.5, 10.6, 1.35, "#f2f2f2"); text(g, "SM400K10TF", 16.5, 8.7, 1.35, "#f2f2f2");
+    text(g, "R3.0", 16.5, 6.8, 1.35, "#f2f2f2"); text(g, "WWW.ANYSOLAR.BIZ", 16.5, 4.9, 0.95, "#f2f2f2");
+  });
+  const side = new THREE.MeshPhysicalMaterial({ color: 0x18191c, roughness: 0.35, clearcoat: 0.5 });
+  const top = new THREE.MeshPhysicalMaterial({ map: front, roughness: 0.4, metalness: 0.0, clearcoat: 0.6, clearcoatRoughness: 0.18, envMapIntensity: 0.55 });
+  const bot = new THREE.MeshPhysicalMaterial({ map: back, roughness: 0.55 });
+  const m = new THREE.Mesh(new THREE.BoxGeometry(cx, cy, ct), [side, side, side, side, top, bot]);
+  m.castShadow = m.receiveShadow = true;
+  return m;
 }

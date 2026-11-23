@@ -105,6 +105,20 @@ for n in asm.graph.nodes_geometry:
     T, gname = asm.graph[n]
     if n == "original_pod":
         pod = asm.geometry[gname].copy(); pod.apply_transform(T)
+# hook tip: the printed hook ends 0.12 mm from the paddle (shell_report.json hook.tip_gap_to_paddle_mm), close enough
+# to flicker on video; bend the last ~14 mm of the arm smoothly outward (-Y, a little down) by up to 2 mm (render only)
+REP = json.load(open(os.path.join(HERE, "..", "data", "shell_report.json")))
+TIP, BEND, REACH = np.array(REP["hook"]["tip"]), 2.6, 15.0
+
+
+def bend_tip(m):
+    d = np.linalg.norm(m.vertices - TIP, axis=1)
+    u = np.clip(1 - d / REACH, 0, 1); w = u * u * (3 - 2 * u)
+    dirn = np.array([0.0, -1.0, -0.25]); dirn /= np.linalg.norm(dirn)
+    m.vertices = m.vertices + (BEND * w)[:, None] * dirn
+    return m
+
+
 # the nozzle stem between the shell and the ear tip: JBL's own hard-plastic skins below the base, around the pod axis
 # (the printable shell cuts the paddle at its floor and keeps only the rubber tip, which left the tip floating)
 FR = json.load(open(os.path.join(HERE, "..", "data", "shell_frame.json")))
@@ -126,7 +140,7 @@ print("stem triangles", len(stem.faces), "z", np.round(stem.bounds[:, 2], 2))
 
 parts = dict(cover=cov, stem=stem,
              base=decimate(polish(trimesh.load(os.path.join(SHELL, "EP3_shell_base.stl"))), 0.4),
-             hook=decimate(polish(trimesh.load(os.path.join(SHELL, "EP3_shell_hook_arm.stl")), 40), 0.4),
+             hook=bend_tip(decimate(polish(trimesh.load(os.path.join(SHELL, "EP3_shell_hook_arm.stl")), 40), 0.4)),
              pod=trimesh.Trimesh(pod.vertices, pod.faces, process=True))
 for k, m in parts.items():
     m.visual = trimesh.visual.ColorVisuals(m)

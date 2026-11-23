@@ -5,7 +5,7 @@
 <title>Solar earbud vision</title>
 <style>
   html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; }
-  body { background: radial-gradient(ellipse 75% 70% at 50% 42%, #fbfcfd 0%, #eef1f5 45%, #d3d9e1 100%); font-family: Inter, sans-serif; }
+  body { background: radial-gradient(ellipse 75% 70% at 50% 42%, #ffffff 0%, #f1f4f7 45%, #d9dee5 100%); font-family: Inter, sans-serif; }
   canvas { position: absolute; inset: 0; }
   .cap { position: absolute; color: #16202c; opacity: 0; }
   #tag { left: 96px; top: 84px; font-size: 30px; font-weight: 600; letter-spacing: 0.02em; }
@@ -23,12 +23,12 @@
 import * as THREE from "three";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
-import { buildInternals } from "./internals.js";
+import { buildInternals, buildPanel } from "./internals.js";
 
-const W = 1920, H = 1080, T_END = 16.0;
+const W = 1920, H = 1080, T_END = 18.0;
 const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, preserveDrawingBuffer: true });
 renderer.setPixelRatio(1); renderer.setSize(W, H);
-renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.05;
+renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.12;
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 document.body.prepend(renderer.domElement);
@@ -36,64 +36,47 @@ document.body.prepend(renderer.domElement);
 const scene = new THREE.Scene();
 const pmrem = new THREE.PMREMGenerator(renderer);
 scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
-scene.environmentIntensity = 0.85;
+scene.environmentIntensity = 0.95;
 
 const camera = new THREE.PerspectiveCamera(26, W / H, 1, 2000);
+scene.add(camera);
 
-// lights: warm "sun" key, cool fill, soft ground shadow
-const sun = new THREE.DirectionalLight(0xfff1dc, 2.6);
+// lights: warm "sun" key (shadows), cool rim, soft top light, a fill that rides with the camera
+const sun = new THREE.DirectionalLight(0xfff1dc, 3.0);
 sun.position.set(-60, 120, 70); sun.castShadow = true;
 sun.shadow.mapSize.set(2048, 2048); sun.shadow.radius = 6; sun.shadow.bias = -0.0004;
 Object.assign(sun.shadow.camera, { left: -60, right: 60, top: 60, bottom: -60, near: 10, far: 400 });
 scene.add(sun);
-const rim = new THREE.DirectionalLight(0xcfe0ff, 1.1); rim.position.set(80, 40, -90); scene.add(rim);
-scene.add(new THREE.HemisphereLight(0xffffff, 0x9aa3ad, 0.35));
-const ground = new THREE.Mesh(new THREE.PlaneGeometry(600, 600), new THREE.ShadowMaterial({ opacity: 0.16 }));
+const rim = new THREE.DirectionalLight(0xdbe8ff, 1.5); rim.position.set(80, 40, -90); scene.add(rim);
+const topLight = new THREE.DirectionalLight(0xffffff, 0.8); topLight.position.set(10, 150, 0); scene.add(topLight);
+const fill = new THREE.DirectionalLight(0xffffff, 0.7); fill.position.set(0, 0.3, 1); camera.add(fill);
+fill.target.position.set(0, 0, -1); camera.add(fill.target);
+scene.add(new THREE.HemisphereLight(0xffffff, 0xaab2bc, 0.4));
+const ground = new THREE.Mesh(new THREE.PlaneGeometry(600, 600), new THREE.ShadowMaterial({ opacity: 0.14 }));
 ground.rotation.x = -Math.PI / 2; ground.position.y = -40; ground.receiveShadow = true; scene.add(ground);
 
 // seat frame S (mm, Z out of the face) -> world (Y up): rotate -90 deg about X
 const bud = new THREE.Group(); bud.rotation.x = -Math.PI / 2; scene.add(bud);
 
 const mats = {
-  cover: new THREE.MeshPhysicalMaterial({ color: 0x1d1f23, roughness: 0.5, metalness: 0.0, clearcoat: 0.25, clearcoatRoughness: 0.45 }),
-  base: new THREE.MeshPhysicalMaterial({ color: 0x17181c, roughness: 0.58, metalness: 0.0 }),
-  hook: new THREE.MeshPhysicalMaterial({ color: 0x1f2125, roughness: 0.72, metalness: 0.0, sheen: 0.3, sheenRoughness: 0.8 }),
-  pod: new THREE.MeshPhysicalMaterial({ color: 0x2a2c31, roughness: 0.62, metalness: 0.0 }),
-  stem: new THREE.MeshPhysicalMaterial({ color: 0x1a1b1f, roughness: 0.45, metalness: 0.0, clearcoat: 0.2, side: THREE.DoubleSide }),
+  cover: new THREE.MeshPhysicalMaterial({ color: 0x222428, roughness: 0.46, metalness: 0.0, clearcoat: 0.25, clearcoatRoughness: 0.45 }),
+  base: new THREE.MeshPhysicalMaterial({ color: 0x1d1f23, roughness: 0.55, metalness: 0.0 }),
+  hook: new THREE.MeshPhysicalMaterial({ color: 0x212327, roughness: 0.7, metalness: 0.0, sheen: 0.3, sheenRoughness: 0.8 }),
+  pod: new THREE.MeshPhysicalMaterial({ color: 0x2a2c31, roughness: 0.6, metalness: 0.0 }),
+  stem: new THREE.MeshPhysicalMaterial({ color: 0x1e2024, roughness: 0.45, metalness: 0.0, clearcoat: 0.2, side: THREE.DoubleSide }),
 };
 
-function cellTexture() {
-  // ANYSOLAR SM (back-contact mono): dark front, 10 cells in a row, thin separation lines, slim border
-  const pxmm = 64, w = 33 * pxmm, h = 15 * pxmm, c = document.createElement("canvas");
-  c.width = w; c.height = h; const g = c.getContext("2d");
-  g.fillStyle = "#30353d"; g.fillRect(0, 0, w, h);
-  const m = 0.7 * pxmm, gap = 0.22 * pxmm, n = 10, cw = (w - 2 * m - (n - 1) * gap) / n;
-  for (let i = 0; i < n; i++) {
-    const x = m + i * (cw + gap);
-    const gr = g.createLinearGradient(x, m, x + cw, h - m);
-    gr.addColorStop(0, "#112042"); gr.addColorStop(0.5, "#0a1630"); gr.addColorStop(1, "#0f1d40");
-    g.fillStyle = gr; g.fillRect(x, m, cw, h - 2 * m);
-    g.fillStyle = "rgba(120,150,210,0.06)";
-    for (let y = m + 0.5 * pxmm; y < h - m; y += 0.5 * pxmm) g.fillRect(x, y, cw, 1);
-  }
-  g.fillStyle = "#8f959e"; g.fillRect(0, 0, w, 0.12 * pxmm); g.fillRect(0, h - 0.12 * pxmm, w, 0.12 * pxmm);
-  g.fillRect(0, 0, 0.12 * pxmm, h); g.fillRect(w - 0.12 * pxmm, 0, 0.12 * pxmm, h);
-  const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 8; return t;
-}
-const cellTop = new THREE.MeshPhysicalMaterial({ map: cellTexture(), roughness: 0.16, metalness: 0.15, clearcoat: 1.0, clearcoatRoughness: 0.04, envMapIntensity: 1.2 });
-const cellSide = new THREE.MeshPhysicalMaterial({ color: 0x3a3f47, roughness: 0.35, metalness: 0.5 });
+// top face of the nozzle unit, seen through the pod socket opening (the JBL skin is open there)
+const podCap = new THREE.Mesh(new THREE.CircleGeometry(4.6, 48), mats.pod);
+podCap.position.set(12.35, -0.23, -9.5); podCap.receiveShadow = true; bud.add(podCap);
+
 const cellPivot = new THREE.Group(); bud.add(cellPivot);
 let CELL_T = 1.5;
 async function loadCell() {
   const info = await (await fetch("/assets/vision_assets.json")).json();
   const [cx, cy, ct] = info.cell_mm; CELL_T = ct;
-  const cell = new THREE.Mesh(new THREE.BoxGeometry(cx, cy, ct), [cellSide, cellSide, cellSide, cellSide, cellTop, cellSide]);
-  cell.castShadow = true; cell.receiveShadow = true; cellPivot.add(cell);
+  cellPivot.add(buildPanel(cx, cy, ct));
 }
-
-// top face of the nozzle unit, seen through the pod socket opening (the JBL skin is open there)
-const podCap = new THREE.Mesh(new THREE.CircleGeometry(4.6, 48), mats.pod);
-podCap.position.set(12.35, -0.23, -9.5); podCap.receiveShadow = true; bud.add(podCap);
 
 const loader = new GLTFLoader();
 async function loadPart(name) {
@@ -108,61 +91,98 @@ async function loadPart(name) {
 }
 
 // ---------- timeline ----------
-const ease = x => (x <= 0 ? 0 : x >= 1 ? 1 : x * x * (3 - 2 * x));
-const easeOut = x => (x <= 0 ? 0 : x >= 1 ? 1 : 1 - Math.pow(1 - x, 3));
+const clamp01 = x => Math.min(1, Math.max(0, x));
+const ease = x => { x = clamp01(x); return x * x * (3 - 2 * x); };
+const easeOut = x => { x = clamp01(x); return 1 - Math.pow(1 - x, 3); };
 const lerp = (a, b, k) => a + (b - a) * k;
-// camera keys: time, azimuth (deg, around world Y, 0 = +Z), elevation (deg), distance, target y
-const keys = [
-  [0.0, -34, 56, 150, -6],
-  [4.9, -16, 52, 128, -4],
-  [8.8, -8, 38, 150, -5],
-  [11.8, 34, 15, 112, -4],
-  [13.8, 18, 30, 150, -8],
-  [16.0, 10, 32, 160, -9],
+const prog = (t, t0, t1) => clamp01((t - t0) / (t1 - t0));
+
+// camera: assembly view -> panel view -> one full 360 turn around the finished earbud -> title
+const keys = [   // time, azimuth (deg, around world Y, 0 = +Z), elevation (deg), distance, target y
+  [0.0, -30, 60, 150, -6],
+  [6.0, -16, 55, 128, -4],
+  [9.2, -8, 34, 150, -5],
 ];
+const ORBIT = [9.4, 16.0];
 function camAt(t) {
-  let i = 0; while (i < keys.length - 2 && t > keys[i + 1][0]) i++;
-  const a = keys[i], b = keys[i + 1], k = ease((t - a[0]) / (b[0] - a[0]));
-  const az = lerp(a[1], b[1], k) * Math.PI / 180, el = lerp(a[2], b[2], k) * Math.PI / 180, d = lerp(a[3], b[3], k);
-  const ty = lerp(a[4], b[4], k);
-  camera.position.set(d * Math.cos(el) * Math.sin(az), ty + d * Math.sin(el), d * Math.cos(el) * Math.cos(az));
+  let az, el, d, ty;
+  if (t <= keys[2][0]) {
+    let i = 0; while (i < keys.length - 2 && t > keys[i + 1][0]) i++;
+    const a = keys[i], b = keys[i + 1], k = ease((t - a[0]) / (b[0] - a[0]));
+    [az, el, d, ty] = [1, 2, 3, 4].map(j => lerp(a[j], b[j], k));
+  } else if (t <= ORBIT[0]) {
+    [az, el, d, ty] = [-8, 34, 150, -5];
+  } else {
+    const u = ease(prog(t, ORBIT[0], ORBIT[1]));
+    az = -8 + 360 * u;
+    el = 34 - 18 * Math.sin(Math.PI * u);           // dips low halfway round: the panel's edge just above the surface
+    d = 150 - 26 * Math.sin(Math.PI * u);
+    ty = -5;
+    if (t > ORBIT[1]) { const v = prog(t, ORBIT[1], T_END); az = 352 + 10 * v; el = 34 - 2 * v; d = 150 + 10 * v; ty = -5 - 3 * v; }
+  }
+  const A = az * Math.PI / 180, E = el * Math.PI / 180;
+  camera.position.set(d * Math.cos(E) * Math.sin(A), ty + d * Math.sin(E), d * Math.cos(E) * Math.cos(A));
   camera.lookAt(0, ty, 0);
-  ground.material.opacity = 0.16 * ease((lerp(a[2], b[2], k) - 16) / 12);   // no shadow slab in the low shot
+  ground.material.opacity = 0.14 * ease((el - 17) / 12);   // no shadow slab in the low shots
+}
+
+// inside parts go in straight through the window, then slide sideways under the edge into place (no clipping)
+let inner = null;
+function place(o, t, steps) {
+  // steps: [t0, t1, dx, dy, dz] waypoints; offset from the final position, eased between consecutive waypoints
+  o.visible = t >= steps[0][0];
+  let off = steps[0].slice(2);
+  for (let i = 1; i < steps.length; i++) {
+    const k = easeOut(prog(t, steps[i - 1][1], steps[i][1]));
+    if (t >= steps[i - 1][1]) off = steps[i - 1].slice(2).map((v, j) => lerp(v, steps[i][2 + j], k));
+  }
+  o.position.copy(o.userData.final).add(new THREE.Vector3(...off));
+  return off;
+}
+function internalsAt(t) {
+  // speaker: down through the window left of its spot, over the floor step, slide right, drop into the socket
+  place(inner.speaker, t, [[0.3, 0.3, -3.95, 0, 36], [0, 1.7, -3.95, 0, 1.45], [0, 2.2, 0, 0, 1.45], [0, 2.45, 0, 0, 0]]);
+  // battery: down right of its spot (clear of the window edge), stop above the speaker, slide left under the edge, settle
+  const bo = place(inner.battery, t, [[1.9, 1.9, 4.3, 0, 36], [0, 3.1, 4.3, 0, 1.7], [0, 3.7, 0, 0, 1.7], [0, 4.0, 0, 0, 0]]);
+  // board: down left of its spot, slide right under the edge, settle onto its supports
+  const po = place(inner.pcb, t, [[4.0, 4.0, -2.5, 0, 36], [0, 5.1, -2.5, 0, 0.5], [0, 5.6, 0, 0, 0.5], [0, 5.9, 0, 0, 0]]);
+  // leads: dragged up while the battery drops, swing, then bend over and slide into the board's pad holes
+  const fall = 1 - easeOut(prog(t, 1.9, 3.1));
+  const swing = Math.sin(t * 5.5) * 0.9 * Math.exp(-Math.max(0, t - 3.1) * 1.2) * (t > 1.9 ? 1 : 0);
+  const blend = ease(prog(t, 4.9, 5.9));
+  inner.leads.visible = t >= 1.9;
+  inner.updateLeads({ batOff: bo, pcbOff: po, blend, lift: 4 * fall, sway: swing * (1 - blend) });
+  const s = ease(prog(t, 5.85, 6.15));
+  for (const b of inner.pcb.userData.solder) { b.visible = s > 0.01; b.scale.set(s, s, 0.45 * s); }
 }
 function cellAt(t) {
-  // hover, then drop and settle into the pocket (seat at S z = 0, so the box centre ends at half the thickness)
-  cellPivot.visible = t >= 5.0;
-  const k = easeOut((t - 5.0) / 3.6);
-  const hover = 34 * (1 - k) + 0.6 * Math.sin(t * 2.2) * (1 - k);
+  // the panel comes in tilted, levels out well above the pocket, then sinks straight in (pocket = panel + 0.05 mm)
+  cellPivot.visible = t >= 5.9;
+  const k = easeOut(prog(t, 5.9, 9.0));
+  const hover = 36 * (1 - k);
+  const tilt = ease((hover - 5) / 14);
   cellPivot.position.set(0, 0, CELL_T / 2 + hover);
-  cellPivot.rotation.set(0.32 * (1 - k), -0.18 * (1 - k), 0.22 * (1 - k));
+  cellPivot.rotation.set(0.32 * tilt, -0.18 * tilt, 0.22 * tilt);
 }
 function overlays(t) {
   document.getElementById("tag").style.opacity = String(ease((t - 0.3) / 0.8) * (1 - ease((t - 9.4) / 0.8)));
-  document.getElementById("end").style.opacity = String(ease((t - 13.3) / 0.9));
+  document.getElementById("end").style.opacity = String(ease((t - 16.0) / 0.9));
 }
 window.renderAt = (t) => {
   camAt(t); cellAt(t); overlays(t);
-  if (inner) { dropAt(inner.speaker, t, 0.4, 1.6, 0.5); dropAt(inner.battery, t, 1.5, 1.8, -0.35); dropAt(inner.pcb, t, 2.9, 1.9, 0.3); }
+  if (inner) internalsAt(t);
   scene.environmentRotation.y = -0.9 + 1.5 * ease((t - 6.6) / 5.5);   // light sweep across the glossy panel
   renderer.render(scene, camera);
   return true;
 };
-// inside parts drop in one after another (speaker, battery with its leads, board), then the panel covers them
-let inner = null;
-function dropAt(o, t, t0, dur, spin) {
-  o.visible = t >= t0;
-  const k = easeOut((t - t0) / dur);
-  o.position.copy(o.userData.final); o.position.z += 34 * (1 - k);
-  o.rotation.set(0, 0, spin * (1 - k));
-}
 async function loadInternals() {
   const L = await (await fetch("/assets/vision_layout.json")).json();
   inner = await buildInternals(L);
-  bud.add(inner.speaker, inner.battery, inner.pcb);
+  bud.add(inner.speaker, inner.battery, inner.pcb, inner.leads);
 }
 window.T_END = T_END;
-window.ready = Promise.all([...["cover", "base", "hook", "pod", "stem"].map(loadPart), loadCell(), loadInternals()]).then(() => { window.renderAt(0); return true; });
+window.ready = Promise.all([...["cover", "base", "hook", "pod", "stem"].map(loadPart), loadCell(), loadInternals()])
+  .then(() => { window.renderAt(0); return true; });
 </script>
 </body>
 </html>
