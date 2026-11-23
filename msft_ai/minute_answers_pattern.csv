@@ -1032,3 +1032,299 @@ time,decision,reason,note,position_before,news_shown,seconds,invalid,raw
 2026-10-29 13:40,HOLD,Recent swing is too small to cover 0.10% cost,,1,0,0.35,0,HOLD - Recent swing is too small to cover 0.10% cost
 2026-10-29 13:41,HOLD,No clear move above 0.10% threshold,,1,0,0.32,0,HOLD - No clear move above 0.10% threshold
 2026-10-29 13:42,HOLD,Recent swing is not large enough to cover 0.10% cost,,1,0,0.37,0,HOLD - Recent swing is not large enough to cover 0.10% cost
+2026-10-29 13:43,HOLD,Price is near recent high but swing is not large enough for 0.10% gain,,1,0,0.44,0,HOLD - Price is near recent high but swing is not large enough for 0.10% gain
+2026-10-29 13:44,HOLD,Recent swing is not large enough to cover costs,,1,0,0.30,0,HOLD - Recent swing is not large enough to cover costs
+2026-10-29 13:45,HOLD,Recent swing is small and not worth the 0.10% cost,,1,0,0.37,0,HOLD - Recent swing is small and not worth the 0.10% cost
+2026-10-29 13:46,HOLD,Recent swing is not large enough to cover 0.10% cost,,1,0,0.36,0,HOLD - Recent swing is not large enough to cover 0.10% cost
+2026-10-29 13:47,HOLD,No clear swing above 0.10% threshold,,1,0,0.32,0,HOLD - No clear swing above 0.10% threshold
+2026-10-29 13:48,HOLD,recent swing is too small to cover 0.10% cost,,1,0,0.35,0,HOLD - recent swing is too small to cover 0.10% cost
+2026-10-29 13:49,HOLD,Recent swing is not large enough to cover 0.10% cost,,1,0,0.36,0,HOLD - Recent swing is not large enough to cover 0.10% cost
+2026-10-29 13:50,HOLD,"Price is consolidating near recent highs, no clear move >0.10%",,1,0,0.37,0,"HOLD - Price is consolidating near recent highs, no clear move >0.10%"
+2026-10-29 13:51,HOLD,Recent swing is not large enough to cover 0.10% cost,,1,0,0.37,0,HOLD - Recent swing is not large enough to cover 0.10% cost
+2026-10-29 13:52,HOLD,"Price is consolidating near recent highs, no clear move >0.10% yet",,1,0,0.38,0,"HOLD - Price is consolidating near recent highs, no clear move >0.10% yet"
+2026-10-29 13:53,HOLD,recent swing is too small to cover 0.10% cost,,1,0,0.35,0,HOLD - recent swing is too small to cover 0.10% cost
+2026-10-29 13:54,HOLD,No clear move above 0.10% threshold,,1,0,0.32,0,HOLD - No clear move above 0.10% threshold
+2026-10-29 13:55,HOLD,recent swing is too small to cover 0.10% cost,,1,0,0.35,0,HOLD - recent swing is too small to cover 0.10% cost
+2026-10-29 13:56,HOLD,No clear move above 0.10% threshold,,1,0,0.32,0,HOLD - No clear move above 0.10% threshold
+2026-10-29 13:57,HOLD,Recent swing is small and not worth the 0.10% cost,,1,0,0.36,0,HOLD - Recent swing is small and not worth the 0.10% cost
+2026-10-29 13:58,HOLD,Recent swing is too small to cover 0.10% cost,,1,0,0.35,0,HOLD - Recent swing is too small to cover 0.10% cost
+2026-10-29 13:59,HOLD,Recent swing is small and not clearly above 0.10% profit target,,1,0,0.37,0,HOLD - Recent swing is small and not clearly above 0.10% profit target
+2026-10-29 14:00,HOLD,Swing is not large enough to cover 0.10% cost,,1,0,0.35,0,HOLD - Swing is not large enough to cover 0.10% cost
+2026-10-29 14:01,HOLD,Recent swing is not large enough to cover 0.10% cost,,1,0,0.36,0,HOLD - Recent swing is not large enough to cover 0.10% cost
+2026-10-29 14:02,HOLD,recent swing is not large enough to cover 0.10% cost,,1,0,0.36,0,HOLD - recent swing is not large enough to cover 0.10% cost
+2026-10-29 14:03,HOLD,"Recent swing is small, no clear move > 0.10% expected",,1,0,0.38,0,"HOLD - Recent swing is small, no clear move > 0.10% expected"
+2026-10-29 14:04,HOLD,recent swing is not large enough to cover costs,,1,0,0.32,0,HOLD - recent swing is not large enough to cover costs
+2026-10-29 14:05,HOLD,Swing is too small to cover 0.10% cost,,1,0,0.36,0,HOLD - Swing is too small to cover 0.10% cost
+2026-10-29 14:06,HOLD,Swing is not large enough to cover 0.10% cost,,1,0,0.35,0,HOLD - Swing is not large enough to cover 0.10% cost
+2026-10-29 14:07,HOLD,Price is near recent high but no clear reversal signal,,1,0,0.31,0,HOLD - Price is near recent high but no clear reversal signal
+2026-10-29 14:08,HOLD,Recent swing is not large enough to cover costs,,1,0,0.30,0,HOLD - Recent swing is not large enough to cover costs
+2026-10-29 14:09,HOLD,Recent swing is not large enough to cover 0.10% cost,,1,0,0.36,0,HOLD - Recent swing is not large enough to cover 0.10% cost
+2026-10-29 14:10,HOLD,Recent swing is not large enough to cover 0.10% cost,,1,0,0.36,0,HOLD - Recent swing is not large enough to cover 0.10% cost
+2026-10-29 14:11,HOLD,recent swing is not large enough to cover costs,,1,0,0.30,0,HOLD - recent swing is not large enough to cover costs
+2026-10-29 14:12,HOLD,Price is near recent high but no clear reversal signal for >0.10% move,,1,0,0.39,0,HOLD - Price is near recent high but no clear reversal signal for >0.10% move
+2026-10-29 14:13,HOLD,Price is near recent high but no clear strong reversal signal,,1,0,0.32,0,HOLD - Price is near recent high but no clear strong reversal signal
+2026-10-29 14:14,HOLD,Recent swing is not large enough to cover 0.10% cost,,1,0,0.36,0,HOLD - Recent swing is not large enough to cover 0.10% cost
+2026-10-29 14:15,HOLD,Price is near recent high but no clear reversal signal for >0.10% move,,1,0,0.39,0,HOLD - Price is near recent high but no clear reversal signal for >0.10% move
+2026-10-29 14:16,HOLD,Recent swing is not large enough to cover 0.10% cost,,1,0,0.36,0,HOLD - Recent swing is not large enough to cover 0.10% cost
+2026-10-29 14:17,HOLD,Recent swing is not large enough to cover 0.10% cost,,1,0,0.37,0,HOLD - Recent swing is not large enough to cover 0.10% cost
+2026-10-29 14:18,HOLD,Recent swing is not large enough to cover 0.10% cost,,1,0,0.36,0,HOLD - Recent swing is not large enough to cover 0.10% cost
+2026-10-29 14:19,HOLD,Recent swing is not large enough to cover costs,,1,0,0.30,0,HOLD - Recent swing is not large enough to cover costs
+2026-10-29 14:20,HOLD,"Recent high reached, no clear move above 0.10% for selling.",,1,0,0.38,0,"HOLD - Recent high reached, no clear move above 0.10% for selling."
+2026-10-29 14:21,HOLD,Recent swing is not large enough to cover costs,,1,0,0.30,0,HOLD - Recent swing is not large enough to cover costs
+2026-10-29 14:22,HOLD,"Price is consolidating near recent highs, no clear move >0.10% yet",,1,0,0.38,0,"HOLD - Price is consolidating near recent highs, no clear move >0.10% yet"
+2026-10-29 14:23,HOLD,No clear swing above 0.10% threshold,,1,0,0.33,0,HOLD - No clear swing above 0.10% threshold
+2026-10-29 14:24,HOLD,Price is near recent high but no clear reversal signal,,1,0,0.31,0,HOLD - Price is near recent high but no clear reversal signal
+2026-10-29 14:25,HOLD,recent swing is not large enough to cover costs,,1,0,0.31,0,HOLD - recent swing is not large enough to cover costs
+2026-10-29 14:26,HOLD,No clear swing above 0.10% threshold,,1,0,0.33,0,HOLD - No clear swing above 0.10% threshold
+2026-10-29 14:27,HOLD,No clear move exceeding 0.10% threshold,,1,0,0.32,0,HOLD - No clear move exceeding 0.10% threshold
+2026-10-29 14:28,HOLD,No clear swing above 0.10% threshold,,1,0,0.32,0,HOLD - No clear swing above 0.10% threshold
+2026-10-29 14:29,HOLD,Recent swing is not large enough to cover costs,,1,0,0.30,0,HOLD - Recent swing is not large enough to cover costs
+2026-10-29 14:30,HOLD,Recent swing is not large enough to cover 0.10% cost,,1,0,0.36,0,HOLD - Recent swing is not large enough to cover 0.10% cost
+2026-10-29 14:31,HOLD,"Price is consolidating near recent highs, no clear move >0.10% yet",,1,0,0.40,0,"HOLD - Price is consolidating near recent highs, no clear move >0.10% yet"
+2026-10-29 14:32,HOLD,recent swing is not large enough to cover costs,,1,0,0.30,0,HOLD - recent swing is not large enough to cover costs
+2026-10-29 14:33,HOLD,Recent swing is not large enough to cover costs,,1,0,0.30,0,HOLD - Recent swing is not large enough to cover costs
+2026-10-29 14:34,HOLD,No clear swing above 0.10% yet,,1,0,0.32,0,HOLD - No clear swing above 0.10% yet
+2026-10-29 14:35,HOLD,No clear swing above 0.10% threshold,,1,0,0.32,0,HOLD - No clear swing above 0.10% threshold
+2026-10-29 14:36,HOLD,"Price is consolidating near recent highs, no clear move > 0.10% yet",,1,0,0.39,0,"HOLD - Price is consolidating near recent highs, no clear move > 0.10% yet"
+2026-10-29 14:37,HOLD,No clear swing above 0.10% threshold,,1,0,0.31,0,HOLD - No clear swing above 0.10% threshold
+2026-10-29 14:38,HOLD,recent swing not large enough to cover costs,,1,0,0.28,0,HOLD - recent swing not large enough to cover costs
+2026-10-29 14:39,HOLD,No clear swing above 0.10% threshold,,1,0,0.31,0,HOLD - No clear swing above 0.10% threshold
+2026-10-29 14:40,HOLD,No clear move exceeding 0.10% from recent swing,,1,0,0.35,0,HOLD - No clear move exceeding 0.10% from recent swing
+2026-10-29 14:41,HOLD,recent swing is not large enough to cover costs,,1,0,0.30,0,HOLD - recent swing is not large enough to cover costs
+2026-10-29 14:42,HOLD,No clear swing above 0.10% threshold,,1,0,0.31,0,HOLD - No clear swing above 0.10% threshold
+2026-10-29 14:43,HOLD,No clear move exceeding 0.10% from recent swing,,1,0,0.34,0,HOLD - No clear move exceeding 0.10% from recent swing
+2026-10-29 14:44,HOLD,"Price is consolidating near recent lows, no clear move >0.10%",,1,0,0.37,0,"HOLD - Price is consolidating near recent lows, no clear move >0.10%"
+2026-10-29 14:45,HOLD,"Price is consolidating near recent lows, no clear move >0.10%",,1,0,0.37,0,"HOLD - Price is consolidating near recent lows, no clear move >0.10%"
+2026-10-29 14:46,HOLD,No clear swing above 0.10% since recent high,,1,0,0.33,0,HOLD - No clear swing above 0.10% since recent high
+2026-10-29 14:47,HOLD,No clear swing above 0.10% threshold,,1,0,0.32,0,HOLD - No clear swing above 0.10% threshold
+2026-10-29 14:48,HOLD,"Price is consolidating near recent highs, no clear swing > 0.10%",,1,0,0.38,0,"HOLD - Price is consolidating near recent highs, no clear swing > 0.10%"
+2026-10-29 14:49,HOLD,Price is consolidating within recent swing range,,1,0,0.28,0,HOLD - Price is consolidating within recent swing range
+2026-10-29 14:50,HOLD,Recent swing is not large enough to cover 0.10% cost,,1,0,0.39,0,HOLD - Recent swing is not large enough to cover 0.10% cost
+2026-10-29 14:51,HOLD,Recent swing is not large enough to cover 0.10% cost,,1,0,0.36,0,HOLD - Recent swing is not large enough to cover 0.10% cost
+2026-10-29 14:52,HOLD,"Price is consolidating near recent highs, no clear move >0.10%",,1,0,0.37,0,"HOLD - Price is consolidating near recent highs, no clear move >0.10%"
+2026-10-29 14:53,HOLD,Price is consolidating near recent highs no clear swing yet,,1,0,0.37,0,HOLD - Price is consolidating near recent highs no clear swing yet
+2026-10-29 14:54,HOLD,recent swing is not large enough to cover costs,,1,0,0.30,0,HOLD - recent swing is not large enough to cover costs
+2026-10-29 14:55,HOLD,Recent swing is not large enough to cover costs,,1,0,0.30,0,HOLD - Recent swing is not large enough to cover costs
+2026-10-29 14:56,HOLD,No clear move above 0.10% threshold,,1,0,0.34,0,HOLD - No clear move above 0.10% threshold
+2026-10-29 14:57,HOLD,recent swing is not large enough to cover costs,,1,0,0.30,0,HOLD - recent swing is not large enough to cover costs
+2026-10-29 14:58,HOLD,Recent swing is not large enough to cover 0.10% cost,,1,0,0.35,0,HOLD - Recent swing is not large enough to cover 0.10% cost
+2026-10-29 14:59,HOLD,No clear move above 0.10% threshold,,1,0,0.31,0,HOLD - No clear move above 0.10% threshold
+2026-10-29 15:00,HOLD,Recent swing is not large enough to cover 0.10% cost,,1,0,0.35,0,HOLD - Recent swing is not large enough to cover 0.10% cost
+2026-10-29 15:01,HOLD,No clear move exceeding 0.10% threshold,,1,0,0.32,0,HOLD - No clear move exceeding 0.10% threshold
+2026-10-29 15:02,HOLD,Recent swing is not large enough to cover costs,,1,0,0.30,0,HOLD - Recent swing is not large enough to cover costs
+2026-10-29 15:03,HOLD,No clear move above 0.10% threshold,,1,0,0.31,0,HOLD - No clear move above 0.10% threshold
+2026-10-29 15:04,HOLD,Price is near recent high but no clear reversal signal,,1,0,0.30,0,HOLD - Price is near recent high but no clear reversal signal
+2026-10-29 15:05,HOLD,No clear move above 0.10% threshold,,1,0,0.31,0,HOLD - No clear move above 0.10% threshold
+2026-10-29 15:06,HOLD,"Price is consolidating near recent highs, no clear move >0.10%",,1,0,0.37,0,"HOLD - Price is consolidating near recent highs, no clear move >0.10%"
+2026-10-29 15:07,HOLD,Price is near recent high but no clear move > 0.10% to sell,,1,0,0.38,0,HOLD - Price is near recent high but no clear move > 0.10% to sell
+2026-10-29 15:08,HOLD,Price is near recent high but no clear move >0.10% yet,,1,0,0.36,0,HOLD - Price is near recent high but no clear move >0.10% yet
+2026-10-29 15:09,HOLD,Price is near recent high but swing is not large enough for guaranteed profit,,1,0,0.34,0,HOLD - Price is near recent high but swing is not large enough for guaranteed profit
+2026-10-29 15:10,HOLD,Price is near recent high but no clear reversal signal for >0.10% move,,1,0,0.38,0,HOLD - Price is near recent high but no clear reversal signal for >0.10% move
+2026-10-29 15:11,HOLD,recent swing is not large enough to cover costs,,1,0,0.29,0,HOLD - recent swing is not large enough to cover costs
+2026-10-29 15:12,HOLD,recent swing is not large enough to cover costs,,1,0,0.29,0,HOLD - recent swing is not large enough to cover costs
+2026-10-29 15:13,HOLD,recent swing is too small to cover 0.10% cost,,1,0,0.34,0,HOLD - recent swing is too small to cover 0.10% cost
+2026-10-29 15:14,HOLD,recent swing is not large enough to cover costs,,1,0,0.29,0,HOLD - recent swing is not large enough to cover costs
+2026-10-29 15:15,HOLD,recent swing is too small for 0.10% profit target,,1,0,0.35,0,HOLD - recent swing is too small for 0.10% profit target
+2026-10-29 15:16,HOLD,No clear move above 0.10% threshold,,1,0,0.32,0,HOLD - No clear move above 0.10% threshold
+2026-10-29 15:17,HOLD,Price is consolidating near recent highs,,1,0,0.26,0,HOLD - Price is consolidating near recent highs
+2026-10-29 15:18,HOLD,"Recent swing is small, no clear move > 0.10%",,1,0,0.36,0,"HOLD - Recent swing is small, no clear move > 0.10%"
+2026-10-29 15:19,HOLD,No clear move above 0.10% threshold,,1,0,0.32,0,HOLD - No clear move above 0.10% threshold
+2026-10-29 15:20,HOLD,Recent swing is too small to cover 0.10% cost,,1,0,0.35,0,HOLD - Recent swing is too small to cover 0.10% cost
+2026-10-29 15:21,HOLD,No clear swing above 0.10% threshold,,1,0,0.32,0,HOLD - No clear swing above 0.10% threshold
+2026-10-29 15:22,HOLD,No clear swing above 0.10% threshold,,1,0,0.32,0,HOLD - No clear swing above 0.10% threshold
+2026-10-29 15:23,HOLD,No clear swing above 0.10% threshold,,1,0,0.31,0,HOLD - No clear swing above 0.10% threshold
+2026-10-29 15:24,HOLD,recent swing is not large enough to cover costs,,1,0,0.34,0,HOLD - recent swing is not large enough to cover costs
+2026-10-29 15:25,HOLD,No clear swing above 0.10% threshold,,1,0,0.33,0,HOLD - No clear swing above 0.10% threshold
+2026-10-29 15:26,HOLD,No clear move above 0.10% threshold,,1,0,0.31,0,HOLD - No clear move above 0.10% threshold
+2026-10-29 15:27,HOLD,"Price is consolidating near recent highs, no clear move >0.10%",,1,0,0.37,0,"HOLD - Price is consolidating near recent highs, no clear move >0.10%"
+2026-10-29 15:28,HOLD,Recent swing is not large enough to cover 0.10% cost,,1,0,0.35,0,HOLD - Recent swing is not large enough to cover 0.10% cost
+2026-10-29 15:29,HOLD,No clear move above 0.10% threshold,,1,0,0.31,0,HOLD - No clear move above 0.10% threshold
+2026-10-29 15:30,HOLD,No clear move above 0.10% threshold,,1,0,0.31,0,HOLD - No clear move above 0.10% threshold
+2026-10-29 15:31,HOLD,No clear swing above 0.10% threshold,,1,0,0.32,0,HOLD - No clear swing above 0.10% threshold
+2026-10-29 15:32,HOLD,No clear move above 0.10% threshold,,1,0,0.31,0,HOLD - No clear move above 0.10% threshold
+2026-10-29 15:33,HOLD,Recent swing is too small to cover 0.10% cost,,1,0,0.35,0,HOLD - Recent swing is too small to cover 0.10% cost
+2026-10-29 15:34,HOLD,No clear move above 0.10% threshold,,1,0,0.32,0,HOLD - No clear move above 0.10% threshold
+2026-10-29 15:35,HOLD,No clear swing above 0.10% threshold,,1,0,0.32,0,HOLD - No clear swing above 0.10% threshold
+2026-10-29 15:36,HOLD,Recent swing is too small to cover 0.10% cost,,1,0,0.35,0,HOLD - Recent swing is too small to cover 0.10% cost
+2026-10-29 15:37,HOLD,No clear move above 0.10% threshold,,1,0,0.32,0,HOLD - No clear move above 0.10% threshold
+2026-10-29 15:38,HOLD,No clear move above 0.10% threshold,,1,0,0.32,0,HOLD - No clear move above 0.10% threshold
+2026-10-29 15:39,HOLD,No clear move above 0.10% threshold,,1,0,0.31,0,HOLD - No clear move above 0.10% threshold
+2026-10-29 15:40,HOLD,No clear move above 0.10% threshold,,1,0,0.32,0,HOLD - No clear move above 0.10% threshold
+2026-10-29 15:41,HOLD,No clear move exceeding 0.10% since recent high,,1,0,0.34,0,HOLD - No clear move exceeding 0.10% since recent high
+2026-10-29 15:42,HOLD,recent swing is too small to cover 0.10% cost,,1,0,0.35,0,HOLD - recent swing is too small to cover 0.10% cost
+2026-10-29 15:43,HOLD,recent swing too small for 0.10% profit target,,1,0,0.34,0,HOLD - recent swing too small for 0.10% profit target
+2026-10-29 15:44,HOLD,Recent swing is not large enough to cover 0.10% cost,,1,0,0.36,0,HOLD - Recent swing is not large enough to cover 0.10% cost
+2026-10-29 15:45,HOLD,Recent swing is too small to cover 0.10% cost,,1,0,0.35,0,HOLD - Recent swing is too small to cover 0.10% cost
+2026-10-29 15:46,HOLD,recent swing is not large enough to cover costs,,1,0,0.30,0,HOLD - recent swing is not large enough to cover costs
+2026-10-29 15:47,HOLD,Recent swing is small and no clear move above 0.10% expected,,1,0,0.37,0,HOLD - Recent swing is small and no clear move above 0.10% expected
+2026-10-29 15:48,HOLD,Recent swing is not large enough to cover 0.10% cost,,1,0,0.36,0,HOLD - Recent swing is not large enough to cover 0.10% cost
+2026-10-29 15:49,HOLD,No clear move above 0.10% threshold,,1,0,0.33,0,HOLD - No clear move above 0.10% threshold
+2026-10-29 15:50,HOLD,Price is near recent high but no clear reversal signal for >0.10% move,,1,0,0.39,0,HOLD - Price is near recent high but no clear reversal signal for >0.10% move
+2026-10-29 15:51,HOLD,recent swing is not large enough to cover costs,,1,0,0.30,0,HOLD - recent swing is not large enough to cover costs
+2026-10-29 15:52,HOLD,Price is near recent high but no clear reversal signal for >0.10% move,,1,0,0.39,0,HOLD - Price is near recent high but no clear reversal signal for >0.10% move
+2026-10-29 15:53,HOLD,No clear move exceeding 0.10% since last swing high,,1,0,0.35,0,HOLD - No clear move exceeding 0.10% since last swing high
+2026-10-29 15:54,HOLD,Price is near recent high but no clear reversal signal for >0.10% move,,1,0,0.39,0,HOLD - Price is near recent high but no clear reversal signal for >0.10% move
+2026-10-29 15:55,HOLD,Recent swing is not large enough to cover 0.10% cost,,1,0,0.67,0,HOLD - Recent swing is not large enough to cover 0.10% cost
+2026-10-29 15:56,HOLD,Price is near recent high but no clear reversal signal for >0.10% move,,1,0,0.39,0,HOLD - Price is near recent high but no clear reversal signal for >0.10% move
+2026-10-29 15:57,HOLD,Price is near recent high but no clear reversal signal for >0.10% move,,1,0,0.39,0,HOLD - Price is near recent high but no clear reversal signal for >0.10% move
+2026-10-29 15:58,HOLD,No clear move exceeding 0.10% threshold,,1,0,0.32,0,HOLD - No clear move exceeding 0.10% threshold
+2026-10-29 15:59,HOLD,Recent swing is not large enough to cover 0.10% cost,,1,0,0.37,0,HOLD - Recent swing is not large enough to cover 0.10% cost
+2026-10-30 09:30,SELL,Price dropped significantly from recent high,,1,6,0.28,0,SELL - Price dropped significantly from recent high
+2026-10-30 09:31,BUY,Price is near recent low and has shown a swing potential,,0,6,0.33,0,BUY - Price is near recent low and has shown a swing potential
+2026-10-30 09:32,HOLD,Price is consolidating after a recent high and is not showing a clear move above 0.10% for a profitable exit.,,1,6,0.49,0,HOLD - Price is consolidating after a recent high and is not showing a clear move above 0.10% for a profitable exit.
+2026-10-30 09:33,SELL,Price is near recent high and showing short-term weakness,,1,6,0.36,0,SELL - Price is near recent high and showing short-term weakness
+2026-10-30 09:34,HOLD,Price is trending down and no clear reversal signal above 0.10% threshold,,0,6,0.41,0,HOLD - Price is trending down and no clear reversal signal above 0.10% threshold
+2026-10-30 09:35,BUY,Price is near the low and recent swing is large enough,,0,6,0.33,0,BUY - Price is near the low and recent swing is large enough
+2026-10-30 09:36,SELL,Price dropped significantly from recent high,,1,6,0.28,0,SELL - Price dropped significantly from recent high
+2026-10-30 09:37,BUY,Price is near the low and recent swing suggests potential upward move,,0,6,0.34,0,BUY - Price is near the low and recent swing suggests potential upward move
+2026-10-30 09:38,SELL,Price has pulled back significantly from recent highs and is near today's low,,1,6,0.37,0,SELL - Price has pulled back significantly from recent highs and is near today's low
+2026-10-30 09:39,BUY,Price is near recent low and has shown short-term upward momentum,,0,6,0.37,0,BUY - Price is near recent low and has shown short-term upward momentum
+2026-10-30 09:40,HOLD,Price is near recent highs but showing short-term weakness,,1,6,0.33,0,HOLD - Price is near recent highs but showing short-term weakness
+2026-10-30 09:41,HOLD,Price is near recent highs but also showing short-term weakness,,1,6,0.35,0,HOLD - Price is near recent highs but also showing short-term weakness
+2026-10-30 09:42,HOLD,Price is consolidating after a recent high and the swing is not clearly above 0.10% for a profitable reversal.,,1,6,0.48,0,HOLD - Price is consolidating after a recent high and the swing is not clearly above 0.10% for a profitable reversal.
+2026-10-30 09:43,HOLD,Price is consolidating after a recent high and is not showing a clear move >0.10% in either direction.,,1,6,0.47,0,HOLD - Price is consolidating after a recent high and is not showing a clear move >0.10% in either direction.
+2026-10-30 09:44,HOLD,Price is consolidating after a recent high and is not showing a clear move >0.10% for a profitable trade.,,1,6,0.49,0,HOLD - Price is consolidating after a recent high and is not showing a clear move >0.10% for a profitable trade.
+2026-10-30 09:45,HOLD,Price is consolidating after a recent high and is not showing a clear move >0.10% down.,,1,0,0.45,0,HOLD - Price is consolidating after a recent high and is not showing a clear move >0.10% down.
+2026-10-30 09:46,HOLD,No clear swing above 0.10% yet,,1,0,0.32,0,HOLD - No clear swing above 0.10% yet
+2026-10-30 09:47,HOLD,No clear swing above 0.10% threshold,,1,0,0.33,0,HOLD - No clear swing above 0.10% threshold
+2026-10-30 09:48,HOLD,Price is consolidating after a recent high and is not showing a clear move >0.10% down.,,1,0,0.47,0,HOLD - Price is consolidating after a recent high and is not showing a clear move >0.10% down.
+2026-10-30 09:49,HOLD,Price is near recent highs but not at a clear peak for a profitable reversal.,,1,0,0.37,0,HOLD - Price is near recent highs but not at a clear peak for a profitable reversal.
+2026-10-30 09:50,HOLD,No clear swing above 0.10% threshold,,1,0,0.32,0,HOLD - No clear swing above 0.10% threshold
+2026-10-30 09:51,HOLD,recent upward momentum is fading after a high,,1,6,0.32,0,HOLD - recent upward momentum is fading after a high
+2026-10-30 09:52,HOLD,Price is consolidating near recent highs without a clear breakout or drop exceeding 0.10% threshold,,1,6,0.43,0,HOLD - Price is consolidating near recent highs without a clear breakout or drop exceeding 0.10% threshold
+2026-10-30 09:53,HOLD,Price is consolidating near recent highs without a clear breakout or reversal signal,,1,6,0.36,0,HOLD - Price is consolidating near recent highs without a clear breakout or reversal signal
+2026-10-30 09:54,HOLD,recent price action is consolidating after a large swing,,1,6,0.32,0,HOLD - recent price action is consolidating after a large swing
+2026-10-30 09:55,HOLD,Price is consolidating after a recent high,,1,6,0.29,0,HOLD - Price is consolidating after a recent high
+2026-10-30 09:56,HOLD,recent swing is not large enough to cover costs,,1,0,0.31,0,HOLD - recent swing is not large enough to cover costs
+2026-10-30 09:57,HOLD,Recent upward momentum stalled and is near a short-term high,,1,0,0.34,0,HOLD - Recent upward momentum stalled and is near a short-term high
+2026-10-30 09:58,HOLD,"Recent high was higher, but current price is not near a clear short-term peak for a profitable sell.",,1,0,0.44,0,"HOLD - Recent high was higher, but current price is not near a clear short-term peak for a profitable sell."
+2026-10-30 09:59,HOLD,Price is near recent highs but still within a larger short-term downtrend.,,1,0,0.37,0,HOLD - Price is near recent highs but still within a larger short-term downtrend.
+2026-10-30 10:00,HOLD,Price is near recent high but not clearly above for 0.10% profit,,1,0,0.38,0,HOLD - Price is near recent high but not clearly above for 0.10% profit
+2026-10-30 10:01,HOLD,No clear move exceeding 0.10% threshold,,1,0,0.41,0,HOLD - No clear move exceeding 0.10% threshold
+2026-10-30 10:02,HOLD,No clear move exceeding 0.10% threshold,,1,0,0.32,0,HOLD - No clear move exceeding 0.10% threshold
+2026-10-30 10:03,HOLD,recent swing is not large enough to cover costs,,1,0,0.30,0,HOLD - recent swing is not large enough to cover costs
+2026-10-30 10:04,HOLD,No clear move above 0.10% threshold,,1,0,0.32,0,HOLD - No clear move above 0.10% threshold
+2026-10-30 10:05,HOLD,"Price is consolidating near recent highs, no clear move >0.10%",,1,0,0.37,0,"HOLD - Price is consolidating near recent highs, no clear move >0.10%"
+2026-10-30 10:06,HOLD,"Price is consolidating near recent highs, no clear move >0.10% yet",,1,0,0.38,0,"HOLD - Price is consolidating near recent highs, no clear move >0.10% yet"
+2026-10-30 10:07,HOLD,No clear move exceeding 0.10% yet,,1,0,0.32,0,HOLD - No clear move exceeding 0.10% yet
+2026-10-30 10:08,HOLD,recent swing is not large enough to cover costs,,1,0,0.32,0,HOLD - recent swing is not large enough to cover costs
+2026-10-30 10:09,HOLD,"Price is consolidating near recent highs, no clear swing > 0.10%",,1,0,0.39,0,"HOLD - Price is consolidating near recent highs, no clear swing > 0.10%"
+2026-10-30 10:10,HOLD,Recent swing is not large enough to cover 0.10% cost,,1,0,0.37,0,HOLD - Recent swing is not large enough to cover 0.10% cost
+2026-10-30 10:11,HOLD,recent swing not large enough for 0.10% profit,,1,0,0.34,0,HOLD - recent swing not large enough for 0.10% profit
+2026-10-30 10:12,HOLD,recent swing is not large enough to cover costs,,1,0,0.30,0,HOLD - recent swing is not large enough to cover costs
+2026-10-30 10:13,HOLD,No clear move above 0.10% threshold,,1,0,0.32,0,HOLD - No clear move above 0.10% threshold
+2026-10-30 10:14,HOLD,No clear swing above 0.10% threshold,,1,0,0.32,0,HOLD - No clear swing above 0.10% threshold
+2026-10-30 10:15,HOLD,No clear upward move to justify selling at a recent high,,1,0,0.32,0,HOLD - No clear upward move to justify selling at a recent high
+2026-10-30 10:16,HOLD,"Price is consolidating near recent highs, no clear move >0.10%",,1,0,0.37,0,"HOLD - Price is consolidating near recent highs, no clear move >0.10%"
+2026-10-30 10:17,HOLD,"Price is consolidating near recent highs, no clear swing > 0.10%",,1,0,0.38,0,"HOLD - Price is consolidating near recent highs, no clear swing > 0.10%"
+2026-10-30 10:18,HOLD,Price is consolidating near recent lows within the last 30 min swing,,1,0,0.35,0,HOLD - Price is consolidating near recent lows within the last 30 min swing
+2026-10-30 10:19,HOLD,No clear move exceeding 0.10% yet,,1,0,0.32,0,HOLD - No clear move exceeding 0.10% yet
+2026-10-30 10:20,HOLD,"Price is consolidating near recent lows, no clear move >0.10%",,1,0,0.38,0,"HOLD - Price is consolidating near recent lows, no clear move >0.10%"
+2026-10-30 10:21,HOLD,No clear move exceeding 0.10% expected,,1,0,0.34,0,HOLD - No clear move exceeding 0.10% expected
+2026-10-30 10:22,HOLD,"Price is consolidating near recent lows, no clear move > 0.10%",,1,0,0.39,0,"HOLD - Price is consolidating near recent lows, no clear move > 0.10%"
+2026-10-30 10:23,HOLD,"Price is consolidating near recent lows, no clear move >0.10%",,1,0,0.37,0,"HOLD - Price is consolidating near recent lows, no clear move >0.10%"
+2026-10-30 10:24,HOLD,recent swing is not large enough to cover costs,,1,0,0.29,0,HOLD - recent swing is not large enough to cover costs
+2026-10-30 10:25,HOLD,No clear swing above 0.10% threshold,,1,0,0.32,0,HOLD - No clear swing above 0.10% threshold
+2026-10-30 10:26,HOLD,"Price is consolidating near recent lows, not a clear high for selling.",,1,0,0.35,0,"HOLD - Price is consolidating near recent lows, not a clear high for selling."
+2026-10-30 10:27,HOLD,Price is consolidating near recent lows within the 30-min range,,1,0,0.35,0,HOLD - Price is consolidating near recent lows within the 30-min range
+2026-10-30 10:28,HOLD,Recent swing is not large enough to cover costs,,1,0,0.31,0,HOLD - Recent swing is not large enough to cover costs
+2026-10-30 10:29,HOLD,Recent swing is not large enough to cover 0.10% cost,,1,0,0.36,0,HOLD - Recent swing is not large enough to cover 0.10% cost
+2026-10-30 10:30,HOLD,"Price is consolidating near recent highs, no clear move >0.10%",,1,0,0.37,0,"HOLD - Price is consolidating near recent highs, no clear move >0.10%"
+2026-10-30 10:31,HOLD,"Price is near recent high but not at it, no clear swing yet",,1,0,0.34,0,"HOLD - Price is near recent high but not at it, no clear swing yet"
+2026-10-30 10:32,HOLD,No clear move above 0.10% threshold,,1,0,0.32,0,HOLD - No clear move above 0.10% threshold
+2026-10-30 10:33,HOLD,Recent swing is not large enough to cover 0.10% cost,,1,0,0.36,0,HOLD - Recent swing is not large enough to cover 0.10% cost
+2026-10-30 10:34,HOLD,Price is near recent high but no clear reversal signal for >0.10% move,,1,0,0.39,0,HOLD - Price is near recent high but no clear reversal signal for >0.10% move
+2026-10-30 10:35,HOLD,Price is near recent high but no clear reversal signal for >0.10% move,,1,0,0.38,0,HOLD - Price is near recent high but no clear reversal signal for >0.10% move
+2026-10-30 10:36,HOLD,Price is near recent high but no clear reversal signal,,1,0,0.30,0,HOLD - Price is near recent high but no clear reversal signal
+2026-10-30 10:37,HOLD,Price is near recent high but not at a clear peak for >0.10% gain,,1,0,0.40,0,HOLD - Price is near recent high but not at a clear peak for >0.10% gain
+2026-10-30 10:38,HOLD,Price is near recent high but no clear reversal signal for >0.10% move,,1,6,0.40,0,HOLD - Price is near recent high but no clear reversal signal for >0.10% move
+2026-10-30 10:39,HOLD,Price is near recent high but no clear reversal signal for >0.10% move,,1,0,0.39,0,HOLD - Price is near recent high but no clear reversal signal for >0.10% move
+2026-10-30 10:40,HOLD,Price is near recent high but no clear reversal signal for >0.10% move,,1,6,0.41,0,HOLD - Price is near recent high but no clear reversal signal for >0.10% move
+2026-10-30 10:41,HOLD,Price is near recent high but no clear reversal signal for >0.10% move,,1,0,0.39,0,HOLD - Price is near recent high but no clear reversal signal for >0.10% move
+2026-10-30 10:42,HOLD,recent swing is not large enough to cover costs,,1,0,0.30,0,HOLD - recent swing is not large enough to cover costs
+2026-10-30 10:43,HOLD,Price is near recent high but no clear reversal signal for >0.10% move,,1,0,0.39,0,HOLD - Price is near recent high but no clear reversal signal for >0.10% move
+2026-10-30 10:44,HOLD,recent swing not large enough for 0.10% profit,,1,0,0.34,0,HOLD - recent swing not large enough for 0.10% profit
+2026-10-30 10:45,HOLD,"Price is consolidating near recent highs, no clear move >0.10% yet",,1,0,0.38,0,"HOLD - Price is consolidating near recent highs, no clear move >0.10% yet"
+2026-10-30 10:46,HOLD,No clear swing above 0.10% threshold,,1,0,0.33,0,HOLD - No clear swing above 0.10% threshold
+2026-10-30 10:47,HOLD,No clear move exceeding 0.10% from recent highs/lows,,1,0,0.37,0,HOLD - No clear move exceeding 0.10% from recent highs/lows
+2026-10-30 10:48,HOLD,recent swing is not large enough to cover costs,,1,0,0.29,0,HOLD - recent swing is not large enough to cover costs
+2026-10-30 10:49,HOLD,recent swing is not large enough to cover costs,,1,0,0.30,0,HOLD - recent swing is not large enough to cover costs
+2026-10-30 10:50,HOLD,No clear swing above 0.10% threshold,,1,0,0.31,0,HOLD - No clear swing above 0.10% threshold
+2026-10-30 10:51,HOLD,recent swing is not large enough to cover costs,,1,0,0.30,0,HOLD - recent swing is not large enough to cover costs
+2026-10-30 10:52,HOLD,No clear swing above 0.10% threshold,,1,0,0.32,0,HOLD - No clear swing above 0.10% threshold
+2026-10-30 10:53,HOLD,"Price is consolidating near recent highs, no clear move >0.10%",,1,0,0.45,0,"HOLD - Price is consolidating near recent highs, no clear move >0.10%"
+2026-10-30 10:54,HOLD,Recent swing is not large enough to cover 0.10% cost,,1,0,0.36,0,HOLD - Recent swing is not large enough to cover 0.10% cost
+2026-10-30 10:55,HOLD,Price is consolidating near recent highs,,1,0,0.26,0,HOLD - Price is consolidating near recent highs
+2026-10-30 10:56,HOLD,No clear move above 0.10% threshold,,1,0,0.32,0,HOLD - No clear move above 0.10% threshold
+2026-10-30 10:57,HOLD,"Price is consolidating near recent highs, no clear move >0.10%",,1,0,0.36,0,"HOLD - Price is consolidating near recent highs, no clear move >0.10%"
+2026-10-30 10:58,HOLD,No clear swing above 0.10% threshold,,1,0,0.31,0,HOLD - No clear swing above 0.10% threshold
+2026-10-30 10:59,HOLD,No clear move above 0.10% threshold,,1,0,0.31,0,HOLD - No clear move above 0.10% threshold
+2026-10-30 11:00,HOLD,Price is consolidating near recent lows within the last 30 min swing,,1,0,0.34,0,HOLD - Price is consolidating near recent lows within the last 30 min swing
+2026-10-30 11:01,HOLD,Recent swing is not large enough to cover 0.10% cost,,1,0,0.36,0,HOLD - Recent swing is not large enough to cover 0.10% cost
+2026-10-30 11:02,HOLD,No clear swing above 0.10% threshold,,1,0,0.32,0,HOLD - No clear swing above 0.10% threshold
+2026-10-30 11:03,HOLD,No clear swing above 0.10% threshold,,1,0,0.32,0,HOLD - No clear swing above 0.10% threshold
+2026-10-30 11:04,HOLD,No clear swing above 0.10% threshold,,1,0,0.31,0,HOLD - No clear swing above 0.10% threshold
+2026-10-30 11:05,HOLD,"Price is consolidating near recent highs, no clear swing > 0.10%",,1,0,0.38,0,"HOLD - Price is consolidating near recent highs, no clear swing > 0.10%"
+2026-10-30 11:06,HOLD,No clear swing above 0.10% threshold,,1,0,0.31,0,HOLD - No clear swing above 0.10% threshold
+2026-10-30 11:07,HOLD,No clear move above 0.10% threshold,,1,0,0.33,0,HOLD - No clear move above 0.10% threshold
+2026-10-30 11:08,HOLD,No clear swing above 0.10% threshold,,1,0,0.32,0,HOLD - No clear swing above 0.10% threshold
+2026-10-30 11:09,HOLD,Recent swing is not large enough to cover 0.10% cost,,1,0,0.35,0,HOLD - Recent swing is not large enough to cover 0.10% cost
+2026-10-30 11:10,HOLD,No clear swing above 0.10% threshold,,1,0,0.31,0,HOLD - No clear swing above 0.10% threshold
+2026-10-30 11:11,HOLD,No clear swing above 0.10% threshold,,1,0,0.31,0,HOLD - No clear swing above 0.10% threshold
+2026-10-30 11:12,HOLD,No clear swing above 0.10% threshold,,1,0,0.31,0,HOLD - No clear swing above 0.10% threshold
+2026-10-30 11:13,HOLD,No clear swing above 0.10% threshold,,1,0,0.34,0,HOLD - No clear swing above 0.10% threshold
+2026-10-30 11:14,HOLD,No clear swing above 0.10% threshold,,1,0,0.33,0,HOLD - No clear swing above 0.10% threshold
+2026-10-30 11:15,HOLD,No clear swing above 0.10% threshold,,1,0,0.38,0,HOLD - No clear swing above 0.10% threshold
+2026-10-30 11:16,HOLD,No clear move above 0.10% threshold,,1,0,0.31,0,HOLD - No clear move above 0.10% threshold
+2026-10-30 11:17,HOLD,No clear move above 0.10% threshold,,1,0,0.31,0,HOLD - No clear move above 0.10% threshold
+2026-10-30 11:18,HOLD,No clear move above 0.10% threshold,,1,0,0.39,0,HOLD - No clear move above 0.10% threshold
+2026-10-30 11:19,HOLD,No clear move exceeding 0.10% yet,,1,0,0.32,0,HOLD - No clear move exceeding 0.10% yet
+2026-10-30 11:20,HOLD,No clear move above 0.10% threshold,,1,0,0.32,0,HOLD - No clear move above 0.10% threshold
+2026-10-30 11:21,HOLD,No clear swing above 0.10% threshold,,1,0,0.31,0,HOLD - No clear swing above 0.10% threshold
+2026-10-30 11:22,HOLD,Recent swing is small and not worth the 0.10% cost,,1,0,0.36,0,HOLD - Recent swing is small and not worth the 0.10% cost
+2026-10-30 11:23,HOLD,No clear move above 0.10% threshold,,1,0,0.31,0,HOLD - No clear move above 0.10% threshold
+2026-10-30 11:24,HOLD,recent swing is not large enough to cover costs,,1,0,0.30,0,HOLD - recent swing is not large enough to cover costs
+2026-10-30 11:25,HOLD,Recent swing is not large enough to cover 0.10% cost,,1,0,0.37,0,HOLD - Recent swing is not large enough to cover 0.10% cost
+2026-10-30 11:26,HOLD,No clear move exceeding 0.10% yet,,1,0,0.31,0,HOLD - No clear move exceeding 0.10% yet
+2026-10-30 11:27,HOLD,Recent swing is not large enough to cover costs,,1,0,0.29,0,HOLD - Recent swing is not large enough to cover costs
+2026-10-30 11:28,HOLD,Recent swing is too small to cover 0.10% cost,,1,0,0.34,0,HOLD - Recent swing is too small to cover 0.10% cost
+2026-10-30 11:29,HOLD,No clear swing above 0.10% threshold,,1,0,0.39,0,HOLD - No clear swing above 0.10% threshold
+2026-10-30 11:30,HOLD,No clear swing above 0.10% threshold,,1,0,0.34,0,HOLD - No clear swing above 0.10% threshold
+2026-10-30 11:31,HOLD,No clear swing above 0.10% threshold,,1,0,0.33,0,HOLD - No clear swing above 0.10% threshold
+2026-10-30 11:32,HOLD,No clear move above 0.10% threshold,,1,0,0.32,0,HOLD - No clear move above 0.10% threshold
+2026-10-30 11:33,HOLD,Recent swing is not large enough to cover costs,,1,0,0.29,0,HOLD - Recent swing is not large enough to cover costs
+2026-10-30 11:34,HOLD,Recent swing is not large enough to cover costs,,1,0,0.30,0,HOLD - Recent swing is not large enough to cover costs
+2026-10-30 11:35,HOLD,Recent swing is not large enough to cover 0.10% cost,,1,0,0.35,0,HOLD - Recent swing is not large enough to cover 0.10% cost
+2026-10-30 11:36,HOLD,Recent swing is not large enough to cover costs,,1,0,0.29,0,HOLD - Recent swing is not large enough to cover costs
+2026-10-30 11:37,HOLD,recent swing is not large enough to cover costs,,1,0,0.29,0,HOLD - recent swing is not large enough to cover costs
+2026-10-30 11:38,HOLD,No clear swing above 0.10% since recent high,,1,0,0.34,0,HOLD - No clear swing above 0.10% since recent high
+2026-10-30 11:39,HOLD,No clear swing above 0.10% threshold,,1,0,0.31,0,HOLD - No clear swing above 0.10% threshold
+2026-10-30 11:40,HOLD,No clear move exceeding 0.10% swing,,1,0,0.32,0,HOLD - No clear move exceeding 0.10% swing
+2026-10-30 11:41,HOLD,Recent swing is not large enough to cover 0.10% cost,,1,0,0.36,0,HOLD - Recent swing is not large enough to cover 0.10% cost
+2026-10-30 11:42,HOLD,recent swing is not large enough to cover costs,,1,0,0.29,0,HOLD - recent swing is not large enough to cover costs
+2026-10-30 11:43,HOLD,recent swing too small for 0.10% profit target,,1,0,0.34,0,HOLD - recent swing too small for 0.10% profit target
+2026-10-30 11:44,HOLD,Recent swing is not large enough to cover 0.10% cost,,1,0,0.36,0,HOLD - Recent swing is not large enough to cover 0.10% cost
+2026-10-30 11:45,HOLD,recent swing is not large enough to cover costs,,1,0,0.29,0,HOLD - recent swing is not large enough to cover costs
+2026-10-30 11:46,HOLD,recent swing too small for 0.10% profit target,,1,0,0.33,0,HOLD - recent swing too small for 0.10% profit target
+2026-10-30 11:47,HOLD,No clear swing above 0.10% threshold,,1,0,0.32,0,HOLD - No clear swing above 0.10% threshold
+2026-10-30 11:48,HOLD,No clear move exceeding 0.10% since recent high,,1,0,0.34,0,HOLD - No clear move exceeding 0.10% since recent high
+2026-10-30 11:49,HOLD,Recent swing is not large enough to cover 0.10% cost,,1,0,0.36,0,HOLD - Recent swing is not large enough to cover 0.10% cost
+2026-10-30 11:50,HOLD,recent swing too small to cover costs,,1,0,0.29,0,HOLD - recent swing too small to cover costs
+2026-10-30 11:51,HOLD,recent swing is not large enough to cover costs,,1,0,0.30,0,HOLD - recent swing is not large enough to cover costs
+2026-10-30 11:52,HOLD,recent swing too small for 0.10% profit target,,1,0,0.33,0,HOLD - recent swing too small for 0.10% profit target
+2026-10-30 11:53,HOLD,No clear move above 0.10% threshold,,1,0,0.32,0,HOLD - No clear move above 0.10% threshold
+2026-10-30 11:54,HOLD,Recent swing is small and not worth the 0.10% cost,,1,0,0.36,0,HOLD - Recent swing is small and not worth the 0.10% cost
+2026-10-30 11:55,HOLD,recent swing is not large enough to cover costs,,1,0,0.30,0,HOLD - recent swing is not large enough to cover costs
+2026-10-30 11:56,HOLD,Recent swing is not large enough to cover costs,,1,0,0.30,0,HOLD - Recent swing is not large enough to cover costs
+2026-10-30 11:57,HOLD,recent swing is not large enough for 0.10% profit,,1,0,0.37,0,HOLD - recent swing is not large enough for 0.10% profit
+2026-10-30 11:58,HOLD,Price is near recent high but no clear move over 0.10% yet,,1,0,0.37,0,HOLD - Price is near recent high but no clear move over 0.10% yet
+2026-10-30 11:59,HOLD,No clear move above 0.10% threshold,,1,0,0.41,0,HOLD - No clear move above 0.10% threshold
+2026-10-30 12:00,HOLD,Price is near recent high but no clear move >0.10% yet,,1,0,0.39,0,HOLD - Price is near recent high but no clear move >0.10% yet
+2026-10-30 12:01,HOLD,No clear swing above 0.10% threshold,,1,0,0.31,0,HOLD - No clear swing above 0.10% threshold
+2026-10-30 12:02,HOLD,"Recent swing is small, no clear move > 0.10%",,1,0,0.35,0,"HOLD - Recent swing is small, no clear move > 0.10%"
+2026-10-30 12:03,HOLD,No clear move exceeding 0.10% yet,,1,0,0.31,0,HOLD - No clear move exceeding 0.10% yet
+2026-10-30 12:04,HOLD,recent swing is too small to cover costs,,1,0,0.28,0,HOLD - recent swing is too small to cover costs
+2026-10-30 12:05,HOLD,recent swing too small for 0.10% profit target,,1,0,0.33,0,HOLD - recent swing too small for 0.10% profit target
+2026-10-30 12:06,HOLD,No clear move above 0.10% threshold,,1,0,0.31,0,HOLD - No clear move above 0.10% threshold
+2026-10-30 12:07,HOLD,No clear move above 0.10% threshold,,1,0,0.32,0,HOLD - No clear move above 0.10% threshold
+2026-10-30 12:08,HOLD,No clear swing above 0.10% threshold,,1,0,0.32,0,HOLD - No clear swing above 0.10% threshold
