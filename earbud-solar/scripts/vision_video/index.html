@@ -232,6 +232,8 @@ window.clearance = (t) => {
       }
       const s = sp[i];                                                // shell: the lip around the window, the side walls
       if (s[2] > -0.86 && s[2] < 0 && (Math.abs(s[0]) > 13.65 || Math.abs(s[1]) > 5.55)) best = [Math.min(best[0], -0.01), "cover lip"];
+      if (s[2] >= 0 && s[2] < 1.35 && (Math.abs(s[0]) > 14.85 - r || Math.abs(s[1]) > 6.75 - r)) best = [Math.min(best[0], -0.01), "raised face (pocket wall)"];
+      if (s[2] > -0.86 && s[2] < 0 && (Math.abs(s[0]) > 13.65 - r || Math.abs(s[1]) > 5.55 - r)) best = [Math.min(best[0], -0.005), "cover lip"];
       if (s[2] < -0.9 && Math.abs(s[1]) > 6.9) best = [Math.min(best[0], -0.01), "side wall"];
     });
     res[n] = { min: +best[0].toFixed(3), vs: best[1], at: best[2] && best[2].map(v => +v.toFixed(2)) };

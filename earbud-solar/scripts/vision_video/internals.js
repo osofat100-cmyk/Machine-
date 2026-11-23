@@ -269,13 +269,16 @@ export async function buildInternals(L) {
 
   // ---- panel wires: + pad (at -x seen from above) to B+, - pad to B-; routed above the chips, under the panel ----
   const PP = L.panel_pads_xy.plus, PM = L.panel_pads_xy.minus;
-  const plusRoute = [[PP[0], PP[1], -0.24], [PP[0] + 0.1, 0.5, -0.6], [-11.0, 1.4, -0.8], [-12.0, 2.6, -1.05], [-9.6, 3.2, -1.25], [-7.2, 2.95, -1.4], [-6.1, 2.4, -1.75], [BP[0], BP[1], pT - 0.05]];
-  const minusRoute = [[PM[0], PM[1], -0.24], [PM[0] - 0.1, -0.5, -0.6], [11.0, -1.4, -0.8], [12.2, -2.6, -1.0], [8.0, -3.3, -1.05], [0.0, -3.4, -1.05], [-4.4, -3.2, -1.15], [-5.4, -2.8, -1.85], [BM[0], BM[1], pT - 0.05]];
+  // flat just under the panel, bends sideways (in the panel's plane) and out to the window's sides, then down to the pads
+  const plusRoute = [[PP[0], PP[1], -0.24], [PP[0] + 0.15, 0.6, -0.3], [-11.0, 1.5, -0.34], [-12.2, 2.7, -0.36], [-11.0, 4.5, -0.38],
+    [-8.5, 4.85, -0.4], [-6.6, 4.4, -0.6], [-6.0, 3.2, -1.4], [BP[0], BP[1], pT - 0.05]];
+  const minusRoute = [[PM[0], PM[1], -0.24], [PM[0] - 0.15, -0.6, -0.3], [11.0, -1.5, -0.34], [12.2, -2.7, -0.36], [11.0, -4.8, -0.38],
+    [6.0, -5.1, -0.4], [0.0, -5.1, -0.4], [-4.0, -5.0, -0.43], [-5.4, -4.2, -0.9], [-5.85, -3.3, -1.8], [BM[0], BM[1], pT - 0.05]];
   const pRed = dynWire(0xc81e1e, 0.22), pBlk = dynWire(0x141414, 0.22);
   const panelWires = new THREE.Group(); panelWires.add(pRed, pBlk);
   function updatePanelWires({ carry, c, fold }) {   // carry: maps a point of the seated panel to where it is now
-    pRed.userData.set(carriedWire(plusRoute, carry, c, fold, [0.2, 1.0, 0.3], 1.2));
-    pBlk.userData.set(carriedWire(minusRoute, carry, c, fold, [0.0, -1.0, 0.3], 1.4));
+    pRed.userData.set(carriedWire(plusRoute, carry, c, fold, [0.3, -1.0, 0.0], 0.9));     // folds sideways, not down
+    pBlk.userData.set(carriedWire(minusRoute, carry, c, fold, [0.0, 1.0, 0.0], 1.0));
   }
 
   for (const o of [bat, board, spk, ltc]) o.userData.final = o.position.clone();
