@@ -2027,3 +2027,156 @@ time,decision,reason,note,position_before,news_shown,seconds,invalid,raw
 2026-11-03 10:45,HOLD,"Recent price action is mixed, not strong enough for a guaranteed 0.10% move.",,1,0,0.41,0,"HOLD - Recent price action is mixed, not strong enough for a guaranteed 0.10% move."
 2026-11-03 10:46,HOLD,"Recent price action is mixed, no clear strong move yet",,1,0,0.32,0,"HOLD - Recent price action is mixed, no clear strong move yet"
 2026-11-03 10:47,HOLD,"Recent price action is consolidating near highs, no clear breakout signal.",,1,0,0.34,0,"HOLD - Recent price action is consolidating near highs, no clear breakout signal."
+2026-11-03 10:48,HOLD,Recent upward momentum is not strong enough to justify selling now,,1,0,0.32,0,HOLD - Recent upward momentum is not strong enough to justify selling now
+2026-11-03 10:49,HOLD,Recent price action is consolidating near the current level,,1,0,0.30,0,HOLD - Recent price action is consolidating near the current level
+2026-11-03 10:50,HOLD,Recent price action is consolidating near recent highs,,1,0,0.29,0,HOLD - Recent price action is consolidating near recent highs
+2026-11-03 10:51,HOLD,"Modest upward momentum, wait for clearer move",,1,0,0.30,0,"HOLD - Modest upward momentum, wait for clearer move"
+2026-11-03 10:52,HOLD,Recent upward momentum is slowing down,,1,0,0.27,0,HOLD - Recent upward momentum is slowing down
+2026-11-03 10:53,HOLD,Recent upward momentum is not strong enough to justify selling now,,1,0,0.32,0,HOLD - Recent upward momentum is not strong enough to justify selling now
+2026-11-03 10:54,HOLD,Recent upward momentum is not strong enough to justify selling now,,1,0,0.32,0,HOLD - Recent upward momentum is not strong enough to justify selling now
+2026-11-03 10:55,HOLD,Recent upward momentum is not strong enough to justify selling now,,1,0,0.32,0,HOLD - Recent upward momentum is not strong enough to justify selling now
+2026-11-03 10:56,HOLD,Recent upward momentum is not strong enough to justify selling now,,1,0,0.31,0,HOLD - Recent upward momentum is not strong enough to justify selling now
+2026-11-03 10:57,HOLD,Recent upward momentum is slowing down,,1,0,0.27,0,HOLD - Recent upward momentum is slowing down
+2026-11-03 10:58,HOLD,Recent upward momentum is not strong enough for a quick exit,,1,0,0.35,0,HOLD - Recent upward momentum is not strong enough for a quick exit
+2026-11-03 10:59,HOLD,Current gain is good but not enough to justify immediate exit,,1,0,0.33,0,HOLD - Current gain is good but not enough to justify immediate exit
+2026-11-03 11:00,HOLD,Recent upward momentum is slowing slightly,,1,0,0.27,0,HOLD - Recent upward momentum is slowing slightly
+2026-11-03 11:01,HOLD,"Small recent gains, wait for clearer move",,1,0,0.29,0,"HOLD - Small recent gains, wait for clearer move"
+2026-11-03 11:02,HOLD,Recent upward momentum is not strong enough to justify selling now,,1,0,0.32,0,HOLD - Recent upward momentum is not strong enough to justify selling now
+2026-11-03 11:03,HOLD,Recent upward momentum is not strong enough to justify selling now,,1,0,0.32,0,HOLD - Recent upward momentum is not strong enough to justify selling now
+2026-11-03 11:04,HOLD,Recent upward momentum is slowing slightly,,1,0,0.27,0,HOLD - Recent upward momentum is slowing slightly
+2026-11-03 11:05,HOLD,Price is trending up but not showing strong momentum for a quick profit,,1,0,0.34,0,HOLD - Price is trending up but not showing strong momentum for a quick profit
+2026-11-03 11:06,HOLD,Recent price action is consolidating near recent highs,,1,0,0.29,0,HOLD - Recent price action is consolidating near recent highs
+2026-11-03 11:07,HOLD,"Modest upward momentum, no clear trigger for immediate profit taking.",,1,0,0.34,0,"HOLD - Modest upward momentum, no clear trigger for immediate profit taking."
+2026-11-03 11:08,HOLD,"Small recent movement, profit is already significant",,1,0,0.31,0,"HOLD - Small recent movement, profit is already significant"
+2026-11-03 11:09,HOLD,Recent price action is consolidating near highs,,1,0,0.34,0,HOLD - Recent price action is consolidating near highs
+2026-11-03 11:10,HOLD,Recent price action is consolidating near the current level,,1,0,0.30,0,HOLD - Recent price action is consolidating near the current level
+2026-11-03 11:11,HOLD,Recent price action is consolidating near the current level,,1,0,0.30,0,HOLD - Recent price action is consolidating near the current level
+2026-11-03 11:12,HOLD,Recent movement is small and not clearly above 0.10% threshold,,1,0,0.36,0,HOLD - Recent movement is small and not clearly above 0.10% threshold
+2026-11-03 11:13,HOLD,Recent price action is consolidating near the current level,,1,0,0.30,0,HOLD - Recent price action is consolidating near the current level
+2026-11-03 11:14,HOLD,Recent price action is consolidating near the current level,,1,0,0.30,0,HOLD - Recent price action is consolidating near the current level
+2026-11-03 11:15,HOLD,"Modest recent gains, no strong trend signal for immediate exit",,1,0,0.33,0,"HOLD - Modest recent gains, no strong trend signal for immediate exit"
+2026-11-03 11:16,HOLD,"Small recent movement, wait for clearer trend",,1,0,0.29,0,"HOLD - Small recent movement, wait for clearer trend"
+2026-11-03 11:17,HOLD,"Small recent movement, wait for clearer trend",,1,0,0.28,0,"HOLD - Small recent movement, wait for clearer trend"
+2026-11-03 11:18,HOLD,"Recent price action is flat, no clear move expected beyond costs",,1,0,0.33,0,"HOLD - Recent price action is flat, no clear move expected beyond costs"
+2026-11-03 11:19,HOLD,Price is consolidating near recent highs,,1,0,0.27,0,HOLD - Price is consolidating near recent highs
+2026-11-03 11:20,HOLD,Recent price action is consolidating near the current level,,1,0,0.30,0,HOLD - Recent price action is consolidating near the current level
+2026-11-03 11:21,HOLD,"Small recent pullback, overall positive trend",,1,0,0.28,0,"HOLD - Small recent pullback, overall positive trend"
+2026-11-03 11:22,HOLD,Small recent moves not enough to cover 0.10% cost,,1,0,0.35,0,HOLD - Small recent moves not enough to cover 0.10% cost
+2026-11-03 11:23,HOLD,Recent price action is consolidating near the current level,,1,0,0.31,0,HOLD - Recent price action is consolidating near the current level
+2026-11-03 11:24,HOLD,"Small recent movement, waiting for clearer trend confirmation",,1,0,0.30,0,"HOLD - Small recent movement, waiting for clearer trend confirmation"
+2026-11-03 11:25,HOLD,Recent price action is consolidating near the current level,,1,0,0.30,0,HOLD - Recent price action is consolidating near the current level
+2026-11-03 11:26,HOLD,"Modest recent gains, no strong momentum signal for immediate exit.",,1,0,0.35,0,"HOLD - Modest recent gains, no strong momentum signal for immediate exit."
+2026-11-03 11:27,HOLD,"Small recent movement, wait for clearer trend",,1,0,0.29,0,"HOLD - Small recent movement, wait for clearer trend"
+2026-11-03 11:28,HOLD,recent upward momentum is slowing,,1,0,0.26,0,HOLD - recent upward momentum is slowing
+2026-11-03 11:29,HOLD,Recent price action is consolidating near the current level,,1,0,0.30,0,HOLD - Recent price action is consolidating near the current level
+2026-11-03 11:30,HOLD,Recent price action is consolidating near highs,,1,0,0.28,0,HOLD - Recent price action is consolidating near highs
+2026-11-03 11:31,HOLD,Recent price action is consolidating near the high and profit is already realized.,,1,0,0.35,0,HOLD - Recent price action is consolidating near the high and profit is already realized.
+2026-11-03 11:32,HOLD,Recent price action is consolidating near the high.,,1,0,0.30,0,HOLD - Recent price action is consolidating near the high.
+2026-11-03 11:33,HOLD,Recent price action is consolidating near highs,,1,0,0.31,0,HOLD - Recent price action is consolidating near highs
+2026-11-03 11:34,HOLD,"Small recent movement, no clear trend to exit or hold for more gain",,1,0,0.35,0,"HOLD - Small recent movement, no clear trend to exit or hold for more gain"
+2026-11-03 11:35,HOLD,Recent price action is consolidating near the current level,,1,0,0.30,0,HOLD - Recent price action is consolidating near the current level
+2026-11-03 11:36,HOLD,"Small recent movement, wait for clearer trend",,1,0,0.29,0,"HOLD - Small recent movement, wait for clearer trend"
+2026-11-03 11:37,HOLD,Recent price action is consolidating near the current level,,1,0,0.30,0,HOLD - Recent price action is consolidating near the current level
+2026-11-03 11:38,HOLD,"Small recent movement, waiting for clearer trend confirmation",,1,0,0.30,0,"HOLD - Small recent movement, waiting for clearer trend confirmation"
+2026-11-03 11:39,HOLD,"Modest upward momentum, no strong signal to exit for a larger gain",,1,0,0.35,0,"HOLD - Modest upward momentum, no strong signal to exit for a larger gain"
+2026-11-03 11:40,HOLD,"Small recent movement, wait for clearer trend confirmation",,1,0,0.31,0,"HOLD - Small recent movement, wait for clearer trend confirmation"
+2026-11-03 11:41,HOLD,Recent upward momentum is not strong enough to justify selling now,,1,0,0.32,0,HOLD - Recent upward momentum is not strong enough to justify selling now
+2026-11-03 11:42,HOLD,Recent upward momentum is not strong enough to justify selling now,,1,0,0.33,0,HOLD - Recent upward momentum is not strong enough to justify selling now
+2026-11-03 11:43,HOLD,"Recent small gains, no strong momentum for immediate exit",,1,0,0.31,0,"HOLD - Recent small gains, no strong momentum for immediate exit"
+2026-11-03 11:44,HOLD,Recent upward momentum is not strong enough to justify selling now,,1,0,0.32,0,HOLD - Recent upward momentum is not strong enough to justify selling now
+2026-11-03 11:45,HOLD,Recent price action is consolidating near highs,,1,0,0.27,0,HOLD - Recent price action is consolidating near highs
+2026-11-03 11:46,HOLD,"Small recent movement, wait for clearer trend confirmation",,1,0,0.30,0,"HOLD - Small recent movement, wait for clearer trend confirmation"
+2026-11-03 11:47,HOLD,Recent price action is consolidating near highs,,1,0,0.30,0,HOLD - Recent price action is consolidating near highs
+2026-11-03 11:48,HOLD,Recent price action is consolidating near the high of the last 15 minutes.,,1,0,0.36,0,HOLD - Recent price action is consolidating near the high of the last 15 minutes.
+2026-11-03 11:49,HOLD,Recent price action is consolidating near highs,,1,0,0.27,0,HOLD - Recent price action is consolidating near highs
+2026-11-03 11:50,HOLD,Recent price action is consolidating near the current level,,1,0,0.30,0,HOLD - Recent price action is consolidating near the current level
+2026-11-03 11:51,HOLD,Recent price action is consolidating near highs,,1,0,0.28,0,HOLD - Recent price action is consolidating near highs
+2026-11-03 11:52,HOLD,Recent price action is consolidating near the current level,,1,0,0.30,0,HOLD - Recent price action is consolidating near the current level
+2026-11-03 11:53,HOLD,"Modest upward trend, no strong signal to exit yet",,1,0,0.31,0,"HOLD - Modest upward trend, no strong signal to exit yet"
+2026-11-03 11:54,HOLD,"Small recent pullback, still in positive territory",,1,0,0.28,0,"HOLD - Small recent pullback, still in positive territory"
+2026-11-03 11:55,HOLD,"Modest upward momentum, no clear breakout signal",,1,0,0.30,0,"HOLD - Modest upward momentum, no clear breakout signal"
+2026-11-03 11:56,HOLD,"Small recent movement, no clear trend for >0.10% gain",,1,0,0.38,0,"HOLD - Small recent movement, no clear trend for >0.10% gain"
+2026-11-03 11:57,HOLD,Recent price action is consolidating near the current level,,1,0,0.30,0,HOLD - Recent price action is consolidating near the current level
+2026-11-03 11:58,HOLD,Small recent upward movement not strong enough to justify selling now,,1,0,0.32,0,HOLD - Small recent upward movement not strong enough to justify selling now
+2026-11-03 11:59,HOLD,"Small recent movement, wait for clearer trend",,1,0,0.29,0,"HOLD - Small recent movement, wait for clearer trend"
+2026-11-03 12:00,HOLD,"Small recent movement, no clear trend for >0.10% gain",,1,0,0.36,0,"HOLD - Small recent movement, no clear trend for >0.10% gain"
+2026-11-03 12:01,HOLD,"Small recent movement, wait for clearer trend",,1,0,0.29,0,"HOLD - Small recent movement, wait for clearer trend"
+2026-11-03 12:02,HOLD,"Small recent movement, wait for clearer trend",,1,0,0.29,0,"HOLD - Small recent movement, wait for clearer trend"
+2026-11-03 12:03,HOLD,Small recent upward movement not enough to justify selling now,,1,0,0.31,0,HOLD - Small recent upward movement not enough to justify selling now
+2026-11-03 12:04,HOLD,Recent price action is consolidating near the current level,,1,0,0.30,0,HOLD - Recent price action is consolidating near the current level
+2026-11-03 12:05,HOLD,"Small recent movement, wait for clearer trend",,1,0,0.29,0,"HOLD - Small recent movement, wait for clearer trend"
+2026-11-03 12:06,HOLD,Recent price action is consolidating near highs,,1,0,0.29,0,HOLD - Recent price action is consolidating near highs
+2026-11-03 12:07,HOLD,"Small recent movement, wait for clearer trend",,1,0,0.32,0,"HOLD - Small recent movement, wait for clearer trend"
+2026-11-03 12:08,HOLD,"Modest upward trend, no strong signal to exit yet",,1,0,0.32,0,"HOLD - Modest upward trend, no strong signal to exit yet"
+2026-11-03 12:09,HOLD,Recent price action is consolidating near highs,,1,0,0.30,0,HOLD - Recent price action is consolidating near highs
+2026-11-03 12:10,HOLD,"Small recent movement, wait for clearer trend",,1,0,0.29,0,"HOLD - Small recent movement, wait for clearer trend"
+2026-11-03 12:11,HOLD,Recent price action is consolidating near highs,,1,0,0.28,0,HOLD - Recent price action is consolidating near highs
+2026-11-03 12:12,HOLD,Small recent movement no clear trend,,1,0,0.27,0,HOLD - Small recent movement no clear trend
+2026-11-03 12:13,HOLD,Recent price action is consolidating near highs,,1,0,0.28,0,HOLD - Recent price action is consolidating near highs
+2026-11-03 12:14,HOLD,"Small recent movement, no clear breakout signal",,1,0,0.29,0,"HOLD - Small recent movement, no clear breakout signal"
+2026-11-03 12:15,HOLD,"Small recent movement, wait for clearer trend",,1,0,0.28,0,"HOLD - Small recent movement, wait for clearer trend"
+2026-11-03 12:16,HOLD,Small recent movement not enough to cover costs,,1,0,0.29,0,HOLD - Small recent movement not enough to cover costs
+2026-11-03 12:17,HOLD,"Small recent movement, no clear trend to exit for profit",,1,0,0.31,0,"HOLD - Small recent movement, no clear trend to exit for profit"
+2026-11-03 12:18,HOLD,"Small recent movement, wait for clearer trend",,1,0,0.29,0,"HOLD - Small recent movement, wait for clearer trend"
+2026-11-03 12:19,HOLD,Small recent movement not enough to justify selling now,,1,0,0.30,0,HOLD - Small recent movement not enough to justify selling now
+2026-11-03 12:20,HOLD,"Small recent movement, waiting for clearer trend confirmation",,1,0,0.30,0,"HOLD - Small recent movement, waiting for clearer trend confirmation"
+2026-11-03 12:21,HOLD,"Small recent movement, wait for clearer trend",,1,0,0.28,0,"HOLD - Small recent movement, wait for clearer trend"
+2026-11-03 12:22,HOLD,Recent price action is consolidating near the high.,,1,0,0.30,0,HOLD - Recent price action is consolidating near the high.
+2026-11-03 12:23,HOLD,Recent price action is consolidating near the current level,,1,0,0.30,0,HOLD - Recent price action is consolidating near the current level
+2026-11-03 12:24,HOLD,"Small recent movement, waiting for clearer trend confirmation",,1,0,0.30,0,"HOLD - Small recent movement, waiting for clearer trend confirmation"
+2026-11-03 12:25,HOLD,Recent movement is small and not clearly favoring a quick exit,,1,0,0.32,0,HOLD - Recent movement is small and not clearly favoring a quick exit
+2026-11-03 12:26,HOLD,"Small recent movement, waiting for clearer trend",,1,0,0.28,0,"HOLD - Small recent movement, waiting for clearer trend"
+2026-11-03 12:27,HOLD,Small recent gains not enough to cover costs,,1,0,0.29,0,HOLD - Small recent gains not enough to cover costs
+2026-11-03 12:28,HOLD,Small recent upward movement not enough for 0.10% target,,1,0,0.35,0,HOLD - Small recent upward movement not enough for 0.10% target
+2026-11-03 12:29,HOLD,Small recent moves not enough to cover 0.10% cost,,1,0,0.35,0,HOLD - Small recent moves not enough to cover 0.10% cost
+2026-11-03 12:30,HOLD,Recent price action is consolidating near highs,,1,0,0.28,0,HOLD - Recent price action is consolidating near highs
+2026-11-03 12:31,HOLD,"Small recent movement, wait for clearer trend confirmation",,1,0,0.30,0,"HOLD - Small recent movement, wait for clearer trend confirmation"
+2026-11-03 12:32,HOLD,recent price action is consolidating near highs,,1,0,0.28,0,HOLD - recent price action is consolidating near highs
+2026-11-03 12:33,HOLD,Recent price action is consolidating near highs,,1,0,0.28,0,HOLD - Recent price action is consolidating near highs
+2026-11-03 12:34,HOLD,Recent price action is consolidating near the high,,1,0,0.29,0,HOLD - Recent price action is consolidating near the high
+2026-11-03 12:35,HOLD,Recent upward momentum is slowing slightly but still positive,,1,0,0.39,0,HOLD - Recent upward momentum is slowing slightly but still positive
+2026-11-03 12:36,HOLD,Recent price action is consolidating near recent highs,,1,0,0.29,0,HOLD - Recent price action is consolidating near recent highs
+2026-11-03 12:37,HOLD,Recent price action is consolidating near recent highs,,1,0,0.28,0,HOLD - Recent price action is consolidating near recent highs
+2026-11-03 12:38,HOLD,"Modest upward momentum, no clear breakout signal for immediate profit taking.",,1,0,0.40,0,"HOLD - Modest upward momentum, no clear breakout signal for immediate profit taking."
+2026-11-03 12:39,HOLD,Price is trending up but not strongly enough to warrant selling now,,1,0,0.33,0,HOLD - Price is trending up but not strongly enough to warrant selling now
+2026-11-03 12:40,HOLD,Recent upward momentum is slowing slightly but still positive,,1,0,0.29,0,HOLD - Recent upward momentum is slowing slightly but still positive
+2026-11-03 12:41,HOLD,Recent upward momentum is slowing slightly but still positive,,1,0,0.30,0,HOLD - Recent upward momentum is slowing slightly but still positive
+2026-11-03 12:42,HOLD,Price is trending up but not strongly enough to warrant selling now,,1,0,0.32,0,HOLD - Price is trending up but not strongly enough to warrant selling now
+2026-11-03 12:43,HOLD,Recent upward momentum is not strong enough to justify selling now,,1,0,0.32,0,HOLD - Recent upward momentum is not strong enough to justify selling now
+2026-11-03 12:44,HOLD,"Current gain is significant, wait for clearer trend confirmation",,1,0,0.30,0,"HOLD - Current gain is significant, wait for clearer trend confirmation"
+2026-11-03 12:45,HOLD,Price is trending up but not showing a clear immediate reversal signal,,1,0,0.36,0,HOLD - Price is trending up but not showing a clear immediate reversal signal
+2026-11-03 12:46,HOLD,Recent upward momentum is not strong enough to justify selling now,,1,0,0.39,0,HOLD - Recent upward momentum is not strong enough to justify selling now
+2026-11-03 12:47,HOLD,Recent upward momentum is slowing slightly,,1,0,0.26,0,HOLD - Recent upward momentum is slowing slightly
+2026-11-03 12:48,HOLD,Recent upward momentum is strong but not decisive enough for a quick exit,,1,0,0.34,0,HOLD - Recent upward momentum is strong but not decisive enough for a quick exit
+2026-11-03 12:49,HOLD,Recent upward momentum is slowing slightly,,1,0,0.26,0,HOLD - Recent upward momentum is slowing slightly
+2026-11-03 12:50,HOLD,Price is trending up but not showing strong momentum for a quick reversal,,1,0,0.33,0,HOLD - Price is trending up but not showing strong momentum for a quick reversal
+2026-11-03 12:51,HOLD,Price is trending up but not strongly enough to justify selling now,,1,0,0.34,0,HOLD - Price is trending up but not strongly enough to justify selling now
+2026-11-03 12:52,SELL,Profit target reached and momentum slowing,,1,6,0.28,0,SELL - Profit target reached and momentum slowing
+2026-11-03 12:53,BUY,Strong recent upward momentum and positive news,,0,6,0.29,0,BUY - Strong recent upward momentum and positive news
+2026-11-03 12:54,HOLD,Price is near recent highs and showing upward momentum,,1,0,0.30,0,HOLD - Price is near recent highs and showing upward momentum
+2026-11-03 12:55,HOLD,Price is near today's high and momentum is positive,,1,6,0.33,0,HOLD - Price is near today's high and momentum is positive
+2026-11-03 12:56,HOLD,Price is trending up but not enough for a clear profit target,,1,6,0.34,0,HOLD - Price is trending up but not enough for a clear profit target
+2026-11-03 12:57,HOLD,Price is near today's high and momentum is positive,,1,6,0.33,0,HOLD - Price is near today's high and momentum is positive
+2026-11-03 12:58,HOLD,Price is consolidating near recent highs,,1,6,0.29,0,HOLD - Price is consolidating near recent highs
+2026-11-03 12:59,HOLD,Price is near today's high and momentum is positive,,1,6,0.34,0,HOLD - Price is near today's high and momentum is positive
+2026-11-03 13:00,HOLD,Price is near today's high and recent momentum is positive,,1,6,0.34,0,HOLD - Price is near today's high and recent momentum is positive
+2026-11-03 13:01,HOLD,Price is near today's high and momentum is positive,,1,6,0.33,0,HOLD - Price is near today's high and momentum is positive
+2026-11-03 13:02,HOLD,Price is near today's high and recent momentum is mixed,,1,6,0.34,0,HOLD - Price is near today's high and recent momentum is mixed
+2026-11-03 13:03,HOLD,Price is near today's high and momentum is positive,,1,6,0.33,0,HOLD - Price is near today's high and momentum is positive
+2026-11-03 13:04,HOLD,Price is consolidating near recent highs,,1,6,0.29,0,HOLD - Price is consolidating near recent highs
+2026-11-03 13:05,HOLD,small gain not worth trading cost,,1,6,0.29,0,HOLD - small gain not worth trading cost
+2026-11-03 13:06,HOLD,Small gain not worth trading cost,,1,6,0.28,0,HOLD - Small gain not worth trading cost
+2026-11-03 13:07,HOLD,Small gain not worth trading cost,,1,6,0.28,0,HOLD - Small gain not worth trading cost
+2026-11-03 13:08,HOLD,Small recent gains not enough to cover 0.10% cost,,1,6,0.36,0,HOLD - Small recent gains not enough to cover 0.10% cost
+2026-11-03 13:09,HOLD,Small recent upward momentum not enough for clear profit target,,1,6,0.32,0,HOLD - Small recent upward momentum not enough for clear profit target
+2026-11-03 13:10,HOLD,Small recent upward movement not enough for clear profit target,,1,6,0.32,0,HOLD - Small recent upward movement not enough for clear profit target
+2026-11-03 13:11,HOLD,Recent price action is consolidating near highs,,1,6,0.29,0,HOLD - Recent price action is consolidating near highs
+2026-11-03 13:12,HOLD,Small recent movement not enough to justify trade cost,,1,6,0.31,0,HOLD - Small recent movement not enough to justify trade cost
+2026-11-03 13:13,HOLD,Small recent movement not enough to cover costs,,1,6,0.30,0,HOLD - Small recent movement not enough to cover costs
+2026-11-03 13:14,HOLD,"Small recent movement, no strong signal to exit or hold for more gain",,1,6,0.36,0,"HOLD - Small recent movement, no strong signal to exit or hold for more gain"
+2026-11-03 13:15,HOLD,Small gain not worth trading cost,,1,6,0.28,0,HOLD - Small gain not worth trading cost
+2026-11-03 13:16,HOLD,small gain not worth trading cost,,1,6,0.28,0,HOLD - small gain not worth trading cost
+2026-11-03 13:17,HOLD,Small recent movement not enough to cover costs,,1,6,0.30,0,HOLD - Small recent movement not enough to cover costs
+2026-11-03 13:18,HOLD,small positive momentum but not enough for 0.10% gain,,1,6,0.37,0,HOLD - small positive momentum but not enough for 0.10% gain
+2026-11-03 13:19,HOLD,Recent price action is consolidating near highs,,1,6,0.29,0,HOLD - Recent price action is consolidating near highs
+2026-11-03 13:20,HOLD,Price is consolidating near recent highs,,1,6,0.28,0,HOLD - Price is consolidating near recent highs

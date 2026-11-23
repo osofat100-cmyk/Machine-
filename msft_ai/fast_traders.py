@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """
-Version 2 (after version 1 kept switching on noise): the prompt spells out the 0.10% round-trip cost, shows trades and
+Version 3 adds rule 3 (sell high into cash, buy low; ignore the price paid) and the last-30-minute high/low/swing;
+it drops the 'if you sold now' loss line that made version 2 refuse to sell. Version 2 (after version 1 kept switching on noise): the prompt spells out the 0.10% round-trip cost, shows trades and
 costs paid so far and the break-even price, and allows only possible moves (in cash: BUY or HOLD; in MSFT: SELL or HOLD).
 
 Two fast AIs trade Microsoft minute by minute over the last month (26 Oct .. 23 Nov 2026; the first day is background
@@ -39,7 +40,11 @@ RULES = (
     "later selling costs 0.10% in total. A trade only makes sense if you expect the price to move clearly more than "
     "0.10% in your favour before you trade back. Switching back and forth on small wiggles loses money.\n"
     "2. You can only SELL shares you own. If you are in cash you own no shares: your only choices are BUY or HOLD. "
-    "If you are in MSFT you already own it: your only choices are SELL or HOLD.\n")
+    "If you are in MSFT you already own it: your only choices are SELL or HOLD.\n"
+    "3. Sell high, buy low. SELL moves all the money into cash (US dollars, which do not move with the stock); BUY "
+    "puts it back into MSFT. Do not keep a falling stock just to avoid taking a loss: the price you paid does not "
+    "matter, only where the price goes next. Sell when the price has risen into a recent high, buy back when it has "
+    "dropped into a recent low, and only when the swing is bigger than the 0.10% cost.\n")
 SYSTEM_PATTERN = (
     "You trade Microsoft (MSFT) minute by minute with a practice account that is either all in MSFT or all in "
     "cash. Each minute you get the latest one-minute price bars. Decide for the next minute: BUY (be all in MSFT), "
@@ -110,8 +115,7 @@ def price_block(bars, prev_close, position, entry, book, value):
     today = [b for b in bars if b["time"][:10] == bars[-1]["time"][:10]]
     if position and entry:
         even = entry * (1.0005 / 0.9995)                  # price that only just covers the buy and the sell cost
-        held = (f"You OWN MSFT, bought at ${entry:.2f}. Break-even after costs: ${even:.2f}. "
-                f"If you sold now: {pct(c[-1] * 0.9995, entry * 1.0005):+.2f}% after costs.")
+        held = f"You OWN MSFT, bought at ${entry:.2f} (break-even after costs ${even:.2f})."
     else:
         held = "You are in CASH and own no MSFT shares."
     L = [f"Time: {bars[-1]['time']} New York. {held}",
@@ -121,6 +125,9 @@ def price_block(bars, prev_close, position, entry, book, value):
          f"15 min {pct(c[-1], c[-16]):+.2f}%, 60 min {pct(c[-1], c[-61]):+.2f}%, today {pct(c[-1], today[0]['MSFT_open']):+.2f}%"
          + (f", since yesterday's close {pct(c[-1], prev_close):+.2f}%" if prev_close else ""),
          f"Today's high ${max(b['MSFT_high'] for b in today):.2f}, low ${min(b['MSFT_low'] for b in today):.2f}",
+         f"Last 30 minutes: high ${max(b['MSFT_high'] for b in bars[-30:]):.2f} (now {pct(c[-1], max(b['MSFT_high'] for b in bars[-30:])):+.2f}% from it), "
+         f"low ${min(b['MSFT_low'] for b in bars[-30:]):.2f} (now {pct(c[-1], min(b['MSFT_low'] for b in bars[-30:])):+.2f}% from it), "
+         f"swing size {pct(max(b['MSFT_high'] for b in bars[-30:]), min(b['MSFT_low'] for b in bars[-30:])):.2f}%",
          "Last 15 minutes (close, volume): " + ", ".join(f"{b['MSFT_close']:.2f}/{int(b['MSFT_volume'] / 1000)}k"
                                                          for b in bars[-15:])]
     return L
