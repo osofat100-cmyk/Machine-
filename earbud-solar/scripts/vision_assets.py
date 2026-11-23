@@ -22,7 +22,8 @@ SHELL = os.path.join(HERE, "..", "models", "shell")
 OUT = sys.argv[1]
 os.makedirs(OUT, exist_ok=True)
 
-CELL = np.array([33.0, 15.0, 1.5])     # SM400K10TF, DigiKey thickness
+VISUAL_SCALE = 0.9                       # footprint drawn at 90 % (styling choice for the video)
+CELL = np.array([33.0 * VISUAL_SCALE, 15.0 * VISUAL_SCALE, 1.5])   # SM400K10TF, DigiKey thickness
 PROUD = 0.2                              # cell top above the bezel
 OUTLINE_Z, INSET, TOP_R, BLEND = -1.5, 0.0, 0.9, 0.8
 POCKET_CLR = 0.05
@@ -86,8 +87,9 @@ def decimate(m, keep):
 cov = to_mesh(cover)
 # where does the new cover surface sit around the cell?
 ring = []
+ex, ey = CELL[0] / 2 + 0.4, CELL[1] / 2 + 0.4
 for t in np.linspace(0, 1, 40, endpoint=False):
-    for (x, y) in [(-17 + 34 * t, -7.9), (-17 + 34 * t, 7.9), (-16.9, -7.4 + 14.8 * t), (16.9, -7.4 + 14.8 * t)]:
+    for (x, y) in [(-ex + 2 * ex * t, -ey), (-ex + 2 * ex * t, ey), (-ex, -ey + 2 * ey * t), (ex, -ey + 2 * ey * t)]:
         ring.append((x, y))
 ring = np.array(ring)
 loc, ri, _ = cov.ray.intersects_location(np.c_[ring, np.full(len(ring), 5.0)], np.tile([0, 0, -1.0], (len(ring), 1)), multiple_hits=False)
@@ -106,7 +108,7 @@ parts = dict(cover=cov,
 for k, m in parts.items():
     m.visual = trimesh.visual.ColorVisuals(m)
     m.export(os.path.join(OUT, f"{k}.glb"))
-info = dict(cell_mm=CELL.tolist(), cell_seat_z=0.0, cell_top_z=float(CELL[2]), bezel_top_z=float(top), proud_mm=PROUD,
+info = dict(cell_mm=np.round(CELL, 3).tolist(), visual_scale=VISUAL_SCALE, cell_seat_z=0.0, cell_top_z=float(CELL[2]), bezel_top_z=float(top), proud_mm=PROUD,
             ring_surface_z=dict(min=round(float(np.nanmin(rz)), 2), median=round(float(np.nanmedian(rz)), 2),
                                 max=round(float(np.nanmax(rz)), 2), misses=int(np.isnan(rz).sum())),
             triangles={k: len(m.faces) for k, m in parts.items()},

@@ -339,7 +339,7 @@ python3 scripts/wiring_diagram.py <png>
 
 ## 11. Vision video: the cell set into the shell (`scripts/vision_assets.py`, `scripts/vision_video/`)
 Render-only. The face of the cover is built up around the cell (the earbud's own outline, extruded up with a 0.9 mm
-rounded edge) to 0.2 mm below the cell top, so the 33 × 15 × 1.5 mm cell looks sunk in. The earbud gets no thicker
+rounded edge) to 0.2 mm below the cell top, so the cell looks sunk in. The earbud gets no thicker
 (the cell top stays the highest point) and the inside is unchanged. The printable STLs from `shell_build.py` are not
 changed by this.
 ```

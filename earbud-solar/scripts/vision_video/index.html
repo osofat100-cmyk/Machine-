@@ -80,9 +80,14 @@ function cellTexture() {
 }
 const cellTop = new THREE.MeshPhysicalMaterial({ map: cellTexture(), roughness: 0.16, metalness: 0.15, clearcoat: 1.0, clearcoatRoughness: 0.04, envMapIntensity: 1.2 });
 const cellSide = new THREE.MeshPhysicalMaterial({ color: 0x3a3f47, roughness: 0.35, metalness: 0.5 });
-const cell = new THREE.Mesh(new THREE.BoxGeometry(33, 15, 1.5), [cellSide, cellSide, cellSide, cellSide, cellTop, cellSide]);
-cell.castShadow = true; cell.receiveShadow = true;
-const cellPivot = new THREE.Group(); cellPivot.add(cell); bud.add(cellPivot);
+const cellPivot = new THREE.Group(); bud.add(cellPivot);
+let CELL_T = 1.5;
+async function loadCell() {
+  const info = await (await fetch("/assets/vision_assets.json")).json();
+  const [cx, cy, ct] = info.cell_mm; CELL_T = ct;
+  const cell = new THREE.Mesh(new THREE.BoxGeometry(cx, cy, ct), [cellSide, cellSide, cellSide, cellSide, cellTop, cellSide]);
+  cell.castShadow = true; cell.receiveShadow = true; cellPivot.add(cell);
+}
 
 const loader = new GLTFLoader();
 async function loadPart(name) {
@@ -118,10 +123,10 @@ function camAt(t) {
   ground.material.opacity = 0.16 * ease((lerp(a[2], b[2], k) - 16) / 12);   // no shadow slab in the low shot
 }
 function cellAt(t) {
-  // hover, then drop and settle into the pocket (seat at S z = 0, so the box centre ends at z = 0.75)
+  // hover, then drop and settle into the pocket (seat at S z = 0, so the box centre ends at half the thickness)
   const k = easeOut((t - 0.8) / 3.4);
   const hover = 16 * (1 - k) + 0.6 * Math.sin(t * 2.2) * (1 - k);
-  cellPivot.position.set(0, 0, 0.75 + hover);
+  cellPivot.position.set(0, 0, CELL_T / 2 + hover);
   cellPivot.rotation.set(0.32 * (1 - k), -0.18 * (1 - k), 0.22 * (1 - k));
 }
 function overlays(t) {
@@ -135,7 +140,7 @@ window.renderAt = (t) => {
   return true;
 };
 window.T_END = T_END;
-window.ready = Promise.all(["cover", "base", "hook", "pod"].map(loadPart)).then(() => { window.renderAt(0); return true; });
+window.ready = Promise.all([...["cover", "base", "hook", "pod"].map(loadPart), loadCell()]).then(() => { window.renderAt(0); return true; });
 </script>
 </body>
 </html>
