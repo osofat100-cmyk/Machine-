@@ -213,7 +213,8 @@ def job(start, end, position, threads):
             else:
                 if llm is None:
                     from llama_cpp import Llama, LlamaGrammar
-                    llm = Llama(model_path=MODEL, n_ctx=4096, n_threads=threads, seed=0, verbose=False)
+                    llm = Llama(model_path=MODEL, n_ctx=4096, n_threads=threads, n_threads_batch=threads, seed=0,
+                                verbose=False)
                     grammar = LlamaGrammar.from_string(GRAMMAR, verbose=False)
                 prompt = build_prompt(hist, position)
                 t0 = time.time()
