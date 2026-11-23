@@ -5,6 +5,9 @@ last ~2 months, one 5-minute step at a time, with the checklist, a memory notebo
 handed out only at its exact publication minute. It may hold up to 10 stocks (10% slots) plus cash, and may make up
 to 3 buys or sells per step. The yardstick is holding SPY over the same steps.
 
+Version 2 adds the ADVICE section (costs, ride spikes, never buy what you own, use news properly), shows each
+holding's high since bought, and blocks buys of owned stocks before they are sent.
+
 Every answer is appended to sp500/answers.csv the moment it is given; running again replays saved answers and
 continues from where it stopped.
 
@@ -26,7 +29,7 @@ from collections import defaultdict
 HERE = os.path.dirname(os.path.abspath(__file__))
 MODEL = "nvidia/nemotron-3.5-bolt-e4b"
 STEP = int(os.environ.get("STEP_MIN", "5"))  # 5-minute or 2-minute steps
-TAG = "" if STEP == 5 else f"_{STEP}m"
+TAG = ("" if STEP == 5 else f"_{STEP}m") + (f"_{os.environ['VERSION']}" if os.environ.get("VERSION") else "")
 ANSWERS = os.path.join(HERE, f"answers{TAG}.csv")
 HOUR = 60 // STEP                             # steps in one hour
 WARMUP = HOUR + 1                             # first hour of the first day: background only
@@ -43,6 +46,16 @@ SYSTEM = (
     "3. Sell high, buy low. Do not keep a falling stock just to avoid taking a loss: the price you paid does not "
     "matter, only where the price goes next.\n"
     "4. Use only symbols shown to you.\n"
+    "ADVICE (learned from your earlier runs - follow it):\n"
+    "A. Costs: only trade if the move you expect covers the 0.10% round trip AND leaves a profit. If you are not "
+    "sure, do nothing. Most minutes the right answer is NONE.\n"
+    "B. Ride spikes: when a stock you own is rising, keep it. Do not sell just because it went up - it may keep "
+    "going, and buying it back later costs more. Sell only when it has clearly turned down from its high since you "
+    "bought it (see 'below its high' in YOUR HOLDINGS). Never sell a stock and buy the same stock back soon after.\n"
+    "C. Before any BUY, check YOUR HOLDINGS: never buy a stock you already own.\n"
+    "D. News: act on news that changes a company's or the market's outlook (results, guidance, big deals, rate or "
+    "tariff decisions, crashes). Ignore headlines that do not matter. Do not trade just because a headline "
+    "appeared.\n"
     "Before deciding, answer the checklist. Keep a plan: your notebook shows your last notes.\n"
     "Answer in exactly this form, one line each:\n"
     "MARKET: UP, DOWN or FLAT\n"
@@ -99,7 +112,7 @@ def pct(a, b):
     return (a / b - 1) * 100 if b else 0.0
 
 
-def build_prompt(hist, sector_of, acc, entries, news_seen, new_news, notes, refused_now=()):
+def build_prompt(hist, sector_of, acc, entries, news_seen, new_news, notes, refused_now=(), highs=None):
     st = hist[-1]
     c = st["close"]
     day = [h for h in hist if h["time"][:10] == st["time"][:10]]
@@ -127,6 +140,8 @@ def build_prompt(hist, sector_of, acc, entries, news_seen, new_news, notes, refu
             e = entries.get(sym)
             L.append(f"- {sym} ({sector_of.get(sym, '')}): ${q * c[sym]:,.2f}, now ${c[sym]:.2f}"
                      + (f", bought at ${e:.2f}, {pct(c[sym] * 0.9995, e * 1.0005):+.2f}% after costs" if e else "")
+                     + (f", high since bought ${highs[sym]:.2f}, now {pct(c[sym], highs[sym]):+.2f}% below its high"
+                        if highs and sym in highs else "")
                      + f", 1 hour {pct(c[sym], hour['close'].get(sym, c[sym])):+.2f}%")
     else:
         L.append("YOUR HOLDINGS: none (all cash) - you cannot SELL anything.")
@@ -168,7 +183,7 @@ def main():
     if not saved:
         w.writeheader()
     hist, news_seen, notes, entries, orders, n, t0 = [], [], [], {}, {}, 0, time.time()
-    sector_of, spy_sent, pending = {}, False, []
+    sector_of, spy_sent, pending, highs = {}, False, [], {}
     with Server() as srv:
         while True:
             out = srv.next(orders)
@@ -183,7 +198,14 @@ def main():
             news_seen += new_news
             acc = out["accounts"].get("ai", {"value": 1000.0, "cash": 1000.0, "shares": {}, "trades": 0, "costs": 0.0})
             refused_now = out["refused"].get("ai", [])
+            for sym in list(highs):
+                if sym in acc.get("shares", {}):
+                    highs[sym] = max(highs[sym], st["close"].get(sym, highs[sym]))
+                else:
+                    highs.pop(sym)
             for od in pending:                               # remember buy prices of fills that went through
+                if od["action"] == "BUY" and od["symbol"] in acc.get("shares", {}) and od["symbol"] not in highs:
+                    highs[od["symbol"]] = max(st["open"][od["symbol"]], st["close"][od["symbol"]])
                 if od["action"] == "BUY" and od["symbol"] in acc.get("shares", {}) and od["symbol"] not in entries:
                     entries[od["symbol"]] = st["open"][od["symbol"]]
                 if od["action"] == "SELL" and od["symbol"] not in acc.get("shares", {}):
@@ -204,7 +226,7 @@ def main():
                 acts = json.loads(r["actions"])
                 note = r["note"]
             else:
-                prompt = build_prompt(hist, sector_of, acc, entries, news_seen, new_news, notes, refused_now)
+                prompt = build_prompt(hist, sector_of, acc, entries, news_seen, new_news, notes, refused_now, highs)
                 t1 = time.time()
                 text = ask(prompt)
                 secs = time.time() - t1
@@ -221,6 +243,13 @@ def main():
                           f"{','.join(acc.get('shares', {})) or 'cash'} | {json.dumps(acts)} | {secs:.2f}s "
                           f"[{n} answers, {time.time() - t0:.0f}s]", flush=True)
             notes.append((st["known_at"][5:], note))
+            owned = set(acc.get("shares", {}))
+            blocked = [a for a in acts if (a["action"] == "BUY") == (a["symbol"] in owned)]
+            if blocked and n >= len(saved):
+                with open(os.path.join(HERE, f"refused{TAG}.csv"), "a") as fr:
+                    for od in blocked:
+                        fr.write(f"{st['time']},{od['action']},{od['symbol']},blocked before sending (already owned / not owned)\n")
+            acts = [a for a in acts if a not in blocked]
             orders["ai"] = acts
             pending = acts
             n += 1
