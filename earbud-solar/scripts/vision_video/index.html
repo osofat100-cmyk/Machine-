@@ -1,0 +1,141 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Solar earbud vision</title>
+<style>
+  html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; }
+  body { background: radial-gradient(ellipse 75% 70% at 50% 42%, #fbfcfd 0%, #eef1f5 45%, #d3d9e1 100%); font-family: Inter, sans-serif; }
+  canvas { position: absolute; inset: 0; }
+  .cap { position: absolute; color: #16202c; opacity: 0; }
+  #tag { left: 96px; top: 84px; font-size: 30px; font-weight: 600; letter-spacing: 0.02em; }
+  #tag small { display: block; font-size: 22px; font-weight: 400; color: #5b6878; margin-top: 8px; letter-spacing: 0; }
+  #end { left: 0; right: 0; top: 70px; text-align: center; }
+  #end b { display: block; font-size: 56px; font-weight: 700; letter-spacing: -0.01em; }
+  #end span { display: block; font-size: 28px; font-weight: 400; color: #4c5968; margin-top: 12px; }
+</style>
+<script type="importmap">{ "imports": { "three": "/three/build/three.module.js", "three/addons/": "/three/examples/jsm/" } }</script>
+</head>
+<body>
+<div id="tag" class="cap">Proposed custom earbud shell<small>Solar panel set into the cover</small></div>
+<div id="end" class="cap"><b>Solar-Powered Earbuds</b><span>Proposed custom shell &middot; the panel sits just above the surface</span></div>
+<script type="module">
+import * as THREE from "three";
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
+
+const W = 1920, H = 1080, T_END = 13.0;
+const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, preserveDrawingBuffer: true });
+renderer.setPixelRatio(1); renderer.setSize(W, H);
+renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.05;
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+document.body.prepend(renderer.domElement);
+
+const scene = new THREE.Scene();
+const pmrem = new THREE.PMREMGenerator(renderer);
+scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+scene.environmentIntensity = 0.85;
+
+const camera = new THREE.PerspectiveCamera(26, W / H, 1, 2000);
+
+// lights: warm "sun" key, cool fill, soft ground shadow
+const sun = new THREE.DirectionalLight(0xfff1dc, 2.6);
+sun.position.set(-60, 120, 70); sun.castShadow = true;
+sun.shadow.mapSize.set(2048, 2048); sun.shadow.radius = 6; sun.shadow.bias = -0.0004;
+Object.assign(sun.shadow.camera, { left: -60, right: 60, top: 60, bottom: -60, near: 10, far: 400 });
+scene.add(sun);
+const rim = new THREE.DirectionalLight(0xcfe0ff, 1.1); rim.position.set(80, 40, -90); scene.add(rim);
+scene.add(new THREE.HemisphereLight(0xffffff, 0x9aa3ad, 0.35));
+const ground = new THREE.Mesh(new THREE.PlaneGeometry(600, 600), new THREE.ShadowMaterial({ opacity: 0.16 }));
+ground.rotation.x = -Math.PI / 2; ground.position.y = -40; ground.receiveShadow = true; scene.add(ground);
+
+// seat frame S (mm, Z out of the face) -> world (Y up): rotate -90 deg about X
+const bud = new THREE.Group(); bud.rotation.x = -Math.PI / 2; scene.add(bud);
+
+const mats = {
+  cover: new THREE.MeshPhysicalMaterial({ color: 0x1d1f23, roughness: 0.5, metalness: 0.0, clearcoat: 0.25, clearcoatRoughness: 0.45 }),
+  base: new THREE.MeshPhysicalMaterial({ color: 0x17181c, roughness: 0.58, metalness: 0.0 }),
+  hook: new THREE.MeshPhysicalMaterial({ color: 0x1f2125, roughness: 0.72, metalness: 0.0, sheen: 0.3, sheenRoughness: 0.8 }),
+  pod: new THREE.MeshPhysicalMaterial({ color: 0x2a2c31, roughness: 0.62, metalness: 0.0 }),
+};
+
+function cellTexture() {
+  // ANYSOLAR SM (back-contact mono): dark front, 10 cells in a row, thin separation lines, slim border
+  const pxmm = 64, w = 33 * pxmm, h = 15 * pxmm, c = document.createElement("canvas");
+  c.width = w; c.height = h; const g = c.getContext("2d");
+  g.fillStyle = "#30353d"; g.fillRect(0, 0, w, h);
+  const m = 0.7 * pxmm, gap = 0.22 * pxmm, n = 10, cw = (w - 2 * m - (n - 1) * gap) / n;
+  for (let i = 0; i < n; i++) {
+    const x = m + i * (cw + gap);
+    const gr = g.createLinearGradient(x, m, x + cw, h - m);
+    gr.addColorStop(0, "#112042"); gr.addColorStop(0.5, "#0a1630"); gr.addColorStop(1, "#0f1d40");
+    g.fillStyle = gr; g.fillRect(x, m, cw, h - 2 * m);
+    g.fillStyle = "rgba(120,150,210,0.06)";
+    for (let y = m + 0.5 * pxmm; y < h - m; y += 0.5 * pxmm) g.fillRect(x, y, cw, 1);
+  }
+  g.fillStyle = "#8f959e"; g.fillRect(0, 0, w, 0.12 * pxmm); g.fillRect(0, h - 0.12 * pxmm, w, 0.12 * pxmm);
+  g.fillRect(0, 0, 0.12 * pxmm, h); g.fillRect(w - 0.12 * pxmm, 0, 0.12 * pxmm, h);
+  const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 8; return t;
+}
+const cellTop = new THREE.MeshPhysicalMaterial({ map: cellTexture(), roughness: 0.16, metalness: 0.15, clearcoat: 1.0, clearcoatRoughness: 0.04, envMapIntensity: 1.2 });
+const cellSide = new THREE.MeshPhysicalMaterial({ color: 0x3a3f47, roughness: 0.35, metalness: 0.5 });
+const cell = new THREE.Mesh(new THREE.BoxGeometry(33, 15, 1.5), [cellSide, cellSide, cellSide, cellSide, cellTop, cellSide]);
+cell.castShadow = true; cell.receiveShadow = true;
+const cellPivot = new THREE.Group(); cellPivot.add(cell); bud.add(cellPivot);
+
+const loader = new GLTFLoader();
+async function loadPart(name) {
+  const gltf = await loader.loadAsync(`/assets/${name}.glb`);
+  gltf.scene.traverse(o => {
+    if (o.isMesh) {
+      o.geometry.deleteAttribute("color"); o.geometry.computeVertexNormals();
+      o.material = mats[name]; o.castShadow = true; o.receiveShadow = true;
+    }
+  });
+  bud.add(gltf.scene);
+}
+
+// ---------- timeline ----------
+const ease = x => (x <= 0 ? 0 : x >= 1 ? 1 : x * x * (3 - 2 * x));
+const easeOut = x => (x <= 0 ? 0 : x >= 1 ? 1 : 1 - Math.pow(1 - x, 3));
+const lerp = (a, b, k) => a + (b - a) * k;
+// camera keys: time, azimuth (deg, around world Y, 0 = +Z), elevation (deg), distance, target y
+const keys = [
+  [0.0, -40, 42, 168, -6],
+  [4.6, -22, 38, 150, -5],
+  [8.0, 34, 15, 112, -4],
+  [10.3, 18, 30, 150, -8],
+  [13.0, 10, 32, 160, -9],
+];
+function camAt(t) {
+  let i = 0; while (i < keys.length - 2 && t > keys[i + 1][0]) i++;
+  const a = keys[i], b = keys[i + 1], k = ease((t - a[0]) / (b[0] - a[0]));
+  const az = lerp(a[1], b[1], k) * Math.PI / 180, el = lerp(a[2], b[2], k) * Math.PI / 180, d = lerp(a[3], b[3], k);
+  const ty = lerp(a[4], b[4], k);
+  camera.position.set(d * Math.cos(el) * Math.sin(az), ty + d * Math.sin(el), d * Math.cos(el) * Math.cos(az));
+  camera.lookAt(0, ty, 0);
+  ground.material.opacity = 0.16 * ease((lerp(a[2], b[2], k) - 16) / 12);   // no shadow slab in the low shot
+}
+function cellAt(t) {
+  // hover, then drop and settle into the pocket (seat at S z = 0, so the box centre ends at z = 0.75)
+  const k = easeOut((t - 0.8) / 3.4);
+  const hover = 16 * (1 - k) + 0.6 * Math.sin(t * 2.2) * (1 - k);
+  cellPivot.position.set(0, 0, 0.75 + hover);
+  cellPivot.rotation.set(0.32 * (1 - k), -0.18 * (1 - k), 0.22 * (1 - k));
+}
+function overlays(t) {
+  document.getElementById("tag").style.opacity = String(ease((t - 0.3) / 0.8) * (1 - ease((t - 6.6) / 0.8)));
+  document.getElementById("end").style.opacity = String(ease((t - 10.3) / 0.9));
+}
+window.renderAt = (t) => {
+  camAt(t); cellAt(t); overlays(t);
+  scene.environmentRotation.y = -0.9 + 1.5 * ease((t - 3.8) / 5.5);   // light sweep across the glossy panel
+  renderer.render(scene, camera);
+  return true;
+};
+window.T_END = T_END;
+window.ready = Promise.all(["cover", "base", "hook", "pod"].map(loadPart)).then(() => { window.renderAt(0); return true; });
+</script>
+</body>
+</html>

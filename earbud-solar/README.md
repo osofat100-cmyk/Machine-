@@ -336,3 +336,14 @@ python3 scripts/shell_coupon.py models/shell/coupon 0.1     # printer test piece
 python3 scripts/wiring_diagram.py <png>
 # v1 (cell sunk for the lid): make_solar_bud.py ... SM400K10TF 0.75, then the same steps with _SM400K10TF
 ```
+
+## 11. Vision video: the cell set into the shell (`scripts/vision_assets.py`, `scripts/vision_video/`)
+Render-only. The face of the cover is built up around the cell (the earbud's own outline, extruded up with a 0.9 mm
+rounded edge) to 0.2 mm below the cell top, so the 33 × 15 × 1.5 mm cell looks sunk in. The earbud gets no thicker
+(the cell top stays the highest point) and the inside is unchanged. The printable STLs from `shell_build.py` are not
+changed by this.
+```
+python3 scripts/vision_assets.py <assets dir>                       # meshes (JBL-derived: keep out of git)
+npm install three@0.170.0                                           # in any folder
+node scripts/vision_video/render.js <assets dir> <node_modules/three> out.mp4 30
+```
