@@ -1,0 +1,57 @@
+output folder: /home/user/Machine-/ml_etf
+sealed test: locked settings ridge_h1=ridge(alpha=1000), ridge_h5=ridge(alpha=1000), ridge_h21=ridge(alpha=10), gbm_h1=gbm(leaves=6,trees=300), gbm_h5=gbm(leaves=4,trees=300), gbm_h21=gbm(leaves=4,trees=100), mlp_h1=mlp(hidden=(16,),alpha=0.1), mlp_h5=mlp(hidden=(32, 16),alpha=0.1), mlp_h21=mlp(hidden=(16,),alpha=0.1)
+  2016-04-22  (127s)
+  2017-04-20  (261s)
+  2018-04-18  (400s)
+  2019-04-16  (557s)
+  2020-04-14  (711s)
+  2021-04-12  (878s)
+  2022-04-06  (1046s)
+  2023-04-05  (1219s)
+  2024-04-04  (1398s)
+  2025-04-03  (1587s)
+  2026-04-02  (1792s)
+  saved stage: walk
+walk done: 2016-01-04 -> 2026-11-20, 2738 days
+check: fast simulator equals the server to the cent for all 12 accounts
+  saved stage: replay_ridge_h1
+  saved stage: replay_ridge_h5
+  saved stage: replay_ridge_h21
+  saved stage: replay_gbm_h1
+  saved stage: replay_gbm_h5
+  saved stage: replay_gbm_h21
+  saved stage: replay_mlp_h1
+  saved stage: replay_mlp_h5
+  saved stage: replay_mlp_h21
+  loaded saved stage: replay_ridge_h1
+  loaded saved stage: replay_ridge_h5
+  loaded saved stage: replay_ridge_h21
+  loaded saved stage: replay_gbm_h1
+  loaded saved stage: replay_gbm_h5
+  loaded saved stage: replay_gbm_h21
+  loaded saved stage: replay_mlp_h1
+  loaded saved stage: replay_mlp_h5
+  loaded saved stage: replay_mlp_h21
+check: day-by-day decisions equal the decisions re-made on the finished panel
+  saved stage: coins_ridge_h1
+  saved stage: coins_ridge_h5
+  saved stage: coins_ridge_h21
+  saved stage: coins_gbm_h1
+  saved stage: coins_gbm_h5
+  saved stage: coins_gbm_h21
+  saved stage: coins_mlp_h1
+  saved stage: coins_mlp_h5
+  saved stage: coins_mlp_h21
+    strategy       end_$  sharpe_above_cash  ir_vs_spy  worst_drop  trades
+    ridge_h1 1638.277377           0.227085  -0.539956   -0.362535     473
+    ridge_h5 1413.844199           0.155813  -0.514733   -0.595204     575
+   ridge_h21 1982.744341           0.289184  -0.304437   -0.564317     175
+      gbm_h1 1460.027415           0.160978  -0.623317   -0.273318     599
+      gbm_h5 1251.588655           0.088130  -0.625383   -0.513490     421
+     gbm_h21 1378.117834           0.143030  -0.531581   -0.486687     163
+      mlp_h1  808.763386          -0.207870  -0.953529   -0.416085     551
+      mlp_h5 3703.698921           0.623815  -0.047080   -0.307679     383
+     mlp_h21 3717.642792           0.842394  -0.100983   -0.149144     117
+    hold_spy 4089.208592           0.690003   0.000000   -0.337173       1
+equal_weight 3796.984756           0.669388  -0.199889   -0.360498    1703
+    momentum 2240.445343           0.350286  -0.301279   -0.311532      75
