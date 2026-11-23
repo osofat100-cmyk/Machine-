@@ -9,7 +9,7 @@ Research date: 2026-11-23. Unless a different date is given, every fact below wa
 ## 1. Broker APIs open to US retail for automated stock/ETF trading
 
 ### Takeaway
-Alpaca is the only broker found that gives a no-deposit, email-only paper-trading API with $0 commission, $1 fractional orders and 24/5 trading; its free data is IEX-only and its paper fills ignore fees, slippage, queue position and dividends. Every other option either needs a funded live account before paper trading (IBKR, Tradier), has no real paper API (Schwab, Public, Robinhood), or has a limited sandbox (tastytrade, E*TRADE, Webull), and the $25,000 pattern-day-trader minimum was abolished by rule in 2026 but is only gone at brokers that have implemented the change.
+Alpaca is the only broker found that gives a no-deposit, email-only paper-trading API with $0 commission, $1 fractional orders and 24/5 trading; its free data is IEX-only and its paper fills ignore fees, slippage, queue position and dividends. Every other option either needs a brokerage account before paper trading (IBKR, which must be funded first; Tradier, for account holders), shows no paper API in the sources found (Schwab, Public, Robinhood), or has a limited or disputed sandbox (tastytrade, E*TRADE, Webull), and the $25,000 pattern-day-trader minimum was abolished by rule in 2026 but is only gone at brokers that have implemented the change.
 
 ### Cited Findings
 
@@ -26,7 +26,7 @@ Alpaca is the only broker found that gives a no-deposit, email-only paper-tradin
 | Alpaca | $0 for self-directed API accounts; SEC/FINRA fees passed through | Yes, paper-only account with just an email, $100k default | Yes, from $1, 2,000+ symbols | Free: IEX real-time; $99/mo for all exchanges | 200 requests/min per account (live and paper) | Pre/post and overnight (24/5), limit orders only overnight |
 | Interactive Brokers (Pro) | Fixed $0.005/share, $1.00 minimum per order; Tiered $0.0005–$0.0035/share | Yes, but only after the live account is funded | Unclear/conflicting (see below) | Free non-consolidated Cboe One + IEX streaming; NBBO bundle $10/mo | 50 orders/second (TWS API) | Not researched |
 | Tradier | Lite $0/mo plan: $0.35 per stock trade; Pro $10/mo: $0 | Sandbox = paper account for account holders, delayed data, no streaming | Not found | Not found | Not found (docs page 404) | Not found |
-| Charles Schwab | Not confirmed from a primary page | No sandbox found; thinkorswim paperMoney is not exposed via API (secondary) | Not found | Quotes via API (details not confirmed) | 120 requests/min (unofficial wrapper docs) | Not found |
+| Charles Schwab | Not confirmed from a primary page | No sandbox found; thinkorswim paperMoney is not exposed via API (secondary) | Not found | Not confirmed | 120 requests/min (unofficial wrapper docs) | Not found |
 | tastytrade | $0 to open and close | Yes, sandbox resets every 24h; fills at quote mid | Fractional supported at $0 (pricing page; API support not confirmed) | Sandbox REST market data returns HTTP 502 | Not found | Not found |
 | Public.com | "Free to use" API; stock commission not stated in FAQ | None mentioned | Yes, $5 minimum, regular hours only | Quotes and bars; real-time status not stated | 10 requests/second per account | 4am–8pm ET and 24/5 session |
 | Webull | Not found | Sandbox with separate keys (third-party guide); QuantConnect says no paper via API | Yes for stocks | Level 1 US stock streaming free; more needs an OpenAPI subscription | 600 order requests per 60s | Extended hours and overnight session |
@@ -160,7 +160,7 @@ For small orders in large, liquid US stocks the all-in round-trip cost is a few 
   - S&P 500 stock: spread cost about 4.6 bps = $0.46; SEC fee on the $1,000 sale = $0.02; TAF $0 until Dec 31, 2026 (otherwise a fraction of a cent on a few shares). Total about $0.48, or 0.05%.
   - SPY/QQQ at quoted spreads of roughly 0.2–0.5 bps: about $0.02–$0.05 of spread plus $0.02 SEC fee, i.e. about 0.004–0.007%.
   - Smallest-third stocks: about $9.36 of spread, or 0.94%.
-  - A 1.4% round trip on $1,000 is $14.00. So the same trade is about 30 times cheaper in an S&P 500 stock, on the order of 200–300 times cheaper in SPY/QQQ, about 3 times cheaper in mid-sized non-index stocks (0.43%), and only about 1.5 times cheaper in the smallest stocks.
+  - A 1.4% round trip on $1,000 is $14.00. So the same trade is about 30 times cheaper in an S&P 500 stock, on the order of 200–300 times cheaper in SPY/QQQ, about 9 times cheaper in the largest third of non-index stocks (0.16%), about 3 times cheaper in the middle third (0.43%), and only about 1.5 times cheaper in the smallest third.
 - The spread is therefore not the binding cost for a small account in liquid names; per-order commissions (where charged), data subscriptions and hosting, which are fixed dollar amounts, weigh far more on $1,000. A $10/month fee is 1% of the account every month.
 - A strategy that only survives on paper because fills happen at the quote with no slippage will lose its edge live in small caps, where the real spread is 50–100+ bps.
 - Overnight and extended-hours spreads are wider than regular-session spreads, and Alpaca's routing earns no payment there; the figures above are regular-hours figures only.
