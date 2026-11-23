@@ -8,7 +8,7 @@ const { chromium } = require("playwright");
 const [assets, three, out, a4, a5] = process.argv.slice(2);
 const stills = a4 === "--stills" ? a5.split(",").map(Number) : null;
 const fps = stills ? 0 : Number(a4 || 30);
-const types = { ".html": "text/html", ".js": "text/javascript", ".glb": "model/gltf-binary", ".json": "application/json" };
+const types = { ".html": "text/html", ".js": "text/javascript", ".glb": "model/gltf-binary", ".json": "application/json", ".wrl": "model/vrml" };
 
 const server = http.createServer((req, res) => {
   const u = decodeURIComponent(req.url.split("?")[0]);

@@ -23,8 +23,9 @@
 import * as THREE from "three";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
+import { buildInternals } from "./internals.js";
 
-const W = 1920, H = 1080, T_END = 13.0;
+const W = 1920, H = 1080, T_END = 16.0;
 const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, preserveDrawingBuffer: true });
 renderer.setPixelRatio(1); renderer.setSize(W, H);
 renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.05;
@@ -107,11 +108,12 @@ const easeOut = x => (x <= 0 ? 0 : x >= 1 ? 1 : 1 - Math.pow(1 - x, 3));
 const lerp = (a, b, k) => a + (b - a) * k;
 // camera keys: time, azimuth (deg, around world Y, 0 = +Z), elevation (deg), distance, target y
 const keys = [
-  [0.0, -40, 42, 168, -6],
-  [4.6, -22, 38, 150, -5],
-  [8.0, 34, 15, 112, -4],
-  [10.3, 18, 30, 150, -8],
-  [13.0, 10, 32, 160, -9],
+  [0.0, -34, 56, 150, -6],
+  [4.9, -16, 52, 128, -4],
+  [8.8, -8, 38, 150, -5],
+  [11.8, 34, 15, 112, -4],
+  [13.8, 18, 30, 150, -8],
+  [16.0, 10, 32, 160, -9],
 ];
 function camAt(t) {
   let i = 0; while (i < keys.length - 2 && t > keys[i + 1][0]) i++;
@@ -124,23 +126,38 @@ function camAt(t) {
 }
 function cellAt(t) {
   // hover, then drop and settle into the pocket (seat at S z = 0, so the box centre ends at half the thickness)
-  const k = easeOut((t - 0.8) / 3.4);
-  const hover = 16 * (1 - k) + 0.6 * Math.sin(t * 2.2) * (1 - k);
+  cellPivot.visible = t >= 5.0;
+  const k = easeOut((t - 5.0) / 3.6);
+  const hover = 34 * (1 - k) + 0.6 * Math.sin(t * 2.2) * (1 - k);
   cellPivot.position.set(0, 0, CELL_T / 2 + hover);
   cellPivot.rotation.set(0.32 * (1 - k), -0.18 * (1 - k), 0.22 * (1 - k));
 }
 function overlays(t) {
-  document.getElementById("tag").style.opacity = String(ease((t - 0.3) / 0.8) * (1 - ease((t - 6.6) / 0.8)));
-  document.getElementById("end").style.opacity = String(ease((t - 10.3) / 0.9));
+  document.getElementById("tag").style.opacity = String(ease((t - 0.3) / 0.8) * (1 - ease((t - 9.4) / 0.8)));
+  document.getElementById("end").style.opacity = String(ease((t - 13.3) / 0.9));
 }
 window.renderAt = (t) => {
   camAt(t); cellAt(t); overlays(t);
-  scene.environmentRotation.y = -0.9 + 1.5 * ease((t - 3.8) / 5.5);   // light sweep across the glossy panel
+  if (inner) { dropAt(inner.speaker, t, 0.4, 1.6, 0.5); dropAt(inner.battery, t, 1.5, 1.8, -0.35); dropAt(inner.pcb, t, 2.9, 1.9, 0.3); }
+  scene.environmentRotation.y = -0.9 + 1.5 * ease((t - 6.6) / 5.5);   // light sweep across the glossy panel
   renderer.render(scene, camera);
   return true;
 };
+// inside parts drop in one after another (speaker, battery with its leads, board), then the panel covers them
+let inner = null;
+function dropAt(o, t, t0, dur, spin) {
+  o.visible = t >= t0;
+  const k = easeOut((t - t0) / dur);
+  o.position.copy(o.userData.final); o.position.z += 34 * (1 - k);
+  o.rotation.set(0, 0, spin * (1 - k));
+}
+async function loadInternals() {
+  const L = await (await fetch("/assets/vision_layout.json")).json();
+  inner = await buildInternals(L);
+  bud.add(inner.speaker, inner.battery, inner.pcb);
+}
 window.T_END = T_END;
-window.ready = Promise.all([...["cover", "base", "hook", "pod"].map(loadPart), loadCell()]).then(() => { window.renderAt(0); return true; });
+window.ready = Promise.all([...["cover", "base", "hook", "pod"].map(loadPart), loadCell(), loadInternals()]).then(() => { window.renderAt(0); return true; });
 </script>
 </body>
 </html>

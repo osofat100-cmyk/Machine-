@@ -342,7 +342,14 @@ Render-only. The face of the cover is built up around the cell (the earbud's own
 rounded edge) to 0.2 mm below the cell top, so the cell looks sunk in. The earbud gets no thicker
 (the cell top stays the highest point) and the inside is unchanged. The printable STLs from `shell_build.py` are not
 changed by this.
+
+Inside parts drop in before the cell (`data/vision_layout.json`, checked by `scripts/vision_layout_check.py`): the 10 mm
+dynamic driver (JBL spec) on the pod socket, the battery (FCC-photo look and size estimate) with its twisted red/black
+leads to the board, and the board with KiCad 3D models (U2 = the LTC4070EMS8E package, MS8E). Nothing pokes outside
+the earbud. Fit note for the printable shell: at battery height the seal ledge leaves only about 7 mm of width, so the
+9 mm battery needs that ledge moved (measure the real parts first).
 ```
+python3 scripts/vision_layout_check.py
 python3 scripts/vision_assets.py <assets dir>                       # meshes (JBL-derived: keep out of git)
 npm install three@0.170.0                                           # in any folder
 node scripts/vision_video/render.js <assets dir> <node_modules/three> out.mp4 30

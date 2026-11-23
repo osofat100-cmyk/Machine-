@@ -1,0 +1,231 @@
+{
+ "_note": "Inside parts for the vision video, seat frame S (mm, Z out of the face, cell seat at Z = 0). Sizes: battery/PCB = FCC photo estimates (components.json), speaker = JBL spec (10 mm dynamic driver), chips = KiCad 3D models. Checked against the shell by vision_layout_check.py.",
+ "window": {
+  "inner": [
+   27.3,
+   11.1
+  ],
+  "slab_z": [
+   -0.84,
+   0.0
+  ]
+ },
+ "battery": {
+  "size": [
+   25.0,
+   9.0,
+   3.25
+  ],
+  "centre": [
+   -5.3,
+   0.1,
+   -5.42
+  ],
+  "corner_r": 1.0,
+  "terminal_len": 3.5,
+  "terminal_end": -1
+ },
+ "pcb": {
+  "size": [
+   23.0,
+   9.5,
+   1.0
+  ],
+  "centre": [
+   4.5,
+   -0.2,
+   -3.2
+  ],
+  "corner_r": 1.0
+ },
+ "speaker": {
+  "d": 10.0,
+  "h": 3.0,
+  "centre": [
+   12.35,
+   -0.23,
+   -7.15
+  ]
+ },
+ "parts": [
+  {
+   "ref": "U1",
+   "model": "QFN-40-1EP_5x5mm_P0.4mm_EP3.6x3.6mm",
+   "xy": [
+    4.0,
+    -0.2
+   ],
+   "rot": 0
+  },
+  {
+   "ref": "U2",
+   "model": "MSOP-8-1EP_3x3mm_P0.65mm_EP1.68x1.88mm",
+   "xy": [
+    -1.6,
+    -0.2
+   ],
+   "rot": 90,
+   "label": "LTC4070"
+  },
+  {
+   "ref": "U3",
+   "model": "WSON-8-1EP_2x2mm_P0.5mm_EP0.9x1.6mm",
+   "xy": [
+    8.8,
+    2.0
+   ],
+   "rot": 0
+  },
+  {
+   "ref": "Y1",
+   "model": "Crystal_SMD_2520-4Pin_2.5x2.0mm",
+   "xy": [
+    8.8,
+    -2.0
+   ],
+   "rot": 0
+  },
+  {
+   "ref": "L1",
+   "model": "L_0805_2012Metric",
+   "xy": [
+    11.6,
+    2.4
+   ],
+   "rot": 90
+  },
+  {
+   "ref": "C1",
+   "model": "C_0603_1608Metric",
+   "xy": [
+    11.4,
+    -1.2
+   ],
+   "rot": 90
+  },
+  {
+   "ref": "C2",
+   "model": "C_0603_1608Metric",
+   "xy": [
+    12.8,
+    -1.2
+   ],
+   "rot": 90
+  },
+  {
+   "ref": "C3",
+   "model": "C_0402_1005Metric",
+   "xy": [
+    1.6,
+    3.7
+   ],
+   "rot": 0
+  },
+  {
+   "ref": "C4",
+   "model": "C_0402_1005Metric",
+   "xy": [
+    3.0,
+    3.7
+   ],
+   "rot": 0
+  },
+  {
+   "ref": "C5",
+   "model": "C_0402_1005Metric",
+   "xy": [
+    4.4,
+    3.7
+   ],
+   "rot": 0
+  },
+  {
+   "ref": "C6",
+   "model": "C_0402_1005Metric",
+   "xy": [
+    5.799999999999999,
+    3.7
+   ],
+   "rot": 0
+  },
+  {
+   "ref": "R1",
+   "model": "R_0402_1005Metric",
+   "xy": [
+    1.6,
+    -4.1
+   ],
+   "rot": 0
+  },
+  {
+   "ref": "R2",
+   "model": "R_0402_1005Metric",
+   "xy": [
+    3.0,
+    -4.1
+   ],
+   "rot": 0
+  },
+  {
+   "ref": "R3",
+   "model": "R_0402_1005Metric",
+   "xy": [
+    4.4,
+    -4.1
+   ],
+   "rot": 0
+  },
+  {
+   "ref": "C7",
+   "model": "C_0402_1005Metric",
+   "xy": [
+    5.799999999999999,
+    -4.1
+   ],
+   "rot": 0
+  },
+  {
+   "ref": "D1",
+   "model": "LED_0402_1005Metric",
+   "xy": [
+    11.9,
+    -4.3
+   ],
+   "rot": 0
+  }
+ ],
+ "pads": {
+  "bat_plus": [
+   -5.9,
+   2.2
+  ],
+  "bat_minus": [
+   -5.9,
+   -2.6
+  ],
+  "spk_plus": [
+   14.8,
+   1.4
+  ],
+  "spk_minus": [
+   14.8,
+   -1.8
+  ]
+ },
+ "kicad": {
+  "base": "https://gitlab.com/kicad/libraries/kicad-packages3D/-/raw/8.0.0",
+  "files": {
+   "MSOP-8-1EP_3x3mm_P0.65mm_EP1.68x1.88mm": "Package_SO.3dshapes",
+   "QFN-40-1EP_5x5mm_P0.4mm_EP3.6x3.6mm": "Package_DFN_QFN.3dshapes",
+   "WSON-8-1EP_2x2mm_P0.5mm_EP0.9x1.6mm": "Package_SON.3dshapes",
+   "Crystal_SMD_2520-4Pin_2.5x2.0mm": "Crystal.3dshapes",
+   "L_0805_2012Metric": "Inductor_SMD.3dshapes",
+   "C_0603_1608Metric": "Capacitor_SMD.3dshapes",
+   "C_0402_1005Metric": "Capacitor_SMD.3dshapes",
+   "R_0402_1005Metric": "Resistor_SMD.3dshapes",
+   "LED_0402_1005Metric": "LED_SMD.3dshapes"
+  },
+  "units_mm": 2.54,
+  "note": "KiCad 8.0.0 3D library (CC-BY-SA 4.0 with exception); U2 = Linear/ADI MS8E (DWG 05-08-1662), the LTC4070EMS8E package"
+ }
+}

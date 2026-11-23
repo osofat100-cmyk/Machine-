@@ -60,7 +60,11 @@ added = (phi_new <= 0) & ~env[sl]
 
 pocket = (np.abs(X) <= CELL[0] / 2 + POCKET_CLR) & (np.abs(Y) <= CELL[1] / 2 + POCKET_CLR) & (Z >= 0.0)
 well = ((X - SCREW["xy"][0]) ** 2 + (Y - SCREW["xy"][1]) ** 2 <= SCREW["r"] ** 2) & (Z >= SCREW["z0"])
-cs = cover[sl] | added
+# the cell is drawn smaller than the printable shell's window: close the window down to the new cell minus the lip
+LAY = json.load(open(os.path.join(HERE, "..", "data", "vision_layout.json")))
+wx, wy = LAY["window"]["inner"]; z0, z1 = LAY["window"]["slab_z"]
+lip = (Z >= z0) & (Z < z1) & (np.abs(X) <= 17.0) & (np.abs(Y) <= 8.0) & ~((np.abs(X) <= wx / 2) & (np.abs(Y) <= wy / 2)) & env[sl]
+cs = cover[sl] | added | lip
 cs &= ~pocket
 cs[well & added] = False
 cover[sl] = cs
@@ -114,4 +118,13 @@ info = dict(cell_mm=np.round(CELL, 3).tolist(), visual_scale=VISUAL_SCALE, cell_
             triangles={k: len(m.faces) for k, m in parts.items()},
             bounds={k: np.round(m.bounds, 2).tolist() for k, m in parts.items()})
 json.dump(info, open(os.path.join(OUT, "vision_assets.json"), "w"), indent=1)
+json.dump(LAY, open(os.path.join(OUT, "vision_layout.json"), "w"), indent=1)
+# KiCad 3D models of the board parts (downloaded, not committed)
+import urllib.request
+kd = os.path.join(OUT, "kicad"); os.makedirs(kd, exist_ok=True)
+for name, lib in LAY["kicad"]["files"].items():
+    f = os.path.join(kd, name + ".wrl")
+    if not os.path.exists(f):
+        urllib.request.urlretrieve(f"{LAY['kicad']['base']}/{lib}/{name}.wrl", f)
+    assert open(f, "rb").read(20).startswith(b"#VRML"), f
 print(json.dumps(info, indent=1))
