@@ -12,6 +12,7 @@ Everything lives under data/sealed/ (git-ignored). Only day_server.py reads it; 
 """
 import json
 import os
+import sys
 import time
 import xml.etree.ElementTree as ET
 from datetime import date, timedelta
@@ -123,7 +124,10 @@ def sec():
 
 def news():
     os.makedirs(os.path.join(OUT, "news"), exist_ok=True)
+    only = [a for a in sys.argv[1:] if a in NEWS_QUERIES] or list(NEWS_QUERIES)
     for name, (q, step) in NEWS_QUERIES.items():
+        if name not in only:
+            continue
         path = os.path.join(OUT, "news", f"{name}.jsonl")
         done = set()
         if os.path.exists(path):
@@ -154,6 +158,7 @@ def news():
 
 if __name__ == "__main__":
     os.makedirs(OUT, exist_ok=True)
-    prices()
-    sec()
+    if len(sys.argv) == 1:
+        prices()
+        sec()
     news()
