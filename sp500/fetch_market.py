@@ -72,9 +72,12 @@ def bars(symbol):
         now, frames, p2 = int(time.time()), [], int(time.time())
         while p2 > now - int(29.5 * 86400):
             p1 = max(p2 - 6 * 86400, now - int(29.5 * 86400))
-            frames.append(get(f"https://query2.finance.yahoo.com/v8/finance/chart/{quote(symbol)}",
-                              params={"period1": p1, "period2": p2, "interval": "1m",
-                                      "includePrePost": "false"}).json()["chart"]["result"])
+            try:
+                frames.append(get(f"https://query2.finance.yahoo.com/v8/finance/chart/{quote(symbol)}",
+                                  params={"period1": p1, "period2": p2, "interval": "1m",
+                                          "includePrePost": "false"}).json()["chart"]["result"])
+            except RuntimeError:
+                pass                           # no data for this window (e.g. before the stock was listed)
             p2 = p1
         js = [j[0] for j in frames if j and j[0].get("timestamp")]
     else:
