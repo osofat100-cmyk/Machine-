@@ -25,7 +25,7 @@ import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
 import { buildInternals, buildPanel } from "./internals.js";
 
-const W = 1920, H = 1080, T_END = 18.0;
+const W = 1920, H = 1080, T_END = 20.6;
 const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, preserveDrawingBuffer: true });
 renderer.setPixelRatio(1); renderer.setSize(W, H);
 renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.12;
@@ -101,17 +101,20 @@ const prog = (t, t0, t1) => clamp01((t - t0) / (t1 - t0));
 const keys = [   // time, azimuth (deg, around world Y, 0 = +Z), elevation (deg), distance, target y
   [0.0, -30, 60, 150, -6],
   [6.0, -16, 55, 128, -4],
-  [9.2, -8, 34, 150, -5],
+  [7.3, -22, 63, 100, -4],          // close look: the LTC4070 plugging into the battery inputs
+  [8.8, -14, 57, 118, -4],
+  [12.0, -8, 34, 150, -5],
 ];
-const ORBIT = [9.4, 16.0];
+const ORBIT = [12.2, 18.8];
 function camAt(t) {
   let az, el, d, ty;
-  if (t <= keys[2][0]) {
+  const last = keys[keys.length - 1];
+  if (t <= last[0]) {
     let i = 0; while (i < keys.length - 2 && t > keys[i + 1][0]) i++;
     const a = keys[i], b = keys[i + 1], k = ease((t - a[0]) / (b[0] - a[0]));
     [az, el, d, ty] = [1, 2, 3, 4].map(j => lerp(a[j], b[j], k));
   } else if (t <= ORBIT[0]) {
-    [az, el, d, ty] = [-8, 34, 150, -5];
+    [az, el, d, ty] = last.slice(1);
   } else {
     const u = ease(prog(t, ORBIT[0], ORBIT[1]));
     az = -8 + 360 * u;
@@ -139,6 +142,8 @@ function place(o, t, steps) {
   o.position.copy(o.userData.final).add(new THREE.Vector3(...off));
   return off;
 }
+const LTC_T = { in: 6.1, hover: 7.1, plug: 7.6, down: 8.4 }, LTC_H = 5.0;
+const PAN_T = { in: 8.4, hover: 10.2, plug: 10.7, down: 11.8 }, PAN_H = 7.0;
 function internalsAt(t) {
   // speaker: down through the window left of its spot, over the floor step, slide right, drop into the socket
   place(inner.speaker, t, [[0.3, 0.3, -3.95, 0, 36], [0, 1.7, -3.95, 0, 1.45], [0, 2.2, 0, 0, 1.45], [0, 2.45, 0, 0, 0]]);
@@ -146,7 +151,7 @@ function internalsAt(t) {
   const bo = place(inner.battery, t, [[1.9, 1.9, 4.3, 0, 36], [0, 3.1, 4.3, 0, 1.7], [0, 3.7, 0, 0, 1.7], [0, 4.0, 0, 0, 0]]);
   // board: down left of its spot, slide right under the edge, settle onto its supports
   const po = place(inner.pcb, t, [[4.0, 4.0, -2.5, 0, 36], [0, 5.1, -2.5, 0, 0.5], [0, 5.6, 0, 0, 0.5], [0, 5.9, 0, 0, 0]]);
-  // leads: dragged up while the battery drops, swing, then bend over and slide into the board's pad holes
+  // leads: dragged up while the battery drops, swing, then bend over (split around the LTC's spot) into the pad holes
   const fall = 1 - easeOut(prog(t, 1.9, 3.1));
   const swing = Math.sin(t * 5.5) * 0.9 * Math.exp(-Math.max(0, t - 3.1) * 1.2) * (t > 1.9 ? 1 : 0);
   const blend = ease(prog(t, 4.9, 5.9));
@@ -154,31 +159,98 @@ function internalsAt(t) {
   inner.updateLeads({ batOff: bo, pcbOff: po, blend, lift: 4 * fall, sway: swing * (1 - blend) });
   const s = ease(prog(t, 5.85, 6.15));
   for (const b of inner.pcb.userData.solder) { b.visible = s > 0.01; b.scale.set(s, s, 0.45 * s); }
+  // LTC4070: floats in above its spot, its VCC/GND wires drop into B+ / B-, then it slides down onto the battery
+  const lh = t < LTC_T.hover ? lerp(30, LTC_H, easeOut(prog(t, LTC_T.in, LTC_T.hover))) : LTC_H * (1 - ease(prog(t, LTC_T.plug, LTC_T.down)));
+  inner.ltc.visible = inner.ltcWires.visible = t >= LTC_T.in;
+  inner.ltc.position.copy(inner.ltc.userData.final).add(new THREE.Vector3(0, 0, lh));
+  const lu = prog(t, LTC_T.plug, LTC_T.down);
+  inner.updateLTC({ h: lh, c: ease(prog(t, LTC_T.hover, LTC_T.plug)), fold: Math.sin(Math.PI * lu) });
 }
+let panelHover = 36;
 function cellAt(t) {
-  // the panel comes in tilted, levels out well above the pocket, then sinks straight in (pocket = panel + 0.05 mm)
-  cellPivot.visible = t >= 5.9 && !window.NO_PANEL;   // NO_PANEL: still frames of the inside only
-  const k = easeOut(prog(t, 5.9, 9.0));
-  const hover = 36 * (1 - k);
-  const tilt = ease((hover - 5) / 14);
+  // the panel comes in tilted and levels out above the pocket; its wires drop into B+ / B-; it sinks straight in
+  // (pocket = panel + 0.05 mm) while the wires fold under it
+  cellPivot.visible = t >= PAN_T.in && !window.NO_PANEL;   // NO_PANEL: still frames of the inside only
+  const hover = t < PAN_T.hover ? lerp(36, PAN_H, easeOut(prog(t, PAN_T.in, PAN_T.hover))) : PAN_H * (1 - ease(prog(t, PAN_T.plug, PAN_T.down)));
+  const tilt = ease((hover - 9) / 14);
+  panelHover = hover;
   cellPivot.position.set(0, 0, CELL_T / 2 + hover);
   cellPivot.rotation.set(0.32 * tilt, -0.18 * tilt, 0.22 * tilt);
+  if (inner) {
+    inner.panelWires.visible = cellPivot.visible;
+    // carried under the panel until it is level (tilt is ~0 below 9 mm), then plugged and folded
+    const pu = prog(t, PAN_T.plug, PAN_T.down);
+    cellPivot.updateMatrix();
+    const carry = p => new THREE.Vector3(p[0], p[1], p[2] - CELL_T / 2).applyMatrix4(cellPivot.matrix).toArray();
+    inner.updatePanelWires({ carry, c: ease(prog(t, PAN_T.hover, PAN_T.plug)), fold: Math.sin(Math.PI * pu) });
+  }
 }
 function overlays(t) {
-  document.getElementById("tag").style.opacity = String(ease((t - 0.3) / 0.8) * (1 - ease((t - 9.4) / 0.8)));
-  document.getElementById("end").style.opacity = String(ease((t - 16.0) / 0.9));
+  document.getElementById("tag").style.opacity = String(ease((t - 0.3) / 0.8) * (1 - ease((t - 12.0) / 0.8)));
+  document.getElementById("end").style.opacity = String(ease((t - 18.8) / 0.9));
 }
-window.renderAt = (t) => {
-  camAt(t); cellAt(t); overlays(t);
-  if (inner) internalsAt(t);
-  scene.environmentRotation.y = -0.9 + 1.5 * ease((t - 6.6) / 5.5);   // light sweep across the glossy panel
-  renderer.render(scene, camera);
+window.renderAt = (t, noDraw) => {
+  camAt(t); if (inner) internalsAt(t); cellAt(t); overlays(t);
+  scene.environmentRotation.y = -0.9 + 1.5 * ease((t - 9.0) / 5.5);   // light sweep across the glossy panel
+  if (!noDraw) renderer.render(scene, camera);
   return true;
+};
+
+// ---- fit check: every wire against every part / the shell opening, and every wire against every other wire ----
+window.clearance = (t) => {
+  window.renderAt(t, true);
+  scene.updateMatrixWorld(true);
+  const W2 = v => bud.localToWorld(new THREE.Vector3(...v));
+  const boxes = [];
+  const addBox = (name, obj) => { if (obj.visible !== false) boxes.push([name, new THREE.Box3().setFromObject(obj)]); };
+  addBox("battery", inner.battery.children[0]); addBox("pcb", inner.pcb.children[0]); addBox("speaker", inner.speaker);
+  inner.pcb.children.slice(1).forEach((o, i) => { if (!o.isMesh || o.geometry.type !== "SphereGeometry") addBox("part" + i, o); });
+  if (inner.ltc.visible) addBox("LTC4070", inner.ltcChip);
+  const panel = cellPivot.visible ? cellPivot.children[0] : null;      // tilted: test in its own frame
+  const panelBox = panel ? (panel.geometry.computeBoundingBox(), panel.geometry.boundingBox.clone()) : null;
+  const panelInv = panel ? panel.matrixWorld.clone().invert() : null;
+  const ltcOff = inner.ltc.position.clone().sub(inner.ltc.userData.final);
+  const wires = Object.entries(inner.wires).filter(([, m]) => m.parent.visible && m.userData.pts.length)
+    .map(([n, m]) => [n, m.userData.pts.map(W2), m.userData.radius, m.userData.pts]);
+  if (inner.ltc.visible) wires.push(["NTC link", inner.ntc.userData.pts.map(p => W2([p[0] + ltcOff.x, p[1] + ltcOff.y, p[2] + ltcOff.z])), 0.09,
+    inner.ntc.userData.pts.map(p => [p[0] + ltcOff.x, p[1] + ltcOff.y, p[2] + ltcOff.z])]);
+  const P = inner.padsS, joints = [P.BP, P.BM, P.p8.map((v, i) => v + [ltcOff.x, ltcOff.y, ltcOff.z][i]), P.p5.map((v, i) => v + [ltcOff.x, ltcOff.y, ltcOff.z][i]),
+    P.p2 || [0, 0, 99]].map(W2);
+  const nearJoint = (p, r) => joints.some(j => j.distanceTo(p) < r);
+  const res = { t, worst: [] };
+  const own = { leadRed: ["battery"], leadBlack: ["battery"], ltcVCC: ["LTC4070"], ltcGND: ["LTC4070"], "NTC link": ["LTC4070"] };
+  for (const [n, pts, r, sp] of wires) {
+    let best = [1e9, ""];
+    pts.forEach((p, i) => {
+      if (i < 2 || i > pts.length - 3) return;                      // the solder ends
+      if (nearJoint(p, 0.6)) return;
+      if (panel) { const c = panelBox.distanceToPoint(p.clone().applyMatrix4(panelInv)) - r;
+        if (!(n.startsWith("panel") && i < 4) && c < best[0]) best = [c, "panel", sp[i]]; }
+      for (const [bn, b] of boxes) {
+        if ((own[n] || []).includes(bn) && (i < pts.length * 0.15)) continue;   // leaving its own part
+        const c = b.distanceToPoint(p) - r; if (c < best[0]) best = [c, bn, sp[i]];
+      }
+      const s = sp[i];                                                // shell: the lip around the window, the side walls
+      if (s[2] > -0.86 && s[2] < 0 && (Math.abs(s[0]) > 13.65 || Math.abs(s[1]) > 5.55)) best = [Math.min(best[0], -0.01), "cover lip"];
+      if (s[2] < -0.9 && Math.abs(s[1]) > 6.9) best = [Math.min(best[0], -0.01), "side wall"];
+    });
+    res[n] = { min: +best[0].toFixed(3), vs: best[1], at: best[2] && best[2].map(v => +v.toFixed(2)) };
+    if (best[0] < 0.05) res.worst.push(`${n} vs ${best[1]}: ${best[0].toFixed(3)}`);
+  }
+  for (let a = 0; a < wires.length; a++) for (let b = a + 1; b < wires.length; b++) {
+    let m = 1e9;
+    for (const p of wires[a][1]) { if (nearJoint(p, 1.0)) continue;
+      for (const q of wires[b][1]) { if (nearJoint(q, 1.0)) continue; const d = p.distanceTo(q) - wires[a][2] - wires[b][2]; if (d < m) m = d; } }
+    if ((wires[a][0].startsWith("lead") && wires[b][0].startsWith("lead"))) continue;   // the twisted pair touches by design
+    res[`${wires[a][0]} / ${wires[b][0]}`] = +m.toFixed(3);
+    if (m < 0.05) res.worst.push(`${wires[a][0]} / ${wires[b][0]}: ${m.toFixed(3)}`);
+  }
+  return res;
 };
 async function loadInternals() {
   const L = await (await fetch("/assets/vision_layout.json")).json();
   inner = await buildInternals(L);
-  bud.add(inner.speaker, inner.battery, inner.pcb, inner.leads);
+  bud.add(inner.speaker, inner.battery, inner.pcb, inner.leads, inner.ltc, inner.ltcWires, inner.panelWires);
 }
 window.T_END = T_END;
 window.ready = Promise.all([...["cover", "base", "hook", "pod", "stem"].map(loadPart), loadCell(), loadInternals()])

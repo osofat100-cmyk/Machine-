@@ -59,13 +59,12 @@
   },
   {
    "ref": "U2",
-   "model": "MSOP-8-1EP_3x3mm_P0.65mm_EP1.68x1.88mm",
+   "model": "SOT-23-6",
    "xy": [
     -1.6,
     -0.2
    ],
-   "rot": 90,
-   "label": "LTC4070"
+   "rot": 90
   },
   {
    "ref": "U3",
@@ -223,9 +222,50 @@
    "C_0603_1608Metric": "Capacitor_SMD.3dshapes",
    "C_0402_1005Metric": "Capacitor_SMD.3dshapes",
    "R_0402_1005Metric": "Resistor_SMD.3dshapes",
-   "LED_0402_1005Metric": "LED_SMD.3dshapes"
+   "LED_0402_1005Metric": "LED_SMD.3dshapes",
+   "SOT-23-6": "Package_TO_SOT_SMD.3dshapes"
   },
   "units_mm": 2.54,
-  "note": "KiCad 8.0.0 3D library (CC-BY-SA 4.0 with exception); U2 = Linear/ADI MS8E (DWG 05-08-1662), the LTC4070EMS8E package"
+  "note": "KiCad 8.0.0 3D library (CC-BY-SA 4.0 with exception); LTC4070EMS8E = Linear/ADI MS8E package (DWG 05-08-1662)"
+ },
+ "ltc": {
+  "model": "MSOP-8-1EP_3x3mm_P0.65mm_EP1.68x1.88mm",
+  "centre_xy": [
+   -10.2,
+   0.1
+  ],
+  "rot": 0,
+  "on": "battery top",
+  "pins_mm": {
+   "1": [
+    -2.15,
+    0.975
+   ],
+   "2": [
+    -2.15,
+    0.325
+   ],
+   "5": [
+    2.15,
+    -0.975
+   ],
+   "8": [
+    2.15,
+    0.975
+   ]
+  },
+  "lead_tip_x": 2.45,
+  "wiring": "pin 8 VCC -> B+, pin 5 GND -> B-, pin 2 NTC -> pin 8, pins 1 3 4 6 7 open (ADJ open = 4.1 V)"
+ },
+ "panel_pads_xy": {
+  "plus": [
+   -12.15,
+   0.0
+  ],
+  "minus": [
+   12.15,
+   0.0
+  ],
+  "_note": "back pads of the drawn (90 %) cell, 3 mm (scaled) from each end; seen from above + is at -x"
  }
 }

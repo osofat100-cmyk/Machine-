@@ -1,13 +1,15 @@
 // Render the vision video: serves index.html + meshes + three.js locally, steps the timeline in headless
 // Chromium (WebGL via SwiftShader) and pipes the frames to ffmpeg (H.264, yuv420p).
 // Usage: node render.js <assets dir> <three.js package dir> <out.mp4> [fps=30]
+//        node render.js <assets dir> <three dir> x --check 7.0,8.0   (wire / part clearances)
 //        node render.js <assets dir> <three dir> <out dir> --stills 0,3,6,9,11.5   (CLEAN=1: no captions, NOPANEL=1: no panel)
 const http = require("http"), fs = require("fs"), path = require("path"), { spawn } = require("child_process");
 const { chromium } = require("playwright");
 
 const [assets, three, out, a4, a5] = process.argv.slice(2);
 const stills = a4 === "--stills" ? a5.split(",").map(Number) : null;
-const fps = stills ? 0 : Number(a4 || 30);
+const checks = a4 === "--check" ? a5.split(",").map(Number) : null;
+const fps = stills || checks ? 0 : Number(a4 || 30);
 const types = { ".html": "text/html", ".js": "text/javascript", ".glb": "model/gltf-binary", ".json": "application/json", ".wrl": "model/vrml" };
 
 const server = http.createServer((req, res) => {
@@ -33,7 +35,9 @@ const server = http.createServer((req, res) => {
   await page.evaluate(() => document.fonts.ready);
   const T = await page.evaluate(() => window.T_END);
 
-  if (stills) {
+  if (checks) {
+    for (const t of checks) console.log("CHECK", JSON.stringify(await page.evaluate(t => window.clearance(t), t)));
+  } else if (stills) {
     fs.mkdirSync(out, { recursive: true });
     for (const t of stills) {
       await page.evaluate(t => window.renderAt(t), t);

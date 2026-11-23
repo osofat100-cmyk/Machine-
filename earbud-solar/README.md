@@ -345,7 +345,10 @@ changed by this.
 
 Inside parts drop in before the cell (`data/vision_layout.json`, checked by `scripts/vision_layout_check.py`): the 10 mm
 dynamic driver (JBL spec) on the pod socket, the battery (FCC-photo look and size estimate) with its twisted red/black
-leads to the board, and the board with KiCad 3D models (U2 = the LTC4070EMS8E package, MS8E). Nothing pokes outside
+leads to the board's B+/B- pads, and the board with KiCad 3D models. Then the LTC4070EMS8E (KiCad MS8E model) plugs
+its VCC (pin 8) and GND (pin 5) wires into B+/B- and settles on the battery, NTC (pin 2) linked to pin 8, and the cell's
++/- wires plug into the same pads and fold under it (wiring as in the connection drawing). `window.clearance(t)` /
+`render.js --check` measures every wire against every part, the window lip and every other wire. Nothing pokes outside
 the earbud. Fit note for the printable shell: at battery height the seal ledge leaves only about 7 mm of width, so the
 9 mm battery needs that ledge moved (measure the real parts first).
 ```
