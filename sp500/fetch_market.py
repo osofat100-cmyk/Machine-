@@ -68,14 +68,25 @@ def bars(symbol):
     path = os.path.join(OUT, BARS, f"{symbol}.csv")
     if os.path.exists(path):
         return
-    j = get(f"https://query2.finance.yahoo.com/v8/finance/chart/{quote(symbol)}",
-            params={"range": "60d", "interval": INTERVAL, "includePrePost": "false"}).json()["chart"]["result"]
-    if not j or not j[0].get("timestamp"):
+    if INTERVAL == "1m":                       # Yahoo: 1-minute bars only for the last 30 days, at most ~7 days a call
+        now, frames, p2 = int(time.time()), [], int(time.time())
+        while p2 > now - int(29.5 * 86400):
+            p1 = max(p2 - 6 * 86400, now - int(29.5 * 86400))
+            frames.append(get(f"https://query2.finance.yahoo.com/v8/finance/chart/{quote(symbol)}",
+                              params={"period1": p1, "period2": p2, "interval": "1m",
+                                      "includePrePost": "false"}).json()["chart"]["result"])
+            p2 = p1
+        js = [j[0] for j in frames if j and j[0].get("timestamp")]
+    else:
+        j = get(f"https://query2.finance.yahoo.com/v8/finance/chart/{quote(symbol)}",
+                params={"range": "60d", "interval": INTERVAL, "includePrePost": "false"}).json()["chart"]["result"]
+        js = [j[0]] if j and j[0].get("timestamp") else []
+    if not js:
         print(f"  no bars for {symbol}")
         return
-    q = j[0]["indicators"]["quote"][0]
-    df = pd.DataFrame({"ts": j[0]["timestamp"], "open": q["open"], "high": q["high"], "low": q["low"],
-                       "close": q["close"], "volume": q["volume"]}).dropna(subset=["open", "close"])
+    df = pd.concat([pd.DataFrame({"ts": x["timestamp"], **{k: x["indicators"]["quote"][0][k] for k in
+                                                         ("open", "high", "low", "close", "volume")}}) for x in js])
+    df = df.drop_duplicates("ts").sort_values("ts").dropna(subset=["open", "close"])
     df["time"] = pd.to_datetime(df["ts"], unit="s", utc=True).dt.tz_convert("America/New_York").dt.strftime("%Y-%m-%d %H:%M")
     df = df[(df["time"].str[11:] >= "09:30") & (df["time"].str[11:] < "16:00")]
     df[["time", "open", "high", "low", "close", "volume"]].to_csv(path, index=False, float_format="%.4f")

@@ -42,8 +42,9 @@ def load():
             with open(p, newline="") as f:
                 series[s] = {r["time"]: r for r in csv.DictReader(f)}
     grid = sorted(series["SPY"])
-    pre = [t for t in grid if t < START]
-    grid = [t for t in grid if t >= START]
+    start = max(START, grid[0][:10] if STEP == 1 else START)   # 1-minute bars only exist for the last 30 days
+    pre = [t for t in grid if t < start]
+    grid = [t for t in grid if t >= start]
     steps, last = [], {}
     for s, rows in series.items():
         before = [t for t in pre if t in rows]
