@@ -1733,3 +1733,249 @@ time,decision,reason,note,position_before,news_shown,seconds,raw
 2026-11-02 12:21,HOLD,"Minor pullback, consolidating near recent lows",,1,0,0.58,"HOLD - Minor pullback, consolidating near recent lows"
 2026-11-02 12:22,SELL,Recent downward momentum suggests a pullback,,1,0,0.30,SELL - Recent downward momentum suggests a pullback
 2026-11-02 12:23,BUY,Recent upward momentum in short term,,0,0,0.32,BUY - Recent upward momentum in short term
+2026-11-02 12:24,HOLD,recent small upward movement is not strong enough to switch,,1,0,0.33,HOLD - recent small upward movement is not strong enough to switch
+2026-11-02 12:25,SELL,Recent downward momentum is strong,,1,0,0.25,SELL - Recent downward momentum is strong
+2026-11-02 12:26,HOLD,Slight downward momentum continues,,0,0,0.27,HOLD - Slight downward momentum continues
+2026-11-02 12:27,BUY,"Price is consolidating near recent lows, potential bounce",,0,0,0.49,"BUY - Price is consolidating near recent lows, potential bounce"
+2026-11-02 12:28,HOLD,Recent small upward move after slight downtrend,,1,0,0.29,HOLD - Recent small upward move after slight downtrend
+2026-11-02 12:29,HOLD,"Recent small upward move, but short-term trend is down",,1,0,0.33,"HOLD - Recent small upward move, but short-term trend is down"
+2026-11-02 12:30,SELL,Recent downward momentum is strong,,1,0,0.26,SELL - Recent downward momentum is strong
+2026-11-02 12:31,BUY,Slight upward momentum in last minute,,0,0,0.26,BUY - Slight upward momentum in last minute
+2026-11-02 12:32,HOLD,"Recent minor pullback, no strong trend signal",,1,0,0.29,"HOLD - Recent minor pullback, no strong trend signal"
+2026-11-02 12:33,SELL,Recent downward momentum is strong,,1,0,0.26,SELL - Recent downward momentum is strong
+2026-11-02 12:34,BUY,Slight upward momentum in last minute,,0,0,0.26,BUY - Slight upward momentum in last minute
+2026-11-02 12:35,HOLD,Recent small upward move after slight downtrend,,1,0,0.30,HOLD - Recent small upward move after slight downtrend
+2026-11-02 12:36,HOLD,recent small upward movement is not strong,,1,0,0.28,HOLD - recent small upward movement is not strong
+2026-11-02 12:37,HOLD,recent small upward movement is not strong,,1,0,0.28,HOLD - recent small upward movement is not strong
+2026-11-02 12:38,HOLD,Recent price action is consolidating near the entry point,,1,0,0.30,HOLD - Recent price action is consolidating near the entry point
+2026-11-02 12:39,HOLD,Recent minor consolidation near current price,,1,0,0.29,HOLD - Recent minor consolidation near current price
+2026-11-02 12:40,HOLD,recent small upward movement but longer term is down,,1,0,0.29,HOLD - recent small upward movement but longer term is down
+2026-11-02 12:41,HOLD,Recent price action is consolidating near the current level,,1,0,0.29,HOLD - Recent price action is consolidating near the current level
+2026-11-02 12:42,HOLD,Recent small upward movement is not strong enough to switch,,1,0,0.30,HOLD - Recent small upward movement is not strong enough to switch
+2026-11-02 12:43,HOLD,"Recent small fluctuations, no strong trend",,1,0,0.27,"HOLD - Recent small fluctuations, no strong trend"
+2026-11-02 12:44,HOLD,Recent price action is consolidating near the current level,,1,0,0.29,HOLD - Recent price action is consolidating near the current level
+2026-11-02 12:45,HOLD,"Recent small fluctuations, no strong trend.",,1,0,0.28,"HOLD - Recent small fluctuations, no strong trend."
+2026-11-02 12:46,HOLD,Recent small pullback after slight gains,,1,0,0.26,HOLD - Recent small pullback after slight gains
+2026-11-02 12:47,HOLD,Recent small upward move but longer term is down,,1,0,0.29,HOLD - Recent small upward move but longer term is down
+2026-11-02 12:48,HOLD,Recent small upward move but 60 min is down,,1,0,0.31,HOLD - Recent small upward move but 60 min is down
+2026-11-02 12:49,HOLD,"Recent small gains, but 60 min is down",,1,0,0.37,"HOLD - Recent small gains, but 60 min is down"
+2026-11-02 12:50,HOLD,Recent upward momentum slowing down,,1,0,0.25,HOLD - Recent upward momentum slowing down
+2026-11-02 12:51,HOLD,"Recent small upward drift, no strong momentum",,1,0,0.29,"HOLD - Recent small upward drift, no strong momentum"
+2026-11-02 12:52,HOLD,Recent small upward movement is not strong enough to switch,,1,0,0.30,HOLD - Recent small upward movement is not strong enough to switch
+2026-11-02 12:53,HOLD,Recent price action is consolidating near current level,,1,0,0.29,HOLD - Recent price action is consolidating near current level
+2026-11-02 12:54,HOLD,recent small fluctuations no strong trend,,1,0,0.28,HOLD - recent small fluctuations no strong trend
+2026-11-02 12:55,HOLD,Recent small consolidation after slight dip,,1,0,0.26,HOLD - Recent small consolidation after slight dip
+2026-11-02 12:56,HOLD,Recent small upward movement is not strong enough for a switch,,1,0,0.36,HOLD - Recent small upward movement is not strong enough for a switch
+2026-11-02 12:57,SELL,Recent downward momentum suggests a reversal,,1,0,0.29,SELL - Recent downward momentum suggests a reversal
+2026-11-02 12:58,HOLD,Recent small fluctuations no strong trend,,0,0,0.29,HOLD - Recent small fluctuations no strong trend
+2026-11-02 12:59,BUY,Recent upward momentum suggests a slight bounce,,0,0,0.28,BUY - Recent upward momentum suggests a slight bounce
+2026-11-02 13:00,SELL,Significant recent downward momentum,,1,0,0.28,SELL - Significant recent downward momentum
+2026-11-02 13:01,BUY,Slight upward momentum in recent bars,,0,0,0.28,BUY - Slight upward momentum in recent bars
+2026-11-02 13:02,HOLD,"Recent small upward move, but short-term trend is weak",,1,0,0.35,"HOLD - Recent small upward move, but short-term trend is weak"
+2026-11-02 13:03,HOLD,Recent small upward movement but short-term trend is down,,1,0,0.32,HOLD - Recent small upward movement but short-term trend is down
+2026-11-02 13:04,HOLD,Recent small upward move but longer term is down,,1,0,0.30,HOLD - Recent small upward move but longer term is down
+2026-11-02 13:05,HOLD,"Recent small upward movement, but short-term trend is flat",,1,0,0.33,"HOLD - Recent small upward movement, but short-term trend is flat"
+2026-11-02 13:06,HOLD,Recent price action is consolidating near the current level,,1,0,0.30,HOLD - Recent price action is consolidating near the current level
+2026-11-02 13:07,HOLD,"Recent small fluctuations, no strong trend yet",,1,0,0.29,"HOLD - Recent small fluctuations, no strong trend yet"
+2026-11-02 13:08,HOLD,"Recent small gains, but 60 min is down",,1,0,0.32,"HOLD - Recent small gains, but 60 min is down"
+2026-11-02 13:09,HOLD,Recent price action is consolidating near the current level,,1,0,0.30,HOLD - Recent price action is consolidating near the current level
+2026-11-02 13:10,HOLD,Price is consolidating near recent highs,,1,0,0.27,HOLD - Price is consolidating near recent highs
+2026-11-02 13:11,HOLD,Price is consolidating near recent highs,,1,0,0.27,HOLD - Price is consolidating near recent highs
+2026-11-02 13:12,HOLD,recent small consolidation near current price,,1,0,0.27,HOLD - recent small consolidation near current price
+2026-11-02 13:13,HOLD,Recent minor pullback after slight gains,,1,0,0.28,HOLD - Recent minor pullback after slight gains
+2026-11-02 13:14,HOLD,recent small pullback after slight gains,,1,0,0.27,HOLD - recent small pullback after slight gains
+2026-11-02 13:15,HOLD,Recent small consolidation after slight gains,,1,0,0.29,HOLD - Recent small consolidation after slight gains
+2026-11-02 13:16,HOLD,Recent small upward movement is consolidating,,1,0,0.27,HOLD - Recent small upward movement is consolidating
+2026-11-02 13:17,HOLD,recent small fluctuations no strong trend,,1,0,0.27,HOLD - recent small fluctuations no strong trend
+2026-11-02 13:18,HOLD,Recent small upward drift but 60m is down,,1,0,0.43,HOLD - Recent small upward drift but 60m is down
+2026-11-02 13:19,HOLD,recent small fluctuations no strong trend,,1,0,0.26,HOLD - recent small fluctuations no strong trend
+2026-11-02 13:20,HOLD,recent small upward movement but longer term is down,,1,0,0.30,HOLD - recent small upward movement but longer term is down
+2026-11-02 13:21,HOLD,Price is consolidating near recent levels,,1,0,0.26,HOLD - Price is consolidating near recent levels
+2026-11-02 13:22,HOLD,Price is consolidating near recent highs,,1,0,0.27,HOLD - Price is consolidating near recent highs
+2026-11-02 13:23,HOLD,recent price action is consolidating,,1,0,0.26,HOLD - recent price action is consolidating
+2026-11-02 13:24,HOLD,"Recent minor pullback, no strong trend signal",,1,0,0.29,"HOLD - Recent minor pullback, no strong trend signal"
+2026-11-02 13:25,HOLD,"Recent minor pullback, no strong trend signal",,1,0,0.29,"HOLD - Recent minor pullback, no strong trend signal"
+2026-11-02 13:26,HOLD,Recent small upward move but overall trend is down,,1,0,0.30,HOLD - Recent small upward move but overall trend is down
+2026-11-02 13:27,SELL,Recent downward momentum suggests a pullback,,1,0,0.27,SELL - Recent downward momentum suggests a pullback
+2026-11-02 13:28,HOLD,Price is consolidating in a tight range,,0,0,0.28,HOLD - Price is consolidating in a tight range
+2026-11-02 13:29,HOLD,"Recent small fluctuations, no strong trend.",,0,0,0.29,"HOLD - Recent small fluctuations, no strong trend."
+2026-11-02 13:30,HOLD,Price is consolidating near recent lows,,0,0,0.27,HOLD - Price is consolidating near recent lows
+2026-11-02 13:31,HOLD,Price is consolidating near recent lows,,0,0,0.27,HOLD - Price is consolidating near recent lows
+2026-11-02 13:32,HOLD,"Minor recent pullback, waiting for clearer trend",,0,0,0.29,"HOLD - Minor recent pullback, waiting for clearer trend"
+2026-11-02 13:33,HOLD,"Minor recent pullback, no strong trend signal",,0,0,0.29,"HOLD - Minor recent pullback, no strong trend signal"
+2026-11-02 13:34,HOLD,"Recent minor pullback, no strong trend signal",,0,0,0.29,"HOLD - Recent minor pullback, no strong trend signal"
+2026-11-02 13:35,BUY,Slight upward momentum in recent bars,,0,0,0.27,BUY - Slight upward momentum in recent bars
+2026-11-02 13:36,HOLD,Recent price action is consolidating near the entry point,,1,0,0.30,HOLD - Recent price action is consolidating near the entry point
+2026-11-02 13:37,HOLD,"Recent small upward move, but longer term is down",,1,0,0.31,"HOLD - Recent small upward move, but longer term is down"
+2026-11-02 13:38,HOLD,Recent small upward movement but longer term is down,,1,0,0.30,HOLD - Recent small upward movement but longer term is down
+2026-11-02 13:39,HOLD,"Recent small upward drift, but 60m is down",,1,0,0.34,"HOLD - Recent small upward drift, but 60m is down"
+2026-11-02 13:40,HOLD,Recent small consolidation in price,,1,0,0.26,HOLD - Recent small consolidation in price
+2026-11-02 13:41,HOLD,recent small fluctuations no strong trend,,1,0,0.26,HOLD - recent small fluctuations no strong trend
+2026-11-02 13:42,SELL,Recent downward momentum suggests a pullback,,1,0,0.32,SELL - Recent downward momentum suggests a pullback
+2026-11-02 13:43,BUY,Price is slightly recovering from recent lows,,0,0,0.28,BUY - Price is slightly recovering from recent lows
+2026-11-02 13:44,HOLD,Recent small upward move but short-term trend is down,,1,0,0.83,HOLD - Recent small upward move but short-term trend is down
+2026-11-02 13:45,HOLD,Recent small upward move but longer term is down,,1,0,0.30,HOLD - Recent small upward move but longer term is down
+2026-11-02 13:46,HOLD,recent small fluctuations no strong trend,,1,0,0.27,HOLD - recent small fluctuations no strong trend
+2026-11-02 13:47,HOLD,"Recent small upward move, but trend is down",,1,0,0.30,"HOLD - Recent small upward move, but trend is down"
+2026-11-02 13:48,HOLD,Recent small consolidation after slight dip,,1,0,0.30,HOLD - Recent small consolidation after slight dip
+2026-11-02 13:49,HOLD,Minor pullback after recent small gains,,1,0,0.27,HOLD - Minor pullback after recent small gains
+2026-11-02 13:50,HOLD,Recent small upward movement is not strong enough to switch,,1,0,0.31,HOLD - Recent small upward movement is not strong enough to switch
+2026-11-02 13:51,SELL,Recent downward momentum is strong,,1,0,0.26,SELL - Recent downward momentum is strong
+2026-11-02 13:52,HOLD,recent small fluctuations no strong trend,,0,0,0.27,HOLD - recent small fluctuations no strong trend
+2026-11-02 13:53,BUY,Recent upward momentum in last 15 mins,,0,0,0.70,BUY - Recent upward momentum in last 15 mins
+2026-11-02 13:54,HOLD,"recent small pullback, no strong trend signal",,1,0,0.29,"HOLD - recent small pullback, no strong trend signal"
+2026-11-02 13:55,HOLD,"Minor recent pullback, no strong trend signal",,1,0,0.28,"HOLD - Minor recent pullback, no strong trend signal"
+2026-11-02 13:56,SELL,Price is trending down recently,,1,0,0.27,SELL - Price is trending down recently
+2026-11-02 13:57,BUY,Recent upward momentum in short term,,0,0,0.27,BUY - Recent upward momentum in short term
+2026-11-02 13:58,SELL,Recent downtrend suggests reversal risk,,1,0,0.27,SELL - Recent downtrend suggests reversal risk
+2026-11-02 13:59,HOLD,Minor recent consolidation in price,,0,0,0.26,HOLD - Minor recent consolidation in price
+2026-11-02 14:00,BUY,Slight upward momentum in recent bars,,0,0,0.30,BUY - Slight upward momentum in recent bars
+2026-11-02 14:01,HOLD,Recent small consolidation near current price,,1,0,0.27,HOLD - Recent small consolidation near current price
+2026-11-02 14:02,HOLD,Price is consolidating near recent lows,,1,0,0.27,HOLD - Price is consolidating near recent lows
+2026-11-02 14:03,HOLD,recent minor pullback within range,,1,0,0.27,HOLD - recent minor pullback within range
+2026-11-02 14:04,HOLD,Recent small pullback within range,,1,0,0.26,HOLD - Recent small pullback within range
+2026-11-02 14:05,HOLD,Minor pullback after recent slight gains,,1,0,0.27,HOLD - Minor pullback after recent slight gains
+2026-11-02 14:06,HOLD,recent small fluctuations no strong trend,,1,0,0.30,HOLD - recent small fluctuations no strong trend
+2026-11-02 14:07,HOLD,recent small upward movement but longer term is down,,1,0,0.30,HOLD - recent small upward movement but longer term is down
+2026-11-02 14:08,HOLD,recent price action is consolidating,,1,0,0.31,HOLD - recent price action is consolidating
+2026-11-02 14:09,HOLD,Price is consolidating near recent lows,,1,0,0.34,HOLD - Price is consolidating near recent lows
+2026-11-02 14:10,HOLD,recent small fluctuations no strong trend,,1,0,0.29,HOLD - recent small fluctuations no strong trend
+2026-11-02 14:11,HOLD,Minor pullback in short term,,1,0,0.26,HOLD - Minor pullback in short term
+2026-11-02 14:12,SELL,Recent downtrend suggests reversal risk,,1,0,0.27,SELL - Recent downtrend suggests reversal risk
+2026-11-02 14:13,HOLD,Minor recent volatility no strong trend,,0,0,0.26,HOLD - Minor recent volatility no strong trend
+2026-11-02 14:14,BUY,Slight upward momentum in recent bars,,0,0,0.27,BUY - Slight upward momentum in recent bars
+2026-11-02 14:15,HOLD,Price is consolidating near recent lows,,1,0,0.27,HOLD - Price is consolidating near recent lows
+2026-11-02 14:16,HOLD,Price is consolidating near recent lows,,1,0,0.27,HOLD - Price is consolidating near recent lows
+2026-11-02 14:17,HOLD,recent price action is consolidating,,1,0,0.27,HOLD - recent price action is consolidating
+2026-11-02 14:18,HOLD,recent small pullback in consolidation,,1,0,0.32,HOLD - recent small pullback in consolidation
+2026-11-02 14:19,SELL,Recent downtrend suggests reversal risk,,1,0,0.27,SELL - Recent downtrend suggests reversal risk
+2026-11-02 14:20,HOLD,Minor recent consolidation in range,,0,0,0.26,HOLD - Minor recent consolidation in range
+2026-11-02 14:21,BUY,"Price is near today's low, potential bounce",,0,0,0.31,"BUY - Price is near today's low, potential bounce"
+2026-11-02 14:22,HOLD,Recent small fluctuations no strong trend,,1,0,0.27,HOLD - Recent small fluctuations no strong trend
+2026-11-02 14:23,HOLD,Recent price action is consolidating near the low,,1,0,0.33,HOLD - Recent price action is consolidating near the low
+2026-11-02 14:24,HOLD,Recent small fluctuations near recent low,,1,0,0.28,HOLD - Recent small fluctuations near recent low
+2026-11-02 14:25,SELL,Recent downtrend suggests reversal risk,,1,0,0.27,SELL - Recent downtrend suggests reversal risk
+2026-11-02 14:26,HOLD,Minor recent downward drift,,0,0,0.27,HOLD - Minor recent downward drift
+2026-11-02 14:27,BUY,Rebounding from recent lows,,0,0,0.28,BUY - Rebounding from recent lows
+2026-11-02 14:28,HOLD,Recent small upward move after downtrend,,1,0,0.30,HOLD - Recent small upward move after downtrend
+2026-11-02 14:29,HOLD,Recent small upward move but short-term trend is weak,,1,0,0.32,HOLD - Recent small upward move but short-term trend is weak
+2026-11-02 14:30,HOLD,Recent small pullback after slight gain,,1,0,0.27,HOLD - Recent small pullback after slight gain
+2026-11-02 14:31,HOLD,recent price action is consolidating,,1,0,0.26,HOLD - recent price action is consolidating
+2026-11-02 14:32,SELL,Recent downward momentum is strong,,1,0,0.26,SELL - Recent downward momentum is strong
+2026-11-02 14:33,HOLD,Recent price action is choppy and consolidating,,0,0,0.28,HOLD - Recent price action is choppy and consolidating
+2026-11-02 14:34,HOLD,Minor recent volatility no strong trend,,0,0,0.27,HOLD - Minor recent volatility no strong trend
+2026-11-02 14:35,HOLD,Sideways movement recently,,0,0,0.24,HOLD - Sideways movement recently
+2026-11-02 14:36,BUY,Recent upward momentum in last 15 mins,,0,0,0.62,BUY - Recent upward momentum in last 15 mins
+2026-11-02 14:37,SELL,Price is trending down recently,,1,0,0.25,SELL - Price is trending down recently
+2026-11-02 14:38,HOLD,No strong immediate trend visible,,0,0,0.26,HOLD - No strong immediate trend visible
+2026-11-02 14:39,HOLD,Price is consolidating near recent lows,,0,0,0.35,HOLD - Price is consolidating near recent lows
+2026-11-02 14:40,HOLD,Price is consolidating near recent lows,,0,0,0.26,HOLD - Price is consolidating near recent lows
+2026-11-02 14:41,BUY,Price is near today's low and showing slight upward momentum,,0,0,0.36,BUY - Price is near today's low and showing slight upward momentum
+2026-11-02 14:42,HOLD,"Recent small upward move, but overall trend is down",,1,0,0.30,"HOLD - Recent small upward move, but overall trend is down"
+2026-11-02 14:43,HOLD,"Recent minor pullback, no strong trend signal",,1,0,0.28,"HOLD - Recent minor pullback, no strong trend signal"
+2026-11-02 14:44,HOLD,recent small upward move but longer term is down,,1,0,0.32,HOLD - recent small upward move but longer term is down
+2026-11-02 14:45,HOLD,Price is consolidating near recent lows,,1,0,0.26,HOLD - Price is consolidating near recent lows
+2026-11-02 14:46,HOLD,Recent small upward movement is not strong enough to switch,,1,0,0.31,HOLD - Recent small upward movement is not strong enough to switch
+2026-11-02 14:47,SELL,Recent downtrend continues,,1,0,0.24,SELL - Recent downtrend continues
+2026-11-02 14:48,BUY,Price is near low and showing slight bounce,,0,0,0.28,BUY - Price is near low and showing slight bounce
+2026-11-02 14:49,SELL,Significant downward trend observed,,1,0,0.37,SELL - Significant downward trend observed
+2026-11-02 14:50,BUY,Recent price action is stabilizing near lows,,0,0,0.27,BUY - Recent price action is stabilizing near lows
+2026-11-02 14:51,HOLD,"Recent small upward move, but longer term is down",,1,0,0.31,"HOLD - Recent small upward move, but longer term is down"
+2026-11-02 14:52,HOLD,"Recent small gains, but 60 min trend is down",,1,0,0.34,"HOLD - Recent small gains, but 60 min trend is down"
+2026-11-02 14:53,HOLD,Recent small pullback after slight gains,,1,0,0.26,HOLD - Recent small pullback after slight gains
+2026-11-02 14:54,HOLD,Recent small upward movement but longer term is down,,1,0,0.29,HOLD - Recent small upward movement but longer term is down
+2026-11-02 14:55,HOLD,recent price action is consolidating,,1,0,0.26,HOLD - recent price action is consolidating
+2026-11-02 14:56,HOLD,Recent small upward movement but weak intraday trend,,1,0,0.34,HOLD - Recent small upward movement but weak intraday trend
+2026-11-02 14:57,HOLD,recent small upward movement after a larger intraday dip,,1,0,0.30,HOLD - recent small upward movement after a larger intraday dip
+2026-11-02 14:58,HOLD,"Recent small fluctuations, no strong trend yet",,1,0,0.28,"HOLD - Recent small fluctuations, no strong trend yet"
+2026-11-02 14:59,HOLD,Recent small upward movement but longer trends are down,,1,0,0.29,HOLD - Recent small upward movement but longer trends are down
+2026-11-02 15:00,HOLD,Recent minor pullback after slight gains,,1,0,0.26,HOLD - Recent minor pullback after slight gains
+2026-11-02 15:01,HOLD,Small recent pullback in a range,,1,0,0.26,HOLD - Small recent pullback in a range
+2026-11-02 15:02,SELL,Strong recent downtrend in hourly view,,1,0,0.62,SELL - Strong recent downtrend in hourly view
+2026-11-02 15:03,BUY,Short term upward momentum visible,,0,0,0.25,BUY - Short term upward momentum visible
+2026-11-02 15:04,HOLD,recent minor pullback after slight gains,,1,0,0.26,HOLD - recent minor pullback after slight gains
+2026-11-02 15:05,SELL,Short-term downtrend confirmed,,1,0,0.27,SELL - Short-term downtrend confirmed
+2026-11-02 15:06,BUY,Slight upward momentum in recent bars,,0,0,0.26,BUY - Slight upward momentum in recent bars
+2026-11-02 15:07,HOLD,Recent small consolidation after slight gains,,1,0,0.39,HOLD - Recent small consolidation after slight gains
+2026-11-02 15:08,HOLD,Recent small consolidation after dip,,1,0,0.26,HOLD - Recent small consolidation after dip
+2026-11-02 15:09,HOLD,Minor pullback after recent slight gains,,1,0,0.27,HOLD - Minor pullback after recent slight gains
+2026-11-02 15:10,HOLD,recent small fluctuations no strong trend,,1,0,0.27,HOLD - recent small fluctuations no strong trend
+2026-11-02 15:11,HOLD,Recent small pullback in short term,,1,0,0.26,HOLD - Recent small pullback in short term
+2026-11-02 15:12,SELL,Recent downtrend suggests reversal risk,,1,0,0.26,SELL - Recent downtrend suggests reversal risk
+2026-11-02 15:13,HOLD,Minor recent downward drift,,0,0,0.25,HOLD - Minor recent downward drift
+2026-11-02 15:14,HOLD,"Recent minor downward drift, no strong signal",,0,0,0.29,"HOLD - Recent minor downward drift, no strong signal"
+2026-11-02 15:15,HOLD,"Recent small fluctuations, no strong trend.",,0,0,0.28,"HOLD - Recent small fluctuations, no strong trend."
+2026-11-02 15:16,HOLD,Minor recent price fluctuation,,0,0,0.24,HOLD - Minor recent price fluctuation
+2026-11-02 15:17,HOLD,Minor recent downward drift,,0,0,0.24,HOLD - Minor recent downward drift
+2026-11-02 15:18,BUY,Slight upward momentum in recent bars,,0,0,0.26,BUY - Slight upward momentum in recent bars
+2026-11-02 15:19,HOLD,Price is consolidating near recent lows,,1,0,0.26,HOLD - Price is consolidating near recent lows
+2026-11-02 15:20,SELL,Recent downward momentum suggests a pullback,,1,0,0.26,SELL - Recent downward momentum suggests a pullback
+2026-11-02 15:21,HOLD,Minor recent downward drift,,0,0,0.24,HOLD - Minor recent downward drift
+2026-11-02 15:22,BUY,Price is consolidating near recent lows,,0,0,0.26,BUY - Price is consolidating near recent lows
+2026-11-02 15:23,HOLD,"Recent small upward move, but overall trend is down",,1,0,0.30,"HOLD - Recent small upward move, but overall trend is down"
+2026-11-02 15:24,HOLD,Short term consolidation after small gains,,1,0,0.27,HOLD - Short term consolidation after small gains
+2026-11-02 15:25,HOLD,Recent price action is consolidating near recent lows,,1,0,0.28,HOLD - Recent price action is consolidating near recent lows
+2026-11-02 15:26,HOLD,Recent price action is consolidating near the low,,1,0,0.28,HOLD - Recent price action is consolidating near the low
+2026-11-02 15:27,SELL,Price is trending down over longer periods,,1,0,0.27,SELL - Price is trending down over longer periods
+2026-11-02 15:28,BUY,Rebounding from recent lows,,0,0,0.25,BUY - Rebounding from recent lows
+2026-11-02 15:29,HOLD,Recent small upward move but overall downtrend persists,,1,0,0.29,HOLD - Recent small upward move but overall downtrend persists
+2026-11-02 15:30,SELL,Strong recent downtrend and low price relative to today's range,,1,0,0.33,SELL - Strong recent downtrend and low price relative to today's range
+2026-11-02 15:31,BUY,Price is stabilizing after a drop,,0,0,0.36,BUY - Price is stabilizing after a drop
+2026-11-02 15:32,SELL,Strong recent downtrend and momentum loss,,1,0,0.27,SELL - Strong recent downtrend and momentum loss
+2026-11-02 15:33,BUY,Rebounding from recent lows,,0,0,0.25,BUY - Rebounding from recent lows
+2026-11-02 15:34,HOLD,Price is consolidating after a drop,,1,0,0.26,HOLD - Price is consolidating after a drop
+2026-11-02 15:35,SELL,Price is trending down recently,,1,0,0.26,SELL - Price is trending down recently
+2026-11-02 15:36,BUY,Slight upward momentum in recent minutes,,0,0,0.29,BUY - Slight upward momentum in recent minutes
+2026-11-02 15:37,SELL,Recent downtrend suggests reversal risk,,1,0,0.27,SELL - Recent downtrend suggests reversal risk
+2026-11-02 15:38,BUY,"Price is near daily low, potential bounce",,0,0,0.28,"BUY - Price is near daily low, potential bounce"
+2026-11-02 15:39,SELL,Strong recent downtrend and negative momentum,,1,6,0.28,SELL - Strong recent downtrend and negative momentum
+2026-11-02 15:40,SELL,Strong intraday downtrend continues,,0,6,0.27,SELL - Strong intraday downtrend continues
+2026-11-02 15:41,SELL,Strong intraday downtrend continues,,0,6,0.27,SELL - Strong intraday downtrend continues
+2026-11-02 15:42,HOLD,recent price action is consolidating lower,,0,6,0.27,HOLD - recent price action is consolidating lower
+2026-11-02 15:43,SELL,Strong intraday downtrend continues,,0,6,0.27,SELL - Strong intraday downtrend continues
+2026-11-02 15:44,BUY,Rebounding after recent dips,,0,0,0.27,BUY - Rebounding after recent dips
+2026-11-02 15:45,SELL,Strong recent downward trend,,1,6,0.25,SELL - Strong recent downward trend
+2026-11-02 15:46,HOLD,recent price action is consolidating near the low end,,0,6,0.30,HOLD - recent price action is consolidating near the low end
+2026-11-02 15:47,SELL,Strong recent downward momentum,,0,6,0.25,SELL - Strong recent downward momentum
+2026-11-02 15:48,SELL,Strong intraday downtrend continues,,0,6,0.30,SELL - Strong intraday downtrend continues
+2026-11-02 15:49,SELL,Strong intraday downtrend continues,,0,6,0.27,SELL - Strong intraday downtrend continues
+2026-11-02 15:50,SELL,Strong recent downward momentum,,0,6,0.25,SELL - Strong recent downward momentum
+2026-11-02 15:51,HOLD,recent price action is choppy and down,,0,6,0.28,HOLD - recent price action is choppy and down
+2026-11-02 15:52,HOLD,recent price action is consolidating near the low,,0,6,0.31,HOLD - recent price action is consolidating near the low
+2026-11-02 15:53,HOLD,recent price action is consolidating near lows,,0,6,0.36,HOLD - recent price action is consolidating near lows
+2026-11-02 15:54,HOLD,recent price action is consolidating near the low,,0,6,0.32,HOLD - recent price action is consolidating near the low
+2026-11-02 15:55,HOLD,recent short-term decline suggests consolidation,,0,6,0.30,HOLD - recent short-term decline suggests consolidation
+2026-11-02 15:56,HOLD,recent price action is choppy and down overall,,0,6,0.29,HOLD - recent price action is choppy and down overall
+2026-11-02 15:57,HOLD,recent price action is choppy and down,,0,6,0.28,HOLD - recent price action is choppy and down
+2026-11-02 15:58,SELL,Strong short-term downtrend,,0,6,0.30,SELL - Strong short-term downtrend
+2026-11-02 15:59,HOLD,recent price action is consolidating,,0,6,0.26,HOLD - recent price action is consolidating
+2026-11-03 09:30,BUY,Strong recent upward momentum,,0,0,0.24,BUY - Strong recent upward momentum
+2026-11-03 09:31,HOLD,Recent price action is consolidating near the current level,,1,0,0.31,HOLD - Recent price action is consolidating near the current level
+2026-11-03 09:32,HOLD,recent small pullback after high,,1,0,0.25,HOLD - recent small pullback after high
+2026-11-03 09:33,HOLD,"Recent small gains, 60 min is down",,1,0,0.30,"HOLD - Recent small gains, 60 min is down"
+2026-11-03 09:34,SELL,Short term momentum is weak,,1,0,0.25,SELL - Short term momentum is weak
+2026-11-03 09:35,BUY,Strong recent upward momentum,,0,0,0.24,BUY - Strong recent upward momentum
+2026-11-03 09:36,HOLD,Recent price action is choppy near the current level,,1,0,0.29,HOLD - Recent price action is choppy near the current level
+2026-11-03 09:37,SELL,Short-term momentum is negative,,1,0,0.26,SELL - Short-term momentum is negative
+2026-11-03 09:38,BUY,Recent upward momentum in short term,,0,0,0.28,BUY - Recent upward momentum in short term
+2026-11-03 09:39,HOLD,recent upward momentum slowing down,,1,0,0.25,HOLD - recent upward momentum slowing down
+2026-11-03 09:40,HOLD,recent price action is consolidating near the high,,1,6,0.29,HOLD - recent price action is consolidating near the high
+2026-11-03 09:41,HOLD,recent price action is consolidating near highs,,1,6,0.28,HOLD - recent price action is consolidating near highs
+2026-11-03 09:42,HOLD,recent price action is consolidating near highs,,1,6,0.28,HOLD - recent price action is consolidating near highs
+2026-11-03 09:43,HOLD,recent price action is consolidating near highs,,1,6,0.28,HOLD - recent price action is consolidating near highs
+2026-11-03 09:44,HOLD,recent short-term volatility suggests consolidation,,1,6,0.28,HOLD - recent short-term volatility suggests consolidation
+2026-11-03 09:45,HOLD,Recent upward momentum slowing down,,1,0,0.25,HOLD - Recent upward momentum slowing down
+2026-11-03 09:46,HOLD,recent small pullback after recent highs,,1,0,0.28,HOLD - recent small pullback after recent highs
+2026-11-03 09:47,HOLD,Recent upward momentum is slowing down,,1,0,0.26,HOLD - Recent upward momentum is slowing down
+2026-11-03 09:48,HOLD,Recent price action is consolidating near highs,,1,0,0.28,HOLD - Recent price action is consolidating near highs
+2026-11-03 09:49,HOLD,recent upward momentum slowing down,,1,0,0.25,HOLD - recent upward momentum slowing down
+2026-11-03 09:50,HOLD,Recent upward momentum slowing down,,1,0,0.26,HOLD - Recent upward momentum slowing down
+2026-11-03 09:51,HOLD,Recent upward momentum slowing down,,1,0,2.77,HOLD - Recent upward momentum slowing down
+2026-11-03 09:52,HOLD,Recent consolidation after small gains,,1,0,0.26,HOLD - Recent consolidation after small gains
+2026-11-03 09:53,HOLD,Recent consolidation after small gains,,1,0,0.27,HOLD - Recent consolidation after small gains
+2026-11-03 09:54,HOLD,Recent price action is consolidating near recent highs,,1,0,0.29,HOLD - Recent price action is consolidating near recent highs
+2026-11-03 09:55,HOLD,recent small pullback after slight gains,,1,0,0.27,HOLD - recent small pullback after slight gains
+2026-11-03 09:56,HOLD,recent small upward movement,,1,0,0.25,HOLD - recent small upward movement
+2026-11-03 09:57,HOLD,recent minor pullback after slight gains,,1,0,0.27,HOLD - recent minor pullback after slight gains
+2026-11-03 09:58,HOLD,Slight pullback after recent gains,,1,0,0.27,HOLD - Slight pullback after recent gains
+2026-11-03 09:59,HOLD,Recent small pullback after slight gains,,1,0,0.30,HOLD - Recent small pullback after slight gains
