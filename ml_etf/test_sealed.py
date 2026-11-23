@@ -18,6 +18,7 @@ os.environ.setdefault("OPENBLAS_NUM_THREADS", "1")
 os.environ.setdefault("MKL_NUM_THREADS", "1")
 
 import json  # noqa: E402
+import pickle  # noqa: E402
 import subprocess  # noqa: E402
 import time  # noqa: E402
 from multiprocessing import Pool  # noqa: E402
@@ -165,13 +166,42 @@ def rehearsal():
     return {"chosen": chosen, "pbo_all_36": float("nan")}
 
 
+def checkpoint_dir():
+    """Saved stages live next to the sealed file (git-ignored, never published); the rehearsal keeps its own."""
+    d = OUT if SEALED_FILE else os.path.join(os.path.dirname(HERE), "data", "sealed", "checkpoints")
+    os.makedirs(d, exist_ok=True)
+    return d
+
+
+def saved(name, make):
+    """Load a finished stage from disk, or run it and save it at once, so a stop never loses finished work."""
+    path = os.path.join(checkpoint_dir(), name + ".pkl")
+    if os.path.exists(path):
+        with open(path, "rb") as f:
+            print(f"  loaded saved stage: {name}", flush=True)
+            return pickle.load(f)
+    out = make()
+    with open(path + ".tmp", "wb") as f:
+        pickle.dump(out, f)
+    os.replace(path + ".tmp", path)
+    print(f"  saved stage: {name}", flush=True)
+    return out
+
+
 def main():
     import sys
     locked = rehearsal() if "--rehearse" in sys.argv else locked_settings()
     print(f"output folder: {OUT}", flush=True)
     print("sealed test: locked settings " + ", ".join(f"{k}={v['label']}" for k, v in locked["chosen"].items()),
           flush=True)
-    p, s0, decisions, orders_log, served, accounts = walk(locked)
+    p, s0, decisions, orders_log, served, accounts = saved("walk", lambda: walk(locked))
+    # the account curves and every decision, written as plain files as soon as the walk is done
+    curves0 = pd.DataFrame({k: served[k] for k in served}, index=p["dates"][s0 + 1:])
+    curves0.index.name = "date"
+    curves0.to_csv(os.path.join(OUT, "sealed_curves.csv"), float_format="%.2f")
+    with open(os.path.join(OUT, "sealed_decisions.json"), "w") as f:
+        json.dump({k: [{"date": p["dates"][x["day"]], "day": int(x["day"]), "choice": int(x["choice"]),
+                        "f_tim": float(x["f_tim"])} for x in v] for k, v in decisions.items()}, f)
     T, n = p["O"].shape
     start = s0 + 1
     g = F.cash_growth(p["rate"])
@@ -192,8 +222,13 @@ def main():
     # ---- check: decisions made day by day equal decisions re-made on the finished panel (no look-ahead) ----
     end = T - 2
     jobs = [(p, c["kind"], c["setting"], c["h"], s0, end) for c in locked["chosen"].values()]
-    with Pool(4) as pool:
-        replays = pool.map(_replay, jobs)
+    todo = [(key, job) for key, job in zip(locked["chosen"], jobs)
+            if not os.path.exists(os.path.join(checkpoint_dir(), f"replay_{key}.pkl"))]
+    if todo:
+        with Pool(4) as pool:
+            for key, rep in zip([k for k, _ in todo], pool.imap(_replay, [j for _, j in todo])):
+                saved(f"replay_{key}", lambda: rep)
+    replays = [saved(f"replay_{key}", None) for key in locked["chosen"]]
     for key, rep in zip(locked["chosen"], replays):
         live = decisions[key]
         assert [x["day"] for x in live] == [x["day"] for x in rep], key
@@ -265,13 +300,17 @@ def main():
                         "selection_skill": np.mean([sel_r[x["day"]][x["choice"]] for x in inv]) if inv else np.nan})
             # coin flips: same decision days, same share invested
             pinv = row["invested_share"]
-            ends = np.empty(N_COIN)
             days = [x["day"] + 1 for x in dec]
-            for seed in range(N_COIN):
-                rng = np.random.default_rng(seed)
-                ch = [int(rng.integers(n)) if rng.random() < pinv else -1 for _ in days]
-                W = A.weights_from_choices(T, n, days, ch)
-                ends[seed] = A.run(p["O"], p["C"], g, W, start)[0][-1]
+
+            def coins():
+                ends = np.empty(N_COIN)
+                for seed in range(N_COIN):
+                    rng = np.random.default_rng(seed)
+                    ch = [int(rng.integers(n)) if rng.random() < pinv else -1 for _ in days]
+                    W = A.weights_from_choices(T, n, days, ch)
+                    ends[seed] = A.run(p["O"], p["C"], g, W, start)[0][-1]
+                return ends
+            ends = saved(f"coins_{k}", coins)
             coin_ends[k] = ends
             row["coin_p"] = (1 + np.sum(ends >= vals[-1])) / (1 + N_COIN)
             row["coin_median_$"] = float(np.median(ends))
