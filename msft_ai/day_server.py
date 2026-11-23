@@ -137,8 +137,9 @@ def main():
         def log_message(self, *args):
             pass
 
+    server = HTTPServer(("127.0.0.1", a.port), Handler)          # listening before it says ready
     print(f"ready {len(ex.days)} days on port {a.port}", flush=True)
-    HTTPServer(("127.0.0.1", a.port), Handler).serve_forever()
+    server.serve_forever()
 
 
 if __name__ == "__main__":

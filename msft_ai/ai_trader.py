@@ -7,10 +7,16 @@ After each close it sees only what day_server.py has handed out so far (prices, 
 gauges, Microsoft's SEC filings and results, headlines) and answers BUY, SELL or HOLD with a one-line reason. The order
 fills at the next open. Days of 2022-2023 are handed out first as background history; no decisions are made then.
 
-Every answer is appended to msft_ai/answers.csv (and the full prompt to data/msft_prompts.jsonl) the moment it is
-given. If the run stops, starting it again replays the saved answers without asking the AI again, then continues.
+The AI keeps no memory between days: its answer depends only on the day's information and on its position (cash or
+Microsoft). So the 35 months are cut into sections that run side by side (run_parallel.py); each section is run from
+both possible starting positions, and the real path is then joined up from the saved answers (--replay), giving exactly
+the answers one long run would.
 
-    python3 msft_ai/ai_trader.py
+Every answer is appended to msft_ai/answer_cache.csv (and the full prompt to data/msft_prompts.jsonl) the moment it
+is given, keyed by (date, position). Nothing is ever asked twice; a stopped run just continues.
+
+    python3 msft_ai/ai_trader.py --job 2024-01-02 2024-06-28 0 --threads 1    one section, starting in cash
+    python3 msft_ai/ai_trader.py --replay      join the real path -> msft_ai/answers.csv, msft_ai/values.csv
 """
 import csv
 import http.client
@@ -89,7 +95,7 @@ def ret(series, k):
     return pct(series[-1], series[-1 - k]) if len(series) > k else "n/a"
 
 
-def build_prompt(hist, position, value):
+def build_prompt(hist, position):
     """hist: list of served days, oldest first, the last one being today. Uses nothing else."""
     today = hist[-1]
     P = lambda key: [d["prices"][key] for d in hist if key in d["prices"]]   # noqa: E731
@@ -97,7 +103,7 @@ def build_prompt(hist, position, value):
     vol = P("MSFT_volume")
     d0 = date.fromisoformat(today["date"])
     L = [f"Date: {today['date']} ({d0.strftime('%A')}), after the close.",
-         f"Your position: {'all in MSFT' if position else 'all in cash'}. Account value: ${value:,.2f}.", "",
+         f"Your position: {'all in MSFT' if position else 'all in cash'}.", "",
          "MICROSOFT (MSFT)",
          f"Close ${m[-1]:.2f}; change: 1 day {ret(m, 1)}, 1 week {ret(m, 5)}, 1 month {ret(m, 21)}, "
          f"3 months {ret(m, 63)}, 1 year {ret(m, 252)}",
@@ -149,54 +155,67 @@ def build_prompt(hist, position, value):
 
 # ------------------------------------------------------------------------------------------------ main
 
-def load_saved():
-    if not os.path.exists(ANSWERS):
-        return {}
-    with open(ANSWERS, newline="") as f:
-        return {r["date"]: r for r in csv.DictReader(f)}
+CACHE = os.path.join(HERE, "answer_cache.csv")
+FIELDS = ["date", "position", "decision", "reason", "prompt_tokens", "seconds", "threads"]
 
 
-def main():
-    saved = load_saved()
-    llm = None
-    new_file = not os.path.exists(ANSWERS)
-    fa = open(ANSWERS, "a", newline="")
-    w = csv.writer(fa)
-    if new_file:
-        w.writerow(["date", "decision", "reason", "position_before", "value", "prompt_tokens", "seconds"])
+def read_cache():
+    out = {}
+    if os.path.exists(CACHE):
+        with open(CACHE, newline="") as f:
+            for r in csv.DictReader(f):
+                out.setdefault((r["date"], int(r["position"])), r)     # first answer for a key wins
+    return out
+
+
+def append_line(path, text):
+    """One write with O_APPEND, so several processes can add lines to the same file safely."""
+    fd = os.open(path, os.O_WRONLY | os.O_APPEND | os.O_CREAT, 0o644)
+    try:
+        os.write(fd, text.encode())
+    finally:
+        os.close(fd)
+
+
+def csv_line(values):
+    import io
+    b = io.StringIO()
+    csv.writer(b).writerow(values)
+    return b.getvalue()
+
+
+def apply(position, decision):
+    return 1 if decision == "BUY" else 0 if decision == "SELL" else position
+
+
+def job(start, end, position, threads):
+    """Decide every day from start to end (inclusive), beginning in `position`; skip answers already saved."""
+    if not os.path.exists(CACHE):
+        append_line(CACHE, csv_line(FIELDS))
     os.makedirs(os.path.dirname(PROMPTS), exist_ok=True)
-    fp = open(PROMPTS, "a")
-    fv = open(VALUES, "w", newline="")                          # re-made in full on every run (replay is exact)
-    wv = csv.writer(fv)
-    wv.writerow(["date", "ai", "hold_msft"])
-    hist, position, orders = [], 0, {}
-    t_start = time.time()
+    cache, llm, grammar, hist, asked, t_start = read_cache(), None, None, [], 0, time.time()
     with Server() as srv:
         while True:
-            out = srv.next(orders)
+            out = srv.next({})
             if out.get("done"):
                 break
             hist.append(out["day"])
             today = hist[-1]["date"]
-            orders = {}
-            if today < FIRST_DECISION:
+            if today < start:
                 continue
-            if today > FIRST_DECISION:
-                wv.writerow([today, f"{out['values']['ai']:.6f}", f"{out['values']['hold_msft']:.6f}"])
-                fv.flush()
-            if today >= LAST_DAY:
+            if today > end:
                 break
-            value = out["values"].get("ai", 1000.0)
-            if today == FIRST_DECISION:
-                orders["hold_msft"] = "BUY"                     # yardstick: buy at the first open, never sell
-            if today in saved:
-                decision, reason = saved[today]["decision"], saved[today]["reason"]
+            key = (today, position)
+            if key not in cache:
+                cache = read_cache()                   # another section may have answered it meanwhile
+            if key in cache:
+                decision = cache[key]["decision"]
             else:
                 if llm is None:
                     from llama_cpp import Llama, LlamaGrammar
-                    llm = Llama(model_path=MODEL, n_ctx=4096, n_threads=4, seed=0, verbose=False)
+                    llm = Llama(model_path=MODEL, n_ctx=4096, n_threads=threads, seed=0, verbose=False)
                     grammar = LlamaGrammar.from_string(GRAMMAR, verbose=False)
-                prompt = build_prompt(hist, position, value)
+                prompt = build_prompt(hist, position)
                 t0 = time.time()
                 r = llm.create_chat_completion(
                     messages=[{"role": "system", "content": SYSTEM}, {"role": "user", "content": prompt}],
@@ -204,22 +223,61 @@ def main():
                 text = r["choices"][0]["message"]["content"].strip()
                 decision, _, reason = text.partition(" - ")
                 secs = time.time() - t0
-                w.writerow([today, decision, reason, position, f"{value:.2f}", r["usage"]["prompt_tokens"], f"{secs:.1f}"])
-                fa.flush()
-                fp.write(json.dumps({"date": today, "prompt": prompt, "answer": text}) + "\n")
-                fp.flush()
-                n_done = sum(1 for _ in open(ANSWERS)) - 1
-                print(f"{today}  {decision:<4} pos={position} ${value:,.2f}  {secs:.1f}s  "
-                      f"[{n_done} answers, {time.time() - t_start:.0f}s]  {reason[:90]}", flush=True)
-            orders["ai"] = decision
-            if decision == "BUY":
-                position = 1
-            elif decision == "SELL":
-                position = 0
-    fa.close()
-    fp.close()
-    fv.close()
-    print("finished", flush=True)
+                append_line(CACHE, csv_line([today, position, decision, reason, r["usage"]["prompt_tokens"],
+                                             f"{secs:.1f}", threads]))
+                append_line(PROMPTS, json.dumps({"date": today, "position": position, "prompt": prompt,
+                                                 "answer": text}) + "\n")
+                asked += 1
+                print(f"[{start}..{end} from {'MSFT' if position else 'cash'}] {today} pos={position} -> "
+                      f"{decision:<4} {secs:.1f}s ({asked} asked, {time.time() - t_start:.0f}s)  {reason[:80]}", flush=True)
+            position = apply(position, decision)
+    print(f"[{start}..{end}] section finished: {asked} new answers", flush=True)
+
+
+def replay():
+    """Join the real path (start in cash on FIRST_DECISION) from saved answers, through the day server."""
+    cache = read_cache()
+    position, orders, missing = 0, {}, []
+    with open(ANSWERS, "w", newline="") as fa, open(VALUES, "w", newline="") as fv, Server() as srv:
+        wa, wv = csv.writer(fa), csv.writer(fv)
+        wa.writerow(["date", "decision", "reason", "position_before"])
+        wv.writerow(["date", "ai", "hold_msft"])
+        while True:
+            out = srv.next(orders)
+            if out.get("done"):
+                break
+            today, orders = out["day"]["date"], {}
+            if today < FIRST_DECISION:
+                continue
+            if today > FIRST_DECISION:
+                wv.writerow([today, f"{out['values']['ai']:.6f}", f"{out['values']['hold_msft']:.6f}"])
+            if today >= LAST_DAY:
+                break
+            if today == FIRST_DECISION:
+                orders["hold_msft"] = "BUY"
+            r = cache.get((today, position))
+            if r is None:
+                missing.append((today, position))
+                break
+            wa.writerow([today, r["decision"], r["reason"], position])
+            orders["ai"] = r["decision"]
+            position = apply(position, r["decision"])
+    if missing:
+        raise SystemExit(f"replay stopped: no saved answer for {missing[0]}")
+    print("replay done: answers.csv and values.csv written", flush=True)
+
+
+def main():
+    import argparse
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--job", nargs=3, metavar=("START", "END", "POSITION"))
+    ap.add_argument("--threads", type=int, default=4)
+    ap.add_argument("--replay", action="store_true")
+    a = ap.parse_args()
+    if a.replay:
+        replay()
+    else:
+        job(a.job[0], a.job[1], int(a.job[2]), a.threads)
 
 
 if __name__ == "__main__":

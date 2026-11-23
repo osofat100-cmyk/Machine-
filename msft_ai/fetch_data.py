@@ -32,6 +32,7 @@ COMPETITORS = ["AAPL", "GOOGL", "AMZN", "META", "NVDA", "ORCL", "CRM"]
 MARKET = ["SPY", "QQQ", "XLK"]
 ECONOMY = {"^VIX": "VIX", "^TNX": "TNX10Y", "^IRX": "TBILL3M", "DX-Y.NYB": "DOLLAR", "CL=F": "OIL"}
 
+SLICE = next((a.split("=", 1)[1] for a in sys.argv[1:] if a.startswith("--slice=")), None)
 NEWS_QUERIES = {   # name -> (query, window length in days)
     "microsoft": ("Microsoft", 3),
     "msft_stock": ("MSFT stock", 3),
@@ -139,6 +140,9 @@ def news():
             windows.append(d0)
             d0 += timedelta(days=step)
         todo = [w for w in windows if w.isoformat() not in done]
+        if SLICE:                                    # e.g. "2/4": this process fetches every 4th window from #2
+            i, n = map(int, SLICE.split("/"))
+            todo = [w for j, w in enumerate(todo) if j % n == i]
         print(f"news {name}: {len(windows) - len(todo)} of {len(windows)} windows already saved", flush=True)
         for w in todo:
             after, before = w - timedelta(days=1), w + timedelta(days=step)    # Google's after/before are exclusive
@@ -158,7 +162,7 @@ def news():
 
 if __name__ == "__main__":
     os.makedirs(OUT, exist_ok=True)
-    if len(sys.argv) == 1:
+    if not any(a in NEWS_QUERIES for a in sys.argv[1:]):
         prices()
         sec()
     news()
