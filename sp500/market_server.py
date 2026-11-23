@@ -90,6 +90,8 @@ class Exchange:
         refused = {}
         for name, lst in (orders or {}).items():
             a = self.acc.setdefault(name, {"cash": 1000.0, "shares": {}, "trades": 0, "costs": 0.0})
+            if any(od.get("split") for od in lst or []):    # version 3: sells first, then split the cash evenly
+                lst = sorted(lst, key=lambda od: od.get("action") != "SELL")
             for od in lst or []:
                 s, act = od.get("symbol"), od.get("action")
                 px = st["open"].get(s)
@@ -109,7 +111,10 @@ class Exchange:
                         refused.setdefault(name, []).append({**od, "why": "already owned"})
                         continue
                     value = a["cash"] + sum(q * st["open"][x] for x, q in a["shares"].items())
-                    spend = (a["cash"] if od.get("all") else min(SLOT * value, a["cash"])) / (1 + COST)
+                    if od.get("split"):                       # equal share of the cash over the empty slots
+                        spend = a["cash"] / max(1, 10 - len(a["shares"])) / (1 + COST)
+                    else:
+                        spend = (a["cash"] if od.get("all") else min(SLOT * value, a["cash"])) / (1 + COST)
                     if spend < 1.0:
                         refused.setdefault(name, []).append({**od, "why": "no cash left"})
                         continue

@@ -5,6 +5,8 @@ last ~2 months, one 5-minute step at a time, with the checklist, a memory notebo
 handed out only at its exact publication minute. It may hold up to 10 stocks (10% slots) plus cash, and may make up
 to 3 buys or sells per step. The yardstick is holding SPY over the same steps.
 
+Version 3 (VERSION=v3) also keeps ALL the money invested: 10 stocks at all times, each buy splitting the cash
+evenly over the empty slots, and the AI is asked again whenever its answer would leave slots empty.
 Version 2 adds the ADVICE section (costs, ride spikes, never buy what you own, use news properly), shows each
 holding's high since bought, and blocks buys of owned stocks before they are sent.
 
@@ -32,6 +34,7 @@ STEP = int(os.environ.get("STEP_MIN", "5"))  # 5-minute or 2-minute steps
 TAG = ("" if STEP == 5 else f"_{STEP}m") + (f"_{os.environ['VERSION']}" if os.environ.get("VERSION") else "")
 ANSWERS = os.path.join(HERE, f"answers{TAG}.csv")
 HOUR = 60 // STEP                             # steps in one hour
+FULL = os.environ.get("VERSION") == "v3"     # version 3: all money invested, 10 stocks at all times
 WARMUP = HOUR + 1                             # first hour of the first day: background only
 
 SYSTEM = (
@@ -56,13 +59,17 @@ SYSTEM = (
     "D. News: act on news that changes a company's or the market's outlook (results, guidance, big deals, rate or "
     "tariff decisions, crashes). Ignore headlines that do not matter. Do not trade just because a headline "
     "appeared.\n"
+    + ("E. ALL THE MONEY MUST STAY INVESTED. Hold 10 stocks at all times; each BUY splits the remaining cash evenly "
+       "over your empty slots. If you SELL a stock, BUY a replacement in the same answer. While you have empty "
+       "slots, BUY stocks to fill them.\n" if os.environ.get("VERSION") == "v3" else "") +
     "Before deciding, answer the checklist. Keep a plan: your notebook shows your last notes.\n"
     "Answer in exactly this form, one line each:\n"
     "MARKET: UP, DOWN or FLAT\n"
     "NEWS: GOOD, BAD or NONE (a few words on what matters)\n"
     "RISK: LOW, MEDIUM or HIGH\n"
     "NOTE: a note to yourself for the next steps (under 25 words)\n"
-    "ACTIONS: up to 3 of 'BUY SYMBOL' or 'SELL SYMBOL' separated by ';', or NONE")
+    "ACTIONS: up to 3 of 'BUY SYMBOL' or 'SELL SYMBOL' separated by ';', or NONE"
+    + (" (to fill empty slots you may list more BUYs)" if os.environ.get("VERSION") == "v3" else ""))
 
 
 class Server:
@@ -160,12 +167,12 @@ def build_prompt(hist, sector_of, acc, entries, news_seen, new_news, notes, refu
     return "\n".join(L)
 
 
-def parse(text, universe):
+def parse(text, universe, limit=3):
     f = {ln.split(":", 1)[0].strip().upper(): ln.split(":", 1)[1].strip() for ln in text.splitlines() if ":" in ln}
     acts = []
     for part in re.split(r"[;,]", f.get("ACTIONS", "")):
         m = re.match(r"\s*(BUY|SELL)\s+\$?([A-Za-z.]{1,6})", part.strip(), re.I)
-        if m and len(acts) < 3:
+        if m and len(acts) < limit:
             sym = m.group(2).upper().replace(".", "")
             acts.append({"action": m.group(1).upper(), "symbol": sym})
     return f, acts
@@ -177,7 +184,7 @@ def main():
         with open(ANSWERS, newline="") as fh:
             saved = list(csv.DictReader(fh))
     fields = ["time", "actions", "refused", "market", "news", "risk", "note", "value", "spy_hold", "new_news",
-              "seconds", "raw"]
+              "seconds", "raw", "forced"]
     fa = open(ANSWERS, "a", newline="")
     w = csv.DictWriter(fa, fieldnames=fields)
     if not saved:
@@ -230,13 +237,40 @@ def main():
                 t1 = time.time()
                 text = ask(prompt)
                 secs = time.time() - t1
-                f, acts = parse(text, sector_of)
+                f, acts = parse(text, sector_of, limit=10 if FULL else 3)
+                forced = ""
+                if FULL:                                     # enforce: no empty slots left after this step
+                    owned_now = set(acc.get("shares", {}))
+                    for _ in range(2):
+                        clean = []
+                        for a_ in acts:
+                            ok = a_["symbol"] in sector_of and (
+                                (a_["action"] == "SELL" and a_["symbol"] in owned_now) or
+                                (a_["action"] == "BUY" and a_["symbol"] not in owned_now
+                                 and a_["symbol"] not in [c_["symbol"] for c_ in clean]))
+                            if ok:
+                                clean.append(a_)
+                        acts = clean
+                        after = (owned_now - {a_["symbol"] for a_ in acts if a_["action"] == "SELL"}) | \
+                            {a_["symbol"] for a_ in acts if a_["action"] == "BUY"}
+                        empty = 10 - len(after)
+                        if empty <= 0:
+                            break
+                        extra = ask(prompt + f"\n\nYOUR ANSWER WAS: {text.replace(chr(10), ' / ')}\n"
+                                    f"That leaves {empty} empty slot(s) and cash uninvested. All the money must stay "
+                                    f"invested. You already own or are buying: {', '.join(sorted(after)) or 'nothing'}. "
+                                    f"Name exactly {empty} other stocks to BUY now from the symbols shown. Answer only "
+                                    f"one line: ACTIONS: BUY X; BUY Y; ...")
+                        _, more = parse(extra if "ACTIONS" in extra.upper() else "ACTIONS: " + extra, sector_of, limit=10)
+                        acts += [m_ for m_ in more if m_["action"] == "BUY"]
+                        forced += extra.replace("\n", " / ")[:300] + " | "
                 note = f.get("NOTE", "")[:200]
                 spy_v = out["accounts"].get("spy_hold", {}).get("value", 1000.0)
                 w.writerow({"time": st["time"], "actions": json.dumps(acts), "refused": "", "market": f.get("MARKET", ""),
                             "news": f.get("NEWS", "")[:200], "risk": f.get("RISK", ""), "note": note,
                             "value": f"{acc.get('value', 1000.0):.2f}", "spy_hold": f"{spy_v:.2f}",
-                            "new_news": len(new_news), "seconds": f"{secs:.2f}", "raw": text.replace("\n", " / ")[:600]})
+                            "new_news": len(new_news), "seconds": f"{time.time() - t1:.2f}", "raw": text.replace("\n", " / ")[:600],
+                            "forced": forced})
                 fa.flush()
                 if n % 100 == 0:
                     print(f"{st['time']} value ${acc.get('value', 1000.0):,.2f} vs SPY ${spy_v:,.2f} | holds "
@@ -250,6 +284,8 @@ def main():
                     for od in blocked:
                         fr.write(f"{st['time']},{od['action']},{od['symbol']},blocked before sending (already owned / not owned)\n")
             acts = [a for a in acts if a not in blocked]
+            if FULL:
+                acts = [dict(a, split=True) if a["action"] == "BUY" else a for a in acts]
             orders["ai"] = acts
             pending = acts
             n += 1
