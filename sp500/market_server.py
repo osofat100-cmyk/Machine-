@@ -27,7 +27,7 @@ FOLDER = os.path.join(os.path.dirname(HERE), "data", "sealed", "market")
 COST, SLOT = 0.0005, 0.10
 STEP = int(os.environ.get("STEP_MIN", "5"))                     # minutes per step: 5 (bars/) or 2 (bars_2m/)
 BARS = "bars" if STEP == 5 else f"bars_{STEP}m"
-START = "2026-09-23"                                     # two months: 23 Sep .. 23 Nov 2026
+START = os.environ.get("START", "2026-09-23")            # two months: 23 Sep .. 23 Nov 2026 (or set START)
 NY = ZoneInfo("America/New_York")
 
 

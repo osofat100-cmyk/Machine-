@@ -29,9 +29,11 @@ import urllib.request
 from collections import defaultdict
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-MODEL = "nvidia/nemotron-3.5-bolt-e4b"
+MODEL = os.environ.get("MODEL", "nvidia/nemotron-3.5-bolt-e4b")
+MAX_TOKENS = int(os.environ.get("MAX_TOKENS", "160"))
 STEP = int(os.environ.get("STEP_MIN", "5"))  # 5-minute or 2-minute steps
-TAG = ("" if STEP == 5 else f"_{STEP}m") + (f"_{os.environ['VERSION']}" if os.environ.get("VERSION") else "")
+TAG = ("" if STEP == 5 else f"_{STEP}m") + (f"_{os.environ['VERSION']}" if os.environ.get("VERSION") else "") \
+    + (f"_{os.environ['MODEL_TAG']}" if os.environ.get("MODEL_TAG") else "")
 ANSWERS = os.path.join(HERE, f"answers{TAG}.csv")
 HOUR = 60 // STEP                             # steps in one hour
 FULL = os.environ.get("VERSION") == "v3"     # version 3: all money invested, 10 stocks at all times
@@ -100,14 +102,14 @@ class Server:
 def ask(user):
     body = json.dumps({"model": MODEL, "messages": [{"role": "system", "content": SYSTEM},
                                                     {"role": "user", "content": user}],
-                       "temperature": 0, "max_tokens": 160}).encode()
+                       "temperature": 0, "max_tokens": MAX_TOKENS}).encode()
     last = None
     for k in range(8):
         try:
             req = urllib.request.Request("https://integrate.api.nvidia.com/v1/chat/completions", data=body,
                                          headers={"Authorization": "Bearer proxy-injected",
                                                   "Content-Type": "application/json"})
-            j = json.load(urllib.request.urlopen(req, timeout=90))
+            j = json.load(urllib.request.urlopen(req, timeout=300))
             return (j["choices"][0]["message"].get("content") or "").strip()
         except (urllib.error.URLError, TimeoutError, ConnectionError, json.JSONDecodeError) as e:
             last = e
