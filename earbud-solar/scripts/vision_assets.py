@@ -105,7 +105,26 @@ for n in asm.graph.nodes_geometry:
     T, gname = asm.graph[n]
     if n == "original_pod":
         pod = asm.geometry[gname].copy(); pod.apply_transform(T)
-parts = dict(cover=cov,
+# the nozzle stem between the shell and the ear tip: JBL's own hard-plastic skins below the base, around the pod axis
+# (the printable shell cuts the paddle at its floor and keeps only the rubber tip, which left the tip floating)
+FR = json.load(open(os.path.join(HERE, "..", "data", "shell_frame.json")))
+o_, R_ = np.array(FR["origin_measured_frame"]), np.array(FR["R_rows_XYZ"])
+bud = trimesh.load(os.path.join(HERE, "..", "models", "EP3_earbud_flat_face_SM400K10TF.glb"), force="scene")
+STEM_TOP, AXIS, RAD = -8.6, np.array([11.5, -0.1]), 7.5
+stem_tris = []
+for nd in bud.graph.nodes_geometry:
+    if nd.startswith("SM400") or nd in ("Earphone_Rubber", "Earphone_Fabric"):
+        continue
+    T, gk = bud.graph[nd]; m = bud.geometry[gk].copy(); m.apply_transform(T)
+    t = ((m.triangles.reshape(-1, 3) - o_) @ R_.T).reshape(-1, 3, 3)
+    c = t.mean(1)
+    keep = (t[:, :, 2].max(1) < STEM_TOP) & (np.hypot(c[:, 0] - AXIS[0], c[:, 1] - AXIS[1]) < RAD)
+    stem_tris.append(t[keep])
+st = np.vstack(stem_tris)
+stem = trimesh.Trimesh(st.reshape(-1, 3), np.arange(len(st) * 3).reshape(-1, 3), process=True)
+print("stem triangles", len(stem.faces), "z", np.round(stem.bounds[:, 2], 2))
+
+parts = dict(cover=cov, stem=stem,
              base=decimate(polish(trimesh.load(os.path.join(SHELL, "EP3_shell_base.stl"))), 0.4),
              hook=decimate(polish(trimesh.load(os.path.join(SHELL, "EP3_shell_hook_arm.stl")), 40), 0.4),
              pod=trimesh.Trimesh(pod.vertices, pod.faces, process=True))
