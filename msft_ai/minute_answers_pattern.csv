@@ -975,3 +975,60 @@ time,decision,reason,note,position_before,news_shown,seconds,invalid,raw
 2026-10-29 12:43,HOLD,No clear move exceeding 0.10% since recent high,,1,0,0.34,0,HOLD - No clear move exceeding 0.10% since recent high
 2026-10-29 12:44,HOLD,recent swing is small and not clearly above 0.10% profit target,,1,0,0.36,0,HOLD - recent swing is small and not clearly above 0.10% profit target
 2026-10-29 12:45,HOLD,Swing is not large enough to cover 0.10% cost,,1,0,0.35,0,HOLD - Swing is not large enough to cover 0.10% cost
+2026-10-29 12:46,HOLD,Recent swing is too small to cover 0.10% cost,,1,0,0.35,0,HOLD - Recent swing is too small to cover 0.10% cost
+2026-10-29 12:47,HOLD,recent swing is too small to cover 0.10% cost,,1,0,0.36,0,HOLD - recent swing is too small to cover 0.10% cost
+2026-10-29 12:48,HOLD,recent swing too small for 0.10% profit target,,1,0,0.33,0,HOLD - recent swing too small for 0.10% profit target
+2026-10-29 12:49,HOLD,recent swing is too small for 0.10% profit target,,1,0,0.35,0,HOLD - recent swing is too small for 0.10% profit target
+2026-10-29 12:50,HOLD,Swing is not large enough to cover 0.10% cost,,1,0,0.35,0,HOLD - Swing is not large enough to cover 0.10% cost
+2026-10-29 12:51,HOLD,Swing is too small to cover 0.10% cost,,1,0,0.36,0,HOLD - Swing is too small to cover 0.10% cost
+2026-10-29 12:52,HOLD,Swing too small to cover 0.10% cost,,1,0,0.32,0,HOLD - Swing too small to cover 0.10% cost
+2026-10-29 12:53,HOLD,"Recent swing is small, no clear move > 0.10%",,1,0,0.36,0,"HOLD - Recent swing is small, no clear move > 0.10%"
+2026-10-29 12:54,HOLD,Recent swing is not large enough to cover costs,,1,0,0.30,0,HOLD - Recent swing is not large enough to cover costs
+2026-10-29 12:55,HOLD,Swing is not large enough to cover 0.10% cost,,1,0,0.35,0,HOLD - Swing is not large enough to cover 0.10% cost
+2026-10-29 12:56,HOLD,"Recent swing is small, no clear move > 0.10%",,1,0,0.35,0,"HOLD - Recent swing is small, no clear move > 0.10%"
+2026-10-29 12:57,HOLD,"Recent swing is small, no clear move > 0.10%",,1,0,0.36,0,"HOLD - Recent swing is small, no clear move > 0.10%"
+2026-10-29 12:58,HOLD,No clear move exceeding 0.10% since recent high,,1,0,0.33,0,HOLD - No clear move exceeding 0.10% since recent high
+2026-10-29 12:59,HOLD,Recent swing is not large enough to cover 0.10% cost,,1,0,0.36,0,HOLD - Recent swing is not large enough to cover 0.10% cost
+2026-10-29 13:00,HOLD,Recent swing is small and not clearly above 0.10% profit target,,1,0,0.36,0,HOLD - Recent swing is small and not clearly above 0.10% profit target
+2026-10-29 13:01,HOLD,No clear move above 0.10% threshold,,1,0,0.32,0,HOLD - No clear move above 0.10% threshold
+2026-10-29 13:02,HOLD,Recent swing is not large enough to cover 0.10% cost,,1,0,0.35,0,HOLD - Recent swing is not large enough to cover 0.10% cost
+2026-10-29 13:03,HOLD,recent swing too small for 0.10% profit target,,1,0,0.33,0,HOLD - recent swing too small for 0.10% profit target
+2026-10-29 13:04,HOLD,Recent swing too small for 0.10% profit target,,1,0,0.34,0,HOLD - Recent swing too small for 0.10% profit target
+2026-10-29 13:05,HOLD,recent swing is not large enough to cover costs,,1,0,0.30,0,HOLD - recent swing is not large enough to cover costs
+2026-10-29 13:06,HOLD,Recent swing is small and not worth the 0.10% cost,,1,0,0.35,0,HOLD - Recent swing is small and not worth the 0.10% cost
+2026-10-29 13:07,HOLD,"Recent swing is small, no clear move > 0.10%",,1,0,0.36,0,"HOLD - Recent swing is small, no clear move > 0.10%"
+2026-10-29 13:08,HOLD,No clear swing above 0.10% threshold,,1,0,0.32,0,HOLD - No clear swing above 0.10% threshold
+2026-10-29 13:09,HOLD,recent swing too small for 0.10% threshold,,1,0,0.33,0,HOLD - recent swing too small for 0.10% threshold
+2026-10-29 13:10,HOLD,No clear swing above 0.10% threshold,,1,0,0.32,0,HOLD - No clear swing above 0.10% threshold
+2026-10-29 13:11,HOLD,Swing too small to cover 0.10% cost,,1,0,0.32,0,HOLD - Swing too small to cover 0.10% cost
+2026-10-29 13:12,HOLD,No clear swing above 0.10% threshold,,1,0,0.31,0,HOLD - No clear swing above 0.10% threshold
+2026-10-29 13:13,HOLD,recent swing is not large enough to cover costs,,1,0,0.30,0,HOLD - recent swing is not large enough to cover costs
+2026-10-29 13:14,HOLD,No clear move above 0.10% threshold,,1,0,0.32,0,HOLD - No clear move above 0.10% threshold
+2026-10-29 13:15,HOLD,Recent swing is too small to cover 0.10% cost,,1,0,0.34,0,HOLD - Recent swing is too small to cover 0.10% cost
+2026-10-29 13:16,HOLD,No clear move above 0.10% threshold,,1,0,0.35,0,HOLD - No clear move above 0.10% threshold
+2026-10-29 13:17,HOLD,No clear swing above 0.10% threshold,,1,0,0.32,0,HOLD - No clear swing above 0.10% threshold
+2026-10-29 13:18,HOLD,Recent swing is small and not worth the 0.10% cost,,1,0,0.36,0,HOLD - Recent swing is small and not worth the 0.10% cost
+2026-10-29 13:19,HOLD,recent swing is too small to cover 0.10% cost,,1,0,0.35,0,HOLD - recent swing is too small to cover 0.10% cost
+2026-10-29 13:20,HOLD,recent swing is too small to cover costs,,1,0,0.29,0,HOLD - recent swing is too small to cover costs
+2026-10-29 13:21,HOLD,recent swing too small to cover costs,,1,0,0.30,0,HOLD - recent swing too small to cover costs
+2026-10-29 13:22,HOLD,Recent swing is too small to cover 0.10% cost,,1,0,0.37,0,HOLD - Recent swing is too small to cover 0.10% cost
+2026-10-29 13:23,HOLD,Recent swing is too small to cover 0.10% cost,,1,0,0.35,0,HOLD - Recent swing is too small to cover 0.10% cost
+2026-10-29 13:24,HOLD,No clear move above 0.10% threshold,,1,0,0.32,0,HOLD - No clear move above 0.10% threshold
+2026-10-29 13:25,HOLD,"Recent swing is small, no clear move > 0.10%",,1,0,0.36,0,"HOLD - Recent swing is small, no clear move > 0.10%"
+2026-10-29 13:26,HOLD,Recent swing is small and not worth the 0.10% cost,,1,0,0.42,0,HOLD - Recent swing is small and not worth the 0.10% cost
+2026-10-29 13:27,HOLD,recent swing too small for 0.10% profit target,,1,0,0.34,0,HOLD - recent swing too small for 0.10% profit target
+2026-10-29 13:28,HOLD,recent swing is not large enough to cover costs,,1,0,0.30,0,HOLD - recent swing is not large enough to cover costs
+2026-10-29 13:29,HOLD,Recent swing is small and no clear move above 0.10% expected,,1,0,0.37,0,HOLD - Recent swing is small and no clear move above 0.10% expected
+2026-10-29 13:30,HOLD,"Recent swing is small, no clear move > 0.10% expected",,1,0,0.38,0,"HOLD - Recent swing is small, no clear move > 0.10% expected"
+2026-10-29 13:31,HOLD,No clear move above 0.10% threshold,,1,0,0.33,0,HOLD - No clear move above 0.10% threshold
+2026-10-29 13:32,HOLD,Recent swing is not large enough to cover costs,,1,0,0.31,0,HOLD - Recent swing is not large enough to cover costs
+2026-10-29 13:33,HOLD,No clear move above 0.10% threshold,,1,0,0.37,0,HOLD - No clear move above 0.10% threshold
+2026-10-29 13:34,HOLD,Recent swing is not large enough to cover 0.10% cost,,1,0,0.36,0,HOLD - Recent swing is not large enough to cover 0.10% cost
+2026-10-29 13:35,HOLD,Recent swing is not large enough to cover costs,,1,0,0.30,0,HOLD - Recent swing is not large enough to cover costs
+2026-10-29 13:36,HOLD,Recent swing is not large enough to cover 0.10% cost,,1,0,0.36,0,HOLD - Recent swing is not large enough to cover 0.10% cost
+2026-10-29 13:37,HOLD,No clear swing above 0.10% threshold,,1,0,0.32,0,HOLD - No clear swing above 0.10% threshold
+2026-10-29 13:38,HOLD,Recent swing is not large enough to cover 0.10% cost,,1,0,0.37,0,HOLD - Recent swing is not large enough to cover 0.10% cost
+2026-10-29 13:39,HOLD,Recent swing is too small to cover 0.10% cost,,1,0,0.35,0,HOLD - Recent swing is too small to cover 0.10% cost
+2026-10-29 13:40,HOLD,Recent swing is too small to cover 0.10% cost,,1,0,0.35,0,HOLD - Recent swing is too small to cover 0.10% cost
+2026-10-29 13:41,HOLD,No clear move above 0.10% threshold,,1,0,0.32,0,HOLD - No clear move above 0.10% threshold
+2026-10-29 13:42,HOLD,Recent swing is not large enough to cover 0.10% cost,,1,0,0.37,0,HOLD - Recent swing is not large enough to cover 0.10% cost
