@@ -25,6 +25,8 @@ from zoneinfo import ZoneInfo
 HERE = os.path.dirname(os.path.abspath(__file__))
 FOLDER = os.path.join(os.path.dirname(HERE), "data", "sealed", "market")
 COST, SLOT = 0.0005, 0.10
+STEP = int(os.environ.get("STEP_MIN", "5"))                     # minutes per step: 5 (bars/) or 2 (bars_2m/)
+BARS = "bars" if STEP == 5 else f"bars_{STEP}m"
 START = "2026-09-23"                                     # two months: 23 Sep .. 23 Nov 2026
 NY = ZoneInfo("America/New_York")
 
@@ -35,7 +37,7 @@ def load():
     syms = ["SPY"] + [u["symbol"] for u in uni]
     series = {}
     for s in syms:
-        p = os.path.join(FOLDER, "bars", f"{s}.csv")
+        p = os.path.join(FOLDER, BARS, f"{s}.csv")
         if os.path.exists(p):
             with open(p, newline="") as f:
                 series[s] = {r["time"]: r for r in csv.DictReader(f)}
@@ -56,7 +58,7 @@ def load():
                 last[s] = c[s]
             elif s in last:                                  # no trade in this bar: price unchanged
                 o[s], c[s], v[s] = last[s], last[s], 0.0
-        known = (datetime.strptime(t, "%Y-%m-%d %H:%M") + timedelta(minutes=5)).strftime("%Y-%m-%d %H:%M")
+        known = (datetime.strptime(t, "%Y-%m-%d %H:%M") + timedelta(minutes=STEP)).strftime("%Y-%m-%d %H:%M")
         steps.append({"time": t, "known_at": known, "open": o, "close": c, "volume": v})
     news, seen = [], set()
     for name in sorted(os.listdir(os.path.join(FOLDER, "news"))):

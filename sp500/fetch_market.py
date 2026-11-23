@@ -24,6 +24,8 @@ import requests
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, "data", "sealed", "market")
+INTERVAL = os.environ.get("INTERVAL", "5m")                    # 5m (default) or 2m; both cover 60 days
+BARS = "bars" if INTERVAL == "5m" else f"bars_{INTERVAL}"
 UA = {"User-Agent": "Mozilla/5.0 (X11; Linux x86_64) personal-research-script", "Accept": "application/json"}
 PLACEHOLDER = {"07:00:00", "08:00:00"}             # Google's date-only items are stamped at midnight Pacific
 MARKET_QUERIES = ['"stock market"', '"S&P 500"', '"Wall Street" stocks', '"Federal Reserve"',
@@ -63,11 +65,11 @@ def universe():
 
 
 def bars(symbol):
-    path = os.path.join(OUT, "bars", f"{symbol}.csv")
+    path = os.path.join(OUT, BARS, f"{symbol}.csv")
     if os.path.exists(path):
         return
     j = get(f"https://query2.finance.yahoo.com/v8/finance/chart/{quote(symbol)}",
-            params={"range": "60d", "interval": "5m", "includePrePost": "false"}).json()["chart"]["result"]
+            params={"range": "60d", "interval": INTERVAL, "includePrePost": "false"}).json()["chart"]["result"]
     if not j or not j[0].get("timestamp"):
         print(f"  no bars for {symbol}")
         return
@@ -106,12 +108,12 @@ def news_query(name, q, days):
 
 def main():
     u = universe()
-    os.makedirs(os.path.join(OUT, "bars"), exist_ok=True)
+    os.makedirs(os.path.join(OUT, BARS), exist_ok=True)
     syms = ["SPY"] + list(u["symbol"])
     with ThreadPoolExecutor(6) as ex:
         list(ex.map(bars, syms))
-    have = len(os.listdir(os.path.join(OUT, "bars")))
-    spy = pd.read_csv(os.path.join(OUT, "bars", "SPY.csv"))
+    have = len(os.listdir(os.path.join(OUT, BARS)))
+    spy = pd.read_csv(os.path.join(OUT, BARS, "SPY.csv"))
     print(f"bars: {have} of {len(syms)} symbols; SPY {spy['time'].iloc[0]} .. {spy['time'].iloc[-1]}, {len(spy)} steps", flush=True)
     first = date.fromisoformat(spy["time"].iloc[0][:10]) - timedelta(days=3)
     days = [first + timedelta(days=i) for i in range((date.fromisoformat(spy["time"].iloc[-1][:10]) - first).days + 1)]

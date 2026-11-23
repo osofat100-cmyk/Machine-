@@ -25,11 +25,14 @@ from collections import defaultdict
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 MODEL = "nvidia/nemotron-3.5-bolt-e4b"
-ANSWERS = os.path.join(HERE, "answers.csv")
-WARMUP = 13                                   # first hour of the first day: background only
+STEP = int(os.environ.get("STEP_MIN", "5"))  # 5-minute or 2-minute steps
+TAG = "" if STEP == 5 else f"_{STEP}m"
+ANSWERS = os.path.join(HERE, f"answers{TAG}.csv")
+HOUR = 60 // STEP                             # steps in one hour
+WARMUP = HOUR + 1                             # first hour of the first day: background only
 
 SYSTEM = (
-    "You manage a $1,000 practice portfolio of large US stocks (about the S&P 500). Every 5 minutes you get the "
+    "You manage a $1,000 practice portfolio of large US stocks (about the S&P 500). Every few minutes you get the "
     "market, the biggest movers, your holdings and any news published since the last step. You may hold up to 10 "
     "stocks; each BUY puts 10% of the account into one stock; SELL sells the whole holding of that stock into cash "
     "(US dollars, which do not move with the market).\n"
@@ -100,9 +103,9 @@ def build_prompt(hist, sector_of, acc, entries, news_seen, new_news, notes, refu
     st = hist[-1]
     c = st["close"]
     day = [h for h in hist if h["time"][:10] == st["time"][:10]]
-    hour = hist[-12] if len(hist) >= 12 else hist[0]
+    hour = hist[-HOUR] if len(hist) >= HOUR else hist[0]
     first = day[0]
-    L = [f"Time: {st['known_at']} New York (the 5-minute bar from {st['time'][11:]} has just closed)."]
+    L = [f"Time: {st['known_at']} New York (the {STEP}-minute bar from {st['time'][11:]} has just closed)."]
     s = "SPY"
     L.append(f"MARKET (SPY ${c[s]:.2f}): 5 min {pct(c[s], hist[-2]['close'][s]):+.2f}%, 1 hour "
              f"{pct(c[s], hour['close'][s]):+.2f}%, today {pct(c[s], first['open'][s]):+.2f}%")
@@ -175,7 +178,7 @@ def main():
                 sector_of = {u["symbol"]: u["sector"] for u in out["universe"]}
             st = out["step"]
             hist.append(st)
-            hist = hist[-80:]
+            hist = hist[-(16 * HOUR):]
             new_news = out["news"]
             news_seen += new_news
             acc = out["accounts"].get("ai", {"value": 1000.0, "cash": 1000.0, "shares": {}, "trades": 0, "costs": 0.0})
@@ -186,7 +189,7 @@ def main():
                 if od["action"] == "SELL" and od["symbol"] not in acc.get("shares", {}):
                     entries.pop(od["symbol"], None)
             if refused_now and n > len(saved):
-                with open(os.path.join(HERE, "refused.csv"), "a") as fr:
+                with open(os.path.join(HERE, f"refused{TAG}.csv"), "a") as fr:
                     for od in refused_now:
                         fr.write(f"{st['time']},{od['action']},{od['symbol']},{od['why']}\n")
             orders, pending = {}, []
@@ -223,7 +226,7 @@ def main():
             n += 1
         final = out
     fa.close()
-    with open(os.path.join(HERE, "result.json"), "w") as fh:
+    with open(os.path.join(HERE, f"result{TAG}.json"), "w") as fh:
         json.dump(final.get("accounts", {}), fh, indent=1)
     print("finished:", json.dumps({k: round(v.get("value", 0), 2) for k, v in final.get("accounts", {}).items()}),
           flush=True)
