@@ -157,7 +157,7 @@ function internalsAt(t) {
 }
 function cellAt(t) {
   // the panel comes in tilted, levels out well above the pocket, then sinks straight in (pocket = panel + 0.05 mm)
-  cellPivot.visible = t >= 5.9;
+  cellPivot.visible = t >= 5.9 && !window.NO_PANEL;   // NO_PANEL: still frames of the inside only
   const k = easeOut(prog(t, 5.9, 9.0));
   const hover = 36 * (1 - k);
   const tilt = ease((hover - 5) / 14);

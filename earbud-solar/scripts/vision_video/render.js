@@ -1,7 +1,7 @@
 // Render the vision video: serves index.html + meshes + three.js locally, steps the timeline in headless
 // Chromium (WebGL via SwiftShader) and pipes the frames to ffmpeg (H.264, yuv420p).
 // Usage: node render.js <assets dir> <three.js package dir> <out.mp4> [fps=30]
-//        node render.js <assets dir> <three dir> <out dir> --stills 0,3,6,9,11.5   (CLEAN=1: no captions)
+//        node render.js <assets dir> <three dir> <out dir> --stills 0,3,6,9,11.5   (CLEAN=1: no captions, NOPANEL=1: no panel)
 const http = require("http"), fs = require("fs"), path = require("path"), { spawn } = require("child_process");
 const { chromium } = require("playwright");
 
@@ -38,6 +38,7 @@ const server = http.createServer((req, res) => {
     for (const t of stills) {
       await page.evaluate(t => window.renderAt(t), t);
       if (process.env.CLEAN) await page.evaluate(() => document.querySelectorAll(".cap").forEach(e => (e.style.display = "none")));
+      if (process.env.NOPANEL) { await page.evaluate(t => { window.NO_PANEL = true; window.renderAt(t); }, t); }
       await page.screenshot({ path: path.join(out, `still_${t.toFixed(1)}.png`) });
       console.log("still", t);
     }
