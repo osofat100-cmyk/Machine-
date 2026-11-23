@@ -31,3 +31,13 @@ Forecast quality (strategies only):
 | mlp_h1 | -0.0234 | -0.0027 | 48.5% | 0.912 | -0.0003 | -0.0002 | 15% |
 | mlp_h5 | -0.0954 | -0.0768 | 48.1% | 0.890 | +0.0028 | +0.0022 | 45% |
 | mlp_h21 | -0.2255 | -0.0397 | 56.9% | 0.135 | +0.0101 | +0.0045 | 50% |
+
+## Independent review (after the run)
+
+No look-ahead and no accounting error found; the dollars above are not too high or too low. Unit tests pass.
+Minor notes, none changing the verdict (every Deflated Sharpe is 0.01 or less, far below the 0.95 needed):
+- The coin flips draw each decision independently, so they switch more often than the strategies and pay more
+  costs. That makes the coin-flip p-values for the daily and weekly strategies look somewhat better than they
+  deserve (ridge_h1 0.018 and mlp_h5 0.015 are borderline). This follows PLAN.md as written; not changed afterwards.
+- The Diebold-Mariano tests use h-1 lags although the monthly/weekly forecast errors do not overlap; this only
+  makes those tests more cautious.
