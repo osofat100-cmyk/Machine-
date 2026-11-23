@@ -12,3 +12,9 @@ date,position,decision,reason,prompt_tokens,seconds,threads
 2024-09-23,0,BUY,"MSFT is showing strong growth and has a high 52-week high, with a recent deal propelling its power and a strong Q1 report.",1416,122.2,1
 2024-05-14,1,HOLD,The stock has shown a strong upward trend and recent news about Microsoft's AI investments and Copilot technology suggest continued growth.,1355,112.5,1
 2025-02-04,0,SELL,"The market is showing a strong upward trend, with the S&P 500 and Nasdaq-100 indices up 0.7% and 1.2% respectively, and tech sector leaders like Apple and Alph,",1401,135.8,1
+2024-01-04,0,SELL,"The 3-month T-bill rate is 5.23%, which is higher than the current stock price, making it a more attractive option for earning interest.",1400,73.9,1
+2024-05-15,1,HOLD,The stock is showing strong growth and recent news about Microsoft's AI advancements and expansion into new markets may continue to drive its value.,1444,72.6,1
+2024-09-24,1,HOLD,The recent news about Microsoft's investment in Cloud and AI infrastructure and its progress on the Secure Future Initiative suggests that the company is still正,1415,73.2,1
+2025-02-05,0,SELL,"The market is showing a strong upward trend, with the S&P 500 and Nasdaq-100 indices up 0.4% and 0.5% respectively, and tech sector stocks like Nvidia and Meta,",1358,76.0,1
+2024-01-05,0,SELL,"The 3-month T-bill rate has increased to 5.22%, making cash less attractive, and the market is showing signs of a potential downturn.",1250,57.1,1
+2024-05-16,1,BUY,MSFT is up for the 3rd month in a row and has a strong earnings report from last quarter.,1317,58.2,1
