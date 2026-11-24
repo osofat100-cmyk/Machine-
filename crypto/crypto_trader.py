@@ -241,7 +241,7 @@ def main():
     saved = []
     if os.path.exists(ANSWERS):
         with open(ANSWERS, newline="") as fh:
-            saved = list(csv.DictReader(fh))
+            saved = [r for r in csv.DictReader(fh) if r.get("time") != "time"]   # skip a repeated title line
     fields = ["time", "actions", "refused", "market", "news", "risk", "note", "value", "btc_hold", "new_news",
               "seconds", "raw", "forced"]
     fa = open(ANSWERS, "a", newline="")
