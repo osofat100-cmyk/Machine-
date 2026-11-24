@@ -1,0 +1,520 @@
+<meta name="dash-one-writer">
+<meta name="dash-form" content="dashboard">
+<style>
+  .gr { display: grid; gap: var(--cds-gap-xl); font-family: var(--font-anthropic-sans); color: var(--color-fg); }
+  .gr-head { display: grid; gap: var(--cds-gap-sm); max-width: 72ch; }
+  .gr-title { font-family: var(--font-anthropic-serif); font-weight: 400; font-size: var(--cds-font-size-title); margin: 0; text-wrap: balance; }
+  .gr-lede, .gr-help { margin: 0; color: var(--color-fg-muted); font-size: var(--cds-font-size-body); line-height: 1.5; }
+  .gr-help { font-size: var(--cds-font-size-caption); }
+  .gr-take { margin: 0; font-size: var(--cds-font-size-body); line-height: 1.55; }
+  .gr-take b { font-variant-numeric: tabular-nums; font-weight: var(--cds-font-weight-medium); }
+  .gr-sec { display: grid; gap: var(--cds-gap-md); scroll-margin-top: var(--cds-gap-lg); }
+  .gr-h2 { margin: 0; font-size: var(--cds-font-size-heading); font-weight: var(--cds-font-weight-medium); text-wrap: balance; }
+  .gr-card { background: var(--color-panel); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: var(--cds-pad-lg); display: grid; gap: var(--cds-gap-md); min-width: 0; }
+  .gr-chart { position: relative; min-height: 340px; min-width: 0; }
+  .gr-tools { display: flex; flex-wrap: wrap; gap: var(--cds-gap-xs); align-items: center; margin-bottom: var(--cds-gap-sm); }
+  .gr-btn { font: inherit; font-size: var(--cds-font-size-caption); color: var(--color-fg); background: var(--color-bg); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: 4px 10px; cursor: pointer; }
+  .gr-btn:hover { border-color: var(--color-fg-muted); }
+  .gr-btn:focus-visible { outline: 2px solid var(--color-fg); outline-offset: 1px; }
+  .gr-btn[aria-pressed="true"] { background: var(--color-fg); color: var(--color-bg); border-color: var(--color-fg); }
+  .gr-zoomnote { margin-left: auto; font-size: var(--cds-font-size-caption); color: var(--cds-text-secondary); font-variant-numeric: tabular-nums; }
+  .gr-svg { display: block; width: 100%; touch-action: pan-y; cursor: grab; user-select: none; }
+  .gr-svg:active { cursor: grabbing; }
+  .gr-svg .tick text { fill: var(--cds-text-secondary); font-size: var(--cds-font-size-caption); font-family: var(--font-anthropic-sans); }
+  .gr-svg .tick line { stroke: var(--cds-chart-grid); }
+  .gr-svg .domain { stroke: var(--cds-chart-axis); }
+  .gr-tip { position: absolute; pointer-events: none; background: var(--cds-surface-popover); border: 1px solid var(--cds-border); box-shadow: var(--cds-shadow-popover); border-radius: var(--cds-radius); padding: 8px 10px; font-size: var(--cds-font-size-caption); line-height: 1.45; min-width: 200px; max-width: 280px; z-index: 2; }
+  .gr-tip-time { font-weight: var(--cds-font-weight-medium); margin-bottom: 4px; }
+  .gr-tip-row { display: grid; grid-template-columns: 14px 1fr auto; gap: 6px; align-items: center; font-variant-numeric: tabular-nums; }
+  .gr-tip-row span:last-child { text-align: right; }
+  .gr-tip-bench { color: var(--color-fg); font-weight: var(--cds-font-weight-medium); border-top: 1px solid var(--cds-border); margin-top: 4px; padding-top: 4px; }
+  .gr-sw { display: inline-block; width: 14px; height: 0; border-top-width: 3px; border-top-style: solid; vertical-align: middle; }
+  .gr-sw.is-dash { border-top-style: dashed; }
+  .gr-msg { padding: var(--cds-pad-lg); color: var(--color-fg-muted); font-size: var(--cds-font-size-body); }
+  .gr-tablewrap { overflow-x: auto; min-width: 0; }
+  .gr-table { width: 100%; border-collapse: collapse; font-size: var(--cds-font-size-caption); font-variant-numeric: tabular-nums; }
+  .gr-table th, .gr-table td { padding: 6px 8px; text-align: right; border-bottom: 1px solid var(--color-border-line); white-space: nowrap; }
+  .gr-table th:first-child, .gr-table td:first-child, .gr-table th:nth-child(2), .gr-table td:nth-child(2) { text-align: left; }
+  .gr-table th { color: var(--cds-text-secondary); font-weight: var(--cds-font-weight-medium); }
+  .gr-table tbody tr { cursor: pointer; }
+  .gr-table tbody tr:hover { background: var(--color-bg); }
+  .gr-table tbody tr.is-off { opacity: 0.4; }
+  .gr-table td.is-good { color: var(--color-ok); }
+  .gr-table td.is-bad { color: var(--color-bad); }
+  .gr-pill { display: inline-block; padding: 1px 8px; border-radius: 999px; border: 1px solid var(--color-border-line); font-size: var(--cds-font-size-caption); }
+  .gr-pill.is-running { border-color: var(--color-ok); color: var(--color-ok); }
+  .gr-pill.is-finished { background: var(--color-fg); color: var(--color-bg); border-color: var(--color-fg); }
+  .gr-notes summary { cursor: pointer; font-weight: var(--cds-font-weight-medium); }
+  .gr-notes ul { margin: var(--cds-gap-sm) 0 0; padding-left: 1.2em; line-height: 1.55; color: var(--color-fg-muted); max-width: 72ch; }
+</style>
+
+<div class="gr">
+  <header class="gr-head" id="top">
+    <h1 class="gr-title">Golden Rule Race</h1>
+    <p class="gr-lede">Every line is one AI run trading $1,000 of practice money under the golden rule (never sell below what you paid; buy what fell more than average). The thick line is just holding Bitcoin or SPY. Runs are told apart by version (dashed = first version, solid = second version) and by how often they decide.</p>
+    <p class="gr-help">Drag a chart to move through time. Pinch, or hold Ctrl (⌘ on a Mac) and scroll, to zoom in: the time labels go from days to hours to minutes as you zoom. Point at a line to read every run at that minute. Click a row in a table to hide or show its line.</p>
+  </header>
+
+  <section class="gr-sec" id="crypto">
+    <h2 class="gr-h2">Crypto: 100 coins, 18–23 Nov 2026, against holding Bitcoin</h2>
+    <p class="gr-take">At the latest minute all crypto runs share (<b data-draw="crypto-same-time" data-source="crypto_leader" data-field="same_time" data-row="0">—</b> UTC), the leader is <b data-draw="crypto-leader-run" data-source="crypto_leader" data-field="run" data-row="0">—</b> with <b data-draw="crypto-leader-money" data-source="crypto_leader" data-field="same_money" data-row="0">—</b>, <b data-draw="crypto-leader-ahead" data-source="crypto_leader" data-field="same_ahead" data-row="0">—</b> against holding Bitcoin.</p>
+    <div class="gr-card">
+      <div class="gr-chart" id="crypto-chart" data-draw="crypto-chart" data-source="crypto"></div>
+    </div>
+    <div class="gr-tablewrap">
+      <table class="gr-table" id="crypto-table" data-source="crypto_runs" data-row-key="run">
+        <thead>
+          <tr>
+            <th data-field="run">Run</th>
+            <th data-field="status">Status</th>
+            <th data-field="decisions">Decisions</th>
+            <th data-field="upto">Up to (UTC)</th>
+            <th data-field="money">Money there</th>
+            <th data-field="ahead">vs Bitcoin there</th>
+            <th data-field="same_money">Money at the shared minute</th>
+            <th data-field="same_ahead">vs Bitcoin at the shared minute</th>
+          </tr>
+        </thead>
+        <tbody data-draw="crypto-table"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="gr-sec" id="stocks">
+    <h2 class="gr-h2">Stocks: about the S&amp;P 500, 26 Oct – 23 Nov 2026, against holding SPY</h2>
+    <p class="gr-take">At the latest minute all stock runs share (<b data-draw="stocks-same-time" data-source="stocks_leader" data-field="same_time" data-row="0">—</b> New York), the leader is <b data-draw="stocks-leader-run" data-source="stocks_leader" data-field="run" data-row="0">—</b> with <b data-draw="stocks-leader-money" data-source="stocks_leader" data-field="same_money" data-row="0">—</b>, <b data-draw="stocks-leader-ahead" data-source="stocks_leader" data-field="same_ahead" data-row="0">—</b> against holding SPY.</p>
+    <div class="gr-card">
+      <div class="gr-chart" id="stocks-chart" data-draw="stocks-chart" data-source="stocks"></div>
+    </div>
+    <div class="gr-tablewrap">
+      <table class="gr-table" id="stocks-table" data-source="stocks_runs" data-row-key="run">
+        <thead>
+          <tr>
+            <th data-field="run">Run</th>
+            <th data-field="status">Status</th>
+            <th data-field="decisions">Decisions</th>
+            <th data-field="upto">Up to (New York)</th>
+            <th data-field="money">Money there</th>
+            <th data-field="ahead">vs SPY there</th>
+            <th data-field="same_money">Money at the shared minute</th>
+            <th data-field="same_ahead">vs SPY at the shared minute</th>
+          </tr>
+        </thead>
+        <tbody data-draw="stocks-table"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <details class="gr-notes" id="notes">
+    <summary>How to read this page</summary>
+    <ul>
+      <li>Each run has its own speed, so runs reach different market minutes. The fair comparison is the "shared minute": the latest market minute that every run still in the race has reached.</li>
+      <li>First version: golden rule only. Second version: golden rule plus "spread the risk" and "trade rarely".</li>
+      <li>Every buy and every sell costs 0.05%. News is shown to the AI only from the minute it was published.</li>
+      <li>Status: running means answers are still arriving; finished means it reached the last minute of the test; stopped means it was taken out of the race.</li>
+      <li>Crypto times are UTC. Stock times are New York time, and nights and weekends are left out of the stock chart.</li>
+    </ul>
+  </details>
+</div>
+
+<script>
+  // Shared helpers for both markets. Everything the data decides is drawn inside dash.draw.
+  window.GR = window.GR || { hidden: { crypto: new Set(), stocks: new Set() }, show: { crypto: 'both', stocks: 'both' } };
+  GR.money = d3.format('$,.2f');
+  GR.signed = (v) => (v == null || isNaN(v)) ? '—' : (v >= 0 ? '+' : '−') + d3.format('$,.2f')(Math.abs(v));
+  GR.parse = d3.utcParse('%Y-%m-%d %H:%M');
+  GR.speeds = [1, 2, 3, 4, 5, 10, 15, 30, 60];
+  GR.color = (every) => {
+    const i = GR.speeds.indexOf(+every);
+    return (dash.colors && dash.colors[i]) || 'var(--color-fg-muted)';
+  };
+
+  // One row per run: where it has reached, and its money at the latest minute that all runs still in the race share.
+  GR.summarize = (rows) => {
+    const byRun = d3.group(rows, (r) => r.run);
+    const inRace = [...byRun.values()].filter((rs) => rs[0].status !== 'stopped');
+    let shared = null;
+    for (const rs of inRace) {
+      const times = new Set(rs.map((r) => r.time));
+      shared = shared === null ? times : new Set([...shared].filter((t) => times.has(t)));
+    }
+    const sameTime = shared && shared.size ? d3.max([...shared]) : null;
+    const out = [];
+    for (const [run, rs] of byRun) {
+      const sorted = rs.slice().sort((a, b) => d3.ascending(a.time, b.time));
+      const last = sorted[sorted.length - 1];
+      const at = sameTime ? sorted.find((r) => r.time === sameTime) : null;
+      out.push({
+        run, version: last.version, every: +last.every, status: last.status,
+        decisions: sorted.length - (last.status === 'finished' ? 1 : 0),
+        upto: last.time, money: +last.money, bench: +last.bench, ahead: +last.money - +last.bench,
+        same_time: sameTime,
+        same_money: at ? +at.money : null,
+        same_ahead: at ? +at.money - +at.bench : null,
+      });
+    }
+    return out.sort((a, b) => d3.descending(a.same_money ?? -1, b.same_money ?? -1) || d3.ascending(a.run, b.run));
+  };
+  GR.leader = (runs) => {
+    const best = runs.filter((r) => r.same_money != null && r.status !== 'stopped')
+      .sort((a, b) => d3.descending(a.same_money, b.same_money))[0];
+    return best ? [{ run: best.run, same_time: best.same_time, same_money: best.same_money, same_ahead: best.same_ahead }] : [];
+  };
+</script>
+
+<script>
+  dash.calc('crypto_runs', {
+    inputs: ['crypto'],
+    title: 'Crypto runs: latest and shared-minute money',
+    description: 'For each crypto run: where it has reached, its money there, and its money at the latest minute all runs still in the race share.',
+    fn: (crypto) => GR.summarize(crypto),
+  });
+  dash.calc('crypto_leader', {
+    inputs: ['crypto_runs'],
+    title: 'Crypto leader at the shared minute',
+    description: 'The crypto run with the most money at the latest minute all runs still in the race share.',
+    fn: (cryptoRuns) => GR.leader(cryptoRuns),
+  });
+  dash.calc('stocks_runs', {
+    inputs: ['stocks'],
+    title: 'Stock runs: latest and shared-minute money',
+    description: 'For each stock run: where it has reached, its money there, and its money at the latest minute all runs still in the race share.',
+    fn: (stocks) => GR.summarize(stocks),
+  });
+  dash.calc('stocks_leader', {
+    inputs: ['stocks_runs'],
+    title: 'Stock leader at the shared minute',
+    description: 'The stock run with the most money at the latest minute all runs still in the race share.',
+    fn: (stocksRuns) => GR.leader(stocksRuns),
+  });
+</script>
+
+<script>
+  // Sentence fields.
+  for (const m of ['crypto', 'stocks']) {
+    const f = {
+      'same-time': (r) => r.same_time,
+      'leader-run': (r) => r.run,
+      'leader-money': (r) => GR.money(r.same_money),
+      'leader-ahead': (r) => GR.signed(r.same_ahead),
+    };
+    for (const [k, fmt] of Object.entries(f)) {
+      dash.draw(`${m}-${k}`, (el) => {
+        const d = dash.data(`${m}_leader`);
+        el.textContent = d.status === 'ok' && d.data && d.data[0] ? fmt(d.data[0]) : '—';
+      });
+    }
+  }
+
+  // Tables, which double as the charts' legends: click a row to hide or show its line.
+  for (const m of ['crypto', 'stocks']) {
+    dash.draw(`${m}-table`, (tb) => {
+      const d = dash.data(`${m}_runs`);
+      tb.replaceChildren();
+      if (d.status !== 'ok') {
+        const tr = document.createElement('tr');
+        const td = document.createElement('td');
+        td.colSpan = 8;
+        td.textContent = d.status === 'error' ? 'These numbers failed to load.' : 'Loading…';
+        tr.append(td);
+        tb.append(tr);
+        return;
+      }
+      for (const r of d.data) {
+        const tr = document.createElement('tr');
+        tr.dataset.key = r.run;
+        tr.classList.toggle('is-off', GR.hidden[m].has(r.run));
+        const name = document.createElement('td');
+        const sw = document.createElement('span');
+        sw.className = 'gr-sw' + (r.version === 'First' ? ' is-dash' : '');
+        sw.style.borderTopColor = GR.color(r.every);
+        name.append(sw, document.createTextNode(' '), document.createTextNode(r.run));
+        const st = document.createElement('td');
+        const pill = document.createElement('span');
+        pill.className = 'gr-pill is-' + r.status;
+        pill.textContent = r.status;
+        st.append(pill);
+        const cells = [
+          d3.format(',')(r.decisions), r.upto, GR.money(r.money), GR.signed(r.ahead),
+          r.same_money == null ? (r.status === 'stopped' ? 'stopped earlier' : '—') : GR.money(r.same_money),
+          GR.signed(r.same_ahead),
+        ].map((t, i) => {
+          const td = document.createElement('td');
+          td.textContent = t;
+          if (i === 3) td.classList.add(r.ahead >= 0 ? 'is-good' : 'is-bad');
+          if (i === 5 && r.same_ahead != null) td.classList.add(r.same_ahead >= 0 ? 'is-good' : 'is-bad');
+          return td;
+        });
+        tr.append(name, st, ...cells);
+        tr.tabIndex = 0;
+        const toggle = () => {
+          const h = GR.hidden[m];
+          h.has(r.run) ? h.delete(r.run) : h.add(r.run);
+          tr.classList.toggle('is-off', h.has(r.run));
+          dash.draw(`${m}-chart`);
+        };
+        tr.addEventListener('click', toggle);
+        tr.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); } });
+        tb.append(tr);
+      }
+    });
+  }
+</script>
+
+<script>
+  // The two charts: money over market time, zoomable and draggable along time.
+  (function () {
+    const TRADING_DAY = 390;  // stock minutes per day, 9:30-16:00
+
+    function stockIndex(rows) {
+      const days = [...new Set(rows.map((r) => r.time.slice(0, 10)))].sort();
+      const di = new Map(days.map((d, i) => [d, i]));
+      const ix = (t) => di.get(t.slice(0, 10)) * TRADING_DAY + (+t.slice(11, 13) * 60 + +t.slice(14, 16) - 570);
+      const label = (i) => {
+        const day = days[Math.max(0, Math.min(days.length - 1, Math.floor(i / TRADING_DAY)))];
+        const min = Math.round(i - Math.floor(i / TRADING_DAY) * TRADING_DAY) + 570;
+        return { day, hm: `${String(Math.floor(min / 60)).padStart(2, '0')}:${String(min % 60).padStart(2, '0')}`, start: min === 570 };
+      };
+      return { ix, label };
+    }
+
+    function stockTicks(x, width) {
+      const [a, b] = x.domain();
+      const want = Math.max(2, Math.floor(width / 90));
+      const steps = [1, 5, 10, 15, 30, 60, 130, 390, 780, 1950, 3900];
+      const step = steps.find((s) => (b - a) / s <= want) || 3900;
+      const out = [];
+      if (step >= 390) {
+        for (let i = Math.ceil(a / step) * step; i <= b; i += step) out.push(i);
+      } else {
+        for (let d = Math.floor(a / 390); d * 390 <= b; d++) {
+          for (let m = 0; m < 390; m += step) { const i = d * 390 + m; if (i >= a && i <= b) out.push(i); }
+        }
+      }
+      return out;
+    }
+
+    function chart(market) {
+      const benchName = market === 'crypto' ? 'Bitcoin' : 'SPY';
+      return {
+        mount(el) {
+          el.replaceChildren();
+          const tools = document.createElement('div');
+          tools.className = 'gr-tools';
+          const mk = (label, title) => {
+            const b = document.createElement('button');
+            b.type = 'button'; b.className = 'gr-btn'; b.textContent = label; b.setAttribute('aria-label', title);
+            tools.append(b); return b;
+          };
+          const st = { t: d3.zoomIdentity, el };
+          st.zin = mk('Zoom in +', 'Zoom in');
+          st.zout = mk('Zoom out −', 'Zoom out');
+          st.reset = mk('All time', 'Show all time');
+          st.latest = mk('Latest hours', 'Zoom to the latest hours');
+          st.vb = {};
+          for (const [k, lab] of [['both', 'Both versions'], ['First', 'First version'], ['Second', 'Second version']]) {
+            st.vb[k] = mk(lab, `Show ${lab.toLowerCase()}`);
+            st.vb[k].addEventListener('click', () => { GR.show[market] = k; dash.draw(`${market}-chart`); });
+          }
+          st.note = document.createElement('span');
+          st.note.className = 'gr-zoomnote';
+          tools.append(st.note);
+          st.svg = d3.select(el).append('svg').attr('class', 'gr-svg').attr('role', 'img');
+          st.tip = document.createElement('div');
+          st.tip.className = 'gr-tip';
+          st.tip.hidden = true;
+          el.append(tools, st.svg.node(), st.tip);
+          el.insertBefore(tools, st.svg.node());
+          st.zoom = d3.zoom()
+            .scaleExtent([1, 3000])
+            .filter((e) => {
+              if (e.type === 'wheel') return e.ctrlKey || e.metaKey;
+              if (e.type.startsWith('touch')) return e.touches && e.touches.length > 1;
+              return !e.button;
+            })
+            .on('zoom', (e) => { st.t = e.transform; st.render && st.render(); });
+          st.zin.addEventListener('click', () => st.svg.call(st.zoom.scaleBy, 2));
+          st.zout.addEventListener('click', () => st.svg.call(st.zoom.scaleBy, 0.5));
+          st.reset.addEventListener('click', () => st.svg.call(st.zoom.transform, d3.zoomIdentity));
+          st.latest.addEventListener('click', () => {
+            if (!st.x0) return;
+            const k = 12;                             // the last twelfth of the test, right edge kept in place
+            const r1 = st.x0.range()[1];
+            st.svg.call(st.zoom.transform, d3.zoomIdentity.translate(r1 * (1 - k), 0).scale(k));
+          });
+          return st;
+        },
+
+        update(el, st) {
+          const d = dash.data(market);
+          for (const [k, b] of Object.entries(st.vb)) b.setAttribute('aria-pressed', String(GR.show[market] === k));
+          if (d.status !== 'ok' || !d.data.length) {
+            st.svg.selectAll('*').remove();
+            st.svg.attr('height', 0);
+            st.note.textContent = d.status === 'error' ? 'This chart failed to load.' : d.status === 'ok' ? 'No answers yet.' : 'Loading…';
+            return;
+          }
+          const rows = d.data;
+          const si = market === 'stocks' ? stockIndex(rows) : null;
+          const X = (t) => si ? si.ix(t) : GR.parse(t);
+          const series = [...d3.group(rows, (r) => r.run)].map(([run, rs]) => ({
+            run, version: rs[0].version, every: +rs[0].every,
+            pts: rs.map((r) => ({ x: X(r.time), t: r.time, y: +r.money })).sort((a, b) => d3.ascending(a.x, b.x)),
+          }));
+          const benchMap = new Map();
+          for (const r of rows) benchMap.set(r.time, +r.bench);
+          const bench = [...benchMap].map(([t, y]) => ({ x: X(t), t, y })).sort((a, b) => d3.ascending(a.x, b.x));
+          const shown = series.filter((s) => !GR.hidden[market].has(s.run) && (GR.show[market] === 'both' || GR.show[market] === s.version));
+
+          const width = Math.max(280, el.clientWidth);
+          const height = Math.round(Math.min(480, Math.max(320, width * 0.55)));
+          const m = { t: 10, r: Math.min(150, Math.round(width * 0.26)), b: 28, l: 52 };
+          const all = series.flatMap((s) => s.pts).concat(bench);
+          const x0 = (si ? d3.scaleLinear() : d3.scaleUtc()).domain(d3.extent(all, (p) => p.x)).range([m.l, width - m.r]);
+          st.x0 = x0;
+          st.zoom.extent([[m.l, 0], [width - m.r, height]]).translateExtent([[m.l, -Infinity], [width - m.r, Infinity]]);
+          st.svg.attr('viewBox', `0 0 ${width} ${height}`).attr('height', height)
+            .attr('aria-label', `${market === 'crypto' ? 'Crypto' : 'Stock'} runs' money over market time against holding ${benchName}`);
+          st.svg.call(st.zoom);
+          st.svg.on('dblclick.zoom', null);
+
+          const svg = st.svg;
+          svg.selectAll('*').remove();
+          const clipId = `gr-clip-${market}`;
+          svg.append('defs').append('clipPath').attr('id', clipId).append('rect')
+            .attr('x', m.l).attr('y', 0).attr('width', width - m.l - m.r).attr('height', height - m.b);
+          const gGrid = svg.append('g');
+          const gX = svg.append('g').attr('transform', `translate(0,${height - m.b})`);
+          const gY = svg.append('g').attr('transform', `translate(${m.l},0)`);
+          const gLines = svg.append('g').attr('clip-path', `url(#${clipId})`);
+          const gBase = gLines.append('line').style('stroke', 'var(--cds-chart-reference)').style('stroke-dasharray', '2 3');
+          const gLab = svg.append('g');
+          const cross = svg.append('line').style('stroke', 'var(--cds-chart-axis)').attr('y1', m.t).attr('y2', height - m.b).style('display', 'none');
+          const overlay = svg.append('rect').attr('x', m.l).attr('y', m.t).attr('width', width - m.l - m.r).attr('height', height - m.t - m.b)
+            .style('fill', 'transparent');
+
+          const fmtUtc = (dt) => (dt.getUTCHours() === 0 && dt.getUTCMinutes() === 0) ? d3.utcFormat('%-d %b')(dt) : d3.utcFormat('%H:%M')(dt);
+
+          st.render = () => {
+            const x = st.t.rescaleX(x0);
+            const [a, b] = x.domain();
+            const inView = (p) => p.x >= a && p.x <= b;
+            const vis = shown.flatMap((s) => s.pts.filter(inView)).concat(bench.filter(inView));
+            const ext = d3.extent(vis.length ? vis : all, (p) => p.y);
+            const pad = Math.max(2, (ext[1] - ext[0]) * 0.08);
+            const y = d3.scaleLinear().domain([ext[0] - pad, ext[1] + pad]).nice().range([height - m.b, m.t]);
+
+            if (si) {
+              const ticks = stockTicks(x, width - m.l - m.r);
+              gX.call(d3.axisBottom(x).tickValues(ticks).tickSizeOuter(0).tickFormat((i) => {
+                const l = si.label(i);
+                return l.start || (b - a) > 390 * 2 ? d3.utcFormat('%-d %b')(GR.parse(l.day + ' 00:00')) : l.hm;
+              }));
+            } else {
+              gX.call(d3.axisBottom(x).ticks(Math.max(2, Math.floor((width - m.l - m.r) / 90))).tickSizeOuter(0).tickFormat(fmtUtc));
+            }
+            gY.call(d3.axisLeft(y).ticks(6).tickFormat(d3.format('$,.0f')).tickSizeOuter(0));
+            gGrid.selectAll('line').data(y.ticks(6)).join('line')
+              .attr('x1', m.l).attr('x2', width - m.r).attr('y1', (v) => y(v)).attr('y2', (v) => y(v))
+              .style('stroke', 'var(--cds-chart-grid)');
+            gBase.attr('x1', m.l).attr('x2', width - m.r).attr('y1', y(1000)).attr('y2', y(1000));
+
+            const line = d3.line().x((p) => x(p.x)).y((p) => y(p.y));
+            gLines.selectAll('path.gr-run').data(shown, (s) => s.run).join('path').attr('class', 'gr-run')
+              .attr('d', (s) => line(s.pts))
+              .style('fill', 'none').style('stroke', (s) => GR.color(s.every))
+              .style('stroke-width', 1.6).style('stroke-dasharray', (s) => s.version === 'First' ? '5 3' : null)
+              .style('stroke-linejoin', 'round');
+            gLines.selectAll('path.gr-bench').data([bench]).join('path').attr('class', 'gr-bench')
+              .attr('d', line).style('fill', 'none').style('stroke', 'var(--color-fg)').style('stroke-width', 3)
+              .style('stroke-linejoin', 'round');
+
+            // End labels: the benchmark and the three highest runs at the right edge of the view.
+            const valueAt = (pts, xv) => { const i = d3.bisector((p) => p.x).right(pts, xv) - 1; return i >= 0 ? pts[i] : null; };
+            const right = Math.min(b, d3.max(all, (p) => p.x));
+            const labs = shown.map((s) => ({ s, p: valueAt(s.pts, right) })).filter((o) => o.p && o.p.x >= a)
+              .sort((p, q) => d3.descending(p.p.y, q.p.y)).slice(0, 3)
+              .map((o) => ({ text: `${o.s.version === 'First' ? '1st' : '2nd'} every ${o.s.every}: ${d3.format('$,.0f')(o.p.y)}`, y: y(o.p.y), color: GR.color(o.s.every), bold: false }));
+            const bp = valueAt(bench, right);
+            if (bp && bp.x >= a) labs.push({ text: `${benchName}: ${d3.format('$,.0f')(bp.y)}`, y: y(bp.y), color: 'var(--color-fg)', bold: true });
+            labs.sort((p, q) => p.y - q.y);
+            for (let i = 1; i < labs.length; i++) if (labs[i].y - labs[i - 1].y < 13) labs[i].y = labs[i - 1].y + 13;
+            gLab.selectAll('text').data(labs).join('text')
+              .attr('x', width - m.r + 6).attr('y', (l) => l.y).attr('dy', '0.32em')
+              .style('font-size', 'var(--cds-font-size-caption)').style('font-family', 'var(--font-anthropic-sans)')
+              .style('font-weight', (l) => l.bold ? 'var(--cds-font-weight-medium)' : null)
+              .style('fill', 'var(--color-fg)').text((l) => l.text);
+            gLab.selectAll('rect').data(labs).join('rect')
+              .attr('x', width - m.r + 1).attr('y', (l) => l.y - 1.5).attr('width', 4).attr('height', 3)
+              .style('fill', (l) => l.color);
+
+            const zoomK = st.t.k;
+            st.note.textContent = zoomK > 1.01 ? `Zoom ×${d3.format('.1f')(zoomK)}` : 'All time';
+
+            overlay.on('pointermove', (e) => {
+              const [px] = d3.pointer(e);
+              const xv = x.invert(px);
+              cross.style('display', null).attr('x1', px).attr('x2', px);
+              const items = shown.map((s) => ({ s, p: valueAt(s.pts, xv) })).filter((o) => o.p)
+                .sort((p, q) => d3.descending(p.p.y, q.p.y));
+              const bpt = valueAt(bench, xv);
+              const tip = st.tip;
+              tip.replaceChildren();
+              const head = document.createElement('div');
+              head.className = 'gr-tip-time';
+              head.textContent = bpt ? `${bpt.t} ${market === 'crypto' ? 'UTC' : 'New York'}` : '';
+              tip.append(head);
+              for (const o of items.slice(0, 10)) {
+                const row = document.createElement('div');
+                row.className = 'gr-tip-row';
+                const sw = document.createElement('span');
+                sw.className = 'gr-sw' + (o.s.version === 'First' ? ' is-dash' : '');
+                sw.style.borderTopColor = GR.color(o.s.every);
+                const nm = document.createElement('span');
+                nm.textContent = `${o.s.version === 'First' ? '1st' : '2nd'} version, every ${o.s.every}`;
+                const v = document.createElement('span');
+                v.textContent = GR.money(o.p.y);
+                row.append(sw, nm, v);
+                tip.append(row);
+              }
+              if (items.length > 10) {
+                const more = document.createElement('div');
+                more.textContent = `+ ${items.length - 10} more lower`;
+                more.style.color = 'var(--cds-text-secondary)';
+                tip.append(more);
+              }
+              if (bpt) {
+                const row = document.createElement('div');
+                row.className = 'gr-tip-row gr-tip-bench';
+                const sw = document.createElement('span');
+                sw.className = 'gr-sw';
+                sw.style.borderTopColor = 'var(--color-fg)';
+                const nm = document.createElement('span');
+                nm.textContent = `Holding ${benchName}`;
+                const v = document.createElement('span');
+                v.textContent = GR.money(bpt.y);
+                row.append(sw, nm, v);
+                tip.append(row);
+              }
+              tip.hidden = false;
+              const box = el.getBoundingClientRect();
+              const svgBox = st.svg.node().getBoundingClientRect();
+              const scale = svgBox.width / width;
+              const left = svgBox.left - box.left + px * scale;
+              const tw = tip.offsetWidth;
+              const top = svgBox.top - box.top + 12;
+              tip.style.left = `${Math.max(0, Math.min(box.width - tw, left + 14 + tw > box.width ? left - tw - 14 : left + 14))}px`;
+              tip.style.top = `${top}px`;
+            }).on('pointerleave', () => { cross.style('display', 'none'); st.tip.hidden = true; });
+          };
+          st.render();
+        },
+
+        unmount(el, st) { if (st && st.svg) st.svg.on('.zoom', null); },
+      };
+    }
+
+    dash.draw('crypto-chart', chart('crypto'));
+    dash.draw('stocks-chart', chart('stocks'));
+  })();
+</script>
