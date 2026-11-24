@@ -37,6 +37,8 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 MODEL = os.environ.get("MODEL", "nvidia/nemotron-3.5-bolt-e4b")
 API_URL = os.environ.get("API_URL", "https://integrate.api.nvidia.com/v1/chat/completions")   # or Cerebras
 MAX_TOKENS = int(os.environ.get("MAX_TOKENS", "160"))
+NO_THINK = os.environ.get("THINKING") == "off"         # Nemotron: answer without the long reasoning (about 14x faster)
+EXTRA = {"chat_template_kwargs": {"enable_thinking": False}} if NO_THINK else {}
 STEP = int(os.environ.get("STEP_MIN", "1"))  # 1-minute or 2-minute steps
 EVERY = int(os.environ.get("DECIDE_EVERY", "1"))   # sees every 1-minute bar, decides on every EVERY-th one
 TAG = f"_{STEP}m" + (f"_every{EVERY}" if EVERY > 1 else "") + (f"_{os.environ['VERSION']}" if os.environ.get("VERSION") else "") \
@@ -111,7 +113,7 @@ class Server:
 def ask(user):
     body = json.dumps({"model": MODEL, "messages": [{"role": "system", "content": SYSTEM},
                                                     {"role": "user", "content": user}],
-                       "temperature": 0, "max_tokens": MAX_TOKENS}).encode()
+                       "temperature": 0, "max_tokens": MAX_TOKENS, **EXTRA}).encode()
     last, limited = None, [0]
     k = 0
     while k < 8:
@@ -126,7 +128,7 @@ def ask(user):
                 body = json.dumps({"model": MODEL, "messages": [
                     {"role": "system", "content": SYSTEM},
                     {"role": "user", "content": user + "\n\nKeep your reasoning short and give the answer form now."}],
-                    "temperature": 0, "max_tokens": max(MAX_TOKENS, 6000)}).encode()
+                    "temperature": 0, "max_tokens": max(MAX_TOKENS, 6000), **EXTRA}).encode()
                 continue
             return text
         except urllib.error.HTTPError as e:
