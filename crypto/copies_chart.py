@@ -34,7 +34,32 @@ def main():
     ot, ov, ob = load("ultrafast")
     res = json.load(open(os.path.join(HERE, "result_1m_every60_v4a_ultrafast.json")))   # true final values at 20:59
     ot, ov, ob = ot + [datetime(2026, 11, 23, 20, 59)], ov + [res["ai"]["value"]], ob + [res["btc_hold"]["value"]]
-    fig, axes = plt.subplots(2, 1, figsize=(13, 10), facecolor=SURF, sharex=True, sharey=True)
+    fig, axes = plt.subplots(3, 1, figsize=(13, 14), facecolor=SURF, sharex=True,
+                             gridspec_kw={"height_ratios": [2, 2, 1.6]})
+    axes[1].sharey(axes[0])
+    orig = dict(zip(ot, ov))
+    gap_ax = axes[2]
+    gap_ends = []
+    for key, style in ((1, "-"), (2, (0, (4, 2)))):
+        for c in range(1, 6):
+            t, v, _ = load(f"ultrafast_k{key}c{c}")
+            pts = [(tt, vv - orig[tt]) for tt, vv in zip(t, v) if tt in orig]
+            if not pts:
+                continue
+            gap_ax.plot([p[0] for p in pts], [p[1] for p in pts], color=SLOTS[c - 1], lw=2, ls=style,
+                        label=f"{'first' if key == 1 else 'second'} key, copy {c}")
+            gap_ends.append([pts[-1][1], pts[-1][1], f"k{key} c{c}", pts[-1][0]])
+    gap_ends.sort()
+    for j in range(1, len(gap_ends)):
+        gap_ends[j][1] = max(gap_ends[j][1], gap_ends[j - 1][1] + 5)
+    for y, yl, name, tt in gap_ends:
+        gap_ax.annotate(f"{name} {y:+.0f}", (tt, y), xytext=(6, yl - y), textcoords="offset points", fontsize=8,
+                        color=INK2, va="center")
+    gap_ax.axhline(0, color=INK2, lw=1.5)
+    gap_ax.set_title("Gap from the original run at the same hour (0 = made the same choices; anything else = luck of the AI)",
+                     loc="left", fontsize=12, color=INK, weight="bold")
+    gap_ax.set_ylabel("Copy minus original ($)", color=INK2, fontsize=9)
+    gap_ax.legend(loc="lower left", fontsize=7, frameon=False, ncol=5)
     for ax, key, title in ((axes[0], 1, "first key"), (axes[1], 2, "second key")):
         ax.plot(ot, ob, color=INK, lw=2, ls=(0, (4, 3)), label="Holding Bitcoin")
         ax.plot(ot, ov, color="#898781", lw=3, alpha=0.6, label="Original run (finished)")
@@ -63,8 +88,15 @@ def main():
             ax.spines[s].set_color(GRID)
         ax.tick_params(colors=INK2, labelsize=8)
         ax.legend(loc="lower left", fontsize=8, frameon=False, ncol=4)
-    axes[1].xaxis.set_major_formatter(mdates.DateFormatter("%d %b %H:%M"))
-    axes[1].set_xlabel("Market time (UTC); copies end where they have reached so far", color=INK2, fontsize=9)
+    for s_ in ("top", "right"):
+        gap_ax.spines[s_].set_visible(False)
+    for s_ in ("left", "bottom"):
+        gap_ax.spines[s_].set_color(GRID)
+    gap_ax.grid(axis="y", color=GRID, lw=1)
+    gap_ax.set_facecolor(SURF)
+    gap_ax.tick_params(colors=INK2, labelsize=8)
+    axes[2].xaxis.set_major_formatter(mdates.DateFormatter("%d %b %H:%M"))
+    axes[2].set_xlabel("Market time (UTC); copies end where they have reached so far", color=INK2, fontsize=9)
     fig.tight_layout()
     out = os.path.join(HERE, "copies_chart.png")
     fig.savefig(out, dpi=110, facecolor=SURF)
