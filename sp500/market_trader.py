@@ -30,6 +30,7 @@ from collections import defaultdict
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 MODEL = os.environ.get("MODEL", "nvidia/nemotron-3.5-bolt-e4b")
+API_URL = os.environ.get("API_URL", "https://integrate.api.nvidia.com/v1/chat/completions")   # or Cerebras
 MAX_TOKENS = int(os.environ.get("MAX_TOKENS", "160"))
 STEP = int(os.environ.get("STEP_MIN", "5"))  # 5-minute or 2-minute steps
 TAG = ("" if STEP == 5 else f"_{STEP}m") + (f"_{os.environ['VERSION']}" if os.environ.get("VERSION") else "") \
@@ -106,7 +107,7 @@ def ask(user):
     last = None
     for k in range(8):
         try:
-            req = urllib.request.Request("https://integrate.api.nvidia.com/v1/chat/completions", data=body,
+            req = urllib.request.Request(API_URL, data=body,
                                          headers={"Authorization": "Bearer proxy-injected",
                                                   "Content-Type": "application/json"})
             j = json.load(urllib.request.urlopen(req, timeout=300))
