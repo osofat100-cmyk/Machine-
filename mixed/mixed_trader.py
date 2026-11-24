@@ -44,6 +44,7 @@ W_FILE = os.path.join(HERE, f"watcher_{TAG}.csv")
 D_FILE = os.path.join(HERE, f"decider_{TAG}.csv")
 HOUR, DAY, WARMUP = 60, 1440, 61
 SLOTS = 10
+COOLDOWN = 15                                     # minutes before the watcher may wake the decider again
 
 RULES = (
     "THE ACCOUNT: $1,000 practice money. It can hold coins (the 100 largest cryptocurrencies, symbols ending in -USD, "
@@ -70,6 +71,9 @@ W_SYSTEM = (
     "buy or sell is probably worth considering: for example a holding is above break-even and its rise is turning "
     "down, important news about a holding or the whole market, empty slots or idle cash, or a rare opportunity. "
     "Do not wake it for ordinary wiggles or unimportant headlines - most minutes the answer is no.\n"
+    "Every wake costs the team about 5 minutes. The decider writes down what it is waiting for (THE DECIDER'S "
+    "CONDITIONS below). Wake it only when one of those conditions has actually been met, or when something new and "
+    "important has happened that it has not seen yet. Never wake it again for the same situation it already declined.\n"
     "End with one line: 'WAKE: YES - <short reason>' or 'WAKE: NO'.")
 
 D_SYSTEM = (
@@ -265,6 +269,7 @@ def main():
     entries, highs, pending, orders = {}, {}, [], {}
     w_notes, d_notes, news_since_wake = [], [], []
     i_w, n_wake, t0, btc_sent, spy_sent, last_dec = 0, 0, time.time(), False, False, "none yet"
+    last_wake = None
     with Server() as srv:
         while True:
             out = srv.next(orders)
@@ -311,6 +316,11 @@ def main():
                 if refused:
                     L.append("ORDERS REFUSED LAST MINUTE: " + "; ".join(f"{o['action']} {o['symbol']} ({o['why']})" for o in refused))
                 L.append(f"THE DECIDER'S LAST DECISION: {last_dec}")
+                if d_notes:
+                    L.append(f"THE DECIDER'S CONDITIONS (what it is waiting for, in its own words): {d_notes[-1][1]}")
+                if last_wake is not None and i_w - last_wake < COOLDOWN:
+                    L.append(f"(The decider was woken {i_w - last_wake} minute(s) ago; it cannot be woken again for "
+                             f"{COOLDOWN - (i_w - last_wake)} more minute(s) unless a holding has important news.)")
                 if w_notes:
                     L.append("YOUR LAST NOTES:")
                     L += [f"- {t}: {x}" for t, x in w_notes[-5:]]
@@ -321,6 +331,9 @@ def main():
                              temperature=0)
                 m = re.search(r"WAKE\s*:\s*(YES|NO)", wtext, re.I)
                 wake = bool(m and m.group(1).upper() == "YES") or i_w == 0
+                if wake and i_w > 0 and last_wake is not None and i_w - last_wake < COOLDOWN and \
+                        not any(h.split("-")[0] in n["title"].upper() for n in out["news"] for h in held):
+                    wake = False                             # too soon after the last wake, and no news on a holding
                 ww.writerow({"time": st["time"], "wake": int(wake), "text": wtext.replace("\n", " / ")[:900],
                              "seconds": f"{time.time() - t1:.2f}", "value": f"{acc.get('value', 1000.0):.2f}",
                              "btc_hold": f"{accs.get('btc_hold', {}).get('value', 1000.0):.2f}",
@@ -335,6 +348,7 @@ def main():
                       f"watcher answers {i_w}, wakes {n_wake} [{time.time() - t0:.0f}s]", flush=True)
             if not wake:
                 continue
+            last_wake = i_w - 1
             # ---- the decider, only when woken ----
             n_wake += 1
             if st["time"] in d_by_time:
