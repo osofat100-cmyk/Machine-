@@ -47,8 +47,10 @@ ANSWERS = os.path.join(HERE, f"answers{TAG}.csv")
 HOUR = 60 // STEP                             # steps in one hour
 DAY = 24 * HOUR                               # steps in 24 hours
 BENCH = "BTC-USD"
-FULL = os.environ.get("VERSION") in ("v3", "v4")   # all money invested, 10 coins at all times
-GOLDEN = os.environ.get("VERSION") == "v4"            # version 4: never sell below break-even; buy the dips
+V = os.environ.get("VERSION", "")
+FULL = V in ("v3", "v4", "v4a", "v4b")                # all money invested, 10 coins at all times
+GOLDEN = V in ("v4", "v4a", "v4b")                    # golden rule: never sell below break-even; buy the dips
+GOLDEN_PLUS = V in ("v4", "v4b")                      # second version: + spread the risk, trade rarely
 WARMUP = HOUR + 1                             # first hour of the first day: background only
 
 SYSTEM = (
@@ -64,11 +66,12 @@ SYSTEM = (
        "own dips below its break-even, do not panic: HOLD it until it recovers above break-even. Once a coin is "
        "above its break-even you may SELL it to take the profit, and BUY a coin that has fallen more than average "
        "(see BIGGEST FALLERS last 24 hours) and wait for that one to recover. Repeat.\n"
-       "SPREAD THE RISK: your money is split over 10 coins (about 10% each), so if one coin never recovers only that "
+       + ("SPREAD THE RISK: your money is split over 10 coins (about 10% each), so if one coin never recovers only that "
        "slice is affected - holding a dipped coin is an acceptable risk.\n"
        "TRADE RARELY: keep all the money invested, but do not pull money out of coins often - every sell plus buy "
        "costs 0.10%. Only take a profit when the gain is clearly bigger than that cost. Most decisions should be NONE.\n"
-       if os.environ.get("VERSION") == "v4" else
+          if GOLDEN_PLUS else "")
+       if GOLDEN else
        "3. Sell high, buy low. Do not keep a falling coin just to avoid taking a loss: the price you paid does not "
        "matter, only where the price goes next.\n") +
     "4. Use only symbols shown to you.\n"
@@ -76,7 +79,7 @@ SYSTEM = (
     "A. Costs: only trade if the move you expect covers the 0.10% round trip AND leaves a profit. If you are not "
     "sure, do nothing. Most minutes the right answer is NONE.\n"
     + ("B. Coins below break-even cannot be sold (the system will refuse). Coins above break-even: take the profit "
-       "when the rise has clearly turned down from its high, or hold if still rising.\n" if os.environ.get("VERSION") == "v4" else
+       "when the rise has clearly turned down from its high, or hold if still rising.\n" if GOLDEN else
        "B. Ride spikes: when a coin you own is rising, keep it. Do not sell just because it went up - it may keep "
        "going, and buying it back later costs more. Sell only when it has clearly turned down from its high since you "
        "bought it (see 'below its high' in YOUR HOLDINGS). Never sell a coin and buy the same coin back soon after.\n") +
@@ -86,7 +89,7 @@ SYSTEM = (
     "just because a headline appeared.\n"
     + ("E. ALL THE MONEY MUST STAY INVESTED. Hold 10 coins at all times; each BUY splits the remaining cash evenly "
        "over your empty slots. If you SELL a coin, BUY a replacement in the same answer. While you have empty "
-       "slots, BUY coins to fill them.\n" if os.environ.get("VERSION") == "v3" else "") +
+       "slots, BUY coins to fill them.\n" if FULL else "") +
     "Before deciding, answer the checklist. Keep a plan: your notebook shows your last notes.\n"
     "Answer in exactly this form, one line each:\n"
     "MARKET: UP, DOWN or FLAT\n"
@@ -94,7 +97,7 @@ SYSTEM = (
     "RISK: LOW, MEDIUM or HIGH\n"
     "NOTE: a note to yourself for the next steps (under 25 words)\n"
     "ACTIONS: up to 3 of 'BUY SYMBOL' or 'SELL SYMBOL' separated by ';', or NONE"
-    + (" (to fill empty slots you may list more BUYs)" if os.environ.get("VERSION") == "v3" else ""))
+    + (" (to fill empty slots you may list more BUYs)" if FULL else ""))
 
 
 class Server:
