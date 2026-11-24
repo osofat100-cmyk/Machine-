@@ -19,6 +19,8 @@ again replays saved answers and continues from where it stopped.
     STEP_MIN=1 VERSION=v4b DECIDE_EVERY=5 MODEL_TAG=ultrafast THINKING=off MAX_TOKENS=1500 python3 sp500/golden_trader.py
 """
 import csv
+import fcntl
+import random
 import http.client
 import json
 import os
@@ -127,8 +129,30 @@ class Server:
         self.proc.wait(timeout=30)
 
 
+RPM = int(os.environ.get("RPM", "36"))                 # all stock runs together stay under the key's per-minute limit
+RATE_FILE = os.path.join(HERE, "golden", ".requests")
+
+
+def throttle():
+    """Shared by every stock run: wait until fewer than RPM requests were sent in the last 60 seconds."""
+    while True:
+        with open(RATE_FILE, "a+") as f:
+            fcntl.flock(f, fcntl.LOCK_EX)
+            f.seek(0)
+            now = time.time()
+            sent = [float(x) for x in f.read().split() if now - float(x) < 60]
+            if len(sent) < RPM:
+                f.seek(0)
+                f.truncate()
+                f.write(" ".join(f"{x:.3f}" for x in sent + [now]))
+                return
+            wait = 60 - (now - min(sent)) + random.random()
+        time.sleep(wait)
+
+
 def call(payload):
     """One request through NVIDIA's second address; long jobs come back as 202 and are polled until done."""
+    throttle()
     req = urllib.request.Request(API_URL, data=json.dumps({"requestHeader": {}, "requestBody": payload}).encode(),
                                  headers={"Authorization": "Bearer proxy-injected", "Content-Type": "application/json",
                                           "Accept": "application/json"})
@@ -164,10 +188,10 @@ def ask(user):
             return text
         except urllib.error.HTTPError as e:
             last = e
-            if e.code == 429:                                # over the free per-minute limit: wait and retry
-                wait = float(e.headers.get("retry-after") or 0) or 15.0
-                time.sleep(min(120.0, wait))
+            if e.code == 429:                                # over the free per-minute limit: back off, staggered
                 limited[0] += 1
+                wait = float(e.headers.get("retry-after") or 0) or min(120.0, 15.0 * 2 ** min(limited[0] - 1, 3))
+                time.sleep(wait + random.uniform(0, 10))
                 if limited[0] < 400:
                     k -= 1                                   # a rate-limit wait does not use up a try
                     continue
