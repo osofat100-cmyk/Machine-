@@ -6,6 +6,8 @@ An AI runs a $1,000 practice portfolio of the 100 largest coins (no stablecoins 
 handed out only at its exact publication minute. It holds 10 coins with all the money invested (version 3). The
 yardstick is holding Bitcoin over the same steps (Bitcoin plays the part SPY played for stocks). Because crypto
 never closes, "today" becomes "the last 24 hours" and the stock sectors become size groups (top 10 / 11-30 / 31-100).
+DECIDE_EVERY=2 or 5: the AI still sees every 1-minute bar but decides only every 2nd or 5th minute (news from the
+minutes in between is handed over at the next decision).
 
 Version 3 (VERSION=v3) also keeps ALL the money invested: 10 holdings at all times, each buy splitting the cash
 evenly over the empty slots, and the AI is asked again whenever its answer would leave slots empty.
@@ -36,7 +38,8 @@ MODEL = os.environ.get("MODEL", "nvidia/nemotron-3.5-bolt-e4b")
 API_URL = os.environ.get("API_URL", "https://integrate.api.nvidia.com/v1/chat/completions")   # or Cerebras
 MAX_TOKENS = int(os.environ.get("MAX_TOKENS", "160"))
 STEP = int(os.environ.get("STEP_MIN", "1"))  # 1-minute or 2-minute steps
-TAG = f"_{STEP}m" + (f"_{os.environ['VERSION']}" if os.environ.get("VERSION") else "") \
+EVERY = int(os.environ.get("DECIDE_EVERY", "1"))   # sees every 1-minute bar, decides on every EVERY-th one
+TAG = f"_{STEP}m" + (f"_every{EVERY}" if EVERY > 1 else "") + (f"_{os.environ['VERSION']}" if os.environ.get("VERSION") else "") \
     + (f"_{os.environ['MODEL_TAG']}" if os.environ.get("MODEL_TAG") else "")
 ANSWERS = os.path.join(HERE, f"answers{TAG}.csv")
 HOUR = 60 // STEP                             # steps in one hour
@@ -157,7 +160,8 @@ def build_prompt(hist, sector_of, acc, entries, news_seen, new_news, notes, refu
     first = hist[-DAY] if len(hist) >= DAY else hist[0]                # 24 hours ago (or the earliest seen)
     L = [f"Time: {st['known_at']} UTC (the {STEP}-minute bar from {st['time'][11:]} has just closed)."]
     s = BENCH
-    L.append(f"MARKET (Bitcoin ${c[s]:,.2f}): {STEP} min {pct(c[s], hist[-2]['close'][s]):+.2f}%, 1 hour "
+    k = min(len(hist), STEP * EVERY + 1)
+    L.append(f"MARKET (Bitcoin ${c[s]:,.2f}): {STEP * EVERY} min {pct(c[s], hist[-k]['close'][s]):+.2f}%, 1 hour "
              f"{pct(c[s], hour['close'][s]):+.2f}%, 24 hours {pct(c[s], first['open'][s]):+.2f}%")
     by_sector = defaultdict(list)
     for sym, sec in sector_of.items():
@@ -221,6 +225,7 @@ def main():
         w.writeheader()
     hist, news_seen, notes, entries, orders, n, t0 = [], [], [], {}, {}, 0, time.time()
     sector_of, spy_sent, pending, highs = {}, False, [], {}
+    step_i, news_buffer = 0, []
     with Server() as srv:
         while True:
             out = srv.next(orders)
@@ -233,6 +238,7 @@ def main():
             hist = hist[-(DAY + HOUR):]
             new_news = out["news"]
             news_seen += new_news
+            news_buffer += new_news                          # news from skipped minutes waits for the next decision
             acc = out["accounts"].get("ai", {"value": 1000.0, "cash": 1000.0, "shares": {}, "trades": 0, "costs": 0.0})
             refused_now = out["refused"].get("ai", [])
             for sym in list(highs):
@@ -254,6 +260,10 @@ def main():
             orders, pending = {}, []
             if len(hist) <= WARMUP or out["last_step"]:
                 continue
+            step_i += 1
+            if (step_i - 1) % EVERY:                         # not a decision minute: just watch
+                continue
+            new_news, news_buffer = news_buffer, []
             if not spy_sent:
                 orders["btc_hold"] = [{"action": "BUY", "symbol": BENCH, "all": True}]   # all money into Bitcoin, never sold
                 spy_sent = True
