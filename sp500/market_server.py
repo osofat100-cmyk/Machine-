@@ -18,6 +18,7 @@ import argparse
 import csv
 import json
 import os
+from array import array
 from datetime import datetime, timedelta
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from zoneinfo import ZoneInfo
@@ -32,35 +33,41 @@ NY = ZoneInfo("America/New_York")
 
 
 def load():
+    """Prices are kept as one compact array per stock (open, close, volume for every step) instead of a dict per
+    step: the same numbers handed out, about a tenth of the memory, so many runs fit side by side."""
     with open(os.path.join(FOLDER, "universe.csv"), newline="") as f:
         uni = list(csv.DictReader(f))
     syms = ["SPY"] + [u["symbol"] for u in uni]
-    series = {}
+    with open(os.path.join(FOLDER, BARS, "SPY.csv"), newline="") as f:
+        full = sorted(r["time"] for r in csv.DictReader(f))
+    start = max(START, full[0][:10] if STEP == 1 else START)   # 1-minute bars only exist for the last 30 days
+    grid = [t for t in full if t >= start]
+    on_grid, before = {t: j for j, t in enumerate(grid)}, set(t for t in full if t < start)
+    have, cols = [], {}
+    nan = float("nan")
     for s in syms:
         p = os.path.join(FOLDER, BARS, f"{s}.csv")
-        if os.path.exists(p):
-            with open(p, newline="") as f:
-                series[s] = {r["time"]: r for r in csv.DictReader(f)}
-    grid = sorted(series["SPY"])
-    start = max(START, grid[0][:10] if STEP == 1 else START)   # 1-minute bars only exist for the last 30 days
-    pre = [t for t in grid if t < start]
-    grid = [t for t in grid if t >= start]
-    steps, last = [], {}
-    for s, rows in series.items():
-        before = [t for t in pre if t in rows]
-        if before:
-            last[s] = float(rows[before[-1]]["close"])
-    for t in grid:
-        o, c, v = {}, {}, {}
-        for s, rows in series.items():
-            r = rows.get(t)
-            if r:
-                o[s], c[s], v[s] = float(r["open"]), float(r["close"]), float(r["volume"] or 0)
-                last[s] = c[s]
-            elif s in last:                                  # no trade in this bar: price unchanged
-                o[s], c[s], v[s] = last[s], last[s], 0.0
-        known = (datetime.strptime(t, "%Y-%m-%d %H:%M") + timedelta(minutes=STEP)).strftime("%Y-%m-%d %H:%M")
-        steps.append({"time": t, "known_at": known, "open": o, "close": c, "volume": v})
+        if not os.path.exists(p):
+            continue
+        o, c, v = array("d", [nan]) * len(grid), array("d", [nan]) * len(grid), array("d", [0.0]) * len(grid)
+        last_t, last = None, None
+        with open(p, newline="") as f:
+            for r in csv.DictReader(f):
+                t = r["time"]
+                j = on_grid.get(t)
+                if j is not None:
+                    o[j], c[j], v[j] = float(r["open"]), float(r["close"]), float(r["volume"] or 0)
+                elif t in before and (last_t is None or t > last_t):
+                    last_t, last = t, float(r["close"])
+        for j in range(len(grid)):
+            if c[j] == c[j]:
+                last = c[j]
+            elif last is not None:                           # no trade in this bar: price unchanged
+                o[j], c[j], v[j] = last, last, 0.0
+        have.append(s)
+        cols[s] = (o, c, v)
+    steps = [{"time": t, "known_at": (datetime.strptime(t, "%Y-%m-%d %H:%M") + timedelta(minutes=STEP))
+              .strftime("%Y-%m-%d %H:%M")} for t in grid]
     news, seen = [], set()
     for name in sorted(os.listdir(os.path.join(FOLDER, "news"))):
         with open(os.path.join(FOLDER, "news", name)) as f:
@@ -72,12 +79,12 @@ def load():
                     t = datetime.strptime(it["published"], "%Y-%m-%d %H:%M:%S%z").astimezone(NY)
                     news.append({"time": t.strftime("%Y-%m-%d %H:%M"), "title": it["title"], "query": name})
     news.sort(key=lambda x: x["time"])
-    return uni, steps, news
+    return uni, steps, news, have, cols
 
 
 class Exchange:
     def __init__(self):
-        self.uni, self.steps, self.news = load()
+        self.uni, self.steps, self.news, self.have, self.cols = load()
         self.k, self.n_news, self.acc = -1, 0, {}
         while self.n_news < len(self.news) and self.news[self.n_news]["time"] < self.steps[0]["time"][:10]:
             self.n_news += 1                                 # news from before the test is not replayed
@@ -86,7 +93,9 @@ class Exchange:
         if self.k + 1 >= len(self.steps):
             return {"done": True, "accounts": self.acc}
         self.k += 1
-        st = self.steps[self.k]
+        st = dict(self.steps[self.k])
+        for key, n in (("open", 0), ("close", 1), ("volume", 2)):
+            st[key] = {s: self.cols[s][n][self.k] for s in self.have if self.cols[s][1][self.k] == self.cols[s][1][self.k]}
         refused = {}
         for name, lst in (orders or {}).items():
             a = self.acc.setdefault(name, {"cash": 1000.0, "shares": {}, "trades": 0, "costs": 0.0})
