@@ -110,7 +110,14 @@ def ask(user):
                                          headers={"Authorization": "Bearer proxy-injected",
                                                   "Content-Type": "application/json"})
             j = json.load(urllib.request.urlopen(req, timeout=300))
-            return (j["choices"][0]["message"].get("content") or "").strip()
+            text = (j["choices"][0]["message"].get("content") or "").strip()
+            if not text and k < 7:                       # thought too long and never answered: ask again, shorter
+                body = json.dumps({"model": MODEL, "messages": [
+                    {"role": "system", "content": SYSTEM},
+                    {"role": "user", "content": user + "\n\nKeep your reasoning short and give the answer form now."}],
+                    "temperature": 0, "max_tokens": max(MAX_TOKENS, 6000)}).encode()
+                continue
+            return text
         except (urllib.error.URLError, TimeoutError, ConnectionError, json.JSONDecodeError) as e:
             last = e
             time.sleep(min(60, 2 ** k))
