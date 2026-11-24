@@ -1,0 +1,2553 @@
+{
+ "original": {
+  "end": 1062.6505229890176,
+  "value_end_19nov": 1055.8866566716988,
+  "trades": [
+   {
+    "decided": "2026-11-18 05:31",
+    "sold": [],
+    "bought": [
+     {
+      "coin": "BTW39158-USD",
+      "price": 0.44030598,
+      "to_end_pct": 62.83298037423886,
+      "to_20nov_pct": 34.60313893533766
+     },
+     {
+      "coin": "GNO-USD",
+      "price": 95.599998,
+      "to_end_pct": -4.62342896701734,
+      "to_20nov_pct": 4.633893402382716
+     },
+     {
+      "coin": "PI35697-USD",
+      "price": 0.060761217,
+      "to_end_pct": -6.434359272296996,
+      "to_20nov_pct": -11.893836820286197
+     },
+     {
+      "coin": "FF38482-USD",
+      "price": 0.10090242,
+      "to_end_pct": 1.260534682914427,
+      "to_20nov_pct": 1.3469944526602884
+     },
+     {
+      "coin": "ZRO26997-USD",
+      "price": 1.3556,
+      "to_end_pct": -15.218353496606662,
+      "to_20nov_pct": -3.592505163765125
+     },
+     {
+      "coin": "M35491-USD",
+      "price": 0.89668304,
+      "to_end_pct": -13.198128515958096,
+      "to_20nov_pct": -7.410745719022405
+     },
+     {
+      "coin": "XDC-USD",
+      "price": 0.030802596,
+      "to_end_pct": -15.102369943104799,
+      "to_20nov_pct": -7.594681305432838
+     },
+     {
+      "coin": "DRV35014-USD",
+      "price": 0.27020708,
+      "to_end_pct": 28.162863090041924,
+      "to_20nov_pct": -3.5358288909380087
+     },
+     {
+      "coin": "NIGHT39064-USD",
+      "price": 0.044590373,
+      "to_end_pct": 8.780491699407843,
+      "to_20nov_pct": 0.5151201583355025
+     },
+     {
+      "coin": "PIEVERSE-USD",
+      "price": 2.1627223,
+      "to_end_pct": 64.4654517133337,
+      "to_20nov_pct": 37.84849307745151
+     }
+    ],
+    "reason": "MARKET: FLAT / NEWS: NONE (mixed headlines, no clear catalyst) / RISK: MEDIUM / NOTE: Build diversified 10-coin portfolio from biggest 24h fallers list. / ACTIONS: BUY BTW39158; BUY GNO; BUY PI35697; BUY FF38482; BUY ZRO26997; BUY M35491; BUY XDC; BUY DRV35014; BUY NIGHT39064; BUY PIEVERSE"
+   },
+   {
+    "decided": "2026-11-19 12:31",
+    "sold": [
+     {
+      "coin": "PIEVERSE-USD",
+      "price": 3.0034516,
+      "after_to_end_pct": 18.42811117715364
+     }
+    ],
+    "bought": [
+     {
+      "coin": "SKY33038-USD",
+      "price": 0.04355,
+      "to_end_pct": -6.429389207807112,
+      "to_20nov_pct": 7.646381171067729
+     }
+    ],
+    "reason": "MARKET: DOWN / NEWS: BAD (Sky stablecoin illicit flows, Hyperliquid regulatory issues, ETF outflows) / RISK: HIGH / NOTE: PIEVERSE profit eroding fast (+40%\u2192+27% in 1hr); BTW39158 -8.18% 1hr. Hold 6 underwater coins. / ACTIONS: SELL PIEVERSE; BUY SKY33038; BUY ASTER36341"
+   }
+  ],
+  "locked": [
+   {
+    "coin": "BTW39158-USD",
+    "to_end_pct": 20.97264719247194
+   },
+   {
+    "coin": "DRV35014-USD",
+    "to_end_pct": 32.860586077230195
+   },
+   {
+    "coin": "FF38482-USD",
+    "to_end_pct": -0.08531064015543377
+   },
+   {
+    "coin": "GNO-USD",
+    "to_end_pct": -8.84734579626112
+   },
+   {
+    "coin": "M35491-USD",
+    "to_end_pct": -6.2505987783127654
+   },
+   {
+    "coin": "NIGHT39064-USD",
+    "to_end_pct": 8.223013142751444
+   },
+   {
+    "coin": "PI35697-USD",
+    "to_end_pct": 6.19647633146081
+   },
+   {
+    "coin": "SKY33038-USD",
+    "to_end_pct": -13.075934579264814
+   },
+   {
+    "coin": "XDC-USD",
+    "to_end_pct": -8.124736480253459
+   },
+   {
+    "coin": "ZRO26997-USD",
+    "to_end_pct": -12.059071084245154
+   }
+  ],
+  "locked_avg_pct": 1.9809725385421644
+ },
+ "copy 1": {
+  "end": 1001.597500087299,
+  "value_end_19nov": 1041.4087819231534,
+  "trades": [
+   {
+    "decided": "2026-11-18 05:31",
+    "sold": [],
+    "bought": [
+     {
+      "coin": "BTW39158-USD",
+      "price": 0.44030598,
+      "to_end_pct": 62.83298037423886,
+      "to_20nov_pct": 34.60313893533766
+     },
+     {
+      "coin": "GNO-USD",
+      "price": 95.599998,
+      "to_end_pct": -4.62342896701734,
+      "to_20nov_pct": 4.633893402382716
+     },
+     {
+      "coin": "PI35697-USD",
+      "price": 0.060761217,
+      "to_end_pct": -6.434359272296996,
+      "to_20nov_pct": -11.893836820286197
+     },
+     {
+      "coin": "FF38482-USD",
+      "price": 0.10090242,
+      "to_end_pct": 1.260534682914427,
+      "to_20nov_pct": 1.3469944526602884
+     },
+     {
+      "coin": "ZRO26997-USD",
+      "price": 1.3556,
+      "to_end_pct": -15.218353496606662,
+      "to_20nov_pct": -3.592505163765125
+     },
+     {
+      "coin": "M35491-USD",
+      "price": 0.89668304,
+      "to_end_pct": -13.198128515958096,
+      "to_20nov_pct": -7.410745719022405
+     },
+     {
+      "coin": "XDC-USD",
+      "price": 0.030802596,
+      "to_end_pct": -15.102369943104799,
+      "to_20nov_pct": -7.594681305432838
+     },
+     {
+      "coin": "DRV35014-USD",
+      "price": 0.27020708,
+      "to_end_pct": 28.162863090041924,
+      "to_20nov_pct": -3.5358288909380087
+     },
+     {
+      "coin": "NIGHT39064-USD",
+      "price": 0.044590373,
+      "to_end_pct": 8.780491699407843,
+      "to_20nov_pct": 0.5151201583355025
+     },
+     {
+      "coin": "PIEVERSE-USD",
+      "price": 2.1627223,
+      "to_end_pct": 64.4654517133337,
+      "to_20nov_pct": 37.84849307745151
+     }
+    ],
+    "reason": "MARKET: FLAT / NEWS: MIXED (BTC technical bullish signal; exchange hack, stablecoin adoption) / RISK: MEDIUM / NOTE: Build diversified 10-coin portfolio from 24h fallers list; avoid hacked BCH / ACTIONS: BUY BTW39158; BUY GNO; BUY PI35697; BUY FF38482; BUY ZRO26997; BUY M35491; BUY XDC; BUY DRV35014; BUY NIGHT39064; BUY PIEVERSE"
+   },
+   {
+    "decided": "2026-11-19 04:31",
+    "sold": [
+     {
+      "coin": "BTW39158-USD",
+      "price": 0.57012492,
+      "after_to_end_pct": 25.755483552622117
+     },
+     {
+      "coin": "PIEVERSE-USD",
+      "price": 3.0115454,
+      "after_to_end_pct": 18.109824942370125
+     }
+    ],
+    "bought": [
+     {
+      "coin": "SKY33038-USD",
+      "price": 0.048909999,
+      "to_end_pct": -16.683701015818876,
+      "to_20nov_pct": -4.1504805592001865
+     }
+    ],
+    "reason": "MARKET: DOWN / NEWS: BAD (Fed minutes hawkish, BTC ETF outflows, altcoin delistings) / RISK: HIGH / NOTE: PIEVERSE & BTW39158 parabolic reversals; 6 coins underwater. Protect profits on winners, hold losers. / ACTIONS: SELL PIEVERSE; SELL BTW39158; BUY SKY33038; BUY PI35697"
+   },
+   {
+    "decided": "2026-11-19 05:31",
+    "sold": [],
+    "bought": [
+     {
+      "coin": "FIL-USD",
+      "price": 0.5704,
+      "to_end_pct": -3.2608678120617074,
+      "to_20nov_pct": 0.7889147966339438
+     }
+    ],
+    "reason": "MARKET: DOWN / NEWS: BAD (capital flowing out of crypto) / RISK: HIGH / NOTE: 6 coins underwater, PIEVERSE -15.7% 1hr. Hold losers, protect winners, fill slot with big faller. / ACTIONS: BUY SKY33038; BUY PI35697; BUY FIL"
+   },
+   {
+    "decided": "2026-11-19 06:31",
+    "sold": [
+     {
+      "coin": "FIL-USD",
+      "price": 0.57459998,
+      "after_to_end_pct": -3.9679726407230276
+     }
+    ],
+    "bought": [
+     {
+      "coin": "ASTER36341-USD",
+      "price": 0.5248,
+      "to_end_pct": -3.334599847560993,
+      "to_20nov_pct": -2.362810594512199
+     }
+    ],
+    "reason": "MARKET: FLAT / NEWS: NONE (routine predictions, macro noise) / RISK: MEDIUM / NOTE: 6 coins underwater; protect profits on FIL/ZRO/GNO/DRV, hold losers / ACTIONS: SELL FIL; BUY SKY33038"
+   },
+   {
+    "decided": "2026-11-19 07:31",
+    "sold": [
+     {
+      "coin": "NIGHT39064-USD",
+      "price": 0.045369118,
+      "after_to_end_pct": 6.913312707555841
+     },
+     {
+      "coin": "ZRO26997-USD",
+      "price": 1.4332,
+      "after_to_end_pct": -19.808819425062797
+     }
+    ],
+    "bought": [
+     {
+      "coin": "FIL-USD",
+      "price": 0.57200003,
+      "to_end_pct": -3.531471842754974,
+      "to_20nov_pct": 0.506982490892538
+     },
+     {
+      "coin": "CRV-USD",
+      "price": 0.1974,
+      "to_end_pct": -8.611955420466055,
+      "to_20nov_pct": -2.7355623100303927
+     }
+    ],
+    "reason": "MARKET: DOWN / NEWS: BAD (rate hike bets, stocks rout, retail sales slow) / RISK: HIGH / NOTE: 6 coins underwater, protect profits on winners, hold losers / ACTIONS: SELL ZRO26997; SELL NIGHT39064; BUY SKY33038; BUY FIL"
+   },
+   {
+    "decided": "2026-11-19 08:31",
+    "sold": [
+     {
+      "coin": "FIL-USD",
+      "price": 0.57359999,
+      "after_to_end_pct": -3.8005544595633545
+     }
+    ],
+    "bought": [],
+    "reason": "MARKET: FLAT / NEWS: GOOD (XRP/Solana ETF inclusion, Russia crypto funds 2027) / RISK: MEDIUM / NOTE: 6 coins underwater, protect profits on FIL/GNO/DRV, hold losers / ACTIONS: SELL FIL; BUY SKY33038; BUY ASTER36341"
+   },
+   {
+    "decided": "2026-11-19 09:31",
+    "sold": [],
+    "bought": [
+     {
+      "coin": "CRO-USD",
+      "price": 0.041859999,
+      "to_end_pct": -2.24557578226412,
+      "to_20nov_pct": -1.1705638120058204
+     }
+    ],
+    "reason": "MARKET: FLAT / NEWS: NONE (noise headlines only) / RISK: MEDIUM / NOTE: 6 coins underwater; protect profits on GNO/DRV, hold losers, fill slot with 24h faller / ACTIONS: BUY SKY33038"
+   },
+   {
+    "decided": "2026-11-19 10:31",
+    "sold": [
+     {
+      "coin": "DRV35014-USD",
+      "price": 0.27705655,
+      "after_to_end_pct": 24.994384720375674
+     },
+     {
+      "coin": "GNO-USD",
+      "price": 101.1,
+      "after_to_end_pct": -9.812067260138468
+     }
+    ],
+    "bought": [],
+    "reason": "MARKET: DOWN / NEWS: BAD (Bitcoin -14% weekly, ETF outflows $2.9B) / RISK: HIGH / NOTE: 8 coins underwater, protect GNO/DRV profits, hold losers / ACTIONS: SELL GNO; SELL DRV35014; BUY SKY33038"
+   },
+   {
+    "decided": "2026-11-19 11:31",
+    "sold": [],
+    "bought": [
+     {
+      "coin": "FIL-USD",
+      "price": 0.58050001,
+      "to_end_pct": -4.944013696054883,
+      "to_20nov_pct": -0.9646924898416342
+     },
+     {
+      "coin": "HBAR-USD",
+      "price": 0.05573,
+      "to_end_pct": -5.741966624798134,
+      "to_20nov_pct": -3.4092912255517693
+     }
+    ],
+    "reason": "MARKET: FLAT / NEWS: BAD (North Korean hackers exploited Sky's stablecoin system; SKY33038 held and down 12% 24h) / RISK: HIGH / NOTE: All 8 holdings underwater; SKY33038 news negative. Hold losers, fill 2 slots with 24h fallers not owned. / ACTIONS: BUY XDC; BUY CRV"
+   }
+  ],
+  "locked": [
+   {
+    "coin": "ASTER36341-USD",
+    "to_end_pct": -0.9953064595222494
+   },
+   {
+    "coin": "CRO-USD",
+    "to_end_pct": -1.0877447162740084
+   },
+   {
+    "coin": "CRV-USD",
+    "to_end_pct": -6.041666666666668
+   },
+   {
+    "coin": "FF38482-USD",
+    "to_end_pct": -0.08531064015543377
+   },
+   {
+    "coin": "FIL-USD",
+    "to_end_pct": -4.018083354570368
+   },
+   {
+    "coin": "HBAR-USD",
+    "to_end_pct": -2.415010127623629
+   },
+   {
+    "coin": "M35491-USD",
+    "to_end_pct": -6.2505987783127654
+   },
+   {
+    "coin": "PI35697-USD",
+    "to_end_pct": 6.19647633146081
+   },
+   {
+    "coin": "SKY33038-USD",
+    "to_end_pct": -13.075934579264814
+   },
+   {
+    "coin": "XDC-USD",
+    "to_end_pct": -8.124736480253459
+   }
+  ],
+  "locked_avg_pct": -3.5897915471182587
+ },
+ "copy 2": {
+  "end": 1023.4502218121413,
+  "value_end_19nov": 1008.6748120904106,
+  "trades": [
+   {
+    "decided": "2026-11-18 05:31",
+    "sold": [],
+    "bought": [
+     {
+      "coin": "BTW39158-USD",
+      "price": 0.44030598,
+      "to_end_pct": 62.83298037423886,
+      "to_20nov_pct": 34.60313893533766
+     },
+     {
+      "coin": "GNO-USD",
+      "price": 95.599998,
+      "to_end_pct": -4.62342896701734,
+      "to_20nov_pct": 4.633893402382716
+     },
+     {
+      "coin": "PI35697-USD",
+      "price": 0.060761217,
+      "to_end_pct": -6.434359272296996,
+      "to_20nov_pct": -11.893836820286197
+     },
+     {
+      "coin": "FF38482-USD",
+      "price": 0.10090242,
+      "to_end_pct": 1.260534682914427,
+      "to_20nov_pct": 1.3469944526602884
+     },
+     {
+      "coin": "ZRO26997-USD",
+      "price": 1.3556,
+      "to_end_pct": -15.218353496606662,
+      "to_20nov_pct": -3.592505163765125
+     },
+     {
+      "coin": "M35491-USD",
+      "price": 0.89668304,
+      "to_end_pct": -13.198128515958096,
+      "to_20nov_pct": -7.410745719022405
+     },
+     {
+      "coin": "XDC-USD",
+      "price": 0.030802596,
+      "to_end_pct": -15.102369943104799,
+      "to_20nov_pct": -7.594681305432838
+     },
+     {
+      "coin": "DRV35014-USD",
+      "price": 0.27020708,
+      "to_end_pct": 28.162863090041924,
+      "to_20nov_pct": -3.5358288909380087
+     },
+     {
+      "coin": "NIGHT39064-USD",
+      "price": 0.044590373,
+      "to_end_pct": 8.780491699407843,
+      "to_20nov_pct": 0.5151201583355025
+     },
+     {
+      "coin": "PIEVERSE-USD",
+      "price": 2.1627223,
+      "to_end_pct": 64.4654517133337,
+      "to_20nov_pct": 37.84849307745151
+     }
+    ],
+    "reason": "MARKET: FLAT / NEWS: NONE (mixed headlines, no clear catalyst) / RISK: MEDIUM / NOTE: Start building 10-coin portfolio from biggest 24h fallers list. / ACTIONS: BUY BTW39158; BUY GNO; BUY PI35697; BUY FF38482; BUY ZRO26997; BUY M35491; BUY XDC; BUY DRV35014; BUY NIGHT39064; BUY PIEVERSE"
+   },
+   {
+    "decided": "2026-11-18 12:31",
+    "sold": [
+     {
+      "coin": "NIGHT39064-USD",
+      "price": 0.046439476,
+      "after_to_end_pct": 4.449126428558325
+     },
+     {
+      "coin": "PIEVERSE-USD",
+      "price": 2.8043993,
+      "after_to_end_pct": 26.833971182349114
+     }
+    ],
+    "bought": [
+     {
+      "coin": "RAIN38341-USD",
+      "price": 0.004333932,
+      "to_end_pct": -24.587238563041602,
+      "to_20nov_pct": 0.950806334755594
+     },
+     {
+      "coin": "ENA-USD",
+      "price": 0.11105,
+      "to_end_pct": -9.734353894642055,
+      "to_20nov_pct": -5.565060783430875
+     }
+    ],
+    "reason": "MARKET: DOWN / NEWS: BAD (Fed hawkish, CoinShares sells ETH/SOL, global crypto shrink, Vitalik warning) / RISK: HIGH / NOTE: Market deteriorating; hold underwater coins, trim extended winners PIEVERSE/NIGHT39064 / ACTIONS: SELL PIEVERSE; SELL NIGHT39064; BUY RAIN38341; BUY M35491"
+   },
+   {
+    "decided": "2026-11-18 13:31",
+    "sold": [
+     {
+      "coin": "BTW39158-USD",
+      "price": 0.48085755,
+      "after_to_end_pct": 49.10098635240312
+     },
+     {
+      "coin": "ENA-USD",
+      "price": 0.11292,
+      "after_to_end_pct": -11.229188806234514
+     },
+     {
+      "coin": "FF38482-USD",
+      "price": 0.10304853,
+      "after_to_end_pct": -0.8483381567888526
+     },
+     {
+      "coin": "RAIN38341-USD",
+      "price": 0.0047729481,
+      "after_to_end_pct": -31.523709633465323
+     }
+    ],
+    "bought": [
+     {
+      "coin": "ZEC-USD",
+      "price": 936.40997,
+      "to_end_pct": -15.417391380401469,
+      "to_20nov_pct": -4.666754028686826
+     }
+    ],
+    "reason": "MARKET: DOWN / NEWS: BAD (Fed hawkish talk; Binance hacker moving $109M ETH) / RISK: HIGH / NOTE: Hold underwater coins; trim extended winners RAIN38341, BTW39158, ENA, FF38482 into big 24h fallers. / ACTIONS: SELL RAIN38341; SELL BTW39158; SELL ENA; SELL FF38482; BUY PI35697; BUY M35491; BUY ZEC; BUY DRV35014"
+   },
+   {
+    "decided": "2026-11-18 14:31",
+    "sold": [
+     {
+      "coin": "GNO-USD",
+      "price": 99.129997,
+      "after_to_end_pct": -8.019769232919472
+     }
+    ],
+    "bought": [
+     {
+      "coin": "GT-USD",
+      "price": 7.0165973,
+      "to_end_pct": -4.116251619570644,
+      "to_20nov_pct": -2.0747791810711513
+     },
+     {
+      "coin": "ENA-USD",
+      "price": 0.11127,
+      "to_end_pct": -9.912824660735142,
+      "to_20nov_pct": -5.751774961804612
+     },
+     {
+      "coin": "STRK22691-USD",
+      "price": 0.03246,
+      "to_end_pct": -2.4029605668515197,
+      "to_20nov_pct": -2.3721472581638925
+     },
+     {
+      "coin": "JUP29210-USD",
+      "price": 0.25440001,
+      "to_end_pct": -5.660384997626378,
+      "to_20nov_pct": -1.6902593675212518
+     }
+    ],
+    "reason": "MARKET: DOWN / NEWS: BAD (Bitcoin mine theft adds negative sentiment) / RISK: HIGH / NOTE: 5 coins underwater, 2 above break-even but off highs. Wait for stabilization before rotating. / ACTIONS: SELL GNO; BUY PI35697; BUY GT"
+   }
+  ],
+  "locked": [
+   {
+    "coin": "DRV35014-USD",
+    "to_end_pct": 32.860586077230195
+   },
+   {
+    "coin": "ENA-USD",
+    "to_end_pct": -4.414989987603713
+   },
+   {
+    "coin": "GT-USD",
+    "to_end_pct": -2.084725897401174
+   },
+   {
+    "coin": "JUP29210-USD",
+    "to_end_pct": -4.038384807612349
+   },
+   {
+    "coin": "M35491-USD",
+    "to_end_pct": -6.2505987783127654
+   },
+   {
+    "coin": "PI35697-USD",
+    "to_end_pct": 6.19647633146081
+   },
+   {
+    "coin": "STRK22691-USD",
+    "to_end_pct": -0.0315620059462951
+   },
+   {
+    "coin": "XDC-USD",
+    "to_end_pct": -8.124736480253459
+   },
+   {
+    "coin": "ZEC-USD",
+    "to_end_pct": -11.276902660955901
+   },
+   {
+    "coin": "ZRO26997-USD",
+    "to_end_pct": -12.059071084245154
+   }
+  ],
+  "locked_avg_pct": -0.9223909293639807
+ },
+ "copy 3": {
+  "end": 1043.2680649327467,
+  "value_end_19nov": 1055.8957341760813,
+  "trades": [
+   {
+    "decided": "2026-11-18 05:31",
+    "sold": [],
+    "bought": [
+     {
+      "coin": "BTW39158-USD",
+      "price": 0.44030598,
+      "to_end_pct": 62.83298037423886,
+      "to_20nov_pct": 34.60313893533766
+     },
+     {
+      "coin": "GNO-USD",
+      "price": 95.599998,
+      "to_end_pct": -4.62342896701734,
+      "to_20nov_pct": 4.633893402382716
+     },
+     {
+      "coin": "PI35697-USD",
+      "price": 0.060761217,
+      "to_end_pct": -6.434359272296996,
+      "to_20nov_pct": -11.893836820286197
+     },
+     {
+      "coin": "FF38482-USD",
+      "price": 0.10090242,
+      "to_end_pct": 1.260534682914427,
+      "to_20nov_pct": 1.3469944526602884
+     },
+     {
+      "coin": "ZRO26997-USD",
+      "price": 1.3556,
+      "to_end_pct": -15.218353496606662,
+      "to_20nov_pct": -3.592505163765125
+     },
+     {
+      "coin": "M35491-USD",
+      "price": 0.89668304,
+      "to_end_pct": -13.198128515958096,
+      "to_20nov_pct": -7.410745719022405
+     },
+     {
+      "coin": "XDC-USD",
+      "price": 0.030802596,
+      "to_end_pct": -15.102369943104799,
+      "to_20nov_pct": -7.594681305432838
+     },
+     {
+      "coin": "DRV35014-USD",
+      "price": 0.27020708,
+      "to_end_pct": 28.162863090041924,
+      "to_20nov_pct": -3.5358288909380087
+     },
+     {
+      "coin": "NIGHT39064-USD",
+      "price": 0.044590373,
+      "to_end_pct": 8.780491699407843,
+      "to_20nov_pct": 0.5151201583355025
+     },
+     {
+      "coin": "PIEVERSE-USD",
+      "price": 2.1627223,
+      "to_end_pct": 64.4654517133337,
+      "to_20nov_pct": 37.84849307745151
+     }
+    ],
+    "reason": "MARKET: FLAT / NEWS: NONE (mixed headlines, no clear catalyst) / RISK: MEDIUM / NOTE: Start building 10-coin portfolio from biggest 24h fallers list. / ACTIONS: BUY BTW39158; BUY GNO; BUY PI35697; BUY FF38482; BUY ZRO26997; BUY M35491; BUY XDC; BUY DRV35014; BUY NIGHT39064; BUY PIEVERSE"
+   },
+   {
+    "decided": "2026-11-19 03:31",
+    "sold": [
+     {
+      "coin": "PIEVERSE-USD",
+      "price": 3.169884,
+      "after_to_end_pct": 12.210131348655029
+     }
+    ],
+    "bought": [
+     {
+      "coin": "FIL-USD",
+      "price": 0.57169998,
+      "to_end_pct": -3.4808414721301917,
+      "to_20nov_pct": 0.5597323967022172
+     }
+    ],
+    "reason": "MARKET: DOWN / NEWS: BAD (inflation fears, DOGE crash, ETH/BTC whale selling) / RISK: HIGH / NOTE: PIEVERSE -11.5% off high, trend broken. Sell winner, buy biggest 24h faller PI35697 (already hold). Buy XDC instead. / ACTIONS: SELL PIEVERSE; BUY XDC"
+   },
+   {
+    "decided": "2026-11-19 09:31",
+    "sold": [
+     {
+      "coin": "BTW39158-USD",
+      "price": 0.59330362,
+      "after_to_end_pct": 20.842571295958034
+     }
+    ],
+    "bought": [
+     {
+      "coin": "SKY33038-USD",
+      "price": 0.046160001,
+      "to_end_pct": -11.720103732233456,
+      "to_20nov_pct": 1.5597876611830985
+     }
+    ],
+    "reason": "MARKET: FLAT / NEWS: NONE (irrelevant headlines) / RISK: MEDIUM / NOTE: BTW39158 -14% off high, trend broken. Sell, buy biggest 24h faller SKY33038. / ACTIONS: SELL BTW39158; BUY SKY33038"
+   }
+  ],
+  "locked": [
+   {
+    "coin": "DRV35014-USD",
+    "to_end_pct": 32.860586077230195
+   },
+   {
+    "coin": "FF38482-USD",
+    "to_end_pct": -0.08531064015543377
+   },
+   {
+    "coin": "FIL-USD",
+    "to_end_pct": -4.018083354570368
+   },
+   {
+    "coin": "GNO-USD",
+    "to_end_pct": -8.84734579626112
+   },
+   {
+    "coin": "M35491-USD",
+    "to_end_pct": -6.2505987783127654
+   },
+   {
+    "coin": "NIGHT39064-USD",
+    "to_end_pct": 8.223013142751444
+   },
+   {
+    "coin": "PI35697-USD",
+    "to_end_pct": 6.19647633146081
+   },
+   {
+    "coin": "SKY33038-USD",
+    "to_end_pct": -13.075934579264814
+   },
+   {
+    "coin": "XDC-USD",
+    "to_end_pct": -8.124736480253459
+   },
+   {
+    "coin": "ZRO26997-USD",
+    "to_end_pct": -12.059071084245154
+   }
+  ],
+  "locked_avg_pct": -0.5181005161620664
+ },
+ "copy 4": {
+  "end": 1043.1354482838271,
+  "value_end_19nov": 1042.7387722651565,
+  "trades": [
+   {
+    "decided": "2026-11-18 05:31",
+    "sold": [],
+    "bought": [
+     {
+      "coin": "BTW39158-USD",
+      "price": 0.44030598,
+      "to_end_pct": 62.83298037423886,
+      "to_20nov_pct": 34.60313893533766
+     },
+     {
+      "coin": "GNO-USD",
+      "price": 95.599998,
+      "to_end_pct": -4.62342896701734,
+      "to_20nov_pct": 4.633893402382716
+     },
+     {
+      "coin": "PI35697-USD",
+      "price": 0.060761217,
+      "to_end_pct": -6.434359272296996,
+      "to_20nov_pct": -11.893836820286197
+     },
+     {
+      "coin": "FF38482-USD",
+      "price": 0.10090242,
+      "to_end_pct": 1.260534682914427,
+      "to_20nov_pct": 1.3469944526602884
+     },
+     {
+      "coin": "ZRO26997-USD",
+      "price": 1.3556,
+      "to_end_pct": -15.218353496606662,
+      "to_20nov_pct": -3.592505163765125
+     },
+     {
+      "coin": "M35491-USD",
+      "price": 0.89668304,
+      "to_end_pct": -13.198128515958096,
+      "to_20nov_pct": -7.410745719022405
+     },
+     {
+      "coin": "XDC-USD",
+      "price": 0.030802596,
+      "to_end_pct": -15.102369943104799,
+      "to_20nov_pct": -7.594681305432838
+     },
+     {
+      "coin": "DRV35014-USD",
+      "price": 0.27020708,
+      "to_end_pct": 28.162863090041924,
+      "to_20nov_pct": -3.5358288909380087
+     },
+     {
+      "coin": "NIGHT39064-USD",
+      "price": 0.044590373,
+      "to_end_pct": 8.780491699407843,
+      "to_20nov_pct": 0.5151201583355025
+     },
+     {
+      "coin": "PIEVERSE-USD",
+      "price": 2.1627223,
+      "to_end_pct": 64.4654517133337,
+      "to_20nov_pct": 37.84849307745151
+     }
+    ],
+    "reason": "MARKET: FLAT / NEWS: NONE (mixed headlines, no clear catalyst) / RISK: MEDIUM / NOTE: Build diversified 10-coin portfolio from biggest 24h fallers list. / ACTIONS: BUY BTW39158; BUY GNO; BUY PI35697; BUY FF38482; BUY ZRO26997; BUY M35491; BUY XDC; BUY DRV35014; BUY NIGHT39064; BUY PIEVERSE"
+   },
+   {
+    "decided": "2026-11-18 11:31",
+    "sold": [
+     {
+      "coin": "PIEVERSE-USD",
+      "price": 2.4532206,
+      "after_to_end_pct": 44.990263003661404
+     },
+     {
+      "coin": "ZRO26997-USD",
+      "price": 1.3695,
+      "after_to_end_pct": -16.078860898138004
+     }
+    ],
+    "bought": [
+     {
+      "coin": "RAIN38341-USD",
+      "price": 0.0042771222,
+      "to_end_pct": -23.58558752424702,
+      "to_20nov_pct": 2.291660032533094
+     },
+     {
+      "coin": "JUP29210-USD",
+      "price": 0.25220001,
+      "to_end_pct": -4.837438349030987,
+      "to_20nov_pct": -0.8326803793544557
+     }
+    ],
+    "reason": "MARKET: DOWN / NEWS: BAD (Binance hack dumping $158M altcoins) / RISK: HIGH / NOTE: Market weakening with exchange hack news. Hold underwater positions, take profits on PIEVERSE/ZRO26997 if momentum fades further. / ACTIONS: SELL PIEVERSE; SELL ZRO26997; BUY RAIN38341; BUY PI35697"
+   },
+   {
+    "decided": "2026-11-18 12:31",
+    "sold": [
+     {
+      "coin": "RAIN38341-USD",
+      "price": 0.004333932,
+      "after_to_end_pct": -24.587238563041602
+     }
+    ],
+    "bought": [
+     {
+      "coin": "ENA-USD",
+      "price": 0.11105,
+      "to_end_pct": -9.734353894642055,
+      "to_20nov_pct": -5.565060783430875
+     }
+    ],
+    "reason": "MARKET: DOWN / NEWS: BAD (Fed hawkish, CoinShares sells ETH/SOL, global crypto economy shrinking) / RISK: HIGH / NOTE: Market weakening with negative macro/crypto news. Hold underwater positions. Take profits on RAIN38341 at high. / ACTIONS: SELL RAIN38341; BUY ENA; BUY NEAR"
+   },
+   {
+    "decided": "2026-11-18 14:31",
+    "sold": [
+     {
+      "coin": "NIGHT39064-USD",
+      "price": 0.046897952,
+      "after_to_end_pct": 3.428028157818064
+     }
+    ],
+    "bought": [
+     {
+      "coin": "GT-USD",
+      "price": 7.0165973,
+      "to_end_pct": -4.116251619570644,
+      "to_20nov_pct": -2.0747791810711513
+     }
+    ],
+    "reason": "MARKET: DOWN / NEWS: BAD (Bitcoin mine theft, stablecoin regulation uncertainty, brothers acquitted in $25M heist) / RISK: HIGH / NOTE: Market weakening with negative news. Hold underwater positions. Take profits on NIGHT39064 near high. / ACTIONS: SELL NIGHT39064; BUY PI35697; BUY GT"
+   },
+   {
+    "decided": "2026-11-18 18:31",
+    "sold": [
+     {
+      "coin": "BTW39158-USD",
+      "price": 0.51119846,
+      "after_to_end_pct": 40.25146906741463
+     },
+     {
+      "coin": "GNO-USD",
+      "price": 97.75,
+      "after_to_end_pct": -6.721227621483372
+     }
+    ],
+    "bought": [
+     {
+      "coin": "LIT39125-USD",
+      "price": 2.721,
+      "to_end_pct": -10.58434031606027,
+      "to_20nov_pct": 1.2495442851892635
+     },
+     {
+      "coin": "PUMP36507-USD",
+      "price": 0.0025780001,
+      "to_end_pct": -1.7067532309250177,
+      "to_20nov_pct": 2.560124027923827
+     }
+    ],
+    "reason": "MARKET: DOWN / NEWS: BAD (Bitcoin sell pressure, regulatory/legal headlines, stablecoin card shutdown) / RISK: HIGH / NOTE: Market declining with negative news. 6 holdings underwater. BTW39158/GNO/JUP29210/GT profitable but off highs. Hold losers, take profits if momentum fades further. / ACTIONS: SELL BTW39158; SELL GNO; BUY PI35697; BUY LIT39125"
+   },
+   {
+    "decided": "2026-11-18 19:31",
+    "sold": [
+     {
+      "coin": "ENA-USD",
+      "price": 0.11157,
+      "after_to_end_pct": -10.155059603836158
+     },
+     {
+      "coin": "GT-USD",
+      "price": 7.094923,
+      "after_to_end_pct": -5.1747777953333625
+     },
+     {
+      "coin": "LIT39125-USD",
+      "price": 2.72,
+      "after_to_end_pct": -10.551466911764706
+     }
+    ],
+    "bought": [
+     {
+      "coin": "RAY-USD",
+      "price": 1.3899,
+      "to_end_pct": -4.496726383193039,
+      "to_20nov_pct": -0.06474566515575209
+     },
+     {
+      "coin": "NEAR-USD",
+      "price": 3.2474999,
+      "to_end_pct": -8.249419807526404,
+      "to_20nov_pct": -1.314857623244281
+     },
+     {
+      "coin": "INJ-USD",
+      "price": 7.0120001,
+      "to_end_pct": -8.043355561275579,
+      "to_20nov_pct": 1.0838519525976809
+     }
+    ],
+    "reason": "MARKET: DOWN / NEWS: BAD (Fed hawkish minutes, stablecoin outflow, BTC breaks $63K) / RISK: HIGH / NOTE: Market deteriorating; hold 6 underwater, trim 3 profitable near highs / ACTIONS: SELL ENA; SELL GT; SELL LIT39125; BUY PI35697; BUY PUMP36507; BUY RAY"
+   },
+   {
+    "decided": "2026-11-19 16:31",
+    "sold": [
+     {
+      "coin": "JUP29210-USD",
+      "price": 0.26019999,
+      "after_to_end_pct": -7.763259329871608
+     },
+     {
+      "coin": "PUMP36507-USD",
+      "price": 0.0026519999,
+      "after_to_end_pct": -4.449468493569708
+     }
+    ],
+    "bought": [
+     {
+      "coin": "SKY33038-USD",
+      "price": 0.03844,
+      "to_end_pct": 6.009367845993752,
+      "to_20nov_pct": 21.956292924037445
+     },
+     {
+      "coin": "PIEVERSE-USD",
+      "price": 2.8627489,
+      "to_end_pct": 24.248794576429656,
+      "to_20nov_pct": 4.140467925775826
+     }
+    ],
+    "reason": "MARKET: DOWN / NEWS: BAD (Bitcoin tech selloff risk, funds cutting exposure) / RISK: HIGH / NOTE: Market risk-off intensifying; hold underwater, watch profitable coins for clear tops to take profits / ACTIONS: SELL JUP29210; SELL PUMP36507; BUY SKY33038; BUY PIEVERSE"
+   },
+   {
+    "decided": "2026-11-19 17:31",
+    "sold": [
+     {
+      "coin": "PIEVERSE-USD",
+      "price": 2.9487391,
+      "after_to_end_pct": 20.625490400286694
+     },
+     {
+      "coin": "SKY33038-USD",
+      "price": 0.039560001,
+      "after_to_end_pct": 3.00808890272779
+     }
+    ],
+    "bought": [
+     {
+      "coin": "PEARL41876-USD",
+      "price": 2.0542929,
+      "to_end_pct": 20.351557462910954,
+      "to_20nov_pct": 6.894586453567553
+     },
+     {
+      "coin": "UB38339-USD",
+      "price": 0.10325856,
+      "to_end_pct": 3.3039391601044965,
+      "to_20nov_pct": -1.165162481444637
+     }
+    ],
+    "reason": "MARKET: DOWN / NEWS: BAD (Hawkish Fed minutes, rate fears, MSCI drops Strategy, Hong Kong SFC flags Hyperliquid) / RISK: HIGH / NOTE: Risk-off intensifying; protect profits on coins off highs, hold underwater positions / ACTIONS: SELL SKY33038; SELL PIEVERSE; BUY PEARL41876; BUY UB38339"
+   },
+   {
+    "decided": "2026-11-19 18:31",
+    "sold": [
+     {
+      "coin": "PEARL41876-USD",
+      "price": 2.1472664,
+      "after_to_end_pct": 15.140510744265345
+     },
+     {
+      "coin": "UB38339-USD",
+      "price": 0.10454997,
+      "after_to_end_pct": 2.0279202375667715
+     }
+    ],
+    "bought": [
+     {
+      "coin": "SKY33038-USD",
+      "price": 0.03974,
+      "to_end_pct": 2.5415223955712163,
+      "to_20nov_pct": 17.966781580271764
+     },
+     {
+      "coin": "PIEVERSE-USD",
+      "price": 2.8878419,
+      "to_end_pct": 23.16917349249623,
+      "to_20nov_pct": 3.235571864235376
+     }
+    ],
+    "reason": "MARKET: DOWN / NEWS: BAD (SEC fraud charges, BlackRock ETF outflows, Bitmine ETH loss) / RISK: HIGH / NOTE: Risk-off intensifying; protect profits on coins off highs, hold underwater positions / ACTIONS: SELL PEARL41876; SELL UB38339; BUY SKY33038; BUY PIEVERSE"
+   },
+   {
+    "decided": "2026-11-19 19:31",
+    "sold": [
+     {
+      "coin": "INJ-USD",
+      "price": 7.0679998,
+      "after_to_end_pct": -8.771927243121869
+     },
+     {
+      "coin": "NEAR-USD",
+      "price": 3.2749,
+      "after_to_end_pct": -9.01706922348774
+     },
+     {
+      "coin": "SKY33038-USD",
+      "price": 0.04439,
+      "after_to_end_pct": -8.200042802432971
+     }
+    ],
+    "bought": [
+     {
+      "coin": "HYPE32196-USD",
+      "price": 67.650002,
+      "to_end_pct": -4.951956985899275,
+      "to_20nov_pct": -1.3155949352373963
+     },
+     {
+      "coin": "ZEC-USD",
+      "price": 903.88,
+      "to_end_pct": -12.373326105235204,
+      "to_20nov_pct": -1.2357812984024386
+     },
+     {
+      "coin": "XLM-USD",
+      "price": 0.133663,
+      "to_end_pct": -2.562414430321036,
+      "to_20nov_pct": -0.6800685305581866
+     }
+    ],
+    "reason": "MARKET: DOWN / NEWS: BAD (Russia sanctions, SEC ETF warning, XRP volatility) / RISK: HIGH / NOTE: Protect profits on NEAR/INJ/SKY; hold 7 underwater coins / ACTIONS: SELL NEAR; SELL INJ; SELL SKY33038; BUY M35491; BUY XDC; BUY PIEVERSE"
+   },
+   {
+    "decided": "2026-11-19 22:31",
+    "sold": [
+     {
+      "coin": "FF38482-USD",
+      "price": 0.10151786,
+      "after_to_end_pct": 0.6466546871653822
+     },
+     {
+      "coin": "PIEVERSE-USD",
+      "price": 2.9801269,
+      "after_to_end_pct": 19.355018069868102
+     }
+    ],
+    "bought": [
+     {
+      "coin": "SKY33038-USD",
+      "price": 0.047200002,
+      "to_end_pct": -13.665255776895934,
+      "to_20nov_pct": -0.677972428899476
+     },
+     {
+      "coin": "ENA-USD",
+      "price": 0.10503,
+      "to_end_pct": -4.5606017328382435,
+      "to_20nov_pct": -0.1523374274016831
+     }
+    ],
+    "reason": "MARKET: DOWN / NEWS: BAD (Bitcoin ETF outflows near $3B, HYPE regulatory freeze, bear market warnings) / RISK: HIGH / NOTE: Protect profits on PIEVERSE/FF38482; hold 8 underwater positions / ACTIONS: SELL PIEVERSE; SELL FF38482; BUY SKY33038; BUY M35491"
+   }
+  ],
+  "locked": [
+   {
+    "coin": "DRV35014-USD",
+    "to_end_pct": 32.860586077230195
+   },
+   {
+    "coin": "ENA-USD",
+    "to_end_pct": -4.414989987603713
+   },
+   {
+    "coin": "HYPE32196-USD",
+    "to_end_pct": -3.6848396139952166
+   },
+   {
+    "coin": "M35491-USD",
+    "to_end_pct": -6.2505987783127654
+   },
+   {
+    "coin": "PI35697-USD",
+    "to_end_pct": 6.19647633146081
+   },
+   {
+    "coin": "RAY-USD",
+    "to_end_pct": -4.434852092523256
+   },
+   {
+    "coin": "SKY33038-USD",
+    "to_end_pct": -13.075934579264814
+   },
+   {
+    "coin": "XDC-USD",
+    "to_end_pct": -8.124736480253459
+   },
+   {
+    "coin": "XLM-USD",
+    "to_end_pct": -1.8952347951850967
+   },
+   {
+    "coin": "ZEC-USD",
+    "to_end_pct": -11.276902660955901
+   }
+  ],
+  "locked_avg_pct": -1.4101026579403217
+ },
+ "copy 5": {
+  "end": 1056.4920222660003,
+  "value_end_19nov": 1044.3978432051206,
+  "trades": [
+   {
+    "decided": "2026-11-18 05:31",
+    "sold": [],
+    "bought": [
+     {
+      "coin": "BTW39158-USD",
+      "price": 0.44030598,
+      "to_end_pct": 62.83298037423886,
+      "to_20nov_pct": 34.60313893533766
+     },
+     {
+      "coin": "GNO-USD",
+      "price": 95.599998,
+      "to_end_pct": -4.62342896701734,
+      "to_20nov_pct": 4.633893402382716
+     },
+     {
+      "coin": "PI35697-USD",
+      "price": 0.060761217,
+      "to_end_pct": -6.434359272296996,
+      "to_20nov_pct": -11.893836820286197
+     },
+     {
+      "coin": "FF38482-USD",
+      "price": 0.10090242,
+      "to_end_pct": 1.260534682914427,
+      "to_20nov_pct": 1.3469944526602884
+     },
+     {
+      "coin": "ZRO26997-USD",
+      "price": 1.3556,
+      "to_end_pct": -15.218353496606662,
+      "to_20nov_pct": -3.592505163765125
+     },
+     {
+      "coin": "M35491-USD",
+      "price": 0.89668304,
+      "to_end_pct": -13.198128515958096,
+      "to_20nov_pct": -7.410745719022405
+     },
+     {
+      "coin": "XDC-USD",
+      "price": 0.030802596,
+      "to_end_pct": -15.102369943104799,
+      "to_20nov_pct": -7.594681305432838
+     },
+     {
+      "coin": "DRV35014-USD",
+      "price": 0.27020708,
+      "to_end_pct": 28.162863090041924,
+      "to_20nov_pct": -3.5358288909380087
+     },
+     {
+      "coin": "NIGHT39064-USD",
+      "price": 0.044590373,
+      "to_end_pct": 8.780491699407843,
+      "to_20nov_pct": 0.5151201583355025
+     },
+     {
+      "coin": "PIEVERSE-USD",
+      "price": 2.1627223,
+      "to_end_pct": 64.4654517133337,
+      "to_20nov_pct": 37.84849307745151
+     }
+    ],
+    "reason": "MARKET: FLAT / NEWS: NONE (mixed headlines, no clear catalyst) / RISK: MEDIUM / NOTE: Build diversified 10-coin portfolio from biggest 24h fallers list. / ACTIONS: BUY BTW39158; BUY GNO; BUY PI35697; BUY FF38482; BUY ZRO26997; BUY M35491; BUY XDC; BUY DRV35014; BUY NIGHT39064; BUY PIEVERSE"
+   }
+  ],
+  "locked": [
+   {
+    "coin": "BTW39158-USD",
+    "to_end_pct": 20.97264719247194
+   },
+   {
+    "coin": "DRV35014-USD",
+    "to_end_pct": 32.860586077230195
+   },
+   {
+    "coin": "FF38482-USD",
+    "to_end_pct": -0.08531064015543377
+   },
+   {
+    "coin": "GNO-USD",
+    "to_end_pct": -8.84734579626112
+   },
+   {
+    "coin": "M35491-USD",
+    "to_end_pct": -6.2505987783127654
+   },
+   {
+    "coin": "NIGHT39064-USD",
+    "to_end_pct": 8.223013142751444
+   },
+   {
+    "coin": "PI35697-USD",
+    "to_end_pct": 6.19647633146081
+   },
+   {
+    "coin": "PIEVERSE-USD",
+    "to_end_pct": 19.30884991316313
+   },
+   {
+    "coin": "XDC-USD",
+    "to_end_pct": -8.124736480253459
+   },
+   {
+    "coin": "ZRO26997-USD",
+    "to_end_pct": -12.059071084245154
+   }
+  ],
+  "locked_avg_pct": 5.219450987784958
+ },
+ "copy 6": {
+  "end": 1066.2329766994328,
+  "value_end_19nov": 1046.7335194695997,
+  "trades": [
+   {
+    "decided": "2026-11-18 05:31",
+    "sold": [],
+    "bought": [
+     {
+      "coin": "BTW39158-USD",
+      "price": 0.44030598,
+      "to_end_pct": 62.83298037423886,
+      "to_20nov_pct": 34.60313893533766
+     },
+     {
+      "coin": "GNO-USD",
+      "price": 95.599998,
+      "to_end_pct": -4.62342896701734,
+      "to_20nov_pct": 4.633893402382716
+     },
+     {
+      "coin": "PI35697-USD",
+      "price": 0.060761217,
+      "to_end_pct": -6.434359272296996,
+      "to_20nov_pct": -11.893836820286197
+     },
+     {
+      "coin": "FF38482-USD",
+      "price": 0.10090242,
+      "to_end_pct": 1.260534682914427,
+      "to_20nov_pct": 1.3469944526602884
+     },
+     {
+      "coin": "ZRO26997-USD",
+      "price": 1.3556,
+      "to_end_pct": -15.218353496606662,
+      "to_20nov_pct": -3.592505163765125
+     },
+     {
+      "coin": "M35491-USD",
+      "price": 0.89668304,
+      "to_end_pct": -13.198128515958096,
+      "to_20nov_pct": -7.410745719022405
+     },
+     {
+      "coin": "XDC-USD",
+      "price": 0.030802596,
+      "to_end_pct": -15.102369943104799,
+      "to_20nov_pct": -7.594681305432838
+     },
+     {
+      "coin": "DRV35014-USD",
+      "price": 0.27020708,
+      "to_end_pct": 28.162863090041924,
+      "to_20nov_pct": -3.5358288909380087
+     },
+     {
+      "coin": "NIGHT39064-USD",
+      "price": 0.044590373,
+      "to_end_pct": 8.780491699407843,
+      "to_20nov_pct": 0.5151201583355025
+     },
+     {
+      "coin": "PIEVERSE-USD",
+      "price": 2.1627223,
+      "to_end_pct": 64.4654517133337,
+      "to_20nov_pct": 37.84849307745151
+     }
+    ],
+    "reason": "MARKET: FLAT / NEWS: NONE (mixed headlines, no clear catalyst) / RISK: MEDIUM / NOTE: Start building 10-coin portfolio from biggest 24h fallers list. / ACTIONS: BUY BTW39158; BUY GNO; BUY PI35697; BUY FF38482; BUY ZRO26997; BUY M35491; BUY XDC; BUY DRV35014; BUY NIGHT39064; BUY PIEVERSE"
+   },
+   {
+    "decided": "2026-11-18 19:31",
+    "sold": [
+     {
+      "coin": "BTW39158-USD",
+      "price": 0.51355231,
+      "after_to_end_pct": 39.60863110517408
+     },
+     {
+      "coin": "PIEVERSE-USD",
+      "price": 3.3322008,
+      "after_to_end_pct": 6.744197408511532
+     }
+    ],
+    "bought": [
+     {
+      "coin": "PUMP36507-USD",
+      "price": 0.0025599999,
+      "to_end_pct": -1.0156211334227172,
+      "to_20nov_pct": 3.2812579406741316
+     },
+     {
+      "coin": "RAY-USD",
+      "price": 1.3899,
+      "to_end_pct": -4.496726383193039,
+      "to_20nov_pct": -0.06474566515575209
+     }
+    ],
+    "reason": "MARKET: DOWN / NEWS: BAD (Fed hawkish minutes, stablecoin outflow, BTC <$63k) / RISK: HIGH / NOTE: Market deteriorating; hold losers, trim winners on weakness / ACTIONS: SELL PIEVERSE; SELL BTW39158; BUY PI35697; BUY PUMP36507"
+   }
+  ],
+  "locked": [
+   {
+    "coin": "DRV35014-USD",
+    "to_end_pct": 32.860586077230195
+   },
+   {
+    "coin": "FF38482-USD",
+    "to_end_pct": -0.08531064015543377
+   },
+   {
+    "coin": "GNO-USD",
+    "to_end_pct": -8.84734579626112
+   },
+   {
+    "coin": "M35491-USD",
+    "to_end_pct": -6.2505987783127654
+   },
+   {
+    "coin": "NIGHT39064-USD",
+    "to_end_pct": 8.223013142751444
+   },
+   {
+    "coin": "PI35697-USD",
+    "to_end_pct": 6.19647633146081
+   },
+   {
+    "coin": "PUMP36507-USD",
+    "to_end_pct": -4.160366711030017
+   },
+   {
+    "coin": "RAY-USD",
+    "to_end_pct": -4.434852092523256
+   },
+   {
+    "coin": "XDC-USD",
+    "to_end_pct": -8.124736480253459
+   },
+   {
+    "coin": "ZRO26997-USD",
+    "to_end_pct": -12.059071084245154
+   }
+  ],
+  "locked_avg_pct": 0.3317793968661244
+ },
+ "copy 7": {
+  "end": 1042.1923581758913,
+  "value_end_19nov": 1048.653334649771,
+  "trades": [
+   {
+    "decided": "2026-11-18 05:31",
+    "sold": [],
+    "bought": [
+     {
+      "coin": "BTW39158-USD",
+      "price": 0.44030598,
+      "to_end_pct": 62.83298037423886,
+      "to_20nov_pct": 34.60313893533766
+     },
+     {
+      "coin": "GNO-USD",
+      "price": 95.599998,
+      "to_end_pct": -4.62342896701734,
+      "to_20nov_pct": 4.633893402382716
+     },
+     {
+      "coin": "PI35697-USD",
+      "price": 0.060761217,
+      "to_end_pct": -6.434359272296996,
+      "to_20nov_pct": -11.893836820286197
+     },
+     {
+      "coin": "FF38482-USD",
+      "price": 0.10090242,
+      "to_end_pct": 1.260534682914427,
+      "to_20nov_pct": 1.3469944526602884
+     },
+     {
+      "coin": "ZRO26997-USD",
+      "price": 1.3556,
+      "to_end_pct": -15.218353496606662,
+      "to_20nov_pct": -3.592505163765125
+     },
+     {
+      "coin": "M35491-USD",
+      "price": 0.89668304,
+      "to_end_pct": -13.198128515958096,
+      "to_20nov_pct": -7.410745719022405
+     },
+     {
+      "coin": "XDC-USD",
+      "price": 0.030802596,
+      "to_end_pct": -15.102369943104799,
+      "to_20nov_pct": -7.594681305432838
+     },
+     {
+      "coin": "DRV35014-USD",
+      "price": 0.27020708,
+      "to_end_pct": 28.162863090041924,
+      "to_20nov_pct": -3.5358288909380087
+     },
+     {
+      "coin": "NIGHT39064-USD",
+      "price": 0.044590373,
+      "to_end_pct": 8.780491699407843,
+      "to_20nov_pct": 0.5151201583355025
+     },
+     {
+      "coin": "PIEVERSE-USD",
+      "price": 2.1627223,
+      "to_end_pct": 64.4654517133337,
+      "to_20nov_pct": 37.84849307745151
+     }
+    ],
+    "reason": "MARKET: FLAT / NEWS: NONE (mixed headlines, no clear catalyst) / RISK: MEDIUM / NOTE: Start building 10-coin portfolio; buy biggest 24h fallers for mean reversion. / ACTIONS: BUY BTW39158; BUY GNO; BUY PI35697; BUY FF38482; BUY ZRO26997; BUY M35491; BUY XDC; BUY DRV35014; BUY NIGHT39064; BUY PIEVERSE"
+   },
+   {
+    "decided": "2026-11-18 23:31",
+    "sold": [
+     {
+      "coin": "BTW39158-USD",
+      "price": 0.47806063,
+      "after_to_end_pct": 49.973309870758456
+     },
+     {
+      "coin": "PIEVERSE-USD",
+      "price": 3.4902418,
+      "after_to_end_pct": 1.9107329469264744
+     }
+    ],
+    "bought": [
+     {
+      "coin": "LIT39125-USD",
+      "price": 2.6930001,
+      "to_end_pct": -9.654659871717042,
+      "to_20nov_pct": 2.30226504633253
+     },
+     {
+      "coin": "PUMP36507-USD",
+      "price": 0.0025599999,
+      "to_end_pct": -1.0156211334227172,
+      "to_20nov_pct": 3.2812579406741316
+     }
+    ],
+    "reason": "MARKET: DOWN / NEWS: BAD (Binance hack $105M ETH moved; BTC bearish forecasts; risk-off sentiment) / RISK: HIGH / NOTE: Market deteriorating; protect profits in PIEVERSE/BTW39158. Hold underwater positions. / ACTIONS: SELL PIEVERSE; SELL BTW39158; BUY PI35697; BUY LIT39125"
+   },
+   {
+    "decided": "2026-11-19 00:31",
+    "sold": [
+     {
+      "coin": "GNO-USD",
+      "price": 99.970001,
+      "after_to_end_pct": -8.792638703684707
+     },
+     {
+      "coin": "LIT39125-USD",
+      "price": 2.714,
+      "after_to_end_pct": -10.35371775976418
+     },
+     {
+      "coin": "NIGHT39064-USD",
+      "price": 0.045743246,
+      "after_to_end_pct": 6.038882767523757
+     },
+     {
+      "coin": "PUMP36507-USD",
+      "price": 0.002573,
+      "after_to_end_pct": -1.515740380878372
+     },
+     {
+      "coin": "ZRO26997-USD",
+      "price": 1.4025,
+      "after_to_end_pct": -18.053475935828878
+     }
+    ],
+    "bought": [
+     {
+      "coin": "FIL-USD",
+      "price": 0.56779999,
+      "to_end_pct": -2.8178901517768695,
+      "to_20nov_pct": 1.2504367955342932
+     },
+     {
+      "coin": "ZEC-USD",
+      "price": 911.67999,
+      "to_end_pct": -13.123026863845055,
+      "to_20nov_pct": -2.0807706879691357
+     },
+     {
+      "coin": "GT-USD",
+      "price": 7.0521002,
+      "to_end_pct": -4.598966134939486,
+      "to_20nov_pct": -2.5677712293424304
+     },
+     {
+      "coin": "INJ-USD",
+      "price": 7.0019999,
+      "to_end_pct": -7.912023820508763,
+      "to_20nov_pct": 1.228219097803751
+     },
+     {
+      "coin": "RENDER-USD",
+      "price": 1.3918999,
+      "to_end_pct": -5.790639111332663,
+      "to_20nov_pct": -0.5747467903403192
+     }
+    ],
+    "reason": "MARKET: DOWN / NEWS: BAD (Fed hawkish minutes, extreme fear sentiment, XRP whale sell pressure) / RISK: HIGH / NOTE: Protect profits in coins off highs; hold underwater positions until recovery. / ACTIONS: SELL GNO; SELL ZRO26997; SELL NIGHT39064; SELL LIT39125; SELL PUMP36507; BUY PI35697; BUY XDC; BUY FIL; BUY ZEC; BUY GT"
+   }
+  ],
+  "locked": [
+   {
+    "coin": "DRV35014-USD",
+    "to_end_pct": 32.860586077230195
+   },
+   {
+    "coin": "FF38482-USD",
+    "to_end_pct": -0.08531064015543377
+   },
+   {
+    "coin": "FIL-USD",
+    "to_end_pct": -4.018083354570368
+   },
+   {
+    "coin": "GT-USD",
+    "to_end_pct": -2.084725897401174
+   },
+   {
+    "coin": "INJ-USD",
+    "to_end_pct": -9.029342805568364
+   },
+   {
+    "coin": "M35491-USD",
+    "to_end_pct": -6.2505987783127654
+   },
+   {
+    "coin": "PI35697-USD",
+    "to_end_pct": 6.19647633146081
+   },
+   {
+    "coin": "RENDER-USD",
+    "to_end_pct": -5.246043789291132
+   },
+   {
+    "coin": "XDC-USD",
+    "to_end_pct": -8.124736480253459
+   },
+   {
+    "coin": "ZEC-USD",
+    "to_end_pct": -11.276902660955901
+   }
+  ],
+  "locked_avg_pct": -0.7058681997817592
+ },
+ "copy 8": {
+  "end": 1001.9478175315419,
+  "value_end_19nov": 1049.9034059286712,
+  "trades": [
+   {
+    "decided": "2026-11-18 05:31",
+    "sold": [],
+    "bought": [
+     {
+      "coin": "BTW39158-USD",
+      "price": 0.44030598,
+      "to_end_pct": 62.83298037423886,
+      "to_20nov_pct": 34.60313893533766
+     },
+     {
+      "coin": "GNO-USD",
+      "price": 95.599998,
+      "to_end_pct": -4.62342896701734,
+      "to_20nov_pct": 4.633893402382716
+     },
+     {
+      "coin": "PI35697-USD",
+      "price": 0.060761217,
+      "to_end_pct": -6.434359272296996,
+      "to_20nov_pct": -11.893836820286197
+     },
+     {
+      "coin": "FF38482-USD",
+      "price": 0.10090242,
+      "to_end_pct": 1.260534682914427,
+      "to_20nov_pct": 1.3469944526602884
+     },
+     {
+      "coin": "ZRO26997-USD",
+      "price": 1.3556,
+      "to_end_pct": -15.218353496606662,
+      "to_20nov_pct": -3.592505163765125
+     },
+     {
+      "coin": "M35491-USD",
+      "price": 0.89668304,
+      "to_end_pct": -13.198128515958096,
+      "to_20nov_pct": -7.410745719022405
+     },
+     {
+      "coin": "XDC-USD",
+      "price": 0.030802596,
+      "to_end_pct": -15.102369943104799,
+      "to_20nov_pct": -7.594681305432838
+     },
+     {
+      "coin": "DRV35014-USD",
+      "price": 0.27020708,
+      "to_end_pct": 28.162863090041924,
+      "to_20nov_pct": -3.5358288909380087
+     },
+     {
+      "coin": "NIGHT39064-USD",
+      "price": 0.044590373,
+      "to_end_pct": 8.780491699407843,
+      "to_20nov_pct": 0.5151201583355025
+     },
+     {
+      "coin": "PIEVERSE-USD",
+      "price": 2.1627223,
+      "to_end_pct": 64.4654517133337,
+      "to_20nov_pct": 37.84849307745151
+     }
+    ],
+    "reason": "MARKET: FLAT / NEWS: NONE (mixed headlines, no clear catalyst) / RISK: MEDIUM / NOTE: Build diversified 10-coin portfolio from biggest 24h fallers list. / ACTIONS: BUY BTW39158; BUY GNO; BUY PI35697; BUY FF38482; BUY ZRO26997; BUY M35491; BUY XDC; BUY DRV35014; BUY NIGHT39064; BUY PIEVERSE"
+   },
+   {
+    "decided": "2026-11-19 04:31",
+    "sold": [
+     {
+      "coin": "BTW39158-USD",
+      "price": 0.57012492,
+      "after_to_end_pct": 25.755483552622117
+     },
+     {
+      "coin": "GNO-USD",
+      "price": 100.16,
+      "after_to_end_pct": -8.965654952076662
+     },
+     {
+      "coin": "NIGHT39064-USD",
+      "price": 0.045600835,
+      "after_to_end_pct": 6.370041250341152
+     },
+     {
+      "coin": "PIEVERSE-USD",
+      "price": 3.0115454,
+      "after_to_end_pct": 18.109824942370125
+     }
+    ],
+    "bought": [
+     {
+      "coin": "SKY33038-USD",
+      "price": 0.048909999,
+      "to_end_pct": -16.683701015818876,
+      "to_20nov_pct": -4.1504805592001865
+     },
+     {
+      "coin": "INJ-USD",
+      "price": 7.0149999,
+      "to_end_pct": -8.082678661192855,
+      "to_20nov_pct": 1.0406258166874682
+     },
+     {
+      "coin": "ASTER36341-USD",
+      "price": 0.53060001,
+      "to_end_pct": -4.391253215392899,
+      "to_20nov_pct": -3.4300866296628874
+     },
+     {
+      "coin": "FIL-USD",
+      "price": 0.57630002,
+      "to_end_pct": -4.251259613005043,
+      "to_20nov_pct": -0.24293769762492312
+     }
+    ],
+    "reason": "MARKET: DOWN / NEWS: BAD (Fed minutes hawkish, ETF outflows, altcoin delistings, bearish forecasts) / RISK: HIGH / NOTE: PIEVERSE broke down sharply (-16% from high); BTW/GNO/NIGHT also rolling over. Protect profits on profitable names. / ACTIONS: SELL PIEVERSE; SELL BTW39158; SELL GNO; SELL NIGHT39064; BUY SKY33038; BUY PI35697; BUY FF38482; BUY XDC"
+   },
+   {
+    "decided": "2026-11-19 05:31",
+    "sold": [
+     {
+      "coin": "INJ-USD",
+      "price": 7.0359998,
+      "after_to_end_pct": -8.3570184297049
+     },
+     {
+      "coin": "ZRO26997-USD",
+      "price": 1.4219,
+      "after_to_end_pct": -19.17153105000351
+     }
+    ],
+    "bought": [
+     {
+      "coin": "PIEVERSE-USD",
+      "price": 2.538321,
+      "to_end_pct": 40.129282309053906,
+      "to_20nov_pct": 17.450870083019467
+     },
+     {
+      "coin": "BTW39158-USD",
+      "price": 0.56110132,
+      "to_end_pct": 27.77787619533669,
+      "to_20nov_pct": 5.625427863901655
+     }
+    ],
+    "reason": "MARKET: DOWN / NEWS: BAD (capital flowing out of crypto per NAI500) / RISK: HIGH / NOTE: Market deteriorating; protect profits on ZRO26997/INJ, hold underwater positions / ACTIONS: SELL ZRO26997; SELL INJ; BUY PIEVERSE; BUY BTW39158"
+   },
+   {
+    "decided": "2026-11-19 06:31",
+    "sold": [
+     {
+      "coin": "DRV35014-USD",
+      "price": 0.27355689,
+      "after_to_end_pct": 26.59345922524563
+     }
+    ],
+    "bought": [],
+    "reason": "MARKET: DOWN / NEWS: BAD (hawkish Fed warnings, AI bust fears) / RISK: HIGH / NOTE: Protect DRV profit; all others underwater. Market deteriorating. / ACTIONS: SELL DRV35014; BUY SKY33038; BUY ASTER36341"
+   },
+   {
+    "decided": "2026-11-19 07:31",
+    "sold": [
+     {
+      "coin": "BTW39158-USD",
+      "price": 0.61010408,
+      "after_to_end_pct": 17.514924666624076
+     },
+     {
+      "coin": "PIEVERSE-USD",
+      "price": 2.5921397,
+      "after_to_end_pct": 37.21988054887628
+     }
+    ],
+    "bought": [
+     {
+      "coin": "INJ-USD",
+      "price": 7.1550002,
+      "to_end_pct": -9.881204475717553,
+      "to_20nov_pct": -0.9364136705404924
+     },
+     {
+      "coin": "CRV-USD",
+      "price": 0.1974,
+      "to_end_pct": -8.611955420466055,
+      "to_20nov_pct": -2.7355623100303927
+     },
+     {
+      "coin": "HBAR-USD",
+      "price": 0.055799998,
+      "to_end_pct": -5.8602080953479625,
+      "to_20nov_pct": -3.5304589079017568
+     }
+    ],
+    "reason": "MARKET: DOWN / NEWS: BAD (rate hike bets, stocks rout, retail sales slow) / RISK: HIGH / NOTE: Protect BTW/PIEVERSE profits; all others underwater. Market deteriorating. / ACTIONS: SELL BTW39158; SELL PIEVERSE; BUY SKY33038; BUY FIL"
+   }
+  ],
+  "locked": [
+   {
+    "coin": "ASTER36341-USD",
+    "to_end_pct": -0.9953064595222494
+   },
+   {
+    "coin": "CRV-USD",
+    "to_end_pct": -6.041666666666668
+   },
+   {
+    "coin": "FF38482-USD",
+    "to_end_pct": -0.08531064015543377
+   },
+   {
+    "coin": "FIL-USD",
+    "to_end_pct": -4.018083354570368
+   },
+   {
+    "coin": "HBAR-USD",
+    "to_end_pct": -2.415010127623629
+   },
+   {
+    "coin": "INJ-USD",
+    "to_end_pct": -9.029342805568364
+   },
+   {
+    "coin": "M35491-USD",
+    "to_end_pct": -6.2505987783127654
+   },
+   {
+    "coin": "PI35697-USD",
+    "to_end_pct": 6.19647633146081
+   },
+   {
+    "coin": "SKY33038-USD",
+    "to_end_pct": -13.075934579264814
+   },
+   {
+    "coin": "XDC-USD",
+    "to_end_pct": -8.124736480253459
+   }
+  ],
+  "locked_avg_pct": -4.383951356047694
+ },
+ "copy 9": {
+  "end": 1008.373810524471,
+  "value_end_19nov": 1037.6567360115537,
+  "trades": [
+   {
+    "decided": "2026-11-18 05:31",
+    "sold": [],
+    "bought": [
+     {
+      "coin": "BTW39158-USD",
+      "price": 0.44030598,
+      "to_end_pct": 62.83298037423886,
+      "to_20nov_pct": 34.60313893533766
+     },
+     {
+      "coin": "GNO-USD",
+      "price": 95.599998,
+      "to_end_pct": -4.62342896701734,
+      "to_20nov_pct": 4.633893402382716
+     },
+     {
+      "coin": "PI35697-USD",
+      "price": 0.060761217,
+      "to_end_pct": -6.434359272296996,
+      "to_20nov_pct": -11.893836820286197
+     },
+     {
+      "coin": "FF38482-USD",
+      "price": 0.10090242,
+      "to_end_pct": 1.260534682914427,
+      "to_20nov_pct": 1.3469944526602884
+     },
+     {
+      "coin": "ZRO26997-USD",
+      "price": 1.3556,
+      "to_end_pct": -15.218353496606662,
+      "to_20nov_pct": -3.592505163765125
+     },
+     {
+      "coin": "M35491-USD",
+      "price": 0.89668304,
+      "to_end_pct": -13.198128515958096,
+      "to_20nov_pct": -7.410745719022405
+     },
+     {
+      "coin": "XDC-USD",
+      "price": 0.030802596,
+      "to_end_pct": -15.102369943104799,
+      "to_20nov_pct": -7.594681305432838
+     },
+     {
+      "coin": "DRV35014-USD",
+      "price": 0.27020708,
+      "to_end_pct": 28.162863090041924,
+      "to_20nov_pct": -3.5358288909380087
+     },
+     {
+      "coin": "NIGHT39064-USD",
+      "price": 0.044590373,
+      "to_end_pct": 8.780491699407843,
+      "to_20nov_pct": 0.5151201583355025
+     },
+     {
+      "coin": "PIEVERSE-USD",
+      "price": 2.1627223,
+      "to_end_pct": 64.4654517133337,
+      "to_20nov_pct": 37.84849307745151
+     }
+    ],
+    "reason": "MARKET: FLAT / NEWS: NONE (mixed headlines, no clear catalyst) / RISK: MEDIUM / NOTE: Build diversified 10-coin portfolio from biggest 24h fallers list. / ACTIONS: BUY BTW39158; BUY GNO; BUY PI35697; BUY FF38482; BUY ZRO26997; BUY M35491; BUY XDC; BUY DRV35014; BUY NIGHT39064; BUY PIEVERSE"
+   },
+   {
+    "decided": "2026-11-19 04:31",
+    "sold": [
+     {
+      "coin": "PIEVERSE-USD",
+      "price": 3.0115454,
+      "after_to_end_pct": 18.109824942370125
+     }
+    ],
+    "bought": [
+     {
+      "coin": "SKY33038-USD",
+      "price": 0.048909999,
+      "to_end_pct": -16.683701015818876,
+      "to_20nov_pct": -4.1504805592001865
+     }
+    ],
+    "reason": "MARKET: DOWN / NEWS: BAD (Bitcoin ETF outflows resume, Fed minutes hawkish, altcoin delistings) / RISK: HIGH / NOTE: PIEVERSE fading fast (-16% from high); 6 coins still underwater. Protect PIEVERSE profit. / ACTIONS: SELL PIEVERSE; BUY SKY33038; BUY PI35697"
+   },
+   {
+    "decided": "2026-11-19 05:31",
+    "sold": [
+     {
+      "coin": "BTW39158-USD",
+      "price": 0.56110132,
+      "after_to_end_pct": 27.77787619533669
+     },
+     {
+      "coin": "GNO-USD",
+      "price": 98.629997,
+      "after_to_end_pct": -7.553479901251537
+     },
+     {
+      "coin": "ZRO26997-USD",
+      "price": 1.4219,
+      "after_to_end_pct": -19.17153105000351
+     }
+    ],
+    "bought": [
+     {
+      "coin": "PIEVERSE-USD",
+      "price": 2.538321,
+      "to_end_pct": 40.129282309053906,
+      "to_20nov_pct": 17.450870083019467
+     },
+     {
+      "coin": "FIL-USD",
+      "price": 0.5704,
+      "to_end_pct": -3.2608678120617074,
+      "to_20nov_pct": 0.7889147966339438
+     },
+     {
+      "coin": "INJ-USD",
+      "price": 7.0359998,
+      "to_end_pct": -8.3570184297049,
+      "to_20nov_pct": 0.7390563029862518
+     }
+    ],
+    "reason": "MARKET: DOWN / NEWS: BAD (capital flowing out of crypto) / RISK: HIGH / NOTE: PIEVERSE not in holdings; 6 coins underwater. Protect profits on winners. / ACTIONS: SELL BTW39158; SELL GNO; SELL ZRO26997; BUY PIEVERSE; BUY SKY33038; BUY FIL"
+   },
+   {
+    "decided": "2026-11-19 07:31",
+    "sold": [
+     {
+      "coin": "INJ-USD",
+      "price": 7.1550002,
+      "after_to_end_pct": -9.881204475717553
+     },
+     {
+      "coin": "PIEVERSE-USD",
+      "price": 2.5921397,
+      "after_to_end_pct": 37.21988054887628
+     }
+    ],
+    "bought": [],
+    "reason": "MARKET: DOWN / NEWS: BAD (US retail sales slow, rate hike bets, stocks rout, major altcoins struggle) / RISK: HIGH / NOTE: Market weakening; protect profits on winners above break-even, hold underwater coins / ACTIONS: SELL PIEVERSE; SELL INJ; BUY SKY33038; BUY FIL"
+   },
+   {
+    "decided": "2026-11-19 08:31",
+    "sold": [
+     {
+      "coin": "DRV35014-USD",
+      "price": 0.27531612,
+      "after_to_end_pct": 25.78454541637447
+     },
+     {
+      "coin": "FIL-USD",
+      "price": 0.57359999,
+      "after_to_end_pct": -3.8005544595633545
+     }
+    ],
+    "bought": [
+     {
+      "coin": "ASTER36341-USD",
+      "price": 0.52209997,
+      "to_end_pct": -2.8346965811930636,
+      "to_20nov_pct": -1.857881738625633
+     },
+     {
+      "coin": "CRV-USD",
+      "price": 0.1962,
+      "to_end_pct": -8.053007135575951,
+      "to_20nov_pct": -2.1406727828746197
+     },
+     {
+      "coin": "HBAR-USD",
+      "price": 0.055629998,
+      "to_end_pct": -5.572525816017471,
+      "to_20nov_pct": -3.2356571359215214
+     },
+     {
+      "coin": "XLM-USD",
+      "price": 0.13727,
+      "to_end_pct": -5.122750783128149,
+      "to_20nov_pct": -3.2898666860930903
+     }
+    ],
+    "reason": "MARKET: DOWN / NEWS: BAD (Citi cuts BTC/ETH targets; Ledger hacks) / RISK: HIGH / NOTE: Protect DRV/FIL profits; hold 6 underwater; fill 2 slots with 24h fallers / ACTIONS: SELL DRV35014; SELL FIL; BUY SKY33038; BUY ASTER36341"
+   }
+  ],
+  "locked": [
+   {
+    "coin": "ASTER36341-USD",
+    "to_end_pct": -0.9953064595222494
+   },
+   {
+    "coin": "CRV-USD",
+    "to_end_pct": -6.041666666666668
+   },
+   {
+    "coin": "FF38482-USD",
+    "to_end_pct": -0.08531064015543377
+   },
+   {
+    "coin": "HBAR-USD",
+    "to_end_pct": -2.415010127623629
+   },
+   {
+    "coin": "M35491-USD",
+    "to_end_pct": -6.2505987783127654
+   },
+   {
+    "coin": "NIGHT39064-USD",
+    "to_end_pct": 8.223013142751444
+   },
+   {
+    "coin": "PI35697-USD",
+    "to_end_pct": 6.19647633146081
+   },
+   {
+    "coin": "SKY33038-USD",
+    "to_end_pct": -13.075934579264814
+   },
+   {
+    "coin": "XDC-USD",
+    "to_end_pct": -8.124736480253459
+   },
+   {
+    "coin": "XLM-USD",
+    "to_end_pct": -1.8952347951850967
+   }
+  ],
+  "locked_avg_pct": -2.446430905277186
+ },
+ "copy 10": {
+  "end": 1004.8094897205503,
+  "value_end_19nov": 1033.566826102965,
+  "trades": [
+   {
+    "decided": "2026-11-18 05:31",
+    "sold": [],
+    "bought": [
+     {
+      "coin": "BTW39158-USD",
+      "price": 0.44030598,
+      "to_end_pct": 62.83298037423886,
+      "to_20nov_pct": 34.60313893533766
+     },
+     {
+      "coin": "GNO-USD",
+      "price": 95.599998,
+      "to_end_pct": -4.62342896701734,
+      "to_20nov_pct": 4.633893402382716
+     },
+     {
+      "coin": "PI35697-USD",
+      "price": 0.060761217,
+      "to_end_pct": -6.434359272296996,
+      "to_20nov_pct": -11.893836820286197
+     },
+     {
+      "coin": "FF38482-USD",
+      "price": 0.10090242,
+      "to_end_pct": 1.260534682914427,
+      "to_20nov_pct": 1.3469944526602884
+     },
+     {
+      "coin": "ZRO26997-USD",
+      "price": 1.3556,
+      "to_end_pct": -15.218353496606662,
+      "to_20nov_pct": -3.592505163765125
+     },
+     {
+      "coin": "M35491-USD",
+      "price": 0.89668304,
+      "to_end_pct": -13.198128515958096,
+      "to_20nov_pct": -7.410745719022405
+     },
+     {
+      "coin": "XDC-USD",
+      "price": 0.030802596,
+      "to_end_pct": -15.102369943104799,
+      "to_20nov_pct": -7.594681305432838
+     },
+     {
+      "coin": "DRV35014-USD",
+      "price": 0.27020708,
+      "to_end_pct": 28.162863090041924,
+      "to_20nov_pct": -3.5358288909380087
+     },
+     {
+      "coin": "NIGHT39064-USD",
+      "price": 0.044590373,
+      "to_end_pct": 8.780491699407843,
+      "to_20nov_pct": 0.5151201583355025
+     },
+     {
+      "coin": "PIEVERSE-USD",
+      "price": 2.1627223,
+      "to_end_pct": 64.4654517133337,
+      "to_20nov_pct": 37.84849307745151
+     }
+    ],
+    "reason": "MARKET: FLAT / NEWS: NONE (mixed headlines, no clear catalyst) / RISK: MEDIUM / NOTE: Start building diversified 10-coin portfolio from biggest 24h fallers / ACTIONS: BUY BTW39158; BUY GNO; BUY PI35697; BUY FF38482; BUY ZRO26997; BUY M35491; BUY XDC; BUY DRV35014; BUY NIGHT39064; BUY PIEVERSE"
+   },
+   {
+    "decided": "2026-11-18 11:31",
+    "sold": [
+     {
+      "coin": "PIEVERSE-USD",
+      "price": 2.4532206,
+      "after_to_end_pct": 44.990263003661404
+     }
+    ],
+    "bought": [
+     {
+      "coin": "RAIN38341-USD",
+      "price": 0.0042771222,
+      "to_end_pct": -23.58558752424702,
+      "to_20nov_pct": 2.291660032533094
+     }
+    ],
+    "reason": "MARKET: DOWN / NEWS: BAD (Binance hack dumping $158M altcoins) / RISK: HIGH / NOTE: Binance hack creates selling pressure; hold underwater coins, protect profits on winners / ACTIONS: SELL PIEVERSE; BUY RAIN38341; BUY PEARL41876"
+   },
+   {
+    "decided": "2026-11-18 12:31",
+    "sold": [
+     {
+      "coin": "BTW39158-USD",
+      "price": 0.45739555,
+      "after_to_end_pct": 56.74908730528752
+     },
+     {
+      "coin": "NIGHT39064-USD",
+      "price": 0.046439476,
+      "after_to_end_pct": 4.449126428558325
+     }
+    ],
+    "bought": [
+     {
+      "coin": "ENA-USD",
+      "price": 0.11105,
+      "to_end_pct": -9.734353894642055,
+      "to_20nov_pct": -5.565060783430875
+     },
+     {
+      "coin": "INJ-USD",
+      "price": 7.2649999,
+      "to_end_pct": -11.245697333044703,
+      "to_20nov_pct": -2.4363400197706775
+     }
+    ],
+    "reason": "MARKET: DOWN / NEWS: BAD (Fed hawkish, CoinShares sells ETH/SOL, global crypto shrinking) / RISK: HIGH / NOTE: Protect profits on winners; hold underwater coins for recovery / ACTIONS: SELL BTW39158; SELL NIGHT39064; BUY RAIN38341; BUY M35491"
+   },
+   {
+    "decided": "2026-11-18 13:31",
+    "sold": [
+     {
+      "coin": "ENA-USD",
+      "price": 0.11292,
+      "after_to_end_pct": -11.229188806234514
+     },
+     {
+      "coin": "INJ-USD",
+      "price": 7.3270001,
+      "after_to_end_pct": -11.996725644919803
+     },
+     {
+      "coin": "RAIN38341-USD",
+      "price": 0.0047729481,
+      "after_to_end_pct": -31.523709633465323
+     }
+    ],
+    "bought": [
+     {
+      "coin": "ZEC-USD",
+      "price": 936.40997,
+      "to_end_pct": -15.417391380401469,
+      "to_20nov_pct": -4.666754028686826
+     }
+    ],
+    "reason": "MARKET: DOWN / NEWS: BAD (Fed hawkish + Binance hack) / RISK: HIGH / NOTE: Protect profits on winners; hold 6 underwater coins for recovery / ACTIONS: SELL RAIN38341; SELL ENA; SELL INJ; BUY PI35697; BUY M35491; BUY ZEC"
+   },
+   {
+    "decided": "2026-11-18 14:31",
+    "sold": [],
+    "bought": [
+     {
+      "coin": "GT-USD",
+      "price": 7.0165973,
+      "to_end_pct": -4.116251619570644,
+      "to_20nov_pct": -2.0747791810711513
+     },
+     {
+      "coin": "ENA-USD",
+      "price": 0.11127,
+      "to_end_pct": -9.912824660735142,
+      "to_20nov_pct": -5.751774961804612
+     }
+    ],
+    "reason": "MARKET: DOWN / NEWS: NONE (minor stablecoin/regulatory items, no market-moving catalyst) / RISK: MEDIUM / NOTE: Protect profits on GNO/FF38482/ZRO; hold 6 underwater coins; fill 2 slots with 24h fallers / ACTIONS: BUY PI35697; BUY GT"
+   },
+   {
+    "decided": "2026-11-18 18:31",
+    "sold": [
+     {
+      "coin": "GNO-USD",
+      "price": 97.75,
+      "after_to_end_pct": -6.721227621483372
+     }
+    ],
+    "bought": [
+     {
+      "coin": "LIT39125-USD",
+      "price": 2.721,
+      "to_end_pct": -10.58434031606027,
+      "to_20nov_pct": 1.2495442851892635
+     }
+    ],
+    "reason": "MARKET: DOWN / NEWS: BAD (Bitcoin <$63k, MEXC stablecoin card shutdown, bearish sentiment) / RISK: HIGH / NOTE: 9/10 holdings underwater; only GNO & GT above break-even. Protect GNO profit, hold rest for recovery. / ACTIONS: SELL GNO; BUY PI35697; BUY LIT39125"
+   },
+   {
+    "decided": "2026-11-18 19:31",
+    "sold": [
+     {
+      "coin": "ENA-USD",
+      "price": 0.11157,
+      "after_to_end_pct": -10.155059603836158
+     },
+     {
+      "coin": "GT-USD",
+      "price": 7.094923,
+      "after_to_end_pct": -5.1747777953333625
+     },
+     {
+      "coin": "LIT39125-USD",
+      "price": 2.72,
+      "after_to_end_pct": -10.551466911764706
+     }
+    ],
+    "bought": [
+     {
+      "coin": "PUMP36507-USD",
+      "price": 0.0025599999,
+      "to_end_pct": -1.0156211334227172,
+      "to_20nov_pct": 3.2812579406741316
+     },
+     {
+      "coin": "RAY-USD",
+      "price": 1.3899,
+      "to_end_pct": -4.496726383193039,
+      "to_20nov_pct": -0.06474566515575209
+     },
+     {
+      "coin": "NEAR-USD",
+      "price": 3.2474999,
+      "to_end_pct": -8.249419807526404,
+      "to_20nov_pct": -1.314857623244281
+     }
+    ],
+    "reason": "MARKET: DOWN / NEWS: BAD (Fed hawkish minutes, stablecoin outflow, BTC <$63k) / RISK: HIGH / NOTE: Protect GT/ENA/LIT profits; hold 7 underwater coins; no empty slots / ACTIONS: SELL GT; SELL ENA; SELL LIT39125; BUY PI35697; BUY PUMP36507; BUY ZEC"
+   },
+   {
+    "decided": "2026-11-19 00:31",
+    "sold": [
+     {
+      "coin": "NEAR-USD",
+      "price": 3.3016,
+      "after_to_end_pct": -9.752847104434215
+     },
+     {
+      "coin": "PUMP36507-USD",
+      "price": 0.002573,
+      "after_to_end_pct": -1.515740380878372
+     },
+     {
+      "coin": "RAY-USD",
+      "price": 1.4011,
+      "after_to_end_pct": -5.260152737135115
+     },
+     {
+      "coin": "ZRO26997-USD",
+      "price": 1.4025,
+      "after_to_end_pct": -18.053475935828878
+     }
+    ],
+    "bought": [
+     {
+      "coin": "LIT39125-USD",
+      "price": 2.714,
+      "to_end_pct": -10.35371775976418,
+      "to_20nov_pct": 1.5106890198968381
+     },
+     {
+      "coin": "FIL-USD",
+      "price": 0.56779999,
+      "to_end_pct": -2.8178901517768695,
+      "to_20nov_pct": 1.2504367955342932
+     },
+     {
+      "coin": "GT-USD",
+      "price": 7.0521002,
+      "to_end_pct": -4.598966134939486,
+      "to_20nov_pct": -2.5677712293424304
+     }
+    ],
+    "reason": "MARKET: DOWN / NEWS: BAD (Fed minutes signal higher rates; Bitcoin sentiment extreme fear) / RISK: HIGH / NOTE: 8/10 holdings underwater; protect 4 profitable coins from giving back gains / ACTIONS: SELL ZRO26997; SELL PUMP36507; SELL RAY; SELL NEAR; BUY PI35697; BUY LIT39125; BUY XDC; BUY FIL"
+   },
+   {
+    "decided": "2026-11-19 01:31",
+    "sold": [],
+    "bought": [
+     {
+      "coin": "INJ-USD",
+      "price": 6.8759999,
+      "to_end_pct": -6.2245477926781145,
+      "to_20nov_pct": 3.0831864904477424
+     }
+    ],
+    "reason": "MARKET: DOWN / NEWS: NONE (macro inflation/retail data; no crypto catalyst) / RISK: HIGH / NOTE: Only GT above break-even at high; 8 coins underwater. Hold for recovery. / ACTIONS: NONE"
+   },
+   {
+    "decided": "2026-11-19 08:31",
+    "sold": [
+     {
+      "coin": "LIT39125-USD",
+      "price": 2.9170001,
+      "after_to_end_pct": -16.59238887238982
+     }
+    ],
+    "bought": [
+     {
+      "coin": "SKY33038-USD",
+      "price": 0.04648,
+      "to_end_pct": -12.327880808950088,
+      "to_20nov_pct": 0.8605830464715858
+     }
+    ],
+    "reason": "MARKET: DOWN / NEWS: BAD (Citi cuts BTC/ETH targets; Ledger tampering spreads) / RISK: HIGH / NOTE: Market weakening with negative news; protect profitable positions, hold underwater coins / ACTIONS: SELL LIT39125; BUY SKY33038; BUY ASTER36341"
+   },
+   {
+    "decided": "2026-11-19 10:31",
+    "sold": [
+     {
+      "coin": "DRV35014-USD",
+      "price": 0.27705655,
+      "after_to_end_pct": 24.994384720375674
+     },
+     {
+      "coin": "FIL-USD",
+      "price": 0.57859999,
+      "after_to_end_pct": -4.6318666545431375
+     },
+     {
+      "coin": "GT-USD",
+      "price": 7.2538061,
+      "after_to_end_pct": -7.251773658521143
+     },
+     {
+      "coin": "INJ-USD",
+      "price": 7.2540002,
+      "after_to_end_pct": -11.111113561866182
+     },
+     {
+      "coin": "ZEC-USD",
+      "price": 945.71997,
+      "after_to_end_pct": -16.250052327857677
+     }
+    ],
+    "bought": [
+     {
+      "coin": "ASTER36341-USD",
+      "price": 0.5219,
+      "to_end_pct": -2.7974669476911407,
+      "to_20nov_pct": -1.820277831002104
+     },
+     {
+      "coin": "CRO-USD",
+      "price": 0.041560002,
+      "to_end_pct": -1.5399445842182669,
+      "to_20nov_pct": -0.4571727402707948
+     },
+     {
+      "coin": "CRV-USD",
+      "price": 0.1965,
+      "to_end_pct": -8.193384223918576,
+      "to_20nov_pct": -2.2900763358778664
+     },
+     {
+      "coin": "HBAR-USD",
+      "price": 0.05556,
+      "to_end_pct": -5.453560115190781,
+      "to_20nov_pct": -3.1137473002159743
+     },
+     {
+      "coin": "FLR-USD",
+      "price": 0.0050619999,
+      "to_end_pct": 4.148561915222482,
+      "to_20nov_pct": -1.1853022754899745
+     }
+    ],
+    "reason": "MARKET: DOWN / NEWS: BAD (Bitcoin -14% weekly, ETF outflows $2.9B, Solana/XRP ETFs scrapped) / RISK: HIGH / NOTE: Market deteriorating with heavy ETF outflows; protect profitable positions, hold underwater coins / ACTIONS: SELL DRV35014; SELL ZEC; SELL FIL; SELL GT; SELL INJ; BUY SKY33038; BUY ASTER36341; BUY CRO; BUY PI35697; BUY CRV"
+   }
+  ],
+  "locked": [
+   {
+    "coin": "ASTER36341-USD",
+    "to_end_pct": -0.9953064595222494
+   },
+   {
+    "coin": "CRO-USD",
+    "to_end_pct": -1.0877447162740084
+   },
+   {
+    "coin": "CRV-USD",
+    "to_end_pct": -6.041666666666668
+   },
+   {
+    "coin": "FF38482-USD",
+    "to_end_pct": -0.08531064015543377
+   },
+   {
+    "coin": "FLR-USD",
+    "to_end_pct": 5.397844969968912
+   },
+   {
+    "coin": "HBAR-USD",
+    "to_end_pct": -2.415010127623629
+   },
+   {
+    "coin": "M35491-USD",
+    "to_end_pct": -6.2505987783127654
+   },
+   {
+    "coin": "PI35697-USD",
+    "to_end_pct": 6.19647633146081
+   },
+   {
+    "coin": "SKY33038-USD",
+    "to_end_pct": -13.075934579264814
+   },
+   {
+    "coin": "XDC-USD",
+    "to_end_pct": -8.124736480253459
+   }
+  ],
+  "locked_avg_pct": -2.6481987146643307
+ }
+}
