@@ -63,7 +63,12 @@ SYSTEM = (
     + ("3. GOLDEN RULE: never sell a coin for less than you paid plus costs (its BREAK-EVEN price). If a coin you "
        "own dips below its break-even, do not panic: HOLD it until it recovers above break-even. Once a coin is "
        "above its break-even you may SELL it to take the profit, and BUY a coin that has fallen more than average "
-       "(see BIGGEST FALLERS last 24 hours) and wait for that one to recover. Repeat.\n" if os.environ.get("VERSION") == "v4" else
+       "(see BIGGEST FALLERS last 24 hours) and wait for that one to recover. Repeat.\n"
+       "SPREAD THE RISK: your money is split over 10 coins (about 10% each), so if one coin never recovers only that "
+       "slice is affected - holding a dipped coin is an acceptable risk.\n"
+       "TRADE RARELY: keep all the money invested, but do not pull money out of coins often - every sell plus buy "
+       "costs 0.10%. Only take a profit when the gain is clearly bigger than that cost. Most decisions should be NONE.\n"
+       if os.environ.get("VERSION") == "v4" else
        "3. Sell high, buy low. Do not keep a falling coin just to avoid taking a loss: the price you paid does not "
        "matter, only where the price goes next.\n") +
     "4. Use only symbols shown to you.\n"
