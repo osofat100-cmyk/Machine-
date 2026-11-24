@@ -47,7 +47,8 @@ ANSWERS = os.path.join(HERE, f"answers{TAG}.csv")
 HOUR = 60 // STEP                             # steps in one hour
 DAY = 24 * HOUR                               # steps in 24 hours
 BENCH = "BTC-USD"
-FULL = os.environ.get("VERSION") == "v3"     # version 3: all money invested, 10 coins at all times
+FULL = os.environ.get("VERSION") in ("v3", "v4")   # all money invested, 10 coins at all times
+GOLDEN = os.environ.get("VERSION") == "v4"            # version 4: never sell below break-even; buy the dips
 WARMUP = HOUR + 1                             # first hour of the first day: background only
 
 SYSTEM = (
@@ -59,15 +60,21 @@ SYSTEM = (
     "1. Trading costs money: every BUY costs 0.05% and every SELL another 0.05%, so a round trip costs 0.10%. Only "
     "trade when you expect a move clearly bigger than that. Switching back and forth on small wiggles loses money.\n"
     "2. You can only SELL coins you own (listed under YOUR HOLDINGS). You cannot BUY a coin you already own.\n"
-    "3. Sell high, buy low. Do not keep a falling coin just to avoid taking a loss: the price you paid does not "
-    "matter, only where the price goes next.\n"
+    + ("3. GOLDEN RULE: never sell a coin for less than you paid plus costs (its BREAK-EVEN price). If a coin you "
+       "own dips below its break-even, do not panic: HOLD it until it recovers above break-even. Once a coin is "
+       "above its break-even you may SELL it to take the profit, and BUY a coin that has fallen more than average "
+       "(see BIGGEST FALLERS last 24 hours) and wait for that one to recover. Repeat.\n" if os.environ.get("VERSION") == "v4" else
+       "3. Sell high, buy low. Do not keep a falling coin just to avoid taking a loss: the price you paid does not "
+       "matter, only where the price goes next.\n") +
     "4. Use only symbols shown to you.\n"
     "ADVICE (learned from your earlier runs - follow it):\n"
     "A. Costs: only trade if the move you expect covers the 0.10% round trip AND leaves a profit. If you are not "
     "sure, do nothing. Most minutes the right answer is NONE.\n"
-    "B. Ride spikes: when a coin you own is rising, keep it. Do not sell just because it went up - it may keep "
-    "going, and buying it back later costs more. Sell only when it has clearly turned down from its high since you "
-    "bought it (see 'below its high' in YOUR HOLDINGS). Never sell a coin and buy the same coin back soon after.\n"
+    + ("B. Coins below break-even cannot be sold (the system will refuse). Coins above break-even: take the profit "
+       "when the rise has clearly turned down from its high, or hold if still rising.\n" if os.environ.get("VERSION") == "v4" else
+       "B. Ride spikes: when a coin you own is rising, keep it. Do not sell just because it went up - it may keep "
+       "going, and buying it back later costs more. Sell only when it has clearly turned down from its high since you "
+       "bought it (see 'below its high' in YOUR HOLDINGS). Never sell a coin and buy the same coin back soon after.\n") +
     "C. Before any BUY, check YOUR HOLDINGS: never buy a coin you already own.\n"
     "D. News: act on news that changes a coin's or the crypto market's outlook (regulation, ETF flows, hacks, "
     "exchange problems, big partnerships, rate decisions, crashes). Ignore headlines that do not matter. Do not trade "
@@ -174,6 +181,11 @@ def build_prompt(hist, sector_of, acc, entries, news_seen, new_news, notes, refu
     moves = sorted(((pct(c[x], hour["close"][x]), x) for x in sector_of if x in c and x in hour["close"]))
     L.append("BIGGEST RISERS last hour: " + ", ".join(f"{short(x)} {m:+.2f}% ({sector_of[x]})" for m, x in reversed(moves[-8:])))
     L.append("BIGGEST FALLERS last hour: " + ", ".join(f"{short(x)} {m:+.2f}% ({sector_of[x]})" for m, x in moves[:8]))
+    if GOLDEN:
+        d24 = sorted(((pct(c[x], first["open"][x]), x) for x in sector_of if x in c and x in first["open"]))
+        avg24 = sum(m for m, _ in d24) / len(d24)
+        L.append(f"BIGGEST FALLERS last 24 hours (average coin {avg24:+.2f}%): "
+                 + ", ".join(f"{short(x)} {m:+.2f}%" for m, x in d24[:10]))
     held = acc.get("shares", {})
     L.append(f"YOUR ACCOUNT: ${acc.get('value', 1000.0):,.2f}; cash ${acc.get('cash', 1000.0):,.2f}; trades so far "
              f"{acc.get('trades', 0)}, costs paid ${acc.get('costs', 0.0):.2f}; free slots {10 - len(held)}.")
@@ -183,6 +195,9 @@ def build_prompt(hist, sector_of, acc, entries, news_seen, new_news, notes, refu
             e = entries.get(sym)
             L.append(f"- {short(sym)} ({sector_of.get(sym, '')}): ${q * c[sym]:,.2f}, now ${c[sym]:.6g}"
                      + (f", bought at ${e:.6g}, {pct(c[sym] * 0.9995, e * 1.0005):+.2f}% after costs" if e else "")
+                     + ((f", break-even ${e * 1.0005 / 0.9995:.6g} - " + ("CAN SELL" if c[sym] * 0.9995 >= e * 1.0005
+                                                                          else "BELOW BREAK-EVEN, HOLD"))
+                        if GOLDEN and e else "")
                      + (f", high since bought ${highs[sym]:.6g}, now {pct(c[sym], highs[sym]):+.2f}% below its high"
                         if highs and sym in highs else "")
                      + f", 1 hour {pct(c[sym], hour['close'].get(sym, c[sym])):+.2f}%")
@@ -321,6 +336,10 @@ def main():
             notes.append((st["known_at"][5:], note))
             owned = set(acc.get("shares", {}))
             blocked = [a for a in acts if (a["action"] == "BUY") == (a["symbol"] in owned)]
+            if GOLDEN:                                       # never sell below break-even (price paid plus costs)
+                blocked += [a for a in acts if a["action"] == "SELL" and a["symbol"] in owned and a not in blocked
+                            and a["symbol"] in entries
+                            and st["close"][a["symbol"]] * 0.9995 < entries[a["symbol"]] * 1.0005]
             if blocked and n >= len(saved):
                 with open(os.path.join(HERE, f"refused{TAG}.csv"), "a") as fr:
                     for od in blocked:
