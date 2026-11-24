@@ -141,7 +141,11 @@ def throttle():
             f.seek(0)
             now = time.time()
             sent = [float(x) for x in f.read().split() if now - float(x) < 60]
-            if len(sent) < RPM:
+            try:                                         # the cap can be changed while running: golden/.rpm
+                cap = int(open(RATE_FILE.replace(".requests", ".rpm")).read())
+            except (OSError, ValueError):
+                cap = RPM
+            if len(sent) < cap:
                 f.seek(0)
                 f.truncate()
                 f.write(" ".join(f"{x:.3f}" for x in sent + [now]))
