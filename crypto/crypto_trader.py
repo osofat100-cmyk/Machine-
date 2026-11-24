@@ -19,11 +19,17 @@ saved answers and continues from where it stopped.
 
     STEP_MIN=1 VERSION=v3 MODEL=qwen-3.8-27b MODEL_TAG=qwen API_URL=https://api.cerebras.ai/v1/chat/completions \
         MAX_TOKENS=6000 python3 crypto/crypto_trader.py
+
+KEY=2 sends the requests through NVIDIA's second address (api.nvcf.nvidia.com, the second key, same Ultra model)
+instead of the first (integrate.api.nvidia.com). With KEY=1 or KEY=2 every run on that key shares one per-minute cap
+(crypto/.rpm_key1 / crypto/.rpm_key2, defaults 28 and 8), so many copies can run at once without being blocked.
 """
 import csv
+import fcntl
 import http.client
 import json
 import os
+import random
 import re
 import socket
 import subprocess
@@ -36,6 +42,10 @@ from collections import defaultdict
 HERE = os.path.dirname(os.path.abspath(__file__))
 MODEL = os.environ.get("MODEL", "nvidia/nemotron-3.5-bolt-e4b")
 API_URL = os.environ.get("API_URL", "https://integrate.api.nvidia.com/v1/chat/completions")   # or Cerebras
+KEY = os.environ.get("KEY", "")                          # "", "1" = first address; "2" = second address (NVCF)
+NVCF_FUNCTION = os.environ.get("NVCF_FUNCTION", "948fe171-ce7a-4332-8bc0-5e14e90259f9")   # Ultra on the second key
+NVCF_URL = f"https://api.nvcf.nvidia.com/v2/nvcf/exec/functions/{NVCF_FUNCTION}"
+NVCF_STATUS = "https://api.nvcf.nvidia.com/v2/nvcf/exec/status/"
 MAX_TOKENS = int(os.environ.get("MAX_TOKENS", "160"))
 NO_THINK = os.environ.get("THINKING") == "off"         # Nemotron: answer without the long reasoning (about 14x faster)
 EXTRA = {"chat_template_kwargs": {"enable_thinking": False}} if NO_THINK else {}
@@ -125,6 +135,50 @@ class Server:
         self.proc.wait(timeout=30)
 
 
+def throttle():
+    """With KEY set: wait until fewer than the key's cap of requests went out in the last 60 seconds (all runs)."""
+    if not KEY:
+        return
+    rate = os.path.join(HERE, f".requests_key{KEY}")
+    while True:
+        with open(rate, "a+") as f:
+            fcntl.flock(f, fcntl.LOCK_EX)
+            f.seek(0)
+            now = time.time()
+            sent = [float(x) for x in f.read().split() if now - float(x) < 60]
+            try:
+                cap = int(open(os.path.join(HERE, f".rpm_key{KEY}")).read())
+            except (OSError, ValueError):
+                cap = 28 if KEY == "1" else 8
+            if len(sent) < cap:
+                f.seek(0)
+                f.truncate()
+                f.write(" ".join(f"{x:.3f}" for x in sent + [now]))
+                return
+            wait = 60 - (now - min(sent)) + random.random()
+        time.sleep(wait)
+
+
+def post(body):
+    """Send one chat request; the second key wraps it for NVCF and polls long jobs (202) until done."""
+    throttle()
+    hdr = {"Authorization": "Bearer proxy-injected", "Content-Type": "application/json"}
+    if KEY != "2":
+        return json.load(urllib.request.urlopen(urllib.request.Request(API_URL, data=body, headers=hdr), timeout=300))
+    req = urllib.request.Request(NVCF_URL, data=json.dumps({"requestHeader": {}, "requestBody": json.loads(body)}).encode(),
+                                 headers={**hdr, "Accept": "application/json"})
+    r = urllib.request.urlopen(req, timeout=300)
+    j = json.load(r)
+    while r.status == 202 or j.get("status") in ("pending-evaluation", "in-progress"):
+        time.sleep(1)
+        r = urllib.request.urlopen(urllib.request.Request(NVCF_STATUS + (j.get("reqId") or r.headers.get("NVCF-REQID")),
+                                                          headers={**hdr, "Accept": "application/json"}), timeout=300)
+        j = json.load(r)
+    if j.get("status") == "errored":
+        raise urllib.error.URLError(f"errored {j.get('errorCode')}")
+    return j.get("response", j)
+
+
 def ask(user):
     body = json.dumps({"model": MODEL, "messages": [{"role": "system", "content": SYSTEM},
                                                     {"role": "user", "content": user}],
@@ -134,10 +188,7 @@ def ask(user):
     while k < 8:
         k += 1
         try:
-            req = urllib.request.Request(API_URL, data=body,
-                                         headers={"Authorization": "Bearer proxy-injected",
-                                                  "Content-Type": "application/json"})
-            j = json.load(urllib.request.urlopen(req, timeout=300))
+            j = post(body)
             text = (j["choices"][0]["message"].get("content") or "").strip()
             if not text and k < 7:                       # thought too long and never answered: ask again, shorter
                 body = json.dumps({"model": MODEL, "messages": [
@@ -150,13 +201,13 @@ def ask(user):
             last = e
             if e.code == 429:                                # over the free per-minute limit: wait and retry
                 wait = float(e.headers.get("retry-after") or 0) or 15.0
-                time.sleep(min(120.0, wait))
+                time.sleep(min(120.0, wait) + (random.uniform(0, 10) if KEY else 0))
                 limited[0] += 1
                 if limited[0] < 400:
                     k -= 1                                   # a rate-limit wait does not use up a try
                     continue
             time.sleep(min(60, 2 ** k))
-        except (urllib.error.URLError, TimeoutError, ConnectionError, json.JSONDecodeError) as e:
+        except (urllib.error.URLError, TimeoutError, ConnectionError, json.JSONDecodeError, KeyError) as e:
             last = e
             time.sleep(min(60, 2 ** k))
     raise RuntimeError(f"AI call kept failing: {last}")
