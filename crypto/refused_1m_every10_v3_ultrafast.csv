@@ -82,3 +82,7 @@
 2026-11-19 09:22,BUY,CRV-USD,already owned
 2026-11-19 09:22,BUY,WLD-USD,already owned
 2026-11-19 09:32,BUY,PYTH-USD,already owned
+2026-11-19 10:31,BUY,PYTH-USD,blocked before sending (already owned / not owned)
+2026-11-19 10:31,BUY,MNT27075-USD,blocked before sending (already owned / not owned)
+2026-11-19 10:42,BUY,FF38482-USD,already owned
+2026-11-19 10:42,BUY,KITE-USD,already owned
