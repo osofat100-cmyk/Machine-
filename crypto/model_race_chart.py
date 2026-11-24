@@ -2,32 +2,36 @@
 """Model race (stopped early): every copy's money at the last market time ALL runs reached, by AI.
     python3 crypto/model_race_chart.py -> crypto/model_race_chart.png"""
 import csv
+import json
 import os
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 plt.rcParams["text.parse_math"] = False
 HERE = os.path.dirname(os.path.abspath(__file__))
-TAGS = {"Ultra": ["ultrafast"], "Kimi K3.1 Pro": [f"kimi_c{i}" for i in range(1, 6)],
+ULTRA = json.load(open(os.path.join(HERE, "ultra_runs_at_1211.json")))   # all 19 first-rule Ultra runs, replayed
+TAGS = {"Ultra (all 19 earlier runs)": list(ULTRA), "Kimi K3.1 Pro": [f"kimi_c{i}" for i in range(1, 6)],
         "Nemotron 3.5 Super": [f"super_c{i}" for i in range(1, 6)],
         "Nemotron 3.5 Lightning": [f"lightning_c{i}" for i in range(1, 6)]}
-COL = {"Ultra": "#2a78d6", "Kimi K3.1 Pro": "#eb6834", "Nemotron 3.5 Super": "#1baf7a", "Nemotron 3.5 Lightning": "#eda100"}
+COL = {"Ultra (all 19 earlier runs)": "#2a78d6", "Kimi K3.1 Pro": "#eb6834", "Nemotron 3.5 Super": "#1baf7a", "Nemotron 3.5 Lightning": "#eda100"}
 INK, INK2, GRID, SURF = "#0b0b0b", "#52514e", "#e4e3df", "#fcfcfb"
 data = {}
 for g, ts in TAGS.items():
     for t in ts:
+        if g.startswith("Ultra"):
+            continue
         rows = [r for r in csv.DictReader(open(os.path.join(HERE, f"answers_1m_every5_v4a_{t}.csv")))
                 if r.get("time") and r["time"] != "time" and r["value"]]
         data[t] = ({r["time"]: (float(r["value"]), float(r["btc_hold"])) for r in rows}, rows[-1]["time"])
 common = min(v[1] for v in data.values())
-btc = data["ultrafast"][0][common][1]
-fig, ax = plt.subplots(figsize=(11, 5.5), facecolor=SURF)
+btc = data["kimi_c1"][0][common][1]
+fig, ax = plt.subplots(figsize=(14, 5.8), facecolor=SURF)
 x = 0
 for g, ts in TAGS.items():
-    vals = [data[t][0][common][0] for t in ts]
+    vals = [ULTRA[t] for t in ts] if g.startswith("Ultra") else [data[t][0][common][0] for t in ts]
     xs = list(range(x, x + len(vals)))
     ax.bar(xs, [v - 1000 for v in vals], color=COL[g], width=0.75)
-    for xi, v in zip(xs, vals):
+    for xi, v in (zip(xs, vals) if not g.startswith("Ultra") else []):
         ax.annotate(f"${v:,.0f}", (xi, v - 1000), xytext=(0, 3 if v >= 1000 else -3), textcoords="offset points",
                     ha="center", va="bottom" if v >= 1000 else "top", fontsize=8, color=INK2)
     avg = sum(vals) / len(vals)
