@@ -95,3 +95,14 @@
 2026-11-19 09:47,BUY,ASTER36341-USD,no cash left
 2026-11-19 10:16,BUY,PI35697-USD,blocked before sending (already owned / not owned)
 2026-11-19 10:17,BUY,SKY33038-USD,already owned
+2026-11-19 10:21,SELL,SKY33038-USD,blocked before sending (already owned / not owned)
+2026-11-19 10:21,SELL,PI35697-USD,blocked before sending (already owned / not owned)
+2026-11-19 10:26,SELL,PI35697-USD,blocked before sending (already owned / not owned)
+2026-11-19 10:26,SELL,ASTER36341-USD,blocked before sending (already owned / not owned)
+2026-11-19 10:26,SELL,SKY33038-USD,blocked before sending (already owned / not owned)
+2026-11-19 10:36,SELL,SKY33038-USD,blocked before sending (already owned / not owned)
+2026-11-19 10:36,SELL,ASTER36341-USD,blocked before sending (already owned / not owned)
+2026-11-19 10:36,SELL,STRK22691-USD,blocked before sending (already owned / not owned)
+2026-11-19 10:41,SELL,RAIN38341-USD,blocked before sending (already owned / not owned)
+2026-11-19 10:41,SELL,SKY33038-USD,blocked before sending (already owned / not owned)
+2026-11-19 10:41,SELL,ASTER36341-USD,blocked before sending (already owned / not owned)
