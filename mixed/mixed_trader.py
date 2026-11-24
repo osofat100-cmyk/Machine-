@@ -44,6 +44,7 @@ W_FILE = os.path.join(HERE, f"watcher_{TAG}.csv")
 D_FILE = os.path.join(HERE, f"decider_{TAG}.csv")
 HOUR, DAY, WARMUP = 60, 1440, 61
 SLOTS = 10
+START_AT = os.environ.get("START_AT", "")        # e.g. "2026-11-22 00:00": the AIs see everything before, trade from then
 
 RULES = (
     "THE ACCOUNT: $1,000 practice money. It can hold coins (the 100 largest cryptocurrencies, symbols ending in -USD, "
@@ -157,6 +158,7 @@ class View:
 
     def __init__(self):
         self.kind, self.group, self.hist, self.prev_close = {}, {}, [], {}
+        self.first_c, self.first_s, self.snaps = None, None, []   # start of the data (18 Nov) and each UTC midnight
 
     def add(self, out):
         if out.get("universe"):
@@ -165,6 +167,12 @@ class View:
         st = out["step"]
         if st.get("stock_prev_close"):
             self.prev_close = st["stock_prev_close"]
+            if self.first_s is None:
+                self.first_s = dict(st["stock_prev_close"])
+        if self.first_c is None:
+            self.first_c = dict(st["open"])
+        if st["time"].endswith("00:00"):
+            self.snaps.append((st["time"][:10], {k: v for k, v in st["close"].items()}))
         self.hist.append(st)
         self.hist = self.hist[-(DAY + HOUR):]
 
@@ -221,20 +229,30 @@ class View:
                 out += "↑" if m > 0.05 else "↓" if m < -0.05 else "→"
             return out
 
-        L.append("EVERY COIN - price, last minute %, last hour %, 24 hours %, then the last hour in six 10-minute "
-                 "steps (↑ rising, ↓ falling, → flat); grouped by size:")
+        if len(self.snaps) >= 1:
+            L.append("THE DAYS SO FAR (UTC days; change over each day):")
+            pts = [("18 Nov 04:30", self.first_c)] + [(d[5:], snap) for d, snap in self.snaps] + [("now", c)]
+            cs = [x for x in coins if x in self.first_c]
+            for (d0, a), (d1, b) in zip(pts, pts[1:]):
+                avg = sum(pct(b[x], a[x]) for x in cs if x in a and x in b) / len(cs)
+                spy = f", SPY {pct(b['SPY'], a['SPY']):+.2f}%" if "SPY" in a and "SPY" in b and a["SPY"] != b["SPY"] else ""
+                L.append(f"- {d0} to {d1}: Bitcoin {pct(b[ 'BTC-USD'], a['BTC-USD']):+.2f}%, average coin {avg:+.2f}%{spy}")
+        L.append("EVERY COIN - price, last minute %, last hour %, 24 hours %, since 18 Nov %, then the last hour in six "
+                 "10-minute steps (↑ rising, ↓ falling, → flat); grouped by size:")
         for g in sorted({self.group[s] for s in coins}):
             L.append(f"  {g}: " + "; ".join(
                 f"{s.removesuffix('-USD')} {c[s]:.5g} {pct(c[s], mins['close'].get(s, c[s])):+.2f} "
-                f"{pct(c[s], ago['close'].get(s, c[s])):+.1f} {pct(c[s], day['open'].get(s, c[s])):+.1f} {trend(s)}"
+                f"{pct(c[s], ago['close'].get(s, c[s])):+.1f} {pct(c[s], day['open'].get(s, c[s])):+.1f} "
+                f"{pct(c[s], self.first_c.get(s, c[s])):+.1f} {trend(s)}"
                 for s in coins if self.group[s] == g))
         if self.prev_close:
-            L.append("EVERY STOCK - price, % since the last close" + (
+            L.append("EVERY STOCK - price, % since the last close, % since 17 Nov close" + (
                 ", last minute %, last hour %, then the last hour in six 10-minute steps" if open_ else
                 " (market closed: prices are the last session's)") + "; grouped by sector:")
             for g in sorted({self.group[s] for s in stocks}):
                 L.append(f"  {g}: " + "; ".join(
-                    f"{s} {c[s]:.5g} {pct(c[s], self.prev_close.get(s, c[s])):+.1f}"
+                    f"{s} {c[s]:.5g} {pct(c[s], self.prev_close.get(s, c[s])):+.1f} "
+                    f"{pct(c[s], (self.first_s or {}).get(s, c[s])):+.1f}"
                     + (f" {pct(c[s], mins['close'].get(s, c[s])):+.2f} {pct(c[s], ago['close'].get(s, c[s])):+.1f} "
                        f"{trend(s)}" if open_ else "")
                     for s in stocks if self.group[s] == g))
@@ -319,8 +337,8 @@ def main():
             orders, pending = {}, []
             news_since_wake += out["news"]
             recent_news = (recent_news + out["news"])[-400:]
-            news_since_wake = news_since_wake[-40:]
-            if len(view.hist) <= WARMUP or out["last_step"]:
+            news_since_wake = news_since_wake[-60:]
+            if len(view.hist) <= WARMUP or out["last_step"] or st["time"] < START_AT:
                 continue
             if not btc_sent:
                 orders["btc_hold"] = [{"action": "BUY", "symbol": "BTC-USD", "all": True}]
@@ -349,7 +367,9 @@ def main():
                     L.append("YOUR NOTES FROM THE LAST HOUR (oldest first):")
                     L += [f"- {t[6:]}: {x[:160]}" for t, x in w_notes[-HOUR:]]
                 if i_w == 0:
-                    L.append("This is the first minute of the test: the account is all cash, so the decider must invest it.")
+                    L.append("This is the first minute of the test: the account is all cash, so the decider must invest it."
+                             + (" Everything above (the days so far, 24-hour and since-18-Nov moves, headlines) is "
+                                "what happened before you started." if START_AT else ""))
                 t1 = time.time()
                 wtext = chat(WATCHER, W_SYSTEM, "\n".join(L), 400, {"chat_template_kwargs": {"enable_thinking": False}},
                              temperature=0)
@@ -381,7 +401,7 @@ def main():
                 L.append("THE WATCHER'S NOTES SINCE YOU LAST DECIDED (newest last):")
                 L += [f"- {t}: {x}" for t, x in w_notes[-10:]]
                 L.append("HEADLINES SINCE YOU LAST DECIDED (newest last, with UTC time):")
-                L += [f"- {n['time'][5:]} {n['title']}" for n in news_since_wake[-20:]] or ["- none"]
+                L += [f"- {n['time'][5:]} {n['title']}" for n in news_since_wake[-40:]] or ["- none"]
                 if refused:
                     L.append("ORDERS REFUSED LAST MINUTE: " + "; ".join(f"{o['action']} {o['symbol']} ({o['why']})" for o in refused))
                 if d_notes:
