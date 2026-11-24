@@ -47,7 +47,7 @@ SLOTS = 10
 
 RULES = (
     "THE ACCOUNT: $1,000 practice money. It can hold coins (the 100 largest cryptocurrencies, symbols ending in -USD, "
-    "trading around the clock) and US stocks (the S&P 500 and the SPY index fund; stock orders only while the US "
+    "trading around the clock; in the lists they are written without -USD, e.g. BTC, but order them as BTC-USD) and US stocks (the S&P 500 and the SPY index fund; stock orders only while the US "
     "market is open, 14:30-21:00 UTC, Monday to Friday). Up to 10 holdings in total, coins and stocks mixed as you "
     "like. Each BUY splits the remaining cash evenly over the empty slots; SELL sells the whole holding. Orders fill "
     "at the next minute's opening price. Every buy costs 0.05% and every sell 0.05%.\n"
@@ -211,6 +211,33 @@ class View:
                 sh = sorted((pct(c[s], hr["close"][s]), s) for s in stocks if s in hr["close"] and s != "SPY")
                 L.append("Stocks moving most, last hour: " + ", ".join(f"{s} {m:+.2f}%" for m, s in reversed(sh[-4:]))
                          + " | " + ", ".join(f"{s} {m:+.2f}%" for m, s in sh[:4]))
+        ago = self.hist[-HOUR - 1] if len(self.hist) > HOUR else self.hist[0]
+        blocks = [self.hist[max(0, len(self.hist) - 1 - HOUR + 10 * k)] for k in range(7)]
+
+        def trend(s):
+            out = ""
+            for a, b in zip(blocks, blocks[1:]):
+                m = pct(b["close"].get(s, 0), a["close"].get(s, 0)) if a["close"].get(s) else 0.0
+                out += "↑" if m > 0.05 else "↓" if m < -0.05 else "→"
+            return out
+
+        L.append("EVERY COIN - price, last minute %, last hour %, 24 hours %, then the last hour in six 10-minute "
+                 "steps (↑ rising, ↓ falling, → flat); grouped by size:")
+        for g in sorted({self.group[s] for s in coins}):
+            L.append(f"  {g}: " + "; ".join(
+                f"{s.removesuffix('-USD')} {c[s]:.5g} {pct(c[s], mins['close'].get(s, c[s])):+.2f} "
+                f"{pct(c[s], ago['close'].get(s, c[s])):+.1f} {pct(c[s], day['open'].get(s, c[s])):+.1f} {trend(s)}"
+                for s in coins if self.group[s] == g))
+        if self.prev_close:
+            L.append("EVERY STOCK - price, % since the last close" + (
+                ", last minute %, last hour %, then the last hour in six 10-minute steps" if open_ else
+                " (market closed: prices are the last session's)") + "; grouped by sector:")
+            for g in sorted({self.group[s] for s in stocks}):
+                L.append(f"  {g}: " + "; ".join(
+                    f"{s} {c[s]:.5g} {pct(c[s], self.prev_close.get(s, c[s])):+.1f}"
+                    + (f" {pct(c[s], mins['close'].get(s, c[s])):+.2f} {pct(c[s], ago['close'].get(s, c[s])):+.1f} "
+                       f"{trend(s)}" if open_ else "")
+                    for s in stocks if self.group[s] == g))
         held = acc.get("shares", {})
         L.append(f"ACCOUNT: ${acc.get('value', 1000.0):,.2f}; cash ${acc.get('cash', 1000.0):,.2f}; trades so far "
                  f"{acc.get('trades', 0)}, costs paid ${acc.get('costs', 0.0):.2f}; empty slots {SLOTS - len(held)}.")
@@ -266,7 +293,7 @@ def main():
         dw.writeheader()
     view = View()
     entries, highs, pending, orders = {}, {}, [], {}
-    w_notes, d_notes, news_since_wake = [], [], []
+    w_notes, d_notes, news_since_wake, recent_news = [], [], [], []
     i_w, n_wake, t0, btc_sent, spy_sent, last_dec = 0, 0, time.time(), False, False, "none yet"
     with Server() as srv:
         while True:
@@ -291,6 +318,7 @@ def main():
             refused = out["refused"].get("ai", [])
             orders, pending = {}, []
             news_since_wake += out["news"]
+            recent_news = (recent_news + out["news"])[-400:]
             news_since_wake = news_since_wake[-40:]
             if len(view.hist) <= WARMUP or out["last_step"]:
                 continue
@@ -308,17 +336,18 @@ def main():
                 assert r["time"] == st["time"], f"saved watcher answers out of step at {st['time']}"
                 wtext, wake = r["text"], r["wake"] == "1"
             else:
-                L = base + (["NEWS PUBLISHED THIS MINUTE:"] + [f"- {n['title']}" for n in out["news"][:12]]
-                            + ([f"(and {len(out['news']) - 12} more headlines)"] if len(out["news"]) > 12 else [])
-                            if out["news"] else ["No news this minute."])
+                hour_news = [n for n in recent_news if n["time"] >= view.hist[-HOUR - 1]["known_at"]][-80:]
+                L = base + ["HEADLINES FROM THE LAST HOUR (UTC time; newest last; * = published this minute):"] + \
+                    ([f"- {n['time'][11:]}{' *' if n in out['news'] else ''} {n['title']}" for n in hour_news]
+                     or ["- none"])
                 if refused:
                     L.append("ORDERS REFUSED LAST MINUTE: " + "; ".join(f"{o['action']} {o['symbol']} ({o['why']})" for o in refused))
                 L.append(f"THE DECIDER'S LAST DECISION: {last_dec}")
                 if d_notes:
                     L.append(f"THE DECIDER'S CONDITIONS (what it is waiting for, in its own words): {d_notes[-1][1]}")
                 if w_notes:
-                    L.append("YOUR LAST NOTES:")
-                    L += [f"- {t}: {x}" for t, x in w_notes[-5:]]
+                    L.append("YOUR NOTES FROM THE LAST HOUR (oldest first):")
+                    L += [f"- {t[6:]}: {x[:160]}" for t, x in w_notes[-HOUR:]]
                 if i_w == 0:
                     L.append("This is the first minute of the test: the account is all cash, so the decider must invest it.")
                 t1 = time.time()
