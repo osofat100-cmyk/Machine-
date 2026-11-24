@@ -237,3 +237,7 @@
 2026-11-19 03:26,BUY,BSV-USD,blocked before sending (already owned / not owned)
 2026-11-19 03:26,BUY,RENDER-USD,blocked before sending (already owned / not owned)
 2026-11-19 03:32,BUY,PUMP36507-USD,already owned
+2026-11-19 03:36,BUY,RENDER-USD,blocked before sending (already owned / not owned)
+2026-11-19 03:37,BUY,SPX28081-USD,already owned
+2026-11-19 03:37,BUY,PYTH-USD,already owned
+2026-11-19 03:57,BUY,LIT39125-USD,no cash left
