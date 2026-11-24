@@ -140,7 +140,7 @@ def news_query(name, q, days):
 def main():
     u = universe()
     syms = list(u["symbol"])
-    for interval in ("1m", "2m"):
+    for interval in ("1m", "2m", "5m"):
         with ThreadPoolExecutor(6) as ex:
             list(ex.map(lambda s: bars(s, interval), syms))
         have = len(os.listdir(os.path.join(OUT, f"bars_{interval}")))
