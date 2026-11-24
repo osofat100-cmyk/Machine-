@@ -104,8 +104,10 @@ def ask(user):
     body = json.dumps({"model": MODEL, "messages": [{"role": "system", "content": SYSTEM},
                                                     {"role": "user", "content": user}],
                        "temperature": 0, "max_tokens": MAX_TOKENS}).encode()
-    last = None
-    for k in range(8):
+    last, limited = None, [0]
+    k = 0
+    while k < 8:
+        k += 1
         try:
             req = urllib.request.Request(API_URL, data=body,
                                          headers={"Authorization": "Bearer proxy-injected",
@@ -119,6 +121,16 @@ def ask(user):
                     "temperature": 0, "max_tokens": max(MAX_TOKENS, 6000)}).encode()
                 continue
             return text
+        except urllib.error.HTTPError as e:
+            last = e
+            if e.code == 429:                                # over the free per-minute limit: wait and retry
+                wait = float(e.headers.get("retry-after") or 0) or 15.0
+                time.sleep(min(120.0, wait))
+                limited[0] += 1
+                if limited[0] < 400:
+                    k -= 1                                   # a rate-limit wait does not use up a try
+                    continue
+            time.sleep(min(60, 2 ** k))
         except (urllib.error.URLError, TimeoutError, ConnectionError, json.JSONDecodeError) as e:
             last = e
             time.sleep(min(60, 2 ** k))
