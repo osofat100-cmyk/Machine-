@@ -18,7 +18,8 @@
   .gr-btn:focus-visible { outline: 2px solid var(--color-fg); outline-offset: 1px; }
   .gr-btn[aria-pressed="true"] { background: var(--color-fg); color: var(--color-bg); border-color: var(--color-fg); }
   .gr-zoomnote { margin-left: auto; font-size: var(--cds-font-size-caption); color: var(--cds-text-secondary); font-variant-numeric: tabular-nums; }
-  .gr-svg { display: block; width: 100%; touch-action: pan-y; cursor: grab; user-select: none; }
+  .gr-svg { display: block; width: 100%; touch-action: pan-y; cursor: grab; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; }
+  .gr-svg:focus-visible { outline: 2px solid var(--color-fg); outline-offset: 2px; }
   .gr-svg:active { cursor: grabbing; }
   .gr-svg .tick text { fill: var(--cds-text-secondary); font-size: var(--cds-font-size-caption); font-family: var(--font-anthropic-sans); }
   .gr-svg .tick line { stroke: var(--cds-chart-grid); }
@@ -52,7 +53,7 @@
   <header class="gr-head" id="top">
     <h1 class="gr-title">Golden Rule Race</h1>
     <p class="gr-lede">Every line is one AI run trading $1,000 of practice money under the golden rule (never sell below what you paid; buy what fell more than average). The thick line is just holding Bitcoin or SPY. Runs are told apart by version (dashed = first version, solid = second version) and by how often they decide.</p>
-    <p class="gr-help">Drag a chart to move through time. Pinch, or hold Ctrl (⌘ on a Mac) and scroll, to zoom in: the time labels go from days to hours to minutes as you zoom. Point at a line to read every run at that minute. Click a row in a table to hide or show its line.</p>
+    <p class="gr-help">Swipe or drag a chart sideways to move through time (or use ◀ ▶); scrolling up and down still moves the page. Pinch with two fingers, or hold Ctrl (⌘ on a Mac) and scroll, to zoom in: the time labels go from days to hours to minutes as you zoom. Point at or tap a line to read every run at that minute. Click a row in a table to hide or show its line.</p>
   </header>
 
   <section class="gr-sec" id="crypto">
@@ -306,7 +307,9 @@
             b.type = 'button'; b.className = 'gr-btn'; b.textContent = label; b.setAttribute('aria-label', title);
             tools.append(b); return b;
           };
-          const st = { t: d3.zoomIdentity, el };
+          const st = { k: 1, tx: 0, width: 0, el };
+          st.left = mk('◀ Earlier', 'Move earlier in time');
+          st.right = mk('Later ▶', 'Move later in time');
           st.zin = mk('Zoom in +', 'Zoom in');
           st.zout = mk('Zoom out −', 'Zoom out');
           st.reset = mk('All time', 'Show all time');
@@ -325,22 +328,77 @@
           st.tip.hidden = true;
           el.append(tools, st.svg.node(), st.tip);
           el.insertBefore(tools, st.svg.node());
-          st.zoom = d3.zoom()
-            .scaleExtent([1, 3000])
-            .filter((e) => {
-              if (e.type === 'wheel') return e.ctrlKey || e.metaKey;
-              if (e.type.startsWith('touch')) return e.touches && e.touches.length > 1;
-              return !e.button;
-            })
-            .on('zoom', (e) => { st.t = e.transform; st.render && st.render(); });
-          st.zin.addEventListener('click', () => st.svg.call(st.zoom.scaleBy, 2));
-          st.zout.addEventListener('click', () => st.svg.call(st.zoom.scaleBy, 0.5));
-          st.reset.addEventListener('click', () => st.svg.call(st.zoom.transform, d3.zoomIdentity));
-          st.latest.addEventListener('click', () => {
-            if (!st.x0) return;
-            const k = 12;                             // the last twelfth of the test, right edge kept in place
-            const r1 = st.x0.range()[1];
-            st.svg.call(st.zoom.transform, d3.zoomIdentity.translate(r1 * (1 - k), 0).scale(k));
+          // The view: x_screen = k * x_full + tx. Kept so the chart never leaves the data's ends.
+          const span = () => st.x0 ? st.x0.range() : [0, 1];
+          st.apply = () => {
+            const [l, r] = span();
+            st.k = Math.max(1, Math.min(3000, st.k));
+            st.tx = Math.min(l * (1 - st.k), Math.max(r * (1 - st.k), st.tx));
+            if (st.render) st.render();
+          };
+          st.zoomAt = (px, f) => {
+            const k2 = Math.max(1, Math.min(3000, st.k * f));
+            st.tx = px - (px - st.tx) * (k2 / st.k);
+            st.k = k2;
+            st.apply();
+          };
+          st.panBy = (dx) => { st.tx += dx; st.apply(); };
+          const mid = () => { const [l, r] = span(); return (l + r) / 2; };
+          const quarter = () => { const [l, r] = span(); return (r - l) / 4; };
+          st.left.addEventListener('click', () => st.panBy(quarter()));
+          st.right.addEventListener('click', () => st.panBy(-quarter()));
+          st.zin.addEventListener('click', () => st.zoomAt(mid(), 2));
+          st.zout.addEventListener('click', () => st.zoomAt(mid(), 0.5));
+          st.reset.addEventListener('click', () => { st.k = 1; st.tx = 0; st.apply(); });
+          st.latest.addEventListener('click', () => { const r = span()[1]; st.k = 12; st.tx = r * (1 - 12); st.apply(); });
+
+          // Gestures. One finger or a mouse drags sideways through time (up and down still scroll the page);
+          // two fingers pinch to zoom; Ctrl/⌘ + scroll zooms; a sideways trackpad swipe or Shift + scroll moves.
+          const node = st.svg.node();
+          node.setAttribute('tabindex', '0');
+          const toX = (e) => { const b = node.getBoundingClientRect(); return (e.clientX - b.left) * ((st.width || b.width) / b.width); };
+          const pts = new Map();
+          let pinch = null;
+          node.addEventListener('pointerdown', (e) => {
+            if (e.pointerType === 'mouse' && e.button !== 0) return;
+            pts.set(e.pointerId, toX(e));
+            try { node.setPointerCapture(e.pointerId); } catch (err) { /* not capturable */ }
+            if (pts.size === 2) {
+              const [a, b] = [...pts.values()];
+              pinch = { d: Math.max(10, Math.abs(a - b)), k: st.k, tx: st.tx, mid: (a + b) / 2 };
+            }
+          });
+          node.addEventListener('pointermove', (e) => {
+            if (!pts.has(e.pointerId)) return;
+            const x = toX(e);
+            const prev = pts.get(e.pointerId);
+            pts.set(e.pointerId, x);
+            if (pts.size >= 2 && pinch) {
+              const [a, b] = [...pts.values()];
+              const k2 = Math.max(1, Math.min(3000, pinch.k * Math.max(10, Math.abs(a - b)) / pinch.d));
+              st.tx = (a + b) / 2 - (pinch.mid - pinch.tx) * (k2 / pinch.k);
+              st.k = k2;
+              st.apply();
+            } else if (pts.size === 1) {
+              st.panBy(x - prev);
+            }
+          });
+          const end = (e) => { pts.delete(e.pointerId); if (pts.size < 2) pinch = null; };
+          node.addEventListener('pointerup', end);
+          node.addEventListener('pointercancel', end);
+          node.addEventListener('wheel', (e) => {
+            if (e.ctrlKey || e.metaKey) {
+              e.preventDefault();
+              st.zoomAt(toX(e), Math.exp(-e.deltaY * 0.01));
+            } else if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
+              e.preventDefault();
+              st.panBy(-e.deltaX);
+            }
+          }, { passive: false });
+          node.addEventListener('keydown', (e) => {
+            const acts = { ArrowLeft: () => st.panBy(quarter() / 2), ArrowRight: () => st.panBy(-quarter() / 2),
+              '+': () => st.zoomAt(mid(), 1.5), '=': () => st.zoomAt(mid(), 1.5), '-': () => st.zoomAt(mid(), 1 / 1.5) };
+            if (acts[e.key]) { e.preventDefault(); acts[e.key](); }
           });
           return st;
         },
@@ -368,15 +426,13 @@
 
           const width = Math.max(280, el.clientWidth);
           const height = Math.round(Math.min(480, Math.max(320, width * 0.55)));
-          const m = { t: 10, r: Math.min(150, Math.round(width * 0.26)), b: 28, l: 52 };
+          const m = { t: 10, r: Math.min(150, Math.round(width * 0.26)), b: 28, l: 64 };
           const all = series.flatMap((s) => s.pts).concat(bench);
           const x0 = (si ? d3.scaleLinear() : d3.scaleUtc()).domain(d3.extent(all, (p) => p.x)).range([m.l, width - m.r]);
           st.x0 = x0;
-          st.zoom.extent([[m.l, 0], [width - m.r, height]]).translateExtent([[m.l, -Infinity], [width - m.r, Infinity]]);
+          st.width = width;
           st.svg.attr('viewBox', `0 0 ${width} ${height}`).attr('height', height)
             .attr('aria-label', `${market === 'crypto' ? 'Crypto' : 'Stock'} runs' money over market time against holding ${benchName}`);
-          st.svg.call(st.zoom);
-          st.svg.on('dblclick.zoom', null);
 
           const svg = st.svg;
           svg.selectAll('*').remove();
@@ -396,7 +452,7 @@
           const fmtUtc = (dt) => (dt.getUTCHours() === 0 && dt.getUTCMinutes() === 0) ? d3.utcFormat('%-d %b')(dt) : d3.utcFormat('%H:%M')(dt);
 
           st.render = () => {
-            const x = st.t.rescaleX(x0);
+            const x = d3.zoomIdentity.translate(st.tx, 0).scale(st.k).rescaleX(x0);
             const [a, b] = x.domain();
             const inView = (p) => p.x >= a && p.x <= b;
             const vis = shown.flatMap((s) => s.pts.filter(inView)).concat(bench.filter(inView));
@@ -414,6 +470,7 @@
               gX.call(d3.axisBottom(x).ticks(Math.max(2, Math.floor((width - m.l - m.r) / 90))).tickSizeOuter(0).tickFormat(fmtUtc));
             }
             gY.call(d3.axisLeft(y).ticks(6).tickFormat(d3.format('$,.0f')).tickSizeOuter(0));
+            gY.selectAll('text').each(function () { if (this.getComputedTextLength() > m.l - 12) this.textContent = this.textContent.replace('$', ''); });
             gGrid.selectAll('line').data(y.ticks(6)).join('line')
               .attr('x1', m.l).attr('x2', width - m.r).attr('y1', (v) => y(v)).attr('y2', (v) => y(v))
               .style('stroke', 'var(--cds-chart-grid)');
@@ -434,21 +491,29 @@
             const right = Math.min(b, d3.max(all, (p) => p.x));
             const labs = shown.map((s) => ({ s, p: valueAt(s.pts, right) })).filter((o) => o.p && o.p.x >= a)
               .sort((p, q) => d3.descending(p.p.y, q.p.y)).slice(0, 3)
-              .map((o) => ({ text: `${o.s.version === 'First' ? '1st' : '2nd'} every ${o.s.every}: ${d3.format('$,.0f')(o.p.y)}`, y: y(o.p.y), color: GR.color(o.s.every), bold: false }));
+              .map((o) => ({ texts: [`${o.s.version === 'First' ? '1st' : '2nd'} every ${o.s.every}: ${d3.format('$,.0f')(o.p.y)}`,
+                `${o.s.version === 'First' ? '1st' : '2nd'}·${o.s.every}m ${d3.format('$,.0f')(o.p.y)}`, d3.format('$,.0f')(o.p.y)],
+              y: y(o.p.y), color: GR.color(o.s.every), bold: false }));
             const bp = valueAt(bench, right);
-            if (bp && bp.x >= a) labs.push({ text: `${benchName}: ${d3.format('$,.0f')(bp.y)}`, y: y(bp.y), color: 'var(--color-fg)', bold: true });
+            if (bp && bp.x >= a) labs.push({ texts: [`${benchName}: ${d3.format('$,.0f')(bp.y)}`, `${benchName} ${d3.format('$,.0f')(bp.y)}`, d3.format('$,.0f')(bp.y)], y: y(bp.y), color: 'var(--color-fg)', bold: true });
             labs.sort((p, q) => p.y - q.y);
             for (let i = 1; i < labs.length; i++) if (labs[i].y - labs[i - 1].y < 13) labs[i].y = labs[i - 1].y + 13;
             gLab.selectAll('text').data(labs).join('text')
               .attr('x', width - m.r + 6).attr('y', (l) => l.y).attr('dy', '0.32em')
               .style('font-size', 'var(--cds-font-size-caption)').style('font-family', 'var(--font-anthropic-sans)')
               .style('font-weight', (l) => l.bold ? 'var(--cds-font-weight-medium)' : null)
-              .style('fill', 'var(--color-fg)').text((l) => l.text);
+              .style('fill', 'var(--color-fg)').text((l) => l.texts[0]);
+            // Keep every end label inside the drawing: shorter wording first, then none.
+            const room = width - (width - m.r + 6) - 2;
+            gLab.selectAll('text').each(function (l) {
+              for (const t of l.texts) { this.textContent = t; if (this.getComputedTextLength() <= room) return; }
+              this.textContent = '';
+            });
             gLab.selectAll('rect').data(labs).join('rect')
               .attr('x', width - m.r + 1).attr('y', (l) => l.y - 1.5).attr('width', 4).attr('height', 3)
               .style('fill', (l) => l.color);
 
-            const zoomK = st.t.k;
+            const zoomK = st.k;
             st.note.textContent = zoomK > 1.01 ? `Zoom ×${d3.format('.1f')(zoomK)}` : 'All time';
 
             overlay.on('pointermove', (e) => {
@@ -510,7 +575,7 @@
           st.render();
         },
 
-        unmount(el, st) { if (st && st.svg) st.svg.on('.zoom', null); },
+        unmount() {},
       };
     }
 
