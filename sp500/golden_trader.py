@@ -10,8 +10,9 @@ DECIDE_EVERY=k: the AI sees every 1-minute bar but decides only every k-th minut
 
 VERSION=v4a: golden rule (never sell below break-even; take profits above it; buy stocks that fell more than average).
 VERSION=v4b: golden rule + spread the risk + trade rarely.
-The AI is reached through NVIDIA's second address (api.nvcf.nvidia.com), which carries the second key, so these
-runs do not share the rate limit with the crypto runs.
+The AI is reached through NVIDIA's second address (api.nvcf.nvidia.com), which carries the second key. KEY=1 sends
+a run through the first address (integrate.api.nvidia.com, the first key, same Ultra model) instead, so the two keys
+share the work; each key has its own per-minute cap (golden/.rpm and golden/.rpm_key1).
 
 Every answer is appended to sp500/golden/answers_1m_every<k>_<version>_<tag>.csv the moment it is given; running
 again replays saved answers and continues from where it stopped.
@@ -38,6 +39,8 @@ MODEL = os.environ.get("MODEL", "nvidia/nemotron-3-ultra-550b-a55b")
 FUNCTION = os.environ.get("NVCF_FUNCTION", "948fe171-ce7a-4332-8bc0-5e14e90259f9")   # Ultra, second address
 API_URL = f"https://api.nvcf.nvidia.com/v2/nvcf/exec/functions/{FUNCTION}"
 STATUS_URL = "https://api.nvcf.nvidia.com/v2/nvcf/exec/status/"
+KEY = os.environ.get("KEY", "2")                         # "1" = first key (integrate.api.nvidia.com), "2" = second key
+KEY1_URL = "https://integrate.api.nvidia.com/v1/chat/completions"
 MAX_TOKENS = int(os.environ.get("MAX_TOKENS", "160"))
 NO_THINK = os.environ.get("THINKING") == "off"         # Nemotron: answer without the long reasoning (about 14x faster)
 EXTRA = {"chat_template_kwargs": {"enable_thinking": False}} if NO_THINK else {}
@@ -129,19 +132,19 @@ class Server:
         self.proc.wait(timeout=30)
 
 
-RPM = int(os.environ.get("RPM", "36"))                 # all stock runs together stay under the key's per-minute limit
-RATE_FILE = os.path.join(HERE, "golden", ".requests")
+RPM = int(os.environ.get("RPM", "36" if KEY != "1" else "28"))   # all runs on one key stay under its per-minute limit
+RATE_FILE = os.path.join(HERE, "golden", ".requests" if KEY != "1" else ".requests_key1")
 
 
 def throttle():
-    """Shared by every stock run: wait until fewer than RPM requests were sent in the last 60 seconds."""
+    """Shared by every stock run on the same key: wait until fewer than RPM requests were sent in the last 60 seconds."""
     while True:
         with open(RATE_FILE, "a+") as f:
             fcntl.flock(f, fcntl.LOCK_EX)
             f.seek(0)
             now = time.time()
             sent = [float(x) for x in f.read().split() if now - float(x) < 60]
-            try:                                         # the cap can be changed while running: golden/.rpm
+            try:                                         # the cap can be changed while running: golden/.rpm(_key1)
                 cap = int(open(RATE_FILE.replace(".requests", ".rpm")).read())
             except (OSError, ValueError):
                 cap = RPM
@@ -155,8 +158,13 @@ def throttle():
 
 
 def call(payload):
-    """One request through NVIDIA's second address; long jobs come back as 202 and are polled until done."""
+    """One request through NVIDIA's second address; long jobs come back as 202 and are polled until done.
+    With KEY=1 the same request goes to the first address (standard chat format, no polling)."""
     throttle()
+    if KEY == "1":
+        req = urllib.request.Request(KEY1_URL, data=json.dumps(payload).encode(),
+                                     headers={"Authorization": "Bearer proxy-injected", "Content-Type": "application/json"})
+        return json.load(urllib.request.urlopen(req, timeout=300))
     req = urllib.request.Request(API_URL, data=json.dumps({"requestHeader": {}, "requestBody": payload}).encode(),
                                  headers={"Authorization": "Bearer proxy-injected", "Content-Type": "application/json",
                                           "Accept": "application/json"})
