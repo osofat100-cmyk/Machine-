@@ -67,13 +67,14 @@ class Server:
         self.proc.wait(timeout=30)
 
 
-def replay():
-    """One server pass for all runs. Returns prices per step, size groups, executed trades and recorded values."""
+def replay(specs=None):
+    """One server pass for all runs. Returns prices per step, size groups, executed trades and recorded values.
+    specs: optional list of (name, version, decide_every, model_tag); default = the 16 golden-rule ultrafast runs."""
     runs = {}
-    for v, k in RUNS:
-        name = f"{v}_{k}"
-        p = os.path.join(HERE, f"answers_1m_every{k}_{v}_ultrafast.csv")
-        res = os.path.join(HERE, f"result_1m_every{k}_{v}_ultrafast.json")
+    specs = specs or [(f"{v}_{k}", v, k, "ultrafast") for v, k in RUNS]
+    for name, v, k, tag in specs:
+        p = os.path.join(HERE, f"answers_1m_every{k}_{v}_{tag}.csv")
+        res = os.path.join(HERE, f"result_1m_every{k}_{v}_{tag}.json")
         if not os.path.exists(res):
             continue
         saved = [r for r in csv.DictReader(open(p)) if r.get("time") and r["time"] != "time"]
