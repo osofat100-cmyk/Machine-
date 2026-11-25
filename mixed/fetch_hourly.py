@@ -55,6 +55,22 @@ def bars(symbol, folder, stock):
     df[["time", "open", "high", "low", "close", "volume"]].to_csv(path, index=False, float_format="%.8g")
 
 
+def seed(src, mapping):
+    """Reuse headlines already downloaded for the minute tests: copy the days the hourly folder does not have yet."""
+    for old, new in mapping.items():
+        a, b = os.path.join(src, "news", f"{old}.jsonl"), os.path.join(OUT, "news", f"{new}.jsonl")
+        if not os.path.exists(a):
+            continue
+        have = set()
+        if os.path.exists(b):
+            with open(b) as f:
+                have = {json.loads(line)["day"] for line in f if line.strip()}
+        with open(a) as f, open(b, "a") as g:
+            for line in f:
+                if line.strip() and json.loads(line)["day"] not in have:
+                    g.write(line if line.endswith("\n") else line + "\n")
+
+
 def main():
     os.makedirs(os.path.join(OUT, "crypto_1h"), exist_ok=True)
     os.makedirs(os.path.join(OUT, "stocks_1h"), exist_ok=True)
@@ -76,6 +92,11 @@ def main():
     queries.update({f"stock_market_{i}": (FM, q) for i, q in enumerate(FM.MARKET_QUERIES)})
     queries.update({f"co_{r.symbol}": (FM, f'"{r.company.split(" Inc")[0].split(" Corporation")[0].split(",")[0]}"')
                     for r in su.head(15).itertuples()})
+    old_names = {f"crypto_market_{i}": f"market_{i}" for i in range(len(FC.MARKET_QUERIES))}
+    seed(os.path.join(ROOT, "data", "sealed", "crypto"), {**{v: k for k, v in old_names.items()},
+                                                         **{k: k for k in queries if k.startswith("coin_")}})
+    seed(os.path.join(ROOT, "data", "sealed", "market"), {**{f"market_{i}": f"stock_market_{i}" for i in range(len(FM.MARKET_QUERIES))},
+                                                         **{k: k for k in queries if k.startswith("co_")}})
     FC.OUT = FM.OUT = OUT                               # news_query writes to OUT/news/<name>.jsonl
     with ThreadPoolExecutor(6) as ex:
         list(ex.map(lambda kv: kv[1][0].news_query(kv[0], kv[1][1], days), queries.items()))
