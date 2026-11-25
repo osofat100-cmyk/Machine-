@@ -42,7 +42,14 @@ DECIDER = os.environ.get("DECIDER", "z-ai/glm-5.3-flash")
 TAG = os.environ.get("TAG", "glm_ultra")
 W_FILE = os.path.join(HERE, f"watcher_{TAG}.csv")
 D_FILE = os.path.join(HERE, f"decider_{TAG}.csv")
-HOUR, DAY, WARMUP = 60, 1440, 61
+STEP = int(os.environ.get("STEP_MIN", "1"))      # 1 = minute updates (mixed_server.py), 60 = hourly (hourly_server.py)
+if STEP == 60:
+    U, HOUR, BLOCK, DAY, NOTES_N = "hour", 6, 1, 24, 24          # recent window = last 6 hours, in six 1-hour steps
+    RECENT, BLOCK_LABEL, SERVER_FILE = "last 6 hours", "1-hour", "hourly_server.py"
+else:
+    U, HOUR, BLOCK, DAY, NOTES_N = "minute", 60, 10, 1440, 60    # recent window = last hour, in six 10-minute steps
+    RECENT, BLOCK_LABEL, SERVER_FILE = "last hour", "10-minute", "mixed_server.py"
+WARMUP = HOUR + 1
 SLOTS = 10
 START_AT = os.environ.get("START_AT", "")        # e.g. "2026-11-22 00:00": the AIs see everything before, trade from then
 
@@ -51,7 +58,7 @@ RULES = (
     "trading around the clock; in the lists they are written without -USD, e.g. BTC, but order them as BTC-USD) and US stocks (the S&P 500 and the SPY index fund; stock orders only while the US "
     "market is open, 14:30-21:00 UTC, Monday to Friday). Up to 10 holdings in total, coins and stocks mixed as you "
     "like. Each BUY splits the remaining cash evenly over the empty slots; SELL sells the whole holding. Orders fill "
-    "at the next minute's opening price. Every buy costs 0.05% and every sell 0.05%.\n"
+    f"at the next {U}'s opening price. Every buy costs 0.05% and every sell 0.05%.\n"
     "THE RULES (second golden-rule version):\n"
     "1. GOLDEN RULE: never sell a holding for less than you paid plus costs (its break-even). Below break-even you "
     "hold and wait for it to recover - the system refuses such sells. Above break-even you may sell to take the "
@@ -63,14 +70,14 @@ RULES = (
     "(a coin if the stock market is closed).\n")
 
 W_SYSTEM = (
-    "You are the WATCHER in a two-AI trading team. Every minute you see the markets, the account and any news "
-    "published that minute. You cannot trade. Your partner, the DECIDER, is a slower, careful AI that can buy and "
+    f"You are the WATCHER in a two-AI trading team. Every {U} you see the markets, the account and any news "
+    f"published that {U}. You cannot trade. Your partner, the DECIDER, is a slower, careful AI that can buy and "
     "sell; it sleeps until you wake it.\n" + RULES +
-    "YOUR JOB EACH MINUTE: write 1 to 3 plain sentences about what is actually going on right now (prices, news, the "
+    f"YOUR JOB EACH {U.upper()}: write 1 to 3 plain sentences about what is actually going on right now (prices, news, the "
     "holdings) - in your own words, no labels. Then decide whether the decider should look now. Wake it when a "
     "buy or sell is probably worth considering: for example a holding is above break-even and its rise is turning "
     "down, important news about a holding or the whole market, empty slots or idle cash, or a rare opportunity. "
-    "Do not wake it for ordinary wiggles or unimportant headlines - most minutes the answer is no.\n"
+    f"Do not wake it for ordinary wiggles or unimportant headlines - most {U}s the answer is no.\n"
     "Every wake costs the team about 5 minutes. The decider writes down what it is waiting for (THE DECIDER'S "
     "CONDITIONS below). Wake it only when one of those conditions has actually been met, or when something new and "
     "important has happened that it has not seen yet. Never wake it again for the same situation it already declined.\n"
@@ -78,7 +85,7 @@ W_SYSTEM = (
 
 D_SYSTEM = (
     "You are the DECIDER in a two-AI trading team. You sleep until the WATCHER (a fast AI that looks at every "
-    "minute) wakes you; then you see the full picture and decide.\n" + RULES +
+    f"{U}) wakes you; then you see the full picture and decide.\n" + RULES +
     "Think freely and creatively: write in plain sentences what you see going on, what matters and why, and what "
     "you will do. No fixed labels. Doing nothing is a fine answer.\n"
     "End with exactly these two lines:\n"
@@ -92,7 +99,7 @@ class Server:
         with socket.socket() as s:
             s.bind(("127.0.0.1", 0))
             self.port = s.getsockname()[1]
-        self.proc = subprocess.Popen([sys.executable, os.path.join(HERE, "mixed_server.py"), "--port", str(self.port)],
+        self.proc = subprocess.Popen([sys.executable, os.path.join(HERE, SERVER_FILE), "--port", str(self.port)],
                                      stdout=subprocess.PIPE, text=True)
         line = self.proc.stdout.readline()
         if not line.startswith("ready"):
@@ -158,7 +165,8 @@ class View:
 
     def __init__(self):
         self.kind, self.group, self.hist, self.prev_close = {}, {}, [], {}
-        self.first_c, self.first_s, self.snaps = None, None, []   # start of the data (18 Nov) and each UTC midnight
+        self.first_c, self.first_s, self.snaps = None, None, []   # start of the data and each UTC midnight
+        self.first_t = None
 
     def add(self, out):
         if out.get("universe"):
@@ -170,7 +178,7 @@ class View:
             if self.first_s is None:
                 self.first_s = dict(st["stock_prev_close"])
         if self.first_c is None:
-            self.first_c = dict(st["open"])
+            self.first_c, self.first_t = dict(st["open"]), st["time"]
         if st["time"].endswith("00:00"):
             self.snaps.append((st["time"][:10], {k: v for k, v in st["close"].items()}))
         self.hist.append(st)
@@ -187,11 +195,11 @@ class View:
         open_ = st["stock_market_open"]
         L = [f"Time: {st['known_at']} UTC. US stock market: {'OPEN' if open_ else 'CLOSED (stock orders refused)'}."]
         b = "BTC-USD"
-        L.append(f"Bitcoin ${c[b]:,.2f}: last minute {pct(c[b], mins['close'][b]):+.2f}%, 1 hour "
+        L.append(f"Bitcoin ${c[b]:,.2f}: last {U} {pct(c[b], mins['close'][b]):+.2f}%, {RECENT} "
                  f"{pct(c[b], hr['close'][b]):+.2f}%, 24 hours {pct(c[b], day['open'][b]):+.2f}%.")
         if "SPY" in c and "SPY" in self.prev_close:
             L.append(f"SPY (S&P 500 fund) ${c['SPY']:,.2f}: {pct(c['SPY'], self.prev_close['SPY']):+.2f}% since the last "
-                     f"session's close" + (f", 1 hour {pct(c['SPY'], hr['close'].get('SPY', c['SPY'])):+.2f}%" if open_ else "")
+                     f"session's close" + (f", {RECENT} {pct(c['SPY'], hr['close'].get('SPY', c['SPY'])):+.2f}%" if open_ else "")
                      + ".")
         by = defaultdict(list)
         for s in coins:
@@ -200,8 +208,8 @@ class View:
         L.append("Coins by size, last 24 hours: " + ", ".join(f"{g} {sum(v) / len(v):+.2f}%" for g, v in
                                                              sorted(by.items(), key=lambda x: -sum(x[1]) / len(x[1]))))
         mv = sorted((pct(c[s], hr["close"][s]), s) for s in coins if s in hr["close"])
-        L.append("Coins rising most, last hour: " + ", ".join(f"{s} {m:+.2f}%" for m, s in reversed(mv[-n_move:])))
-        L.append("Coins falling most, last hour: " + ", ".join(f"{s} {m:+.2f}%" for m, s in mv[:n_move]))
+        L.append(f"Coins rising most, {RECENT}: " + ", ".join(f"{s} {m:+.2f}%" for m, s in reversed(mv[-n_move:])))
+        L.append(f"Coins falling most, {RECENT}: " + ", ".join(f"{s} {m:+.2f}%" for m, s in mv[:n_move]))
         d24 = sorted((pct(c[s], day["open"][s]), s) for s in coins if s in day["open"])
         L.append(f"Coins fallen most, last 24 hours (average coin {sum(m for m, _ in d24) / len(d24):+.2f}%): "
                  + ", ".join(f"{s} {m:+.2f}%" for m, s in d24[:n_move]))
@@ -217,10 +225,10 @@ class View:
                      + ", ".join(f"{s} {m:+.2f}%" for m, s in sd[:n_move]))
             if open_:
                 sh = sorted((pct(c[s], hr["close"][s]), s) for s in stocks if s in hr["close"] and s != "SPY")
-                L.append("Stocks moving most, last hour: " + ", ".join(f"{s} {m:+.2f}%" for m, s in reversed(sh[-4:]))
+                L.append(f"Stocks moving most, {RECENT}: " + ", ".join(f"{s} {m:+.2f}%" for m, s in reversed(sh[-4:]))
                          + " | " + ", ".join(f"{s} {m:+.2f}%" for m, s in sh[:4]))
         ago = self.hist[-HOUR - 1] if len(self.hist) > HOUR else self.hist[0]
-        blocks = [self.hist[max(0, len(self.hist) - 1 - HOUR + 10 * k)] for k in range(7)]
+        blocks = [self.hist[max(0, len(self.hist) - 1 - HOUR + BLOCK * k)] for k in range(7)]
 
         def trend(s):
             out = ""
@@ -231,14 +239,16 @@ class View:
 
         if len(self.snaps) >= 1:
             L.append("THE DAYS SO FAR (UTC days; change over each day):")
-            pts = [("18 Nov 04:30", self.first_c)] + [(d[5:], snap) for d, snap in self.snaps] + [("now", c)]
+            snaps = self.snaps[-14:]                       # at most the last 14 days
+            pts = ([(self.first_t[5:], self.first_c)] if len(self.snaps) <= 14 else []) + \
+                [(d[5:], snap) for d, snap in snaps] + [("now", c)]
             cs = [x for x in coins if x in self.first_c]
             for (d0, a), (d1, b) in zip(pts, pts[1:]):
                 avg = sum(pct(b[x], a[x]) for x in cs if x in a and x in b) / len(cs)
                 spy = f", SPY {pct(b['SPY'], a['SPY']):+.2f}%" if "SPY" in a and "SPY" in b and a["SPY"] != b["SPY"] else ""
                 L.append(f"- {d0} to {d1}: Bitcoin {pct(b[ 'BTC-USD'], a['BTC-USD']):+.2f}%, average coin {avg:+.2f}%{spy}")
-        L.append("EVERY COIN - price, last minute %, last hour %, 24 hours %, since 18 Nov %, then the last hour in six "
-                 "10-minute steps (↑ rising, ↓ falling, → flat); grouped by size:")
+        L.append(f"EVERY COIN - price, last {U} %, {RECENT} %, 24 hours %, since {self.first_t[5:10]} %, then the "
+                 f"{RECENT} in six {BLOCK_LABEL} steps (↑ rising, ↓ falling, → flat); grouped by size:")
         for g in sorted({self.group[s] for s in coins}):
             L.append(f"  {g}: " + "; ".join(
                 f"{s.removesuffix('-USD')} {c[s]:.5g} {pct(c[s], mins['close'].get(s, c[s])):+.2f} "
@@ -246,8 +256,8 @@ class View:
                 f"{pct(c[s], self.first_c.get(s, c[s])):+.1f} {trend(s)}"
                 for s in coins if self.group[s] == g))
         if self.prev_close:
-            L.append("EVERY STOCK - price, % since the last close, % since 17 Nov close" + (
-                ", last minute %, last hour %, then the last hour in six 10-minute steps" if open_ else
+            L.append(f"EVERY STOCK - price, % since the last close, % since the first close in the data" + (
+                f", last {U} %, {RECENT} %, then the {RECENT} in six {BLOCK_LABEL} steps" if open_ else
                 " (market closed: prices are the last session's)") + "; grouped by sector:")
             for g in sorted({self.group[s] for s in stocks}):
                 L.append(f"  {g}: " + "; ".join(
@@ -268,7 +278,7 @@ class View:
                          + (f", bought at ${e:.6g}, {pct(c[s] * 0.9995, e * 1.0005):+.2f}% after costs, "
                             + ("above break-even (CAN SELL)" if ok else "below break-even (HOLD)") if e else "")
                          + (f", {pct(c[s], highs[s]):+.2f}% from its high since bought" if s in highs else "")
-                         + f", 1 hour {pct(c[s], hr['close'].get(s, c[s])):+.2f}%")
+                         + f", {RECENT} {pct(c[s], hr['close'].get(s, c[s])):+.2f}%")
         else:
             L.append("HOLDINGS: none, all cash.")
         return L
@@ -355,20 +365,20 @@ def main():
                 wtext, wake = r["text"], r["wake"] == "1"
             else:
                 hour_news = [n for n in recent_news if n["time"] >= view.hist[-HOUR - 1]["known_at"]][-80:]
-                L = base + ["HEADLINES FROM THE LAST HOUR (UTC time; newest last; * = published this minute):"] + \
+                L = base + [f"HEADLINES FROM THE {RECENT.upper()} (UTC time; newest last; * = published this {U}):"] + \
                     ([f"- {n['time'][11:]}{' *' if n in out['news'] else ''} {n['title']}" for n in hour_news]
                      or ["- none"])
                 if refused:
-                    L.append("ORDERS REFUSED LAST MINUTE: " + "; ".join(f"{o['action']} {o['symbol']} ({o['why']})" for o in refused))
+                    L.append(f"ORDERS REFUSED LAST {U.upper()}: " + "; ".join(f"{o['action']} {o['symbol']} ({o['why']})" for o in refused))
                 L.append(f"THE DECIDER'S LAST DECISION: {last_dec}")
                 if d_notes:
                     L.append(f"THE DECIDER'S CONDITIONS (what it is waiting for, in its own words): {d_notes[-1][1]}")
                 if w_notes:
-                    L.append("YOUR NOTES FROM THE LAST HOUR (oldest first):")
-                    L += [f"- {t[6:]}: {x[:160]}" for t, x in w_notes[-HOUR:]]
+                    L.append(f"YOUR LAST {NOTES_N} NOTES (oldest first):")
+                    L += [f"- {t[6:] if STEP == 1 else t}: {x[:160]}" for t, x in w_notes[-NOTES_N:]]
                 if i_w == 0:
-                    L.append("This is the first minute of the test: the account is all cash, so the decider must invest it."
-                             + (" Everything above (the days so far, 24-hour and since-18-Nov moves, headlines) is "
+                    L.append(f"This is the first {U} of the test: the account is all cash, so the decider must invest it."
+                             + (" Everything above (the days so far, 24-hour and since-start moves, headlines) is "
                                 "what happened before you started." if START_AT else ""))
                 t1 = time.time()
                 wtext = chat(WATCHER, W_SYSTEM, "\n".join(L), 400, {"chat_template_kwargs": {"enable_thinking": False}},
@@ -403,7 +413,7 @@ def main():
                 L.append("HEADLINES SINCE YOU LAST DECIDED (newest last, with UTC time):")
                 L += [f"- {n['time'][5:]} {n['title']}" for n in news_since_wake[-40:]] or ["- none"]
                 if refused:
-                    L.append("ORDERS REFUSED LAST MINUTE: " + "; ".join(f"{o['action']} {o['symbol']} ({o['why']})" for o in refused))
+                    L.append(f"ORDERS REFUSED LAST {U.upper()}: " + "; ".join(f"{o['action']} {o['symbol']} ({o['why']})" for o in refused))
                 if d_notes:
                     L.append("YOUR NOTEBOOK (your earlier notes):")
                     L += [f"- {t}: {x}" for t, x in d_notes[-6:]]
