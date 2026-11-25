@@ -1,22 +1,22 @@
 {
  "model": "haiku",
  "effort": "low",
- "calls": 154,
- "cost_usd_at_list_price": 0.46505900999999983,
- "input_tokens": 2021107,
- "cached_input_tokens": 190441,
- "output_tokens": 117928,
+ "calls": 196,
+ "cost_usd_at_list_price": 0.5846753399999997,
+ "input_tokens": 2543190,
+ "cached_input_tokens": 237354,
+ "output_tokens": 147406,
  "limit_waits": 0,
  "errors": 0,
  "by_role": {
-  "researcher_1": 40,
-  "researcher_2": 40,
-  "researcher_3": 40,
-  "pm_short": 7,
-  "pm_long": 7,
-  "risk": 6,
-  "ceo": 7,
-  "trader": 6,
-  "analyst": 1
+  "researcher_1": 51,
+  "researcher_2": 51,
+  "researcher_3": 51,
+  "pm_short": 9,
+  "pm_long": 9,
+  "risk": 7,
+  "ceo": 9,
+  "trader": 7,
+  "analyst": 2
  }
 }
