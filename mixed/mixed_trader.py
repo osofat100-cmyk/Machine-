@@ -39,6 +39,7 @@ import crypto_trader as CT  # noqa: E402  (shared per-key request limit, same fi
 URL = "https://integrate.api.nvidia.com/v1/chat/completions"
 WATCHER = os.environ.get("WATCHER", "nvidia/nemotron-3-ultra-550b-a55b")
 DECIDER = os.environ.get("DECIDER", "z-ai/glm-5.3-flash")
+D_EXTRA = {"chat_template_kwargs": {"enable_thinking": False}} if os.environ.get("DECIDER_THINKING") == "off" else {}
 TAG = os.environ.get("TAG", "glm_ultra")
 W_FILE = os.path.join(HERE, f"watcher_{TAG}.csv")
 D_FILE = os.path.join(HERE, f"decider_{TAG}.csv")
@@ -431,7 +432,7 @@ def main():
                     L += [f"- {t}: {x}" for t, x in d_notes[-6:]]
                 prompt = "\n".join(L)
                 t1 = time.time()
-                text = chat(DECIDER, D_SYSTEM, prompt, 8000, stream=True)
+                text = chat(DECIDER, D_SYSTEM, prompt, 8000, D_EXTRA, stream=True)
                 acts = parse_actions(text, view.kind)
                 forced = ""
                 tradable = lambda a: (view.kind.get(a["symbol"]) == "crypto" or st["stock_market_open"]) and (
@@ -448,7 +449,7 @@ def main():
                                  f"buying: {', '.join(sorted(after)) or 'nothing'}. Name exactly {empty} other {allowed} "
                                  f"to BUY now from the symbols shown - only ones BELOW their 24-hour average (in a dip). Answer with one line: "
                                  f"ACTIONS: BUY X; BUY Y; ...",
-                                 4000, stream=True)
+                                 4000, D_EXTRA, stream=True)
                     acts += [a for a in parse_actions(extra if "ACTIONS" in extra.upper() else "ACTIONS: " + extra,
                                                       view.kind) if a["action"] == "BUY"]
                     forced += extra.replace("\n", " / ")[:300] + " | "
