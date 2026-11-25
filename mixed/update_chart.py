@@ -27,7 +27,7 @@ def main():
     old = [r for r in old if r["time"] <= t_end]                      # same dates only
     series = {
         "Two Ultras, weekly-average rule (finished)": (wk, "value", "#2a78d6", 2.4),
-        "Two Ultras, 24-hour-average rule (earlier run)": (old, "value", "#eb6834", 1.8),
+        "Two Ultras, 24-hour-average rule (running again)": (old, "value", "#eb6834", 1.8),
         "Holding Bitcoin": (wk, "btc_hold", INK, 1.6),
         "Holding SPY": (wk, "spy_hold", "#898781", 1.6)}
     fig, (a1, a2) = plt.subplots(2, 1, figsize=(13, 8), facecolor=SURF, sharex=True, gridspec_kw={"height_ratios": [2, 1.4]})
