@@ -1,0 +1,244 @@
+{
+ "groups": [
+  {
+   "group": "Weekly: deep dip (z <= -2)",
+   "count": 2913,
+   "days": 62,
+   "mean_vs_market_pct": 0.157346300115108,
+   "median_vs_market_pct": 0.012737178730381882,
+   "share_beating_market_pct": 50.3261242705115,
+   "mean_raw_pct": 0.8624727965680867,
+   "median_raw_pct": 0.5888882178229675,
+   "day_mean_pct": 1.7814414800248526,
+   "t_by_day": 2.134559662836701
+  },
+  {
+   "group": "Weekly: small dip (-2 to -1)",
+   "count": 28317,
+   "days": 103,
+   "mean_vs_market_pct": -0.04265087778632212,
+   "median_vs_market_pct": -0.16923385982631722,
+   "share_beating_market_pct": 46.304340149027084,
+   "mean_raw_pct": 0.14210432208078025,
+   "median_raw_pct": 0.18670678500664167,
+   "day_mean_pct": -0.07618244602105478,
+   "t_by_day": -0.5146172540532834
+  },
+  {
+   "group": "Weekly: normal (-1 to 1)",
+   "count": 187381,
+   "days": 107,
+   "mean_vs_market_pct": 0.009904223891044122,
+   "median_vs_market_pct": -0.22311945714513043,
+   "share_beating_market_pct": 45.79813321521392,
+   "mean_raw_pct": -0.14376988540009475,
+   "median_raw_pct": -0.26708879760590454,
+   "day_mean_pct": 0.0023683852717923163,
+   "t_by_day": 0.06183705318947717
+  },
+  {
+   "group": "Weekly: small spike (1 to 2)",
+   "count": 23483,
+   "days": 107,
+   "mean_vs_market_pct": 0.05617859101793671,
+   "median_vs_market_pct": -0.5702032232561747,
+   "share_beating_market_pct": 42.80969211770217,
+   "mean_raw_pct": 0.7672311742901198,
+   "median_raw_pct": 0.04342379620366975,
+   "day_mean_pct": -0.08623627578056167,
+   "t_by_day": -0.24976089579415706
+  },
+  {
+   "group": "Weekly: big spike (z >= 2)",
+   "count": 9816,
+   "days": 86,
+   "mean_vs_market_pct": -0.214358805560664,
+   "median_vs_market_pct": -1.2238554719342667,
+   "share_beating_market_pct": 38.09087204563977,
+   "mean_raw_pct": 1.2153741729380951,
+   "median_raw_pct": 0.226172516617643,
+   "day_mean_pct": -1.2935830441926344,
+   "t_by_day": -1.7742046358412082
+  },
+  {
+   "group": "Daily: deep dip (z <= -2)",
+   "count": 5396,
+   "days": 99,
+   "mean_vs_market_pct": 0.2967371581924832,
+   "median_vs_market_pct": -0.014006378503836903,
+   "share_beating_market_pct": 49.777613046701255,
+   "mean_raw_pct": 1.5698792095953864,
+   "median_raw_pct": 1.2880820689138384,
+   "day_mean_pct": 1.2677125673268463,
+   "t_by_day": 2.6405368874360184
+  },
+  {
+   "group": "Daily: small dip (-2 to -1)",
+   "count": 24421,
+   "days": 107,
+   "mean_vs_market_pct": 0.09823361080067504,
+   "median_vs_market_pct": -0.1706360780704821,
+   "share_beating_market_pct": 46.78760083534662,
+   "mean_raw_pct": 0.3386949813632518,
+   "median_raw_pct": 0.2542039125517527,
+   "day_mean_pct": 0.275915119833259,
+   "t_by_day": 1.6756077819626438
+  },
+  {
+   "group": "Daily: big spike (z >= 2)",
+   "count": 8539,
+   "days": 106,
+   "mean_vs_market_pct": -0.033711909833736405,
+   "median_vs_market_pct": -0.6927810674519712,
+   "share_beating_market_pct": 43.119803255650545,
+   "mean_raw_pct": 1.5453018457459669,
+   "median_raw_pct": 0.8244269090622949,
+   "day_mean_pct": -0.8333473676171594,
+   "t_by_day": -2.3941386558792925
+  },
+  {
+   "group": "Short-term dip only (day deep, week normal)",
+   "count": 1631,
+   "days": 91,
+   "mean_vs_market_pct": 0.36332892567437286,
+   "median_vs_market_pct": -0.2316116047410497,
+   "share_beating_market_pct": 46.65849172286941,
+   "mean_raw_pct": 1.6086525016068949,
+   "median_raw_pct": 1.0281437077607183,
+   "day_mean_pct": 0.8790341984485508,
+   "t_by_day": 1.6700777248183991
+  },
+  {
+   "group": "Deep on day, week and month",
+   "count": 647,
+   "days": 22,
+   "mean_vs_market_pct": 0.6941022473000655,
+   "median_vs_market_pct": 0.08383131729042681,
+   "share_beating_market_pct": 50.8500772797527,
+   "mean_raw_pct": 2.423024841344581,
+   "median_raw_pct": 2.097742775902092,
+   "day_mean_pct": 4.4973313731944,
+   "t_by_day": 2.3250516449242484
+  },
+  {
+   "group": "Deep weekly dip, FAST (crash, v <= -2)",
+   "count": 942,
+   "days": 49,
+   "mean_vs_market_pct": 0.4416761617064956,
+   "median_vs_market_pct": 0.05588409864690225,
+   "share_beating_market_pct": 50.84925690021231,
+   "mean_raw_pct": 2.1895229205783187,
+   "median_raw_pct": 1.898168258856221,
+   "day_mean_pct": 2.305759396037614,
+   "t_by_day": 2.3900195419114727
+  },
+  {
+   "group": "Deep weekly dip, SLOW (slide, v > -1)",
+   "count": 1393,
+   "days": 50,
+   "mean_vs_market_pct": 0.03486932400557304,
+   "median_vs_market_pct": -0.03691446329279363,
+   "share_beating_market_pct": 49.31801866475233,
+   "mean_raw_pct": 0.023319033045655323,
+   "median_raw_pct": -0.0022276428694614314,
+   "day_mean_pct": 0.6905186835301252,
+   "t_by_day": 1.1741674722830802
+  },
+  {
+   "group": "Daily deep dip in Asia hours 00-08 UTC",
+   "count": 1733,
+   "days": 76,
+   "mean_vs_market_pct": 0.46378125352397437,
+   "median_vs_market_pct": 0.12372781813251849,
+   "share_beating_market_pct": 52.33698788228506,
+   "mean_raw_pct": 1.4943322418969833,
+   "median_raw_pct": 1.260904820292313,
+   "day_mean_pct": 1.5985420260660785,
+   "t_by_day": 2.7038117215523068
+  },
+  {
+   "group": "Daily deep dip in Europe hours 08-14 UTC",
+   "count": 518,
+   "days": 70,
+   "mean_vs_market_pct": 0.1688986382096024,
+   "median_vs_market_pct": -0.20899525814090442,
+   "share_beating_market_pct": 45.75289575289575,
+   "mean_raw_pct": 0.7275154002463268,
+   "median_raw_pct": 0.33863204861926166,
+   "day_mean_pct": 0.9256564006301927,
+   "t_by_day": 1.349078996537371
+  },
+  {
+   "group": "Daily deep dip in US hours 14-24 UTC",
+   "count": 3145,
+   "days": 83,
+   "mean_vs_market_pct": 0.22574604090843173,
+   "median_vs_market_pct": -0.08008362873551578,
+   "share_beating_market_pct": 49.030206677265504,
+   "mean_raw_pct": 1.750250385514034,
+   "median_raw_pct": 1.4442724585636266,
+   "day_mean_pct": 0.6153979675872966,
+   "t_by_day": 0.9130377638139998
+  }
+ ],
+ "slopes": {
+  "z24": {
+   "all hours": {
+    "slope_pct_per_z": -0.09603231600980137,
+    "t_by_day": -1.3437257771595703,
+    "days": 107
+   },
+   "Asia": {
+    "slope_pct_per_z": -0.18592155826222875,
+    "t_by_day": -2.0928570199079655,
+    "days": 107
+   },
+   "Europe": {
+    "slope_pct_per_z": -0.028928401796796933,
+    "t_by_day": -0.35279335144094154,
+    "days": 107
+   },
+   "US": {
+    "slope_pct_per_z": -0.06474003605553746,
+    "t_by_day": -0.7855801622362197,
+    "days": 107
+   }
+  },
+  "z168": {
+   "all hours": {
+    "slope_pct_per_z": -0.03542667196582863,
+    "t_by_day": -0.4201565259369543,
+    "days": 107
+   },
+   "Asia": {
+    "slope_pct_per_z": -0.06783820272849139,
+    "t_by_day": -0.709287957787003,
+    "days": 107
+   },
+   "Europe": {
+    "slope_pct_per_z": -0.017394539452214954,
+    "t_by_day": -0.19980621336794607,
+    "days": 107
+   },
+   "US": {
+    "slope_pct_per_z": -0.02261711428482083,
+    "t_by_day": -0.23972469921981604,
+    "days": 107
+   }
+  }
+ },
+ "settings": {
+  "lambda": 0.9958826236582974,
+  "windows": [
+   24,
+   168,
+   720
+  ],
+  "next_hours": 24,
+  "groups_tested": 15,
+  "slopes_tested": 8,
+  "excluded": [
+   "DHN-USD"
+  ]
+ }
+}
