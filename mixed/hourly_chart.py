@@ -15,11 +15,11 @@ plt.rcParams["text.parse_math"] = False
 HERE = os.path.dirname(os.path.abspath(__file__))
 INK, INK2, GRID, SURF = "#0b0b0b", "#52514e", "#e4e3df", "#fcfcfb"
 RUNS = [("hourly_3m_ultra", "Two Ultras (running)", "#2a78d6", 2.4), ("hourly_3m_skeptic", "Sceptic version (stopped)", "#eb6834", 1.6),
-        ("hourly_3m", "GLM decider (stopped)", "#1baf7a", 1.6)]
+        ("hourly_3m", "GLM decider (stopped)", "#1baf7a", 1.6), ("company:company_haiku", "Haiku company (stopped)", "#6250d6", 1.6)]
 
 
 def load(tag):
-    p = os.path.join(HERE, f"watcher_{tag}.csv")
+    p = os.path.join(HERE, f"company_{tag.split(':')[1]}_hours.csv" if tag.startswith("company:") else f"watcher_{tag}.csv")
     if not os.path.exists(p):
         return None
     rows = [r for r in csv.DictReader(open(p)) if r.get("value")]
