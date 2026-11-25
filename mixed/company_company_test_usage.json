@@ -1,0 +1,21 @@
+{
+ "model": "haiku",
+ "effort": "low",
+ "calls": 11,
+ "cost_usd_at_list_price": 0.03715812000000001,
+ "input_tokens": 151709,
+ "cached_input_tokens": 3452,
+ "output_tokens": 13568,
+ "limit_waits": 0,
+ "errors": 0,
+ "by_role": {
+  "researcher_3": 2,
+  "researcher_1": 2,
+  "researcher_2": 2,
+  "pm_long": 1,
+  "pm_short": 1,
+  "risk": 1,
+  "ceo": 1,
+  "trader": 1
+ }
+}
