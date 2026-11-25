@@ -1,0 +1,728 @@
+<title>CART3R</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700&family=Figtree:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: one phone-width column - greeting, scrolling view, bottom tabs; chats and sheets open over it. */
+:root{
+  --page:#FFFCFE; --surface:#FFFFFF; --track:#F2F0F5; --line:#E7E2EE;
+  --ink:#30323B; --ink-2:#666874; --ink-3:#8C8D99;
+  --mint:#BFE8D4; --lav:#E4DDF8; --pink:#F8DDE7; --peach:#FBE2CE; --sky:#D3E7F8; --butter:#F5ECBB;
+  --on-tint:#30323B;
+  --primary:#5A4A9C; --on-primary:#FFFFFF; --danger:#B3261E;
+  --shade:rgba(48,50,59,.42);
+  --lift:0 1px 2px rgba(48,50,59,.05),0 8px 24px rgba(48,50,59,.07);
+  --display:'Bricolage Grotesque','Avenir Next','Segoe UI',system-ui,sans-serif;
+  --body:'Figtree','Segoe UI',system-ui,-apple-system,Roboto,sans-serif;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --page:#16151B; --surface:#22202A; --track:#1D1B24; --line:#34313F;
+  --ink:#EDEAF3; --ink-2:#B4B1C0; --ink-3:#8B8898;
+  --mint:#2B5946; --lav:#403A6B; --pink:#5E3548; --peach:#5C432F; --sky:#2E4962; --butter:#554E28;
+  --on-tint:#F4F1FA;
+  --primary:#BBAEF4; --on-primary:#1F1942; --danger:#F2B8B5;
+  --shade:rgba(0,0,0,.6);
+  --lift:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.35);
+  color-scheme:dark } }
+:root[data-theme="dark"]{
+  --page:#16151B; --surface:#22202A; --track:#1D1B24; --line:#34313F;
+  --ink:#EDEAF3; --ink-2:#B4B1C0; --ink-3:#8B8898;
+  --mint:#2B5946; --lav:#403A6B; --pink:#5E3548; --peach:#5C432F; --sky:#2E4962; --butter:#554E28;
+  --on-tint:#F4F1FA;
+  --primary:#BBAEF4; --on-primary:#1F1942; --danger:#F2B8B5;
+  --shade:rgba(0,0,0,.6);
+  --lift:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.35);
+  color-scheme:dark }
+
+*,*::before,*::after{box-sizing:border-box}
+html,body{height:100%}
+body{background:var(--page);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.4;-webkit-font-smoothing:antialiased}
+button,input,textarea,select{font:inherit;color:inherit}
+button{cursor:pointer;background:none;border:0;padding:0;text-align:inherit}
+:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
+h1,h2,h3,p,ul{margin:0;padding:0}
+ul{list-style:none}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;letter-spacing:-.01em}
+
+.app{height:100%;max-width:480px;margin:0 auto;display:flex;flex-direction:column;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-block:14px 10px}
+.top h1{font-size:1.5rem;line-height:1.15}
+.top p{color:var(--ink-2);font-size:.9rem}
+.view{flex:1;min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:22px;padding-block:6px 20px;scrollbar-width:thin}
+.sec{display:flex;flex-direction:column;gap:10px}
+.sec-head{display:flex;align-items:flex-end;justify-content:space-between;gap:12px}
+.sec h2{font-size:1.15rem}
+.hint,.lede{color:var(--ink-2);font-size:.88rem}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:40px;padding:0 16px;border-radius:20px;
+  background:var(--primary);color:var(--on-primary);font-weight:600;font-size:.92rem;white-space:nowrap}
+.btn.sm{min-height:34px;padding:0 13px;font-size:.85rem}
+.btn.tonal{background:var(--lav);color:var(--on-tint)}
+.btn.ghost{background:transparent;color:var(--primary);box-shadow:inset 0 0 0 1.5px var(--line)}
+.btn.warn{background:transparent;color:var(--danger);box-shadow:inset 0 0 0 1.5px var(--line)}
+.btn.wide{width:100%}
+.btn:disabled{opacity:.45;cursor:default}
+
+.av{flex:none;display:inline-grid;place-items:center;width:42px;height:42px;border-radius:50%;color:var(--on-tint);
+  font-family:var(--display);font-weight:700;font-size:.95rem}
+.av.s{width:28px;height:28px;font-size:.7rem}
+.av.l{width:68px;height:68px;font-size:1.5rem}
+.t-mint{background:var(--mint)}.t-lav{background:var(--lav)}.t-pink{background:var(--pink)}
+.t-peach{background:var(--peach)}.t-sky{background:var(--sky)}.t-butter{background:var(--butter)}
+.stack{display:flex;flex:none}
+.stack .av{margin-left:-12px;box-shadow:0 0 0 2px var(--page)}
+.stack .av:first-child{margin-left:0}
+.ai{display:inline-block;vertical-align:middle;margin-left:6px;padding:1px 6px;border-radius:6px;background:var(--track);color:var(--ink-2);
+  font-family:var(--body);font-size:.66rem;font-weight:700;letter-spacing:.06em}
+
+/* schedule */
+.strip{overflow-x:auto;background:var(--track);border-radius:18px;scrollbar-width:thin}
+.strip-in{position:relative;height:112px}
+.tick{position:absolute;top:26px;bottom:10px;width:1px;background:var(--line)}
+.tl{position:absolute;top:8px;font-size:.68rem;color:var(--ink-2);font-variant-numeric:tabular-nums}
+.now{position:absolute;top:22px;bottom:6px;width:2px;border-radius:2px;background:var(--primary)}
+.blk{position:absolute;top:38px;height:58px;border-radius:12px;padding:6px 9px;overflow:hidden;color:var(--on-tint);
+  touch-action:none;display:flex;flex-direction:column;justify-content:center;user-select:none;-webkit-user-select:none}
+.blk b{font-size:.8rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.blk small{font-size:.68rem;opacity:.75;white-space:nowrap;font-variant-numeric:tabular-nums}
+.blk.drag{box-shadow:var(--lift);outline:2px solid var(--primary)}
+.k-FREE{background:var(--mint)}.k-BUSY{background:var(--pink)}.k-PLAN{background:var(--lav)}
+.rows{display:flex;flex-direction:column;gap:8px}
+.row{display:flex;align-items:center;gap:10px;background:var(--surface);border-radius:14px;padding:10px 12px;box-shadow:inset 0 0 0 1px var(--line)}
+.row-main{flex:1;min-width:0;display:flex;align-items:center;gap:12px}
+.row-text{flex:1;min-width:0}
+.row-text b{display:block;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row-text > span{display:block;color:var(--ink-2);font-size:.86rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row-end{flex:none;display:flex;flex-direction:column;align-items:flex-end;gap:5px;color:var(--ink-3);font-size:.74rem;font-variant-numeric:tabular-nums}
+.kind{flex:none;font-size:.7rem;font-weight:700;letter-spacing:.06em;color:var(--on-tint);padding:3px 8px;border-radius:8px}
+.dot{width:10px;height:10px;border-radius:50%;background:var(--primary)}
+.bar{display:block;position:relative;height:12px;border-radius:6px;background:var(--track);overflow:hidden;margin-top:6px}
+.bar i{position:absolute;top:0;bottom:0}
+.bar u{position:absolute;bottom:0;height:3px;background:var(--primary)}
+.friend-day{width:100%;text-align:left;display:flex;flex-direction:column;gap:2px;background:var(--surface);border-radius:14px;padding:10px 12px;box-shadow:inset 0 0 0 1px var(--line)}
+.friend-day .who{display:flex;align-items:center;gap:8px;font-weight:600}
+.friend-day .both{font-size:.84rem;color:var(--ink-2);margin-top:5px}
+.empty{color:var(--ink-2);font-size:.92rem;background:var(--track);border-radius:14px;padding:14px}
+
+/* tabs */
+.nav{display:flex;gap:4px;padding-block:6px 10px;border-top:1px solid var(--line)}
+.nav button{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 0;border-radius:14px;color:var(--ink-2);font-size:.72rem;font-weight:600;position:relative}
+.nav button[aria-current="page"]{color:var(--ink)}
+.nav .pill{display:grid;place-items:center;width:56px;height:30px;border-radius:15px}
+.nav button[aria-current="page"] .pill{background:var(--lav);color:var(--on-tint)}
+.nav svg,.ico svg{width:22px;height:22px;display:block}
+.badge{position:absolute;top:4px;left:calc(50% + 10px);min-width:17px;height:17px;padding:0 5px;border-radius:9px;background:var(--primary);color:var(--on-primary);font-size:.66rem;line-height:17px;text-align:center}
+
+/* chat */
+.chat-top{display:flex;align-items:center;gap:10px;padding-block:12px 10px;border-bottom:1px solid var(--line)}
+.ico{flex:none;display:grid;place-items:center;width:40px;height:40px;border-radius:50%;color:var(--ink)}
+.ico:hover{background:var(--track)}
+.chat-id{flex:1;min-width:0;display:flex;align-items:center;gap:10px;cursor:pointer}
+.chat-id h2{font-size:1.05rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chat-id p{color:var(--ink-2);font-size:.8rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.msgs{flex:1;min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:8px;padding-block:14px;scrollbar-width:thin}
+.m{display:flex;gap:8px;align-items:flex-end;max-width:100%}
+.m.me{justify-content:flex-end}
+.m .gap{width:28px;flex:none}
+.bub{max-width:min(78%,300px);background:var(--surface);border-radius:18px;padding:9px 12px;box-shadow:inset 0 0 0 1px var(--line);overflow-wrap:anywhere}
+.m.me .bub{background:var(--lav);color:var(--on-tint);box-shadow:none}
+.bub .from{display:block;font-size:.74rem;font-weight:700;color:var(--ink-2);margin-bottom:1px}
+.bub .tx{white-space:pre-wrap}
+.bub time{display:block;font-size:.66rem;color:var(--ink-3);margin-top:2px;font-variant-numeric:tabular-nums}
+.m.me .bub time{color:var(--on-tint);opacity:.6}
+.sys{align-self:center;text-align:center;color:var(--ink-3);font-size:.78rem;padding:2px 10px}
+.dots{display:inline-flex;gap:4px;padding:5px 2px}
+.dots i{width:7px;height:7px;border-radius:50%;background:var(--ink-3);animation:bob 1.1s infinite ease-in-out}
+.dots i:nth-child(2){animation-delay:.15s}.dots i:nth-child(3){animation-delay:.3s}
+@keyframes bob{0%,60%,100%{transform:none;opacity:.5}30%{transform:translateY(-4px);opacity:1}}
+.note{display:flex;align-items:center;gap:10px;justify-content:space-between;background:var(--track);color:var(--ink-2);border-radius:12px;padding:8px 12px;font-size:.84rem;margin-bottom:8px}
+.composer{display:flex;align-items:flex-end;gap:8px;padding-block:8px 12px}
+.composer textarea{flex:1;min-width:0;resize:none;max-height:120px;border:1.5px solid var(--line);border-radius:22px;background:var(--surface);padding:10px 14px;line-height:1.3}
+.composer textarea:focus{outline:none;border-color:var(--primary)}
+
+/* sheets */
+.veil{position:fixed;inset:0;background:var(--shade);display:flex;align-items:flex-end;justify-content:center;z-index:20}
+.sheet{width:100%;max-width:480px;max-height:88%;overflow-y:auto;background:var(--page);border-radius:24px 24px 0 0;display:flex;flex-direction:column;gap:14px;
+  padding-top:18px;padding-bottom:calc(18px + env(safe-area-inset-bottom,0px));
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));animation:rise .2s ease-out}
+@keyframes rise{from{transform:translateY(24px);opacity:.6}to{transform:none;opacity:1}}
+.sheet-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.sheet h2{font-size:1.3rem}
+.word{font-family:var(--display);font-weight:700;font-size:2rem;letter-spacing:.02em}
+.field{display:flex;flex-direction:column;gap:5px}
+.field label,.label{font-size:.8rem;font-weight:600;color:var(--ink-2)}
+.field input,.field textarea,.field select{width:100%;border:1.5px solid var(--line);border-radius:12px;background:var(--surface);padding:10px 12px}
+.field input:focus,.field textarea:focus,.field select:focus{outline:none;border-color:var(--primary)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{display:inline-flex;align-items:center;gap:7px;min-height:38px;padding:4px 14px 4px 5px;border-radius:20px;box-shadow:inset 0 0 0 1.5px var(--line);font-weight:600;font-size:.9rem}
+.chip.plain{padding:4px 14px}
+.chip[aria-pressed="true"]{background:var(--lav);color:var(--on-tint);box-shadow:inset 0 0 0 1.5px var(--primary)}
+.swatch{width:34px;height:34px;border-radius:50%;box-shadow:inset 0 0 0 1.5px var(--line)}
+.swatch[aria-pressed="true"]{box-shadow:0 0 0 2px var(--page),0 0 0 4px var(--primary)}
+.actions{display:flex;flex-wrap:wrap;gap:8px}
+.profile-head{display:flex;align-items:center;gap:14px}
+.profile-head p{color:var(--ink-2);font-size:.9rem}
+.small{font-size:.84rem;color:var(--ink-2)}
+@media (prefers-reduced-motion: reduce){ .dots i,.sheet{animation:none} }
+</style>
+
+<div class="app" id="app"></div>
+<div id="sheet-root"></div>
+
+<script>
+(function(){
+'use strict';
+var KEY='cart3r:v1', PXH=52;
+var TINTS=['mint','lav','pink','peach','sky','butter'];
+var KIND_LABEL={FREE:'Free',BUSY:'Busy',PLAN:'Plan'};
+
+/* The test people. Each is an AI character: a voice for the model, a few set lines for when live AI is off, and a day. */
+var PEOPLE=[
+ {id:'maya',name:'Maya',color:'pink',tag:'Hype friend. Always has a plan.',
+  bio:'Maya turns "we should hang out" into an actual plan with a time, a place and a playlist. Loud in the best way.',
+  persona:'Maya is bubbly, warm and excitable. She uses exclamation marks, hypes her friends up, and always pushes toward a concrete plan (a time, a place, food). She loves night markets, dancing and making playlists. An occasional emoji is fine.',
+  hello:'HI!! Okay we are officially friends now. What are we doing this week??',
+  groupHello:'Group chat!! Love this. Okay, who is free when?',
+  lines:['Yes!! I am SO in.','Okay wait, that is actually a great idea.','Tell me everything. Do not leave anything out!','We need to make this a plan. When are you free?','Ha! I love that for you.'],
+  day:[[540,180,'BUSY','Classes'],[750,60,'FREE','Lunch break'],[900,120,'FREE','Free'],[1140,120,'PLAN','Dance practice']]},
+ {id:'dex',name:'Dex',color:'sky',tag:'Night owl. Dry humor.',
+  bio:'Dex answers at 2am and never before noon. Mostly sarcasm, secretly the first one to show up when you need help.',
+  persona:'Dex is a sarcastic, deadpan night-owl gamer. He types in lowercase with minimal punctuation and keeps messages very short. He teases his friends and acts unimpressed, but he is loyal and quietly caring. He talks about games, snacks and being tired.',
+  hello:'oh cool, a new friend. no pressure but i am very funny',
+  groupHello:'i was told there would be snacks in this group',
+  lines:['wow. groundbreaking.','ok that is fair','cant talk, losing at a video game','i mean. sure. why not','lol no'],
+  day:[[0,120,'PLAN','Ranked games'],[180,480,'BUSY','Asleep'],[780,240,'BUSY','Work shift'],[1080,180,'FREE','Free'],[1320,120,'PLAN','Gaming']]},
+ {id:'priya',name:'Priya',color:'lav',tag:'Reads three books at once.',
+  bio:'Priya asks the question you were avoiding and then actually listens to the answer. Works at the library, lives in it too.',
+  persona:'Priya is thoughtful, calm and curious. She writes in complete, gentle sentences, asks sincere follow-up questions, and sometimes connects things to a book she is reading. She never rushes and never judges.',
+  hello:'Hello! I am glad we are friends now. What has been on your mind lately?',
+  groupHello:'Hello everyone. I brought a question for the group, but it can wait until we have said hi.',
+  lines:['That is interesting. What made you think of it?','I have been turning that over too, honestly.','How did that feel when it happened?','There is a line in the book I am reading that fits this perfectly.','Take your time. I am listening.'],
+  day:[[480,90,'FREE','Reading'],[600,300,'BUSY','Library shift'],[960,120,'FREE','Free'],[1200,90,'PLAN','Book club']]},
+ {id:'rio',name:'Rio',color:'peach',tag:'Coach energy. One more rep.',
+  bio:'Rio runs before sunrise and believes in you a slightly alarming amount. Every problem is a training plan.',
+  persona:'Rio is an upbeat fitness coach. He is motivating and direct, uses sports metaphors, sometimes puts ONE word in capitals for emphasis, and turns any problem into small next steps. He wakes up very early and goes to bed early.',
+  hello:'Let us GO! New teammate. What are we working on this week?',
+  groupHello:'Team huddle! Love to see it. What is the game plan?',
+  lines:['You have got this. One step at a time.','That is a WIN. Write it down.','Okay coach hat on: what is the first small move?','Rest is part of training too, you know.','Proud of you. Keep going.'],
+  day:[[330,90,'PLAN','Morning run'],[540,360,'BUSY','Coaching'],[960,90,'FREE','Free'],[1080,90,'PLAN','Gym']]},
+ {id:'nana',name:'Nana Jo',color:'butter',tag:'Everyone’s grandma. Has snacks.',
+  bio:'Nana Jo adopted the whole friend group. She will ask if you have eaten, and she will know if you are lying.',
+  persona:'Nana Jo is a warm, funny grandmother figure. She calls people "dear" or "sweet pea", asks whether they have eaten and slept, shares old sayings and small stories from her garden and kitchen, and teases gently. She types carefully in full sentences and sometimes signs off with "Love, Nana".',
+  hello:'Hello dear! How lovely. Now tell me, have you eaten today?',
+  groupHello:'Well, look at all of you in one place. I have cookies cooling if anyone is nearby.',
+  lines:['Oh, sweet pea. Come by and I will put the kettle on.','In my day we called that a Tuesday.','Have you eaten? A proper meal, not a snack.','That sounds wonderful, dear. I am proud of you.','Early to bed tonight, promise me. Love, Nana'],
+  day:[[420,120,'PLAN','Garden'],[600,120,'FREE','Free'],[780,90,'BUSY','Nap'],[900,180,'FREE','Baking, visitors welcome']]},
+ {id:'zed',name:'Zed',color:'mint',tag:'Chaos, with a fun fact.',
+  bio:'Zed has a fun fact for everything and a plan that is 40 percent genius. Nobody knows which 40.',
+  persona:'Zed is a chaotic, excitable ideas person. He goes on tangents, drops surprising facts about animals, space or history, and pitches wild but harmless plans that often start with "ok but hear me out". He is enthusiastic and never mean.',
+  hello:'ok but hear me out: we are friends now AND octopuses have three hearts. big day',
+  groupHello:'new group chat. statistically one of us is going to suggest something unhinged and it will be me',
+  lines:['ok but hear me out','fun fact: honey never goes bad. unrelated but you needed to know','what if we did that but at midnight','I have a plan. it is not a good plan. but it is a plan','wait that reminds me of something completely different'],
+  day:[[660,120,'FREE','Free'],[840,180,'BUSY','Lab'],[1080,60,'FREE','Free'],[1260,180,'PLAN','Building something weird']]},
+ {id:'lena',name:'Lena',color:'sky',tag:'The organized one.',
+  bio:'Lena already made the spreadsheet. Blunt, fast, and the reason anything in this friend group actually happens.',
+  persona:'Lena is practical, blunt and efficient. She gets straight to the point, proposes exact times and decisions, dislikes vague plans, and is a little bossy but clearly loyal and dependable. Short, clear sentences. No fluff.',
+  hello:'Hi. Good to be connected. If we are making plans, I need a day and a time.',
+  groupHello:'Right. To keep this group useful: decisions get a time and a place.',
+  lines:['Fine. What time exactly?','Decision made. Moving on.','That is not a plan, that is a wish. Give me a day.','I can do that. Putting it on the calendar.','Noted. Honestly, good call.'],
+  day:[[420,60,'PLAN','Planning'],[480,540,'BUSY','Work'],[1050,90,'FREE','Free'],[1200,60,'PLAN','Meal prep']]},
+ {id:'sam',name:'Sam',color:'lav',tag:'Quiet. Best playlists.',
+  bio:'Sam says little and means all of it. Works at a record shop and will make you a playlist instead of saying how they feel.',
+  persona:'Sam is shy, gentle and kind. Sam writes short, slightly hesitant messages ("um", "oh", "maybe"), loves music and often recommends a song or offers to make a playlist, and warms up slowly as the chat goes on. Never sarcastic.',
+  hello:'oh, hi. um, thanks for adding me. I made you a tiny playlist, if you want it',
+  groupHello:'hi everyone. um. I can bring music if that helps',
+  lines:['oh. that is really nice, actually','um, there is a song for exactly this','I get that. really','maybe we could do something quiet?','sorry, I am slow at texting. I am here though'],
+  day:[[600,240,'BUSY','Record shop shift'],[900,150,'FREE','Free'],[1140,120,'PLAN','Band practice']]}
+];
+var GENERIC_LINES=['Ha, tell me more.','Okay, I like that.','Wait, really?','Sounds good to me.','Let me think about that one.'];
+
+/* ---------- state ---------- */
+function uid(){return Math.random().toString(36).slice(2,10)}
+function blk(start,dur,kind,title){return {id:uid(),title:title,kind:kind,start:start,dur:dur}}
+function seed(){
+  var n=Date.now(), min=60000;
+  return {v:1, me:{name:''}, welcomed:false, tab:'schedule',
+    friends:['maya','dex'], custom:[],
+    groups:[{id:'g1',name:'Weekend plans',memberIds:['maya','dex']}],
+    convs:{
+      dm_maya:[{id:uid(),from:'maya',text:PEOPLE[0].hello,at:n-34*min}],
+      dm_dex:[{id:uid(),from:'dex',text:PEOPLE[1].hello,at:n-21*min}],
+      grp_g1:[{id:uid(),from:'maya',text:'Okay team, Saturday. Who is in for the night market?',at:n-9*min},
+              {id:uid(),from:'dex',text:'only if there is food. so yes',at:n-8*min}]},
+    read:{},
+    blocks:[blk(600,90,'FREE','Free time'),blk(780,180,'BUSY','Work'),blk(990,150,'FREE','Free time')]};
+}
+function load(){try{var r=localStorage.getItem(KEY);if(!r)return null;var s=JSON.parse(r);return (s&&s.v===1&&s.convs&&s.blocks)?s:null}catch(e){return null}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+var S=load()||seed();
+var open=null, sheet=null, stripLeft=null, suppressClick=false;
+var typing={}, stream={}, notes={}, busy={}, dirty={};
+
+/* ---------- helpers ---------- */
+function $(s,el){return (el||document).querySelector(s)}
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+function hm(m){m=Math.max(0,Math.min(1440,Math.round(m)));return String(Math.floor(m/60)).padStart(2,'0')+':'+String(m%60).padStart(2,'0')}
+function span(b){return hm(b.start)+'–'+hm(b.start+b.dur)}
+function nowMin(){var d=new Date();return d.getHours()*60+d.getMinutes()}
+function clock(at){var d=new Date(at);return isNaN(d)?'':String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')}
+function wait(ms){return new Promise(function(r){setTimeout(r,ms)})}
+function person(id){for(var i=0;i<PEOPLE.length;i++)if(PEOPLE[i].id===id)return PEOPLE[i];for(var j=0;j<S.custom.length;j++)if(S.custom[j].id===id)return S.custom[j];return null}
+function group(id){for(var i=0;i<S.groups.length;i++)if(S.groups[i].id===id)return S.groups[i];return null}
+function myName(){return (S.me.name||'').trim()||'You'}
+function initials(n){var p=String(n).trim().split(/\s+/);return ((p[0]||'?')[0]+(p[1]?p[1][0]:'')).toUpperCase()}
+function av(p,size){return '<span class="av t-'+(TINTS.indexOf(p.color)>=0?p.color:'lav')+(size?' '+size:'')+'" aria-hidden="true">'+esc(initials(p.name))+'</span>'}
+function meAv(size){return av({name:myName(),color:'mint'},size)}
+function dayOf(p){return (p.day||[]).map(function(d){return {start:d[0],dur:d[1],kind:d[2],title:d[3]}})}
+function bothFree(a,b){
+  var best=null;
+  a.forEach(function(x){if(x.kind!=='FREE')return;b.forEach(function(y){if(y.kind!=='FREE')return;
+    var s=Math.max(x.start,y.start),e=Math.min(x.start+x.dur,y.start+y.dur);
+    if(e-s>=15&&(!best||e-s>best.e-best.s))best={s:s,e:e}})});
+  return best;
+}
+function barHTML(blocks,both){
+  var h='<span class="bar" aria-hidden="true">';
+  blocks.forEach(function(b){h+='<i class="k-'+b.kind+'" style="left:'+(b.start/14.4)+'%;width:'+(b.dur/14.4)+'%"></i>'});
+  if(both)h+='<u style="left:'+(both.s/14.4)+'%;width:'+((both.e-both.s)/14.4)+'%"></u>';
+  return h+'</span>';
+}
+function dayText(blocks){
+  if(!blocks.length)return 'nothing planned';
+  return blocks.slice().sort(function(a,b){return a.start-b.start}).map(function(b){return span(b)+' '+b.title+' ('+KIND_LABEL[b.kind].toLowerCase()+')'}).join('; ');
+}
+function lastMsg(cid){var l=S.convs[cid]||[];return l[l.length-1]||null}
+function unread(cid){var m=lastMsg(cid);return !!(m&&m.from!=='me'&&m.from!=='sys'&&m.at>(S.read[cid]||0))}
+function allConvs(){
+  var out=S.friends.map(function(id){return 'dm_'+id}).concat(S.groups.map(function(g){return 'grp_'+g.id}));
+  return out.sort(function(a,b){return ((lastMsg(b)||{}).at||0)-((lastMsg(a)||{}).at||0)});
+}
+function convTitle(cid){if(cid.indexOf('dm_')===0){var p=person(cid.slice(3));return p?p.name:'Friend'}var g=group(cid.slice(4));return g?g.name:'Group'}
+function members(g){return g.memberIds.map(person).filter(Boolean)}
+
+var I={
+ cal:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15" rx="3"/><path d="M8 3v4M16 3v4M3.5 10h17"/></svg>',
+ chat:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 5h14a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-7l-4.5 3.5V17H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z"/></svg>',
+ one:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.6"/><path d="M4.5 20c.8-3.6 3.8-5.5 7.5-5.5s6.700 1.900 7.500 5.500"/></svg>',
+ many:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="9" r="3.2"/><circle cx="17" cy="10" r="2.5"/><path d="M2.800 19.500c.7-3.100 3.100-4.700 6.200-4.700s5.500 1.600 6.200 4.700M16.500 14.700c2.400.100 4.100 1.500 4.700 3.900"/></svg>',
+ back:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>',
+ info:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 11v5.500M12 7.700v.1"/></svg>',
+ x:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>'
+};
+
+/* ---------- main views ---------- */
+var app=$('#app'), sheetRoot=$('#sheet-root');
+function renderMain(){
+  var old=$('#view'), keep=old&&old.dataset.tab===S.tab?old.scrollTop:0;
+  var t=S.tab||'schedule', n=allConvs().filter(unread).length;
+  var title={schedule:'',chats:'Chats',friends:'Friends',groups:'Groups'}[t];
+  var h='<header class="top"><div>'+(t==='schedule'
+      ?'<h1>'+(S.me.name?'Hey, '+esc(myName())+'!':'Hey, you’re here!')+'</h1><p>Make time for your people</p>'
+      :'<h1>'+title+'</h1>')+'</div>'
+    +'<button data-act="profile" aria-label="Your profile">'+meAv()+'</button></header>'
+    +'<main class="view" id="view" data-tab="'+t+'">'+VIEW[t]()+'</main>'
+    +'<nav class="nav" aria-label="Sections">';
+  [['schedule','Schedule',I.cal],['chats','Chats',I.chat],['friends','Friends',I.one],['groups','Groups',I.many]].forEach(function(x){
+    h+='<button data-act="tab" data-tab="'+x[0]+'"'+(t===x[0]?' aria-current="page"':'')+'><span class="pill">'+x[2]+'</span>'+x[1]
+      +(x[0]==='chats'&&n?'<span class="badge" aria-label="'+n+' unread">'+n+'</span>':'')+'</button>'});
+  app.innerHTML=h+'</nav>';
+  $('#view').scrollTop=keep;
+  if(t==='schedule')bindStrip();
+}
+var VIEW={
+ schedule:function(){
+  var blocks=S.blocks.slice().sort(function(a,b){return a.start-b.start});
+  var h='<section class="sec"><div class="sec-head"><div><h2>Your day</h2><p class="hint">Drag a block left or right to change its time.</p></div>'
+    +'<button class="btn" data-act="add-block">+ Block</button></div>'
+    +'<div class="strip" id="strip"><div class="strip-in" style="width:'+(24*PXH)+'px">';
+  for(var i=0;i<=24;i++){h+='<i class="tick" style="left:'+(i*PXH)+'px"></i>';if(i%2===0&&i<24)h+='<span class="tl" style="left:'+(i*PXH+5)+'px">'+hm(i*60)+'</span>'}
+  h+='<i class="now" style="left:'+(nowMin()/60*PXH)+'px" title="Now"></i>';
+  blocks.forEach(function(b){h+='<button class="blk k-'+b.kind+'" data-act="edit-block" data-bid="'+b.id+'" style="left:'+(b.start/60*PXH)+'px;width:'+Math.max(46,b.dur/60*PXH)+'px" aria-label="'+esc(b.title)+', '+span(b)+'"><b>'+esc(b.title)+'</b><small>'+span(b)+'</small></button>'});
+  h+='</div></div>';
+  if(blocks.length){h+='<ul class="rows">';blocks.forEach(function(b){h+='<li><button class="row" style="width:100%" data-act="edit-block" data-bid="'+b.id+'"><span class="row-text"><b>'+esc(b.title)+'</b><span>'+span(b)+'</span></span><span class="kind k-'+b.kind+'">'+KIND_LABEL[b.kind].toUpperCase()+'</span></button></li>'});h+='</ul>'}
+  else h+='<p class="empty">Your day is open. Add a block to show friends when you are free.</p>';
+  h+='</section><section class="sec"><div><h2>Friends today</h2><p class="hint">The purple line marks when you are both free.</p></div>';
+  var fr=S.friends.map(person).filter(Boolean);
+  if(!fr.length)h+='<p class="empty">Add a friend to see their day next to yours.</p>';
+  fr.forEach(function(p){var d=dayOf(p),bf=bothFree(S.blocks,d);
+    h+='<button class="friend-day" data-act="person" data-pid="'+p.id+'"><span class="who">'+av(p,'s')+esc(p.name)+'</span>'+barHTML(d,bf)
+      +'<span class="both">'+(bf?'Both free '+hm(bf.s)+'–'+hm(bf.e):'No shared free time today')+'</span></button>'});
+  return h+'</section>';
+ },
+ chats:function(){
+  var list=allConvs(), h='<section class="sec">';
+  if(aiMode==='canned')h+='<p class="note">Live AI is not available in this view, so friends answer with a few set lines.</p>';
+  if(!list.length)return h+'<p class="empty">No chats yet. Add a friend or make a group to start one.</p></section>';
+  h+='<ul class="rows">';
+  list.forEach(function(cid){
+    var m=lastMsg(cid), isG=cid.indexOf('grp_')===0, pic, sub='';
+    if(isG){var ms=members(group(cid.slice(4)));pic='<span class="stack">'+(ms.slice(0,2).map(function(p){return av(p)}).join('')||meAv())+'</span>'}
+    else pic=av(person(cid.slice(3)));
+    if(m){var who=m.from==='me'?'You: ':(isG&&m.from!=='sys'&&person(m.from)?person(m.from).name+': ':'');sub=who+m.text}
+    else sub='Say hi';
+    h+='<li><button class="row" style="width:100%" data-act="open-conv" data-cid="'+cid+'">'+pic+'<span class="row-text"><b>'+esc(convTitle(cid))+'</b><span>'+esc(sub)+'</span></span>'
+      +'<span class="row-end">'+(m?clock(m.at):'')+(unread(cid)?'<span class="dot" aria-label="Unread"></span>':'')+'</span></button></li>'});
+  return h+'</ul></section>';
+ },
+ friends:function(){
+  var h='<p class="lede">Everyone here is a test AI character with their own personality and day.</p><section class="sec"><h2>Your friends</h2>';
+  var fr=S.friends.map(person).filter(Boolean);
+  if(!fr.length)h+='<p class="empty">No friends yet. Add someone below.</p>';
+  else{h+='<ul class="rows">';fr.forEach(function(p){h+=personRow(p,'<button class="btn sm tonal" data-act="msg-person" data-pid="'+p.id+'">Message</button>')});h+='</ul>'}
+  h+='</section><section class="sec"><h2>People you can add</h2>';
+  var rest=PEOPLE.filter(function(p){return S.friends.indexOf(p.id)<0});
+  if(!rest.length)h+='<p class="empty">You have added everyone. Make your own AI friend below.</p>';
+  else{h+='<ul class="rows">';rest.forEach(function(p){h+=personRow(p,'<button class="btn sm" data-act="add-friend" data-pid="'+p.id+'">Add</button>')});h+='</ul>'}
+  return h+'<button class="btn ghost wide" data-act="new-person">Make your own AI friend</button></section>';
+ },
+ groups:function(){
+  var h='<section class="sec"><div class="sec-head"><p class="lede">Group chats with your friends. A few of them answer each message.</p><button class="btn" data-act="new-group">New group</button></div>';
+  if(!S.groups.length)return h+'<p class="empty">No groups yet. Make one and pick who is in it.</p></section>';
+  h+='<ul class="rows">';
+  S.groups.forEach(function(g){var ms=members(g);
+    h+='<li><button class="row" style="width:100%" data-act="open-conv" data-cid="grp_'+g.id+'"><span class="stack">'+(ms.slice(0,3).map(function(p){return av(p)}).join('')||meAv())+'</span>'
+      +'<span class="row-text"><b>'+esc(g.name)+'</b><span>'+esc(ms.length?ms.map(function(p){return p.name}).join(', ')+' and you':'Just you so far')+'</span></span></button></li>'});
+  return h+'</ul></section>';
+ }
+};
+function personRow(p,action){
+  return '<li class="row"><button class="row-main" data-act="person" data-pid="'+p.id+'">'+av(p)+'<span class="row-text"><b>'+esc(p.name)+'<span class="ai">AI</span></b><span>'+esc(p.tag)+'</span></span></button>'+action+'</li>';
+}
+
+/* schedule drag */
+function bindStrip(){
+  var strip=$('#strip');if(!strip)return;
+  if(stripLeft==null){var first=S.blocks.length?Math.min.apply(null,S.blocks.map(function(b){return b.start})):nowMin();stripLeft=Math.max(0,(first-45)/60*PXH)}
+  strip.scrollLeft=stripLeft;
+  strip.addEventListener('scroll',function(){stripLeft=strip.scrollLeft},{passive:true});
+  strip.addEventListener('pointerdown',function(e){
+    var el=e.target.closest('.blk');if(!el)return;
+    var b=S.blocks.filter(function(x){return x.id===el.dataset.bid})[0];if(!b)return;
+    try{el.setPointerCapture(e.pointerId)}catch(err){}
+    var x0=e.clientX,s0=b.start,cur=s0,moved=false;
+    function mv(ev){
+      if(Math.abs(ev.clientX-x0)>5)moved=true;
+      if(!moved)return;
+      cur=Math.max(0,Math.min(1440-b.dur,Math.round((s0+(ev.clientX-x0)/PXH*60)/5)*5));
+      el.style.left=(cur/60*PXH)+'px';el.classList.add('drag');
+      var sm=el.querySelector('small');if(sm)sm.textContent=hm(cur)+'–'+hm(cur+b.dur);
+    }
+    function up(){
+      el.removeEventListener('pointermove',mv);el.removeEventListener('pointerup',up);el.removeEventListener('pointercancel',up);
+      if(moved){suppressClick=true;setTimeout(function(){suppressClick=false},350);b.start=cur;save();renderMain()}
+    }
+    el.addEventListener('pointermove',mv);el.addEventListener('pointerup',up);el.addEventListener('pointercancel',up);
+  });
+}
+
+/* ---------- chat ---------- */
+function openConv(cid){open=cid;sheet=null;renderSheet();S.read[cid]=Date.now();save();renderChat()}
+function renderChat(){
+  var isG=open.indexOf('grp_')===0, head;
+  if(isG){var g=group(open.slice(4)),ms=members(g);
+    head='<span class="stack">'+(ms.slice(0,2).map(function(p){return av(p)}).join('')||meAv())+'</span><div style="min-width:0"><h2>'+esc(g.name)+'</h2><p>'+esc(ms.length?ms.map(function(p){return p.name}).join(', ')+' and you':'Just you so far')+'</p></div>'}
+  else{var p=person(open.slice(3));
+    head=av(p)+'<div style="min-width:0"><h2>'+esc(p.name)+'<span class="ai">AI</span></h2><p>'+esc(p.tag)+'</p></div>'}
+  app.innerHTML='<header class="chat-top"><button class="ico" data-act="back" aria-label="Back to chats">'+I.back+'</button>'
+    +'<div class="chat-id" data-act="conv-info">'+head+'</div>'
+    +'<button class="ico" data-act="conv-info" aria-label="Details">'+I.info+'</button></header>'
+    +'<div class="msgs" id="msgs" aria-live="polite"></div><div id="chat-note"></div>'
+    +'<form class="composer" id="composer"><textarea id="draft" rows="1" placeholder="Message…" aria-label="Message" maxlength="2000"></textarea><button class="btn" type="submit">Send</button></form>';
+  paintMessages();
+  var ta=$('#draft');
+  ta.addEventListener('input',function(){ta.style.height='auto';ta.style.height=Math.min(120,ta.scrollHeight+2)+'px'});
+  ta.addEventListener('keydown',function(e){if(e.key==='Enter'&&!e.shiftKey&&!e.isComposing&&window.matchMedia('(pointer:fine)').matches){e.preventDefault();sendDraft()}});
+}
+function msgHTML(m,isG,prev,live){
+  if(m.from==='sys')return '<p class="sys">'+esc(m.text)+'</p>';
+  if(m.from==='me')return '<div class="m me"><div class="bub"><span class="tx">'+esc(m.text)+'</span><time>'+clock(m.at)+'</time></div></div>';
+  var p=person(m.from)||{name:'Friend',color:'lav'}, first=!prev||prev.from!==m.from;
+  return '<div class="m">'+(isG?(first?av(p,'s'):'<span class="gap"></span>'):'')+'<div class="bub">'+(isG&&first?'<span class="from">'+esc(p.name)+'</span>':'')
+    +'<span class="tx">'+esc(m.text)+'</span>'+(live?'':'<time>'+clock(m.at)+'</time>')+'</div></div>';
+}
+function paintMessages(){
+  var box=$('#msgs');if(!box||!open)return;
+  var list=S.convs[open]||[], isG=open.indexOf('grp_')===0, h='', prev=null;
+  if(!list.length)h+='<p class="sys">Say hi to get things going.</p>';
+  list.forEach(function(m){h+=msgHTML(m,isG,prev);prev=m});
+  if(stream[open])h+=msgHTML({from:stream[open].from,text:stream[open].text},isG,prev,true);
+  (typing[open]||[]).forEach(function(pid){var p=person(pid);if(!p)return;
+    h+='<div class="m">'+(isG?av(p,'s'):'')+'<div class="bub" aria-label="'+esc(p.name)+' is typing"><span class="dots"><i></i><i></i><i></i></span></div></div>'});
+  box.innerHTML=h;box.scrollTop=box.scrollHeight;
+  var n=notes[open], nb=$('#chat-note');
+  if(nb)nb.innerHTML=n?'<p class="note"><span>'+esc(n.text)+'</span>'+(n.retry?'<button class="btn sm tonal" data-act="retry">Try again</button>':'')+'</p>':'';
+}
+function refresh(){if(open)paintMessages();else renderMain()}
+function pushMsg(cid,from,text){
+  if(!S.convs[cid])S.convs[cid]=[];
+  S.convs[cid].push({id:uid(),from:from,text:text,at:Date.now()});
+  if(S.convs[cid].length>200)S.convs[cid]=S.convs[cid].slice(-200);
+  if(open===cid)S.read[cid]=Date.now();
+  save();refresh();
+}
+function sendDraft(){
+  var ta=$('#draft');if(!ta||!open)return;
+  var text=ta.value.trim();if(!text)return;
+  ta.value='';ta.style.height='auto';delete notes[open];
+  var cid=open;pushMsg(cid,'me',text.slice(0,2000));
+  if(cid.indexOf('grp_')===0&&!members(group(cid.slice(4))).length){notes[cid]={text:'Add friends to this group to get replies.'};paintMessages();return}
+  respond(cid);
+}
+
+/* ---------- AI replies ---------- */
+/* Replies come from Claude through the page's `sample` capability, on the viewer's own account. Where that is
+   missing or turned off, each character falls back to a few set lines so the app still works. */
+var sampleFn, aiMode='unknown';
+var aiReady=(async function(){
+  try{sampleFn=(window.claude&&typeof window.claude.use==='function')?await window.claude.use('sample'):null}catch(e){sampleFn=null}
+  aiMode=sampleFn?'live':'canned';
+  if(!open&&S.tab==='chats')renderMain();
+})();
+function cannedLine(p,cid){var lines=p.lines&&p.lines.length?p.lines:GENERIC_LINES;var n=(S.convs[cid]||[]).filter(function(m){return m.from===p.id}).length;return lines[n%lines.length]}
+function clean(text,name){
+  var t=String(text||'').trim();
+  if(name){var re=new RegExp('^'+name.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'\\s*:\\s*','i');t=t.replace(re,'')}
+  t=t.replace(/^["“]+|["”]+$/g,'').trim();
+  return t.length>900?t.slice(0,900)+'…':t;
+}
+function sharedRules(){
+  return 'How to write: like a real text message from this character. One to three short sentences. No lists, no markdown, no stage directions, no quotation marks around the message. '
+    +'Keep each voice clearly distinct and stay in character. Remember what was said earlier. If plans come up, use the schedules to suggest a time that works. '
+    +'Everyone knows the friends are AI test characters: if '+myName()+' sincerely asks whether they are talking to a real person, say you are an AI character. Keep everything friendly and suitable for all ages.';
+}
+function dmRules(p){
+  return 'You are playing '+p.name+', a fictional test character in CART3R, a social app prototype about making time for friends. '+myName()+' is texting you one-on-one.\n\n'
+    +'Who '+p.name+' is: '+p.persona+'\n\n'
+    +p.name+'’s day today: '+dayText(dayOf(p))+'.\n'+myName()+'’s day today: '+dayText(S.blocks)+'.\nThe time now is '+hm(nowMin())+'.\n\n'
+    +sharedRules()+'\n\nReply with only '+p.name+'’s next message.';
+}
+function groupPrompt(g,ms,cid){
+  var h='You write the next replies in a group chat in CART3R, a social app prototype about making time for friends. The group is called "'+g.name+'". '
+    +myName()+' is the real person; the other members are fictional test characters:\n\n';
+  ms.forEach(function(p){h+='- '+p.name+': '+p.persona+' Day today: '+dayText(dayOf(p))+'.\n'});
+  h+='\n'+myName()+'’s day today: '+dayText(S.blocks)+'.\nThe time now is '+hm(nowMin())+'.\n\nRecent messages, oldest first:\n';
+  (S.convs[cid]||[]).slice(-24).forEach(function(m){if(m.from==='sys')return;var who=m.from==='me'?myName():((person(m.from)||{}).name||'Someone');h+=who+': '+m.text+'\n'});
+  h+='\n'+myName()+' sent the last message. Decide which members would naturally answer: at least one and at most '+Math.min(3,ms.length)
+    +'. Anyone addressed by name must answer. Not everyone answers every time, and a member may react to another member.\n\n'+sharedRules()
+    +'\n\nReply with only a JSON array of objects with "from" (the member’s exact name) and "text", in the order they are sent. Example: [{"from":"'+ms[0].name+'","text":"..."}]';
+  return h;
+}
+function setTyping(cid,ids){if(ids&&ids.length)typing[cid]=ids;else delete typing[cid];if(open===cid)paintMessages()}
+async function respond(cid){
+  if(busy[cid]){dirty[cid]=true;return}
+  busy[cid]=true;
+  try{var ok=true;do{dirty[cid]=false;ok=await (cid.indexOf('dm_')===0?replyDM(cid):replyGroup(cid))}while(ok&&dirty[cid])}
+  finally{busy[cid]=false;dirty[cid]=false;delete stream[cid];setTyping(cid,null)}
+}
+async function replyDM(cid){
+  var p=person(cid.slice(3));if(!p)return false;
+  setTyping(cid,[p.id]);await aiReady;
+  if(aiMode!=='live'){await wait(700+Math.random()*700);pushMsg(cid,p.id,cannedLine(p,cid));return true}
+  var turns=[{role:'user',content:dmRules(p)}];
+  (S.convs[cid]||[]).slice(-24).forEach(function(m){if(m.from!=='sys')turns.push({role:m.from==='me'?'user':'assistant',content:m.text})});
+  if(turns[turns.length-1].role!=='user')return true;
+  try{
+    var res=await sampleFn(turns,{modelTier:'quick',cache:false,onText:function(u){
+      stream[cid]={from:p.id,text:clean(u.text,p.name)};delete typing[cid];if(open===cid)paintMessages()}});
+    delete stream[cid];delete typing[cid];
+    pushMsg(cid,p.id,clean(res.text,p.name)||cannedLine(p,cid));return true;
+  }catch(e){delete stream[cid];return aiFailed(cid,e,[p])}
+}
+async function replyGroup(cid){
+  var g=group(cid.slice(4));if(!g)return false;
+  var ms=members(g);if(!ms.length)return false;
+  setTyping(cid,[ms[Math.floor(Math.random()*ms.length)].id]);await aiReady;
+  var replies;
+  if(aiMode!=='live'){replies=cannedGroup(ms,cid)}
+  else try{
+    var prompt=groupPrompt(g,ms,cid), out;
+    if(typeof sampleFn.json==='function')out=await sampleFn.json(prompt,{modelTier:'quick',cache:false});
+    else{var r=await sampleFn(prompt,{modelTier:'quick',cache:false});out=JSON.parse(r.text.slice(r.text.indexOf('['),r.text.lastIndexOf(']')+1))}
+    if(out&&!Array.isArray(out)&&Array.isArray(out.replies))out=out.replies;
+    replies=[];
+    (Array.isArray(out)?out:[]).slice(0,3).forEach(function(x){
+      if(!x||typeof x.text!=='string')return;
+      var who=String(x.from||'').trim().toLowerCase(), p=ms.filter(function(q){return q.name.toLowerCase()===who})[0];
+      var t=p?clean(x.text,p.name):'';if(p&&t)replies.push({p:p,text:t})});
+    if(!replies.length)throw {code:'upstream_error'};
+  }catch(e){
+    if(e instanceof SyntaxError)e={code:'invalid_json'};
+    if(!(await aiFailed(cid,e,ms)))return false;
+    return true;
+  }
+  for(var i=0;i<replies.length;i++){
+    setTyping(cid,[replies[i].p.id]);
+    await wait(450+Math.min(1400,replies[i].text.length*16));
+    delete typing[cid];pushMsg(cid,replies[i].p.id,replies[i].text);
+  }
+  return true;
+}
+function cannedGroup(ms,cid){
+  var pick=ms.slice().sort(function(){return Math.random()-.5}).slice(0,Math.min(2,ms.length));
+  return pick.map(function(p){return {p:p,text:cannedLine(p,cid)}});
+}
+/* One place for every sampling failure: say what happened, never retry from code. Returns true when the chat may carry on. */
+async function aiFailed(cid,e,ms){
+  var code=e&&e.code?e.code:'upstream_error';
+  setTyping(cid,null);
+  if(code==='cancelled')return false;
+  if(code==='not_granted'||code==='sampling_disabled'||code==='not_declared'||code==='capability_disabled'||code==='capability_removed'){
+    aiMode='canned';
+    notes[cid]={text:'Live AI replies are off for this page, so friends answer with a few set lines.'};
+    var list=cid.indexOf('grp_')===0?cannedGroup(ms,cid):[{p:ms[0],text:cannedLine(ms[0],cid)}];
+    for(var i=0;i<list.length;i++){await wait(500);pushMsg(cid,list[i].p.id,list[i].text)}
+    return true;
+  }
+  if(code==='rate_limited')notes[cid]={text:e.reason==='usage_limit'?'You have reached your Claude usage limit for now. Friends can answer again later.':'Too many messages at once. Give it a moment, then send again.'};
+  else if(code==='session_expired')notes[cid]={text:'Sign in to Claude again to get replies.'};
+  else if(code==='refused')notes[cid]={text:(ms.length===1?ms[0].name:'Your friends')+' could not answer that one. Try saying it another way.'};
+  else notes[cid]={text:'The reply did not come through.',retry:true};
+  if(open===cid)paintMessages();
+  return false;
+}
+
+/* ---------- sheets ---------- */
+function openSheet(s){sheet=s;renderSheet()}
+function closeSheet(){if(sheet&&sheet.type==='welcome'){S.welcomed=true;save()}sheet=null;renderSheet()}
+function sheetHead(title){return '<div class="sheet-head"><h2>'+title+'</h2><button class="ico" data-act="close-sheet" aria-label="Close">'+I.x+'</button></div>'}
+function renderSheet(){
+  if(!sheet){sheetRoot.innerHTML='';return}
+  var h='', t=sheet.type;
+  if(t==='welcome'){
+    h='<div><p class="word">CART3R</p><p class="small">Your people. Your time. Your space.</p></div>'
+     +'<p>This is a test build. The people in it are AI characters, each with a different personality, so you can try friends, groups, chat and the day planner.</p>'
+     +'<form id="f-welcome" class="sec"><div class="field"><label for="w-name">What should your friends call you?</label><input id="w-name" maxlength="24" autocomplete="off" placeholder="Your name"></div>'
+     +'<button class="btn wide" type="submit">Start</button></form>';
+  }else if(t==='profile'){
+    h=sheetHead('You')
+     +'<form id="f-profile" class="sec"><div class="field"><label for="p-name">Your name</label><input id="p-name" maxlength="24" autocomplete="off" value="'+esc(S.me.name)+'" placeholder="Your name"></div><button class="btn wide" type="submit">Save name</button></form>'
+     +'<p class="small">Test build of CART3R. Friends are AI characters. Your chats, friends, groups and schedule are saved on this device only.</p>'
+     +'<button class="btn warn wide" data-act="reset">Start over</button>';
+  }else if(t==='person'){
+    var p=person(sheet.id);if(!p){sheet=null;sheetRoot.innerHTML='';return}
+    var d=dayOf(p), bf=bothFree(S.blocks,d), isF=S.friends.indexOf(p.id)>=0;
+    h='<div class="sheet-head"><div class="profile-head">'+av(p,'l')+'<div><h2>'+esc(p.name)+'<span class="ai">AI</span></h2><p>'+esc(p.tag)+'</p></div></div><button class="ico" data-act="close-sheet" aria-label="Close">'+I.x+'</button></div>'
+     +'<p>'+esc(p.bio)+'</p>'
+     +'<div><p class="label">Today</p>'+barHTML(d,bf)+'<p class="small" style="margin-top:6px">'+esc(dayText(d))+'</p>'
+     +'<p class="small" style="margin-top:4px"><b>'+(bf?'Both free '+hm(bf.s)+'–'+hm(bf.e):'No shared free time today')+'</b></p></div>'
+     +'<div class="actions">'+(isF?'<button class="btn" data-act="msg-person" data-pid="'+p.id+'">Message</button><button class="btn warn" data-act="remove-friend" data-pid="'+p.id+'">Remove friend</button>'
+       :'<button class="btn" data-act="add-friend" data-pid="'+p.id+'">Add friend</button>')+'</div>';
+  }else if(t==='new-person'){
+    h=sheetHead('Make an AI friend')
+     +'<form id="f-person" class="sec"><div class="field"><label for="np-name">Name</label><input id="np-name" maxlength="24" autocomplete="off" required placeholder="Their name"></div>'
+     +'<div class="field"><label for="np-desc">Personality</label><textarea id="np-desc" rows="4" maxlength="400" required placeholder="How do they talk? What are they into? Example: a grumpy pirate who secretly loves knitting."></textarea></div>'
+     +'<div><p class="label" style="margin-bottom:6px">Color</p><div class="chips" id="np-colors">'+TINTS.map(function(c,i){return '<button type="button" class="swatch t-'+c+'" data-act="pick-one" data-val="'+c+'" aria-pressed="'+(i===0)+'" aria-label="'+c+'"></button>'}).join('')+'</div></div>'
+     +'<button class="btn wide" type="submit">Add as friend</button></form>';
+  }else if(t==='new-group'){
+    var fr=S.friends.map(person).filter(Boolean);
+    h=sheetHead('New group');
+    if(!fr.length)h+='<p class="empty">Add a friend first, then you can put them in a group.</p>';
+    else h+='<form id="f-group" class="sec"><div class="field"><label for="ng-name">Group name</label><input id="ng-name" maxlength="32" autocomplete="off" placeholder="Movie night"></div>'
+     +'<div><p class="label" style="margin-bottom:6px">Who is in?</p><div class="chips" id="ng-picks">'+fr.map(function(p){return '<button type="button" class="chip" data-act="pick" data-val="'+p.id+'" aria-pressed="false">'+av(p,'s')+esc(p.name)+'</button>'}).join('')+'</div></div>'
+     +'<p class="small" id="ng-err" hidden>Pick at least one friend.</p><button class="btn wide" type="submit">Create group</button></form>';
+  }else if(t==='group'){
+    var g=group(sheet.id);if(!g){sheet=null;sheetRoot.innerHTML='';return}
+    var all=S.friends.map(person).filter(Boolean);
+    h=sheetHead(esc(g.name))
+     +'<div><p class="label" style="margin-bottom:6px">Members (tap to add or remove)</p><div class="chips">'
+     +(all.length?all.map(function(p){return '<button class="chip" data-act="group-member" data-pid="'+p.id+'" aria-pressed="'+(g.memberIds.indexOf(p.id)>=0)+'">'+av(p,'s')+esc(p.name)+'</button>'}).join(''):'<p class="small">Add friends first.</p>')
+     +'</div></div><button class="btn warn wide" data-act="del-group" data-gid="'+g.id+'">Delete group</button>';
+  }else if(t==='block'){
+    var b=S.blocks.filter(function(x){return x.id===sheet.id})[0];if(!b){sheet=null;sheetRoot.innerHTML='';return}
+    var durs=[30,45,60,90,120,180,240,360,480];if(durs.indexOf(b.dur)<0)durs.push(b.dur);durs.sort(function(a,c){return a-c});
+    h=sheetHead('Edit block')
+     +'<form id="f-block" class="sec"><div class="field"><label for="b-title">Title</label><input id="b-title" maxlength="32" autocomplete="off" value="'+esc(b.title)+'"></div>'
+     +'<div><p class="label" style="margin-bottom:6px">Kind</p><div class="chips" id="b-kind">'+['FREE','BUSY','PLAN'].map(function(k){return '<button type="button" class="chip plain" data-act="pick-one" data-val="'+k+'" aria-pressed="'+(b.kind===k)+'">'+KIND_LABEL[k]+'</button>'}).join('')+'</div></div>'
+     +'<div class="two"><div class="field"><label for="b-start">Starts</label><input id="b-start" type="time" step="300" value="'+hm(b.start)+'"></div>'
+     +'<div class="field"><label for="b-dur">Length</label><select id="b-dur">'+durs.map(function(m){return '<option value="'+m+'"'+(m===b.dur?' selected':'')+'>'+(m<60?m+' min':(m/60)+(m===60?' hour':' hours'))+'</option>'}).join('')+'</select></div></div>'
+     +'<div class="actions"><button class="btn" type="submit" style="flex:1">Save</button><button class="btn warn" type="button" data-act="del-block" data-bid="'+b.id+'">Delete</button></div></form>';
+  }
+  sheetRoot.innerHTML='<div class="veil" data-act="veil"><div class="sheet" role="dialog" aria-modal="true">'+h+'</div></div>';
+  var f=$('.sheet input, .sheet textarea',sheetRoot);
+  if(f&&(t==='welcome'||t==='new-person'||t==='new-group'))try{f.focus({preventScroll:true})}catch(e){}
+}
+function armed(el,label){if(el.dataset.armed)return true;el.dataset.armed='1';el.textContent=label;return false}
+function addFriend(pid){
+  var p=person(pid);if(!p||S.friends.indexOf(pid)>=0)return;
+  S.friends.push(pid);var cid='dm_'+pid;
+  if(!S.convs[cid]||!S.convs[cid].length){S.convs[cid]=[{id:uid(),from:pid,text:p.hello,at:Date.now()}]}
+  save();
+}
+
+/* ---------- actions ---------- */
+var ACT={
+ tab:function(el){S.tab=el.dataset.tab;save();renderMain()},
+ profile:function(){openSheet({type:'profile'})},
+ 'close-sheet':function(){closeSheet()},
+ veil:function(el,e){if(e.target===el)closeSheet()},
+ 'add-block':function(){var b=blk(600,90,'FREE','Free time');S.blocks.push(b);save();stripLeft=Math.max(0,(b.start-45)/60*PXH);renderMain();openSheet({type:'block',id:b.id})},
+ 'edit-block':function(el){if(suppressClick)return;openSheet({type:'block',id:el.dataset.bid})},
+ 'del-block':function(el){S.blocks=S.blocks.filter(function(b){return b.id!==el.dataset.bid});save();closeSheet();renderMain()},
+ 'open-conv':function(el){openConv(el.dataset.cid)},
+ back:function(){open=null;S.tab='chats';save();renderMain()},
+ person:function(el){openSheet({type:'person',id:el.dataset.pid})},
+ 'add-friend':function(el){addFriend(el.dataset.pid);if(sheet)closeSheet();if(open)renderChat();else renderMain()},
+ 'msg-person':function(el){openConv('dm_'+el.dataset.pid)},
+ 'remove-friend':function(el){
+   if(!armed(el,'Tap again to remove'))return;
+   var pid=el.dataset.pid;S.friends=S.friends.filter(function(x){return x!==pid});
+   S.groups.forEach(function(g){g.memberIds=g.memberIds.filter(function(x){return x!==pid})});
+   delete S.convs['dm_'+pid];delete S.read['dm_'+pid];
+   S.custom=S.custom.filter(function(c){return c.id!==pid});
+   if(open==='dm_'+pid)open=null;
+   save();closeSheet();if(open)renderChat();else renderMain()},
+ 'new-person':function(){openSheet({type:'new-person'})},
+ 'new-group':function(){openSheet({type:'new-group'})},
+ pick:function(el){el.setAttribute('aria-pressed',el.getAttribute('aria-pressed')!=='true')},
+ 'pick-one':function(el){Array.prototype.forEach.call(el.parentNode.children,function(c){c.setAttribute('aria-pressed',c===el)})},
+ 'conv-info':function(){if(!open)return;if(open.indexOf('grp_')===0)openSheet({type:'group',id:open.slice(4)});else openSheet({type:'person',id:open.slice(3)})},
+ 'group-member':function(el){
+   var g=group(sheet&&sheet.id);if(!g)return;var pid=el.dataset.pid,i=g.memberIds.indexOf(pid),p=person(pid);
+   if(i>=0)g.memberIds.splice(i,1);else g.memberIds.push(pid);
+   var cid='grp_'+g.id;if(!S.convs[cid])S.convs[cid]=[];
+   S.convs[cid].push({id:uid(),from:'sys',text:(p?p.name:'Someone')+(i>=0?' left the group':' joined the group'),at:Date.now()});
+   save();renderSheet();if(open===cid)renderChat();else if(!open)renderMain()},
+ 'del-group':function(el){
+   if(!armed(el,'Tap again to delete'))return;
+   var gid=el.dataset.gid;S.groups=S.groups.filter(function(g){return g.id!==gid});delete S.convs['grp_'+gid];delete S.read['grp_'+gid];
+   if(open==='grp_'+gid)open=null;S.tab='groups';save();closeSheet();renderMain()},
+ retry:function(){if(open){delete notes[open];paintMessages();respond(open)}},
+ reset:function(el){if(!armed(el,'Tap again to erase everything'))return;try{localStorage.removeItem(KEY)}catch(e){}S=seed();open=null;stripLeft=null;typing={};stream={};notes={};sheet={type:'welcome'};renderMain();renderSheet()}
+};
+document.addEventListener('click',function(e){
+  var el=e.target.closest('[data-act]');if(!el)return;
+  var fn=ACT[el.dataset.act];if(fn)fn(el,e);
+});
+document.addEventListener('submit',function(e){
+  e.preventDefault();
+  var id=e.target.id;
+  if(id==='composer'){sendDraft();var ta=$('#draft');if(ta)ta.focus();return}
+  if(id==='f-welcome'){S.me.name=$('#w-name').value.trim().slice(0,24);S.welcomed=true;save();sheet=null;renderSheet();renderMain();return}
+  if(id==='f-profile'){S.me.name=$('#p-name').value.trim().slice(0,24);save();closeSheet();if(open)renderChat();else renderMain();return}
+  if(id==='f-person'){
+    var name=$('#np-name').value.trim().slice(0,24), desc=$('#np-desc').value.trim().slice(0,400);if(!name||!desc)return;
+    var col=$('#np-colors [aria-pressed="true"]'), pid='c_'+uid();
+    S.custom.push({id:pid,name:name,color:col?col.dataset.val:'lav',tag:desc.length>44?desc.slice(0,42).trim()+'…':desc,bio:desc,persona:desc,
+      hello:'Hey '+myName()+'! '+name+' here. Glad you added me.',lines:GENERIC_LINES,day:[[600,120,'FREE','Free'],[840,180,'BUSY','Busy'],[1080,120,'FREE','Free']]});
+    addFriend(pid);openConv('dm_'+pid);return}
+  if(id==='f-group'){
+    var picks=Array.prototype.map.call(sheetRoot.querySelectorAll('#ng-picks [aria-pressed="true"]'),function(b){return b.dataset.val});
+    if(!picks.length){$('#ng-err').hidden=false;return}
+    var g={id:uid(),name:$('#ng-name').value.trim().slice(0,32)||'New group',memberIds:picks}, first=person(picks[0]), n=Date.now();
+    S.groups.push(g);
+    S.convs['grp_'+g.id]=[{id:uid(),from:'sys',text:'You created “'+g.name+'”',at:n},{id:uid(),from:first.id,text:first.groupHello||('Hi everyone! '+first.name+' here.'),at:n+1}];
+    save();openConv('grp_'+g.id);return}
+  if(id==='f-block'){
+    var b=S.blocks.filter(function(x){return x.id===(sheet&&sheet.id)})[0];if(!b)return;
+    var k=$('#b-kind [aria-pressed="true"]'), tm=String($('#b-start').value||'').split(':'), dur=parseInt($('#b-dur').value,10)||b.dur;
+    b.title=$('#b-title').value.trim().slice(0,32)||'Block';b.kind=k?k.dataset.val:b.kind;b.dur=dur;
+    if(tm.length>=2&&!isNaN(+tm[0])&&!isNaN(+tm[1]))b.start=Math.max(0,Math.min(1440-dur,(+tm[0])*60+(+tm[1])));
+    stripLeft=Math.max(0,(b.start-45)/60*PXH);save();closeSheet();renderMain();return}
+});
+
+/* ---------- start ---------- */
+renderMain();
+if(!S.welcomed)openSheet({type:'welcome'});
+})();
+</script>
