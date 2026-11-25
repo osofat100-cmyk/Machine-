@@ -38,8 +38,11 @@ def main():
         got = load(tag)
         if not got:
             continue
-        ax.plot(got[0], got[1], color=col, lw=lw, label=name)
-        ends.append([got[1][-1], f"{name.split(' (')[0]}", col, got[0][-1]])
+        stopped = "stopped" in name
+        ax.plot(got[0], got[1], color=col, lw=lw,
+                label=(f"{name.replace(')', '')} at {got[0][-1]:%d %b %H:%M}: ${got[1][-1]:,.0f})" if stopped else name))
+        if not stopped:
+            ends.append([got[1][-1], f"{name.split(' (')[0]}", col, got[0][-1]])
         dp = os.path.join(HERE, f"decider_{tag}.csv")
         if tag == "hourly_3m_ultra" and os.path.exists(dp):
             vt = dict(zip(got[0], got[1]))
