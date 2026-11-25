@@ -158,8 +158,9 @@ def chat(model, system, user, max_tokens, extra=None, stream=False, temperature=
     if stream:
         body["stream"] = True
     hdr = {"Authorization": "Bearer proxy-injected", "Content-Type": "application/json"}
-    last = None
-    for k in range(1, 9):
+    last, k, limited = None, 0, 0
+    while k < 8:
+        k += 1
         CT.throttle()
         try:
             r = urllib.request.urlopen(urllib.request.Request(URL, json.dumps(body).encode(), hdr), timeout=900)
@@ -179,7 +180,12 @@ def chat(model, system, user, max_tokens, extra=None, stream=False, temperature=
             body["max_tokens"] = max(max_tokens, 12000)
         except urllib.error.HTTPError as e:
             last = e
-            time.sleep(min(120, float(e.headers.get("retry-after") or 15)) if e.code == 429 else min(60, 2 ** k))
+            if e.code == 429 and limited < 600:              # rate-limited: try again within seconds, not a fixed 15
+                limited += 1
+                k -= 1                                       # a rate-limit wait does not use up a try
+                time.sleep(float(e.headers.get("retry-after") or 0) or (1.5 + (limited % 4) * 0.7))
+            else:
+                time.sleep(min(60, 2 ** k))
         except (urllib.error.URLError, TimeoutError, ConnectionError, json.JSONDecodeError, KeyError, OSError) as e:
             last = e
             time.sleep(min(60, 2 ** k))
