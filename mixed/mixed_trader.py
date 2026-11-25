@@ -53,12 +53,12 @@ else:
 WARMUP = HOUR + 1
 AVG_DAYS = int(os.environ.get("AVG_DAYS", "1"))   # buy-low reference: the average price over this many days
 AVG_N = AVG_DAYS * DAY                            # in steps
-BLOCK = {x for x in os.environ.get("BLOCK", "").split(",") if x}     # symbols with bad data: hidden and not buyable
+BAD_SYMBOLS = {x for x in os.environ.get("BLOCK", "").split(",") if x}   # symbols with bad data: hidden, not buyable
 BLOCK_FROM = os.environ.get("BLOCK_FROM", "")                        # ... from this hour on (earlier history unchanged)
 
 
 def blocked(sym, t):
-    return sym in BLOCK and t >= BLOCK_FROM
+    return sym in BAD_SYMBOLS and t >= BLOCK_FROM
 
 
 AVG_LABEL = "24-hour" if AVG_DAYS == 1 else ("7-day (weekly)" if AVG_DAYS == 7 else f"{AVG_DAYS}-day")

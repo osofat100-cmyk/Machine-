@@ -31,6 +31,7 @@ HORIZONS = [24, 72, 168]              # what happens over the next 1, 3, 7 days
 SPLIT = "2026-10-01 00:00"
 COST = 0.001                          # 0.05% to buy + 0.05% to sell
 EDGES = [-np.inf, -15, -10, -5, -2, 0, 2, 5, 10, np.inf]
+EXCLUDE = ["DHN-USD"]                 # bad data: jumps from $3.33 to $32 in one hour on 2 Oct, then to about $500
 
 
 def collect():
@@ -89,7 +90,7 @@ def pooled(d, fwd, idx):
 
 
 def main():
-    px = collect()
+    px = collect().drop(columns=EXCLUDE, errors="ignore")
     T = len(px)
     split = int(np.searchsorted(px.index.values, SPLIT))
     print(f"{T} hours, {px.shape[1]} coins, {px.index[0]} .. {px.index[-1]}; first half ends at row {split}")
@@ -134,17 +135,19 @@ def main():
         rel = y.sub(y.mean(axis=1), axis=0)
         rows = []
         for lo, hi, lab in zip(EDGES, EDGES[1:], labels):
-            m = (d2 > lo) & (d2 <= hi) & np.isfinite(y)
-            cnt = int(m.values.sum())
+            m = ((d2 > lo) & (d2 <= hi) & np.isfinite(y)).values
+            cnt = int(m.sum())
+            yy, rr = y.values[m], rel.values[m]
             rows.append({"bucket": lab, "count": cnt,
-                         "mean_next_pct": float(y.where(m).stack().mean()) if cnt else None,
-                         "mean_vs_average_coin_pct": float(rel.where(m).stack().mean()) if cnt else None,
-                         "share_up_pct": float(100 * (y.where(m).stack() > 0).mean()) if cnt else None})
+                         "mean_next_pct": float(yy.mean()) if cnt else None,
+                         "median_next_pct": float(np.median(yy)) if cnt else None,
+                         "mean_vs_average_coin_pct": float(rr.mean()) if cnt else None,
+                         "share_up_pct": float(100 * (yy > 0).mean()) if cnt else None})
         out["buckets_second_half_weekly_avg"][h] = rows
         print(f"after the next {h} hours (second half, gap vs weekly average):")
         for r in rows:
             if r["count"]:
-                print(f"   {r['bucket']:12s} n={r['count']:6d}  mean {r['mean_next_pct']:+6.2f}%  vs average coin "
+                print(f"   {r['bucket']:12s} n={r['count']:6d}  mean {r['mean_next_pct']:+6.2f}%  median {r['median_next_pct']:+6.2f}%  vs average coin "
                       f"{r['mean_vs_average_coin_pct']:+6.2f}%  up {r['share_up_pct']:.0f}% of the time")
     # time of day and day of week: the average coin's hourly move
     m = np.log(px / px.shift(1)).mean(axis=1).dropna() * 100
