@@ -51,6 +51,9 @@ else:
     U, HOUR, BLOCK, DAY, NOTES_N = "minute", 60, 10, 1440, 60    # recent window = last hour, in six 10-minute steps
     RECENT, BLOCK_LABEL, SERVER_FILE = "last hour", "10-minute", "mixed_server.py"
 WARMUP = HOUR + 1
+AVG_DAYS = int(os.environ.get("AVG_DAYS", "1"))   # buy-low reference: the average price over this many days
+AVG_N = AVG_DAYS * DAY                            # in steps
+AVG_LABEL = "24-hour" if AVG_DAYS == 1 else ("7-day (weekly)" if AVG_DAYS == 7 else f"{AVG_DAYS}-day")
 SLOTS = 10
 START_AT = os.environ.get("START_AT", "")        # e.g. "2026-11-22 00:00": the AIs see everything before, trade from then
 
@@ -62,7 +65,7 @@ RULES = (
     f"at the next {U}'s opening price. Every buy costs 0.05% and every sell 0.05%.\n"
     "THE RULES (second golden-rule version):\n"
     "1. GOLDEN RULE - BUY LOW, SELL ON A SPIKE, NEVER PANIC:\n"
-    "   a. BUY LOW ONLY: buy a coin or stock only when it is in a dip - its price is BELOW its own 24-hour average "
+    "   a. BUY LOW ONLY: buy a coin or stock only when it is in a dip - its price is BELOW its own " + AVG_LABEL + " average "
     "price (the bigger the dip, the better). Never buy something that is trading high or above its average; the "
     "system refuses such buys.\n"
     "   b. SELL ON A SPIKE: sell a holding when it spikes clearly above what you paid plus costs (its break-even).\n"
@@ -209,10 +212,10 @@ class View:
         if st["time"].endswith("00:00"):
             self.snaps.append((st["time"][:10], {k: v for k, v in st["close"].items()}))
         self.hist.append(st)
-        self.hist = self.hist[-(DAY + HOUR):]
+        self.hist = self.hist[-max(DAY + HOUR, AVG_N + 1):]
 
     def avg24(self, s):
-        xs = [h["close"][s] for h in self.hist[-DAY:] if s in h["close"]]
+        xs = [h["close"][s] for h in self.hist[-AVG_N:] if s in h["close"]]
         return sum(xs) / len(xs) if xs else None
 
     def lines(self, acc, entries, highs, n_move):
@@ -279,7 +282,7 @@ class View:
                 spy = f", SPY {pct(b['SPY'], a['SPY']):+.2f}%" if "SPY" in a and "SPY" in b and a["SPY"] != b["SPY"] else ""
                 L.append(f"- {d0} to {d1}: Bitcoin {pct(b[ 'BTC-USD'], a['BTC-USD']):+.2f}%, average coin {avg:+.2f}%{spy}")
         avg = {s: self.avg24(s) for s in coins + stocks}
-        L.append(f"EVERY COIN - price, vs its 24-hour average % (negative = in a dip, can buy), last {U} %, {RECENT} %, "
+        L.append(f"EVERY COIN - price, vs its {AVG_LABEL} average % (negative = in a dip, can buy), last {U} %, {RECENT} %, "
                  f"24 hours %, since {self.first_t[5:10]} %, then the "
                  f"{RECENT} in six {BLOCK_LABEL} steps (↑ rising, ↓ falling, → flat); grouped by size:")
         for g in sorted({self.group[s] for s in coins}):
@@ -289,7 +292,7 @@ class View:
                 f"{pct(c[s], self.first_c.get(s, c[s])):+.1f} {trend(s)}"
                 for s in coins if self.group[s] == g))
         if self.prev_close:
-            L.append(f"EVERY STOCK - price, vs its 24-hour average % (negative = in a dip, can buy), % since the last close, "
+            L.append(f"EVERY STOCK - price, vs its {AVG_LABEL} average % (negative = in a dip, can buy), % since the last close, "
                      f"% since the first close in the data" + (
                 f", last {U} %, {RECENT} %, then the {RECENT} in six {BLOCK_LABEL} steps" if open_ else
                 " (market closed: prices are the last session's)") + "; grouped by sector:")
@@ -313,7 +316,7 @@ class View:
                             + ("above break-even (CAN SELL)" if ok else "below break-even (HOLD)") if e else "")
                          + (f", {pct(c[s], highs[s]):+.2f}% from its high since bought" if s in highs else "")
                          + f", {RECENT} {pct(c[s], hr['close'].get(s, c[s])):+.2f}%"
-                         + (f", {pct(c[s], self.avg24(s)):+.2f}% vs its 24-hour average" if self.avg24(s) else ""))
+                         + (f", {pct(c[s], self.avg24(s)):+.2f}% vs its {AVG_LABEL} average" if self.avg24(s) else ""))
         else:
             L.append("HOLDINGS: none, all cash.")
         return L
@@ -491,7 +494,7 @@ def main():
                     extra = chat(DECIDER, D_SYSTEM, prompt + f"\n\nYOUR ANSWER WAS:\n{text}\n\nThat leaves {empty} empty "
                                  f"slot(s) and cash uninvested. All money must stay invested. You already own or are "
                                  f"buying: {', '.join(sorted(after)) or 'nothing'}. Name exactly {empty} other {allowed} "
-                                 f"to BUY now from the symbols shown - only ones BELOW their 24-hour average (in a dip). Answer with one line: "
+                                 f"to BUY now from the symbols shown - only ones BELOW their {AVG_LABEL} average (in a dip). Answer with one line: "
                                  f"ACTIONS: BUY X; BUY Y; ...",
                                  4000, D_EXTRA, stream=True)
                     acts += [a for a in parse_actions(extra if "ACTIONS" in extra.upper() else "ACTIONS: " + extra,

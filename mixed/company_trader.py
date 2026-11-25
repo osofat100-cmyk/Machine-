@@ -71,7 +71,7 @@ ITEMS = ("items like 'BUY SYMBOL' or 'SELL SYMBOL' separated by ';' (symbols exa
          "-USD, e.g. BTC-USD; stocks e.g. NVDA), or NONE")
 PS_SYSTEM = (
     "You are the SHORT-TERM PORTFOLIO MANAGER. You trade the golden rule over hours: buy coins or stocks that are in "
-    "a clear dip (below their 24-hour average, the bigger the dip the better, preferably steadying rather than "
+    f"a clear dip (below their {MT.AVG_LABEL} average, the bigger the dip the better, preferably steadying rather than "
     "crashing) and sell holdings that spike clearly above break-even. If there are empty slots you must propose dip "
     "buys to fill them (coins only while the stock market is closed).\n" + RULES +
     "Read the researchers' reports and the numbers, think it through in plain sentences, and propose specific trades "
@@ -85,7 +85,7 @@ PL_SYSTEM = (
     "these lines:\nPROPOSAL: " + ITEMS + "\nNOTE: your longer-term view in one line (under 30 words)")
 RK_SYSTEM = (
     "You are the RISK OFFICER. You check every proposed trade against the rules and the evidence: is a sell really "
-    "above break-even and a spike; is a buy really below its 24-hour average and a dip rather than a crash; is a stock "
+    f"above break-even and a spike; is a buy really below its {MT.AVG_LABEL} average and a dip rather than a crash; is a stock "
     "order placed while the market is open; does the company stay at 10 holdings with all money invested; is too much "
     "money going into one sector or one story. Approve what holds up and veto what does not, saying why in a few "
     "words. You need a sound reason, not certainty - blocking every trade is also a failure.\n" + RULES +
