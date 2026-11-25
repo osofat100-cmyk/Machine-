@@ -26,7 +26,7 @@ def main():
     t_end = wk[-1]["time"]
     old = [r for r in old if r["time"] <= t_end]                      # same dates only
     series = {
-        "Two Ultras, weekly-average rule (now running)": (wk, "value", "#2a78d6", 2.4),
+        "Two Ultras, weekly-average rule (finished)": (wk, "value", "#2a78d6", 2.4),
         "Two Ultras, 24-hour-average rule (earlier run)": (old, "value", "#eb6834", 1.8),
         "Holding Bitcoin": (wk, "btc_hold", INK, 1.6),
         "Holding SPY": (wk, "spy_hold", "#898781", 1.6)}
