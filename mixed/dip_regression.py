@@ -6,7 +6,8 @@ stepping through mixed/hourly_server.py (the one program that opens the sealed d
 
 The model, for coin i at hour t:
     d(n)  = ln( price / average price over the last n hours )          "how far below its n-hour average" (dip < 0)
-    r(h)  = ln( price h hours later / price now )                       "what it did next"
+    r(h)  = ln( price h+1 hours later / price 1 hour later )            "what it did next", measured from the NEXT
+            hour's price (when you could actually buy), so noise in this hour's price cannot fake a bounce
     r(h)  = a + b * d(n) + error                                        b < 0 means: the bigger the dip, the bigger the rise
 Fitted two ways: (1) across coins at the same moment (does the coin that dipped MORE than the others bounce more than
 the others? - the Fama-MacBeth method, non-overlapping periods), and (2) pooled raw (includes whole-market moves).
@@ -96,7 +97,20 @@ def main():
     print(f"{T} hours, {px.shape[1]} coins, {px.index[0]} .. {px.index[-1]}; first half ends at row {split}")
     out = {"hours": T, "coins": int(px.shape[1]), "split": SPLIT, "table": [], "half_life_hours": {}}
     dev = {n: np.log(px / px.rolling(n, min_periods=n).mean()) for n in WINDOWS}
-    fw = {h: np.log(px.shift(-h) / px) for h in HORIZONS}
+    fw = {h: np.log(px.shift(-(h + 1)) / px.shift(-1)) for h in HORIZONS}     # from the next hour's price
+    # the gap from a moving average closes by itself even for pure random prices (the average catches up), so the
+    # half-life is compared with the same prices after shuffling each coin's hourly moves (no pattern left)
+    rng = np.random.default_rng(0)
+    lr = np.log(px.iloc[:split] / px.iloc[:split].shift(1)).iloc[1:].fillna(0.0).values
+    shuffled = np.exp(np.cumsum(np.column_stack([rng.permutation(lr[:, j]) for j in range(lr.shape[1])]), axis=0))
+    rand = pd.DataFrame(shuffled, columns=px.columns)
+    out["half_life_hours_shuffled"] = {}
+    for n in WINDOWS:
+        g = np.log(rand / rand.rolling(n, min_periods=n).mean()).values
+        x, dx = g[:-1], g[1:] - g[:-1]
+        ok = np.isfinite(x) & np.isfinite(dx)
+        b = (x[ok] * dx[ok]).sum() / (x[ok] ** 2).sum()
+        out["half_life_hours_shuffled"][n] = float(-math.log(2) / math.log(1 + b)) if -1 < b < 0 else None
     # speed of mean reversion: change in the gap next hour = a + b * gap  ->  half-life = -ln2 / ln(1 + b)
     for n in WINDOWS:
         x = dev[n].iloc[:split].values[:-1]
@@ -105,11 +119,12 @@ def main():
         b = (x[ok] * dx[ok]).sum() / (x[ok] ** 2).sum()
         out["half_life_hours"][n] = float(-math.log(2) / math.log(1 + b)) if -1 < b < 0 else None
     print("half-life of a gap from its average (hours):", {n: (round(v, 1) if v else None) for n, v in out["half_life_hours"].items()})
+    print("the same after shuffling the moves (pure chance):", {n: (round(v, 1) if v else None) for n, v in out["half_life_hours_shuffled"].items()})
     print(f"{'avg':>5} {'next':>5} | first half: slope   t  (n) | second half: slope   t  (n) | pooled raw slope first / second")
     for n in WINDOWS:
         for h in HORIZONS:
-            i1 = list(range(n, split - h, h))
-            i2 = list(range(split, T - h, h))
+            i1 = list(range(n, split - h - 1, h))
+            i2 = list(range(split, T - h - 1, h))
             b1, t1, k1 = fama_macbeth(dev[n], fw[h], i1)
             b2, t2, k2 = fama_macbeth(dev[n], fw[h], i2)
             a1p, b1p, r1 = pooled(dev[n], fw[h], i1)
