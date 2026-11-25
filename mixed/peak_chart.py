@@ -16,7 +16,7 @@ INK, INK2, GRID, SURF, BLUE, RED = "#0b0b0b", "#52514e", "#e4e3df", "#fcfcfb", "
 
 
 def main():
-    rows = [r for r in csv.DictReader(open(os.path.join(HERE, "watcher_hourly_3m_ultra.csv"))) if r.get("value")]
+    rows = [r for r in csv.DictReader(open(os.path.join(HERE, os.environ.get("SRC", "watcher_hourly_3m_ultra.csv")))) if r.get("value")]
     t = [datetime.strptime(r["time"], "%Y-%m-%d %H:%M") for r in rows]
     v = [float(r["value"]) for r in rows]
     pk, peaks = 0.0, []
@@ -28,15 +28,15 @@ def main():
     a1.plot(t, v, color=BLUE, lw=2.2, label="Two Ultras: money")
     a1.plot(t, peaks, color=INK, lw=1.4, ls=(0, (4, 3)), label="Its highest point so far (peak)")
     i = v.index(max(v))
-    a1.annotate(f"peak ${max(v):,.0f}\n{t[i]:%d %b %H:%M}", (t[i], v[i]), xytext=(0, 10), textcoords="offset points",
-                ha="center", fontsize=9, color=INK, weight="bold")
+    a1.annotate(f"peak ${max(v):,.0f}\n{t[i]:%d %b %H:%M}", (t[i], v[i]), xytext=(0, -34), textcoords="offset points",
+                ha="center", fontsize=9, color=INK, weight="bold", arrowprops=dict(arrowstyle="-", color=INK2, lw=0.8))
     a1.annotate(f"now ${v[-1]:,.0f}", (t[-1], v[-1]), xytext=(8, 0), textcoords="offset points", fontsize=9,
                 color=BLUE, weight="bold", va="center")
     a1.axhline(1000, color=INK2, lw=1, alpha=0.5)
     a1.set_ylabel("Money ($, started at $1,000)", color=INK2, fontsize=9)
-    a1.set_title(f"Two Ultras against their own peak, 25 Aug to {t[-1]:%d %b %H:%M}", loc="left", fontsize=13,
+    a1.set_title(os.environ.get("TITLE", "Two Ultras against their own peak") + f", 25 Aug to {t[-1]:%d %b %H:%M}", loc="left", fontsize=13,
                  color=INK, weight="bold")
-    a1.legend(loc="upper left", fontsize=9, frameon=False)
+    a1.legend(loc="lower left", fontsize=9, frameon=False)
     a2.fill_between(t, dd, 0, color=RED, alpha=0.35, lw=0)
     a2.plot(t, dd, color=RED, lw=1.2)
     a2.annotate(f"{dd[-1]:+.1f}% from peak", (t[-1], dd[-1]), xytext=(8, 0), textcoords="offset points", fontsize=9,
@@ -56,7 +56,7 @@ def main():
             ax.spines[s].set_color(GRID)
         ax.tick_params(colors=INK2, labelsize=8)
     fig.tight_layout()
-    fig.savefig(os.path.join(HERE, "peak_chart.png"), dpi=110, facecolor=SURF)
+    fig.savefig(os.path.join(HERE, os.environ.get("OUT", "peak_chart.png")), dpi=110, facecolor=SURF)
 
 
 if __name__ == "__main__":
