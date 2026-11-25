@@ -53,6 +53,14 @@ else:
 WARMUP = HOUR + 1
 AVG_DAYS = int(os.environ.get("AVG_DAYS", "1"))   # buy-low reference: the average price over this many days
 AVG_N = AVG_DAYS * DAY                            # in steps
+BLOCK = {x for x in os.environ.get("BLOCK", "").split(",") if x}     # symbols with bad data: hidden and not buyable
+BLOCK_FROM = os.environ.get("BLOCK_FROM", "")                        # ... from this hour on (earlier history unchanged)
+
+
+def blocked(sym, t):
+    return sym in BLOCK and t >= BLOCK_FROM
+
+
 AVG_LABEL = "24-hour" if AVG_DAYS == 1 else ("7-day (weekly)" if AVG_DAYS == 7 else f"{AVG_DAYS}-day")
 SLOTS = 10
 START_AT = os.environ.get("START_AT", "")        # e.g. "2026-11-22 00:00": the AIs see everything before, trade from then
@@ -230,8 +238,8 @@ class View:
         hr = self.hist[-HOUR] if len(self.hist) >= HOUR else self.hist[0]
         day = self.hist[-DAY] if len(self.hist) >= DAY else self.hist[0]
         mins = self.hist[-2] if len(self.hist) >= 2 else st
-        coins = [s for s, k in self.kind.items() if k == "crypto" and s in c]
-        stocks = [s for s, k in self.kind.items() if k == "stock" and s in c]
+        coins = [s for s, k in self.kind.items() if k == "crypto" and s in c and not blocked(s, st["time"])]
+        stocks = [s for s, k in self.kind.items() if k == "stock" and s in c and not blocked(s, st["time"])]
         open_ = st["stock_market_open"]
         L = [f"Time: {st['known_at']} UTC. US stock market: {'OPEN' if open_ else 'CLOSED (stock orders refused)'}."]
         b = "BTC-USD"
@@ -489,7 +497,8 @@ def main():
                 acts = parse_actions(text, view.kind)
                 forced = ""
                 tradable = lambda a: (view.kind.get(a["symbol"]) == "crypto" or st["stock_market_open"]) and (
-                    a["action"] == "SELL" or (view.avg24(a["symbol"]) and st["close"][a["symbol"]] < view.avg24(a["symbol"])))
+                    a["action"] == "SELL" or (view.avg24(a["symbol"]) and st["close"][a["symbol"]] < view.avg24(a["symbol"])
+                                              and not blocked(a["symbol"], st["time"])))
                 for _ in range(2):                           # keep all money invested: fill empty slots
                     after = (set(held) - {a["symbol"] for a in acts if a["action"] == "SELL" and tradable(a)}) | \
                         {a["symbol"] for a in acts if a["action"] == "BUY" and tradable(a)}
@@ -525,6 +534,7 @@ def main():
                 bad = bad or (view.kind.get(s) == "stock" and not st["stock_market_open"])
                 bad = bad or (a["action"] == "SELL" and s in entries and st["close"][s] * 0.9995 < entries[s] * 1.0005)
                 bad = bad or (a["action"] == "BUY" and (view.avg24(s) is None or st["close"][s] >= view.avg24(s)))
+                bad = bad or (a["action"] == "BUY" and blocked(s, st["time"]))
                 if not bad:
                     ok.append(dict(a, split=True) if a["action"] == "BUY" else a)
                     seen.add(s)

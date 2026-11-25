@@ -379,6 +379,7 @@ def main():
                     bad = bad or (view.kind.get(s) == "stock" and not st["stock_market_open"])
                     bad = bad or (a["action"] == "SELL" and s in entries and st["close"][s] * 0.9995 < entries[s] * 1.0005)
                     bad = bad or (a["action"] == "BUY" and (view.avg24(s) is None or st["close"][s] >= view.avg24(s)))
+                    bad = bad or (a["action"] == "BUY" and MT.blocked(s, st["time"]))
                     if not bad:
                         ok.append(dict(a, split=True) if a["action"] == "BUY" else a)
                         seen2.add(s)
