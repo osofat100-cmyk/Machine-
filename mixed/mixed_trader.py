@@ -88,7 +88,14 @@ W_SYSTEM = (
     "important has happened that it has not seen yet. Never wake it again for the same situation it already declined.\n"
     "End with one line: 'WAKE: YES - <short reason>' or 'WAKE: NO'.")
 
-D_SYSTEM = (
+SKEPTIC = os.environ.get("SKEPTIC") == "1"
+if SKEPTIC:
+    W_SYSTEM = W_SYSTEM.replace("End with one line:", "When you wake it, you are the PROPOSER: write 'PROPOSAL:' with the exact "
+                                "trade(s) you suggest and the evidence from the numbers (break-even, spike or dip size, "
+                                "the hourly arrows, news). Your partner is a sceptic and will only act on a case that holds "
+                                "up. End with one line:")
+
+D_SYSTEM_PLAIN = (
     "You are the DECIDER in a two-AI trading team. You sleep until the WATCHER (a fast AI that looks at every "
     f"{U}) wakes you; then you see the full picture and decide.\n" + RULES +
     "Think freely and creatively: write in plain sentences what you see going on, what matters and why, and what "
@@ -97,6 +104,21 @@ D_SYSTEM = (
     "NOTE: a note to yourself for next time (under 40 words)\n"
     "ACTIONS: 'BUY SYMBOL' or 'SELL SYMBOL' items separated by ';' (use the symbols exactly as shown, e.g. "
     "BTC-USD or NVDA), or NONE")
+
+D_SYSTEM_SKEPTIC = (
+    "You are the SCEPTIC in a two-AI trading team, and the only one who can trade. The WATCHER (a fast AI that looks at "
+    f"every {U}) wakes you with a PROPOSAL and its evidence. Your job is to be the logical debunker: check its case "
+    "against the actual numbers and the rules, and ask what could go wrong - is the spike real or still climbing, is "
+    "the dip a dip or a crash, is there news behind it, is the gain really bigger than the costs? Do not act unless "
+    "the proposal has viable proof and makes sense. If it does, agree and trade. If not, wait or do nothing. If one "
+    "thing is unclear you may ask the watcher a question instead of deciding (at most two questions in total).\n" + RULES +
+    "Write in plain sentences what you checked and why. End with exactly these lines:\n"
+    "VERDICT: AGREE, WAIT or QUESTION\n"
+    "QUESTION: <only if VERDICT is QUESTION: one short question for the watcher>\n"
+    "NOTE: a note to yourself for next time (under 40 words)\n"
+    "ACTIONS: 'BUY SYMBOL' or 'SELL SYMBOL' items separated by ';' (use the symbols exactly as shown, e.g. "
+    "BTC-USD or NVDA), or NONE")
+D_SYSTEM = D_SYSTEM_SKEPTIC if SKEPTIC else D_SYSTEM_PLAIN
 
 
 class Server:
@@ -335,6 +357,7 @@ def main():
     view = View()
     entries, highs, pending, orders = {}, {}, [], {}
     w_notes, d_notes, news_since_wake, recent_news = [], [], [], []
+    w_prompt = ""
     i_w, n_wake, t0, btc_sent, spy_sent, last_dec = 0, 0, time.time(), False, False, "none yet"
     with Server() as srv:
         while True:
@@ -372,6 +395,7 @@ def main():
             accs = out["accounts"]
             # ---- the watcher, every minute ----
             base = view.lines(acc, entries, highs, 5)
+            w_prompt = ""
             if i_w < len(w_saved):
                 r = w_saved[i_w]
                 assert r["time"] == st["time"], f"saved watcher answers out of step at {st['time']}"
@@ -393,6 +417,7 @@ def main():
                     L.append(f"This is the first {U} of the test: the account is all cash, so the decider must invest it."
                              + (" Everything above (the days so far, 24-hour and since-start moves, headlines) is "
                                 "what happened before you started." if START_AT else ""))
+                w_prompt = "\n".join(L)
                 t1 = time.time()
                 wtext = chat(WATCHER, W_SYSTEM, "\n".join(L), 400, {"chat_template_kwargs": {"enable_thinking": False}},
                              temperature=0)
@@ -421,6 +446,8 @@ def main():
                 L = view.lines(acc, entries, highs, 10)
                 L.append("WHY THE WATCHER WOKE YOU: " + (re.search(r"WAKE\s*:\s*YES\s*[-:]?\s*(.*)", wtext, re.I | re.S)
                                                          or re.search(r"(.*)", "")).group(1)[:300])
+                if SKEPTIC:
+                    L.append("THE WATCHER'S FULL MESSAGE (its proposal and evidence): " + wtext.replace("\n", " / ")[:1200])
                 L.append("THE WATCHER'S NOTES SINCE YOU LAST DECIDED (newest last):")
                 L += [f"- {t}: {x}" for t, x in w_notes[-10:]]
                 L.append("HEADLINES SINCE YOU LAST DECIDED (newest last, with UTC time):")
@@ -433,6 +460,23 @@ def main():
                 prompt = "\n".join(L)
                 t1 = time.time()
                 text = chat(DECIDER, D_SYSTEM, prompt, 8000, D_EXTRA, stream=True)
+                dialog = ""
+                for q in range(2 if SKEPTIC else 0):        # the sceptic may question the watcher (two rounds at most)
+                    verdict = re.search(r"VERDICT\s*:\s*(\w+)", text, re.I)
+                    question = re.search(r"QUESTION\s*:\s*(.+)", text, re.I)
+                    if not (verdict and verdict.group(1).upper() == "QUESTION" and question):
+                        break
+                    question = question.group(1).strip()[:400]
+                    answer = chat(WATCHER, W_SYSTEM, (w_prompt or "\n".join(base)) + f"\n\nYOUR PROPOSAL WAS: {wtext}\n\n"
+                                  f"THE SCEPTIC ASKS YOU: {question}\nAnswer with evidence from the numbers above in 1 to 4 "
+                                  f"sentences. Do not write a WAKE line.", 400,
+                                  {"chat_template_kwargs": {"enable_thinking": False}}, temperature=0)
+                    dialog += f"\nSCEPTIC ASKED: {question}\nWATCHER ANSWERED: {answer.strip()}"
+                    text = chat(DECIDER, D_SYSTEM, prompt + f"\n\nYOUR QUESTIONS AND THE WATCHER'S ANSWERS:{dialog}\n\n"
+                                f"Now decide: VERDICT: AGREE or WAIT" + (" (or one last QUESTION)" if q == 0 else "") + ".",
+                                8000, D_EXTRA, stream=True)
+                if dialog:
+                    text = "[DIALOGUE]" + dialog + "\n[FINAL]\n" + text
                 acts = parse_actions(text, view.kind)
                 forced = ""
                 tradable = lambda a: (view.kind.get(a["symbol"]) == "crypto" or st["stock_market_open"]) and (
