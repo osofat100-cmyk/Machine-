@@ -60,9 +60,13 @@ RULES = (
     "like. Each BUY splits the remaining cash evenly over the empty slots; SELL sells the whole holding. Orders fill "
     f"at the next {U}'s opening price. Every buy costs 0.05% and every sell 0.05%.\n"
     "THE RULES (second golden-rule version):\n"
-    "1. GOLDEN RULE: never sell a holding for less than you paid plus costs (its break-even). Below break-even you "
-    "hold and wait for it to recover - the system refuses such sells. Above break-even you may sell to take the "
-    "profit and buy something that has fallen more than average, then wait for that one to recover.\n"
+    "1. GOLDEN RULE - BUY LOW, SELL ON A SPIKE, NEVER PANIC:\n"
+    "   a. BUY LOW ONLY: buy a coin or stock only when it is in a dip - its price is BELOW its own 24-hour average "
+    "price (the bigger the dip, the better). Never buy something that is trading high or above its average; the "
+    "system refuses such buys.\n"
+    "   b. SELL ON A SPIKE: sell a holding when it spikes clearly above what you paid plus costs (its break-even).\n"
+    "   c. NEVER PANIC: if a holding stays low or falls even lower after you bought it, hold it and wait for it to "
+    "recover. Never sell below break-even - the system refuses such sells.\n"
     "2. SPREAD THE RISK: the money is split over 10 holdings, so one that never recovers only hurts its slice.\n"
     "3. TRADE RARELY: keep all the money invested; every sell plus buy costs 0.10%, so only take a profit when the "
     "gain is clearly bigger than that.\n"
@@ -184,6 +188,10 @@ class View:
         self.hist.append(st)
         self.hist = self.hist[-(DAY + HOUR):]
 
+    def avg24(self, s):
+        xs = [h["close"][s] for h in self.hist[-DAY:] if s in h["close"]]
+        return sum(xs) / len(xs) if xs else None
+
     def lines(self, acc, entries, highs, n_move):
         st = self.hist[-1]
         c = st["close"]
@@ -247,21 +255,24 @@ class View:
                 avg = sum(pct(b[x], a[x]) for x in cs if x in a and x in b) / len(cs)
                 spy = f", SPY {pct(b['SPY'], a['SPY']):+.2f}%" if "SPY" in a and "SPY" in b and a["SPY"] != b["SPY"] else ""
                 L.append(f"- {d0} to {d1}: Bitcoin {pct(b[ 'BTC-USD'], a['BTC-USD']):+.2f}%, average coin {avg:+.2f}%{spy}")
-        L.append(f"EVERY COIN - price, last {U} %, {RECENT} %, 24 hours %, since {self.first_t[5:10]} %, then the "
+        avg = {s: self.avg24(s) for s in coins + stocks}
+        L.append(f"EVERY COIN - price, vs its 24-hour average % (negative = in a dip, can buy), last {U} %, {RECENT} %, "
+                 f"24 hours %, since {self.first_t[5:10]} %, then the "
                  f"{RECENT} in six {BLOCK_LABEL} steps (↑ rising, ↓ falling, → flat); grouped by size:")
         for g in sorted({self.group[s] for s in coins}):
             L.append(f"  {g}: " + "; ".join(
-                f"{s.removesuffix('-USD')} {c[s]:.5g} {pct(c[s], mins['close'].get(s, c[s])):+.2f} "
+                f"{s.removesuffix('-USD')} {c[s]:.5g} {pct(c[s], avg[s] or c[s]):+.1f} {pct(c[s], mins['close'].get(s, c[s])):+.2f} "
                 f"{pct(c[s], ago['close'].get(s, c[s])):+.1f} {pct(c[s], day['open'].get(s, c[s])):+.1f} "
                 f"{pct(c[s], self.first_c.get(s, c[s])):+.1f} {trend(s)}"
                 for s in coins if self.group[s] == g))
         if self.prev_close:
-            L.append(f"EVERY STOCK - price, % since the last close, % since the first close in the data" + (
+            L.append(f"EVERY STOCK - price, vs its 24-hour average % (negative = in a dip, can buy), % since the last close, "
+                     f"% since the first close in the data" + (
                 f", last {U} %, {RECENT} %, then the {RECENT} in six {BLOCK_LABEL} steps" if open_ else
                 " (market closed: prices are the last session's)") + "; grouped by sector:")
             for g in sorted({self.group[s] for s in stocks}):
                 L.append(f"  {g}: " + "; ".join(
-                    f"{s} {c[s]:.5g} {pct(c[s], self.prev_close.get(s, c[s])):+.1f} "
+                    f"{s} {c[s]:.5g} {pct(c[s], avg[s] or c[s]):+.1f} {pct(c[s], self.prev_close.get(s, c[s])):+.1f} "
                     f"{pct(c[s], (self.first_s or {}).get(s, c[s])):+.1f}"
                     + (f" {pct(c[s], mins['close'].get(s, c[s])):+.2f} {pct(c[s], ago['close'].get(s, c[s])):+.1f} "
                        f"{trend(s)}" if open_ else "")
@@ -278,7 +289,8 @@ class View:
                          + (f", bought at ${e:.6g}, {pct(c[s] * 0.9995, e * 1.0005):+.2f}% after costs, "
                             + ("above break-even (CAN SELL)" if ok else "below break-even (HOLD)") if e else "")
                          + (f", {pct(c[s], highs[s]):+.2f}% from its high since bought" if s in highs else "")
-                         + f", {RECENT} {pct(c[s], hr['close'].get(s, c[s])):+.2f}%")
+                         + f", {RECENT} {pct(c[s], hr['close'].get(s, c[s])):+.2f}%"
+                         + (f", {pct(c[s], self.avg24(s)):+.2f}% vs its 24-hour average" if self.avg24(s) else ""))
         else:
             L.append("HOLDINGS: none, all cash.")
         return L
@@ -422,7 +434,8 @@ def main():
                 text = chat(DECIDER, D_SYSTEM, prompt, 8000, stream=True)
                 acts = parse_actions(text, view.kind)
                 forced = ""
-                tradable = lambda a: view.kind.get(a["symbol"]) == "crypto" or st["stock_market_open"]
+                tradable = lambda a: (view.kind.get(a["symbol"]) == "crypto" or st["stock_market_open"]) and (
+                    a["action"] == "SELL" or (view.avg24(a["symbol"]) and st["close"][a["symbol"]] < view.avg24(a["symbol"])))
                 for _ in range(2):                           # keep all money invested: fill empty slots
                     after = (set(held) - {a["symbol"] for a in acts if a["action"] == "SELL" and tradable(a)}) | \
                         {a["symbol"] for a in acts if a["action"] == "BUY" and tradable(a)}
@@ -433,7 +446,8 @@ def main():
                     extra = chat(DECIDER, D_SYSTEM, prompt + f"\n\nYOUR ANSWER WAS:\n{text}\n\nThat leaves {empty} empty "
                                  f"slot(s) and cash uninvested. All money must stay invested. You already own or are "
                                  f"buying: {', '.join(sorted(after)) or 'nothing'}. Name exactly {empty} other {allowed} "
-                                 f"to BUY now from the symbols shown. Answer with one line: ACTIONS: BUY X; BUY Y; ...",
+                                 f"to BUY now from the symbols shown - only ones BELOW their 24-hour average (in a dip). Answer with one line: "
+                                 f"ACTIONS: BUY X; BUY Y; ...",
                                  4000, stream=True)
                     acts += [a for a in parse_actions(extra if "ACTIONS" in extra.upper() else "ACTIONS: " + extra,
                                                       view.kind) if a["action"] == "BUY"]
@@ -456,6 +470,7 @@ def main():
                 bad = (a["action"] == "BUY" and (s in held or s in seen)) or (a["action"] == "SELL" and s not in held)
                 bad = bad or (view.kind.get(s) == "stock" and not st["stock_market_open"])
                 bad = bad or (a["action"] == "SELL" and s in entries and st["close"][s] * 0.9995 < entries[s] * 1.0005)
+                bad = bad or (a["action"] == "BUY" and (view.avg24(s) is None or st["close"][s] >= view.avg24(s)))
                 if not bad:
                     ok.append(dict(a, split=True) if a["action"] == "BUY" else a)
                     seen.add(s)
