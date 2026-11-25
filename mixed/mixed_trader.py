@@ -56,7 +56,7 @@ START_AT = os.environ.get("START_AT", "")        # e.g. "2026-11-22 00:00": the 
 RULES = (
     "THE ACCOUNT: $1,000 practice money. It can hold coins (the 100 largest cryptocurrencies, symbols ending in -USD, "
     "trading around the clock; in the lists they are written without -USD, e.g. BTC, but order them as BTC-USD) and US stocks (the S&P 500 and the SPY index fund; stock orders only while the US "
-    "market is open, 14:30-21:00 UTC, Monday to Friday). Up to 10 holdings in total, coins and stocks mixed as you "
+    "market is open, 09:30-16:00 New York time, Monday to Friday: 13:30-20:00 UTC until 1 Nov, 14:30-21:00 UTC after). Up to 10 holdings in total, coins and stocks mixed as you "
     "like. Each BUY splits the remaining cash evenly over the empty slots; SELL sells the whole holding. Orders fill "
     f"at the next {U}'s opening price. Every buy costs 0.05% and every sell 0.05%.\n"
     "THE RULES (second golden-rule version):\n"
