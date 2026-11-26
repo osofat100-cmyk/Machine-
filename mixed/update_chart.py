@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""The standard update graph: team 1 and team 2 (with the old 24-hour-rule run for reference), holding Bitcoin and
+"""The standard update graph: team 1 (team 2 was stopped on 17 Oct; with the old 24-hour-rule run for reference), holding Bitcoin and
 holding SPY, all cut at the same last hour. `python3 mixed/update_chart.py old` draws the two finished runs instead.
 Left: the whole test, with each line's peak marked. Right: the last days enlarged, with each line's ending dollars
 written on it, so the picture and the printed table show the same numbers.
@@ -45,7 +45,6 @@ def main():
         runs = [("AI, 24-hour rule", day, "#eb6834", 2.0), ("AI, weekly rule", wk, "#2a78d6", 2.0)]
     else:
         runs = [("Team 1 (10 holdings)", load("watcher_team1.csv"), "#eb6834", 2.2),
-                ("Team 2 (free choice)", load("watcher_team2.csv"), "#2a78d6", 2.2),
                 ("Old 24-hour run", day, "#8f8d86", 1.3)]
     t_end = min(r[-1]["time"] for _, r, _, _ in runs)                 # the same last hour for every line
     runs = [(n, [r for r in rows if r["time"] <= t_end], c, lw) for n, rows, c, lw in runs]
