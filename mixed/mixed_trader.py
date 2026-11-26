@@ -115,7 +115,9 @@ W_SYSTEM = (
 if TEAM:
     W_SYSTEM = W_SYSTEM.replace("End with one line:", "Under these rules two things are always worth a wake when they "
                                 "first appear: a holding above break-even that keeps sliding from its high, and cash "
-                                "waiting while the whole-market average has turned up. End with one line:")
+                                "waiting while the whole-market average has turned up"
+                                + (", and holdings still owned while the whole-market average has clearly turned down "
+                                   "and keeps going down" if SELL_ALL else "") + ". End with one line:")
 SKEPTIC = os.environ.get("SKEPTIC") == "1"
 if SKEPTIC:
     W_SYSTEM = W_SYSTEM.replace("End with one line:", "When you wake it, you are the PROPOSER: write 'PROPOSAL:' with the exact "
