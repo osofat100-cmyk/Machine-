@@ -162,7 +162,12 @@ class Exchange:
                     if s in a["shares"]:
                         refused.setdefault(name, []).append({**od, "why": "already owned"})
                         continue
-                    spend = (a["cash"] if od.get("all") else a["cash"] / max(1, SLOTS - len(a["shares"]))) / (1 + COST)
+                    if od.get("dollars") is not None:          # a chosen amount (never more than the cash there is)
+                        spend = min(float(od["dollars"]), a["cash"]) / (1 + COST)
+                    elif od.get("of"):                         # an even share of the cash that is left
+                        spend = a["cash"] / max(1, int(od["of"])) / (1 + COST)
+                    else:
+                        spend = (a["cash"] if od.get("all") else a["cash"] / max(1, SLOTS - len(a["shares"]))) / (1 + COST)
                     if spend < 1.0:
                         refused.setdefault(name, []).append({**od, "why": "no cash left"})
                         continue
