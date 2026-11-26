@@ -102,16 +102,15 @@ RULES_3 = (
     "   d. NEVER PANIC: if a holding stays low or falls even lower after you bought it, hold it and wait for it to "
     "recover. Never sell below break-even - the system refuses such sells.\n"
     "2. SPREAD THE RISK: the money is split over 10 holdings, so one that never recovers only hurts its slice.\n"
-    "3. TRADE RARELY: keep all the money invested (rule 4); every sell plus buy costs 0.10%, so only take a profit "
-    "when the gain is clearly bigger than that.\n"
-    "4. ALL MONEY INVESTED - ONE EXCEPTION: hold 10 holdings at all times. If you sell one, buy a replacement in the "
-    "same answer (a coin if the stock market is closed). The ONLY exception is rule 5, while the whole market is "
-    "falling. There is no other reason to hold cash; the system makes you fill empty slots in every other case.\n"
-    "5. WHEN THE WHOLE MARKET IS FALLING, WAIT: the line WHOLE MARKET shows the average move of everything that is "
-    "trading now (the average coin, plus the average stock while the stock market is open). While that average is "
-    "falling and the fall is not over, do not buy: nobody knows the lowest point, so keep the cash from anything you "
-    "sell and wait. Judge it by the average of the whole market, not by a few coins or stocks. Holdings below "
-    "break-even are still held (rule 1d).\n"
+    "3. TRADE RARELY: keep all the money invested; every sell plus buy costs 0.10%, so only take a profit when the "
+    "gain is clearly bigger than that.\n"
+    "4. ALL MONEY INVESTED: hold 10 holdings at all times. If you sell one, buy a replacement in the same answer "
+    "(a coin if the stock market is closed).\n"
+    "5. WHEN THE WHOLE MARKET IS FALLING, WAIT: this is the only exception to rule 4. The line WHOLE MARKET shows the "
+    "average move of everything that is trading now (the average coin, plus the average stock while the stock market "
+    "is open). While that average is falling and the fall is not over, do not buy: nobody knows the lowest point, so "
+    "keep the cash from anything you sell and wait. Judge it by the average of the whole market, not by a few coins "
+    "or stocks. Holdings below break-even are still held (rule 1d).\n"
     "6. BUY AGAIN WHEN THE WHOLE MARKET TURNS UP: as soon as the whole-market average is going up again, that is the "
     "signal to buy. Fill every empty slot at once with coins or stocks that are in a dip (rule 1a). Do not wait for "
     "more proof and do not try to guess the exact lowest point.\n")
@@ -166,10 +165,6 @@ D_SYSTEM_SKEPTIC = (
     "ACTIONS: 'BUY SYMBOL' or 'SELL SYMBOL' items separated by ';' (use the symbols exactly as shown, e.g. "
     "BTC-USD or NVDA), or NONE")
 D_SYSTEM = D_SYSTEM_SKEPTIC if SKEPTIC else D_SYSTEM_PLAIN
-if RULES_V == "3":
-    D_SYSTEM = D_SYSTEM.replace("End with exactly these two lines:", "End with exactly these three lines:").replace(
-        "NOTE: a note to yourself", "MARKET: FALLING or NOT FALLING (rule 5: is the whole-market average falling, with "
-        "the fall not over yet?)\nNOTE: a note to yourself")
 
 
 class Server:
@@ -549,28 +544,23 @@ def main():
                 if dialog:
                     text = "[DIALOGUE]" + dialog + "\n[FINAL]\n" + text
                 acts = parse_actions(text, view.kind)
-                forced, waiting, why_fill = "", False, "All money must stay invested."
-                if RULES_V == "3":
-                    says = re.search(r"MARKET\s*:\s*(NOT\s+FALLING|FALLING)", text, re.I)
-                    says_falling = bool(says and says.group(1).upper() == "FALLING")
-                    waiting = says_falling and view.market[1] < 0     # the program checks the claim against the average
-                    if waiting:                                       # rule 5: no buying while the whole market falls
-                        acts = [a for a in acts if a["action"] == "SELL"]
-                        forced = "WAITING: whole market falling, cash kept | "
-                    elif says_falling:
-                        why_fill = (f"You said the whole market is falling, but its average over the {RECENT} is "
-                                    f"{view.market[1]:+.2f}%, which is not falling, so the exception in rule 5 does not "
-                                    f"apply and all money must be invested.")
-                    else:
-                        why_fill = "You said the whole market is not falling, so all money must be invested (rule 4)."
+                forced, why_fill = "", "All money must stay invested."
+                # third version: empty slots are allowed only while the whole-market average is falling (rule 5)
+                may_wait = RULES_V == "3" and view.market[1] < 0
+                if RULES_V == "3" and not may_wait:
+                    why_fill = (f"The whole-market average over the {RECENT} is {view.market[1]:+.2f}%, which is not "
+                                f"falling, so the exception in rule 5 does not apply and all money must be invested.")
                 tradable = lambda a: (view.kind.get(a["symbol"]) == "crypto" or st["stock_market_open"]) and (
                     a["action"] == "SELL" or (view.avg24(a["symbol"]) and st["close"][a["symbol"]] < view.avg24(a["symbol"])
                                               and not blocked(a["symbol"], st["time"])))
-                for _ in range(0 if waiting else 2):         # keep all money invested: fill empty slots
+                for _ in range(2):                           # keep all money invested: fill empty slots
                     after = (set(held) - {a["symbol"] for a in acts if a["action"] == "SELL" and tradable(a)}) | \
                         {a["symbol"] for a in acts if a["action"] == "BUY" and tradable(a)}
                     empty = SLOTS - len(after)
                     if empty <= 0:
+                        break
+                    if may_wait:
+                        forced += f"WAITING: {empty} slot(s) left empty while the whole market falls | "
                         break
                     allowed = "coins or stocks" if st["stock_market_open"] else "coins only (the stock market is closed)"
                     extra = chat(DECIDER, D_SYSTEM, prompt + f"\n\nYOUR ANSWER WAS:\n{text}\n\nThat leaves {empty} empty "
