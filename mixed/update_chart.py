@@ -84,6 +84,8 @@ def main():
         a2.annotate(name, (end, val), xytext=(end + timedelta(hours=ZOOM_DAYS * 2.2), y - (zhi - zlo) * 0.036),
                     textcoords="data", fontsize=8.5, color=INK2, va="center", annotation_clip=False)
     a1.axhline(1000, color=INK2, lw=1, alpha=0.5)
+    lo, hi = a1.get_ylim()
+    a1.set_ylim(min(lo, 800), max(hi, 1200))             # never zoom in closer than $800-$1,200: small moves look small
     a1.axvspan(z0, end, color=INK2, alpha=0.07, lw=0)
     a1.set_title(f"The whole test so far: 25 Aug to {end:%d %b %H:%M}", loc="left", fontsize=12.5, color=INK, weight="bold")
     a1.set_ylabel("Money ($, every line started at $1,000)", color=INK2, fontsize=9)
