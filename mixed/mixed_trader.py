@@ -68,6 +68,7 @@ SLOTS = 10
 START_AT = os.environ.get("START_AT", "")        # e.g. "2026-11-22 00:00": the AIs see everything before, trade from then
 TEAM = os.environ.get("TEAM", "")                # "" = second golden-rule version (the finished runs); "1"/"2"/"3" = the teams
 SELL_ALL = TEAM == "3"                           # team 3: a loss sale is allowed only in an answer that sells every holding
+MKT_SHORT, MKT_LONG = 3 * DAY, 14 * DAY          # team 3: the whole-market line shows a 3-day and a 2-week average
 FREE = TEAM == "2"                               # team 2: any number of holdings, the AI chooses the dollars per buy
 
 RULES = (
@@ -237,6 +238,7 @@ class View:
         self.first_c, self.first_s, self.snaps = None, None, []   # start of the data and each UTC midnight
         self.first_t = None
         self.market = [0.0, 0.0, 0.0]                             # whole-market average: last step, recent window, 24 hours
+        self.idx = [100.0]                                        # team 3: whole-market level, one value per step
 
     def add(self, out):
         if out.get("universe"):
@@ -252,6 +254,19 @@ class View:
         if st["time"].endswith("00:00"):
             self.snaps.append((st["time"][:10], {k: v for k, v in st["close"].items()}))
         self.hist.append(st)
+        if SELL_ALL and len(self.hist) >= 2:             # chain the whole market's step-to-step change into one level
+            prev, c = self.hist[-2]["close"], st["close"]
+            def mean(xs):
+                xs = list(xs)
+                return sum(xs) / len(xs) if xs else None
+            parts = [mean(pct(c[s], prev[s]) for s, k in self.kind.items() if k == "crypto" and s in c and prev.get(s)
+                          and not blocked(s, st["time"]))]
+            if st["stock_market_open"]:
+                parts.append(mean(pct(c[s], prev[s]) for s, k in self.kind.items() if k == "stock" and s != "SPY"
+                                  and s in c and prev.get(s)))
+            parts = [x for x in parts if x is not None]
+            self.idx.append(self.idx[-1] * (1 + (sum(parts) / len(parts) if parts else 0.0) / 100))
+            self.idx = self.idx[-2 * MKT_LONG:]
         self.hist = self.hist[-max(DAY + HOUR, AVG_N + 1):]
 
     def avg24(self, s):
@@ -310,9 +325,20 @@ class View:
                 parts.append([mean(pct(c[s], ref[s]) for s in stocks if s in ref and s != "SPY")
                               for ref in (mins["close"], hr["close"], day["open"])])
             self.market = [mean(p[k] for p in parts if p[k] is not None) or 0.0 for k in range(3)]
-            L.append(f"WHOLE MARKET (average of everything trading now: the average coin"
-                     + (" and the average stock, half each" if open_ else "; the stock market is closed") + f"): last {U} "
-                     f"{self.market[0]:+.2f}%, {RECENT} {self.market[1]:+.2f}%, 24 hours {self.market[2]:+.2f}%.")
+            if SELL_ALL:                                 # two averages: a few days and two weeks, each against the one before it
+                def avg_change(n, name, before):
+                    k = min(n, len(self.idx) // 2)
+                    if k < 1:
+                        return f"{name} average: not enough data yet"
+                    a, b = self.idx[-k:], self.idx[-2 * k:-k]
+                    return (f"{name} average {pct(sum(a) / k, sum(b) / k):+.2f}% compared with the {before} before it"
+                            + (f" (only {k // DAY} days of data so far, so both periods are {k // DAY} days)" if k < n else ""))
+                L.append("WHOLE MARKET (average of everything trading: the average coin, and the average stock while the stock "
+                         "market is open): " + avg_change(MKT_SHORT, "3-day", "3 days") + "; " + avg_change(MKT_LONG, "2-week", "2 weeks") + ".")
+            else:
+                L.append(f"WHOLE MARKET (average of everything trading now: the average coin"
+                         + (" and the average stock, half each" if open_ else "; the stock market is closed") + f"): last {U} "
+                         f"{self.market[0]:+.2f}%, {RECENT} {self.market[1]:+.2f}%, 24 hours {self.market[2]:+.2f}%.")
         ago = self.hist[-HOUR - 1] if len(self.hist) > HOUR else self.hist[0]
         blocks = [self.hist[max(0, len(self.hist) - 1 - HOUR + BLOCK * k)] for k in range(7)]
 
