@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""The standard update graph: team 1 (team 2 was stopped on 17 Oct; with the old 24-hour-rule run for reference), holding Bitcoin and
+"""The standard update graph: team 3 (with team 1, stopped on 20 Nov, and the old 24-hour-rule run for reference), holding Bitcoin and
 holding SPY, all cut at the same last hour. `python3 mixed/update_chart.py old` draws the two finished runs instead.
 Left: the whole test, with each line's peak marked. Right: the last days enlarged, with each line's ending dollars
 written on it, so the picture and the printed table show the same numbers.
@@ -44,9 +44,10 @@ def main():
         wk = load("watcher_hourly_3m_ultra_week.csv")
         runs = [("AI, 24-hour rule", day, "#eb6834", 2.0), ("AI, weekly rule", wk, "#2a78d6", 2.0)]
     else:
-        runs = [("Team 1 (10 holdings)", load("watcher_team1.csv"), "#eb6834", 2.2),
+        runs = [("Team 3 (sell all in a market fall)", load("watcher_team3.csv"), "#eb6834", 2.2),
+                ("Team 1 (stopped 20 Nov)", load("watcher_team1.csv"), "#2a78d6", 1.6),
                 ("Old 24-hour run", day, "#8f8d86", 1.3)]
-    t_end = min(r[-1]["time"] for _, r, _, _ in runs)                 # the same last hour for every line
+    t_end = runs[0][1][-1]["time"]                 # the same last hour for every line (finished runs are cut there too)
     runs = [(n, [r for r in rows if r["time"] <= t_end], c, lw) for n, rows, c, lw in runs]
     base = runs[0][1]
     series = [(n, rows, "value", c, lw) for n, rows, c, lw in runs] + \

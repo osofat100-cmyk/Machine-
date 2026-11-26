@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Smoothed view: each line as its average over the last 3 days (72 hours), so short spikes and dips are evened out.
-Team 1, the old 24-hour run, holding Bitcoin and holding SPY, all cut at the same last hour; the 22 Sep - 1 Oct peak
+Team 3, Team 1, the old 24-hour run, holding Bitcoin and holding SPY, all cut at the same last hour; the 22 Sep - 1 Oct peak
 window is shaded.   python3 mixed/smooth_chart.py -> mixed/smooth_chart.png"""
 import os
 import pandas as pd
@@ -20,11 +20,11 @@ def load(name):
     return d.set_index(pd.to_datetime(d.time))
 
 
-t1, old = load("watcher_team1.csv"), load("watcher_hourly_3m_ultra_avg24.csv")
-end = min(t1.index[-1], old.index[-1])
-t1, old = t1[:end], old[:end]
-lines = [("Team 1 (10 holdings)", t1.value, "#eb6834", 2.6), ("Old 24-hour run", old.value, "#8f8d86", 2.0),
-         ("Holding Bitcoin", t1.btc_hold, "#8a4fd3", 2.0), ("Holding SPY", t1.spy_hold, "#16855c", 2.0)]
+t3, t1, old = load("watcher_team3.csv"), load("watcher_team1.csv"), load("watcher_hourly_3m_ultra_avg24.csv")
+end = t3.index[-1]
+t3, t1, old = t3[:end], t1[:end], old[:end]
+lines = [("Team 3", t3.value, "#eb6834", 2.6), ("Team 1", t1.value, "#2a78d6", 2.0), ("Old 24-hour run", old.value, "#8f8d86", 2.0),
+         ("Holding Bitcoin", t3.btc_hold, "#8a4fd3", 2.0), ("Holding SPY", t3.spy_hold, "#16855c", 2.0)]
 fig, ax = plt.subplots(figsize=(13, 6.4), facecolor=SURF)
 ax.axvspan(pd.Timestamp("2026-09-22"), pd.Timestamp("2026-10-01 23:00"), color=INK2, alpha=0.08, lw=0)
 ax.text(pd.Timestamp("2026-09-26 12:00"), 1345, "22 Sep - 1 Oct", ha="center", fontsize=9, color=INK2)

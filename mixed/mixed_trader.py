@@ -66,7 +66,8 @@ def blocked(sym, t):
 AVG_LABEL = "24-hour" if AVG_DAYS == 1 else ("7-day (weekly)" if AVG_DAYS == 7 else f"{AVG_DAYS}-day")
 SLOTS = 10
 START_AT = os.environ.get("START_AT", "")        # e.g. "2026-11-22 00:00": the AIs see everything before, trade from then
-TEAM = os.environ.get("TEAM", "")                # "" = second golden-rule version (the finished runs); "1"/"2" = the teams
+TEAM = os.environ.get("TEAM", "")                # "" = second golden-rule version (the finished runs); "1"/"2"/"3" = the teams
+SELL_ALL = TEAM == "3"                           # team 3: a loss sale is allowed only in an answer that sells every holding
 FREE = TEAM == "2"                               # team 2: any number of holdings, the AI chooses the dollars per buy
 
 RULES = (
@@ -114,7 +115,9 @@ W_SYSTEM = (
 if TEAM:
     W_SYSTEM = W_SYSTEM.replace("End with one line:", "Under these rules two things are always worth a wake when they "
                                 "first appear: a holding above break-even that keeps sliding from its high, and cash "
-                                "waiting while the whole-market average has turned up. End with one line:")
+                                "waiting while the whole-market average has turned up"
+                                + (", and holdings still owned while the whole-market average has clearly turned down "
+                                   "and keeps going down" if SELL_ALL else "") + ". End with one line:")
 SKEPTIC = os.environ.get("SKEPTIC") == "1"
 if SKEPTIC:
     W_SYSTEM = W_SYSTEM.replace("End with one line:", "When you wake it, you are the PROPOSER: write 'PROPOSAL:' with the exact "
@@ -362,7 +365,8 @@ class View:
                 ok = e and c[s] * 0.9995 >= e * 1.0005
                 L.append(f"- {s} ({self.kind.get(s)}, {self.group.get(s)}): ${q * c[s]:,.2f}, now ${c[s]:.6g}"
                          + (f", bought at ${e:.6g}, {pct(c[s] * 0.9995, e * 1.0005):+.2f}% after costs, "
-                            + ("above break-even (CAN SELL)" if ok else "below break-even (HOLD)") if e else "")
+                            + ("above break-even (CAN SELL)" if ok else ("below break-even (HOLD unless selling everything, rule 5)"
+                                                                if SELL_ALL else "below break-even (HOLD)")) if e else "")
                          + (f", {pct(c[s], highs[s]):+.2f}% from its high since bought" if s in highs else "")
                          + f", {RECENT} {pct(c[s], hr['close'].get(s, c[s])):+.2f}%"
                          + (f", {pct(c[s], self.avg24(s)):+.2f}% vs its {AVG_LABEL} average" if self.avg24(s) else ""))
@@ -583,11 +587,13 @@ def main():
             news_since_wake = []
             # rules the program enforces before sending
             ok, seen = [], set()
+            sellable = {s for s in held if view.kind.get(s) != "stock" or st["stock_market_open"]}
+            sell_all = SELL_ALL and sellable and sellable <= {a["symbol"] for a in acts if a["action"] == "SELL"}
             for a in acts:
                 s = a["symbol"]
                 bad = (a["action"] == "BUY" and (s in held or s in seen)) or (a["action"] == "SELL" and s not in held)
                 bad = bad or (view.kind.get(s) == "stock" and not st["stock_market_open"])
-                bad = bad or (a["action"] == "SELL" and s in entries and st["close"][s] * 0.9995 < entries[s] * 1.0005)
+                bad = bad or (a["action"] == "SELL" and not sell_all and s in entries and st["close"][s] * 0.9995 < entries[s] * 1.0005)
                 bad = bad or (a["action"] == "BUY" and (view.avg24(s) is None or st["close"][s] >= view.avg24(s)))
                 bad = bad or (a["action"] == "BUY" and blocked(s, st["time"]))
                 if not bad:
