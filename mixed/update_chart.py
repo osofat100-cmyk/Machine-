@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
-"""The standard update graph: both two-Ultra runs, holding Bitcoin and holding SPY, all cut at the same last hour.
+"""The standard update graph: team 1 and team 2 (with the old 24-hour-rule run for reference), holding Bitcoin and
+holding SPY, all cut at the same last hour. `python3 mixed/update_chart.py old` draws the two finished runs instead.
 Left: the whole test, with each line's peak marked. Right: the last days enlarged, with each line's ending dollars
 written on it, so the picture and the printed table show the same numbers.
     python3 mixed/update_chart.py -> mixed/update_chart.png (+ printed numbers)"""
 import csv
 import os
+import sys
 from datetime import datetime, timedelta
 
 import matplotlib
@@ -35,15 +37,22 @@ def spread(ys, gap):
 
 
 def main():
-    wk = load("watcher_hourly_3m_ultra_week.csv")
+    global ZOOM_DAYS
+    old = len(sys.argv) > 1 and sys.argv[1] == "old"
     day = load("watcher_hourly_3m_ultra_avg24.csv")
-    t_end = min(wk[-1]["time"], day[-1]["time"])                      # the same last hour for every line
-    wk = [r for r in wk if r["time"] <= t_end]
-    day = [r for r in day if r["time"] <= t_end]
-    series = [("AI, 24-hour rule", day, "value", "#eb6834", 2.0),
-              ("AI, weekly rule", wk, "value", "#2a78d6", 2.0),
-              ("Holding SPY", day, "spy_hold", "#16855c", 2.0),
-              ("Holding Bitcoin", day, "btc_hold", "#8a4fd3", 2.0)]
+    if old:
+        wk = load("watcher_hourly_3m_ultra_week.csv")
+        runs = [("AI, 24-hour rule", day, "#eb6834", 2.0), ("AI, weekly rule", wk, "#2a78d6", 2.0)]
+    else:
+        runs = [("Team 1 (10 holdings)", load("watcher_team1.csv"), "#eb6834", 2.2),
+                ("Team 2 (free choice)", load("watcher_team2.csv"), "#2a78d6", 2.2),
+                ("Old 24-hour run", day, "#8f8d86", 1.3)]
+    t_end = min(r[-1]["time"] for _, r, _, _ in runs)                 # the same last hour for every line
+    runs = [(n, [r for r in rows if r["time"] <= t_end], c, lw) for n, rows, c, lw in runs]
+    base = runs[0][1]
+    series = [(n, rows, "value", c, lw) for n, rows, c, lw in runs] + \
+        [("Holding SPY", base, "spy_hold", "#16855c", 2.0), ("Holding Bitcoin", base, "btc_hold", "#8a4fd3", 2.0)]
+    ZOOM_DAYS = max(1, min(5, len(base) // 72))
     end = datetime.strptime(t_end, "%Y-%m-%d %H:%M")
     z0 = end - timedelta(days=ZOOM_DAYS)
     fig, (a1, a2) = plt.subplots(1, 2, figsize=(14, 6.6), facecolor=SURF, gridspec_kw={"width_ratios": [2.1, 1]})
@@ -55,7 +64,7 @@ def main():
         ip = max(range(len(v)), key=lambda i: v[i])
         a1.plot(t, v, color=col, lw=lw, label=name)
         a1.plot([t[ip]], [v[ip]], "o", color=col, ms=7, mec=SURF, mew=2, zorder=5)
-        a1.annotate(f"peak ${v[ip]:,.0f}", (t[ip], v[ip]), xytext=(0, -15 if key == "spy_hold" else 10),
+        a1.annotate(f"peak ${v[ip]:,.0f}", (t[ip], v[ip]), xytext=(0, -15 if key == "spy_hold" else 10), alpha=0 if name.startswith("Old") else 1,
                     textcoords="offset points", ha="center", fontsize=9, color=INK, weight="bold", zorder=6,
                     path_effects=[pe.withStroke(linewidth=3.5, foreground=SURF)])
         a1.plot([t[-1]], [v[-1]], "o", color=col, ms=6, mec=SURF, mew=2)
@@ -76,16 +85,16 @@ def main():
                     textcoords="data", fontsize=8.5, color=INK2, va="center", annotation_clip=False)
     a1.axhline(1000, color=INK2, lw=1, alpha=0.5)
     a1.axvspan(z0, end, color=INK2, alpha=0.07, lw=0)
-    a1.set_title(f"The whole test: 25 Aug to {end:%d %b %H:%M}", loc="left", fontsize=12.5, color=INK, weight="bold")
+    a1.set_title(f"The whole test so far: 25 Aug to {end:%d %b %H:%M}", loc="left", fontsize=12.5, color=INK, weight="bold")
     a1.set_ylabel("Money ($, every line started at $1,000)", color=INK2, fontsize=9)
     a1.legend(loc="lower left", fontsize=9, frameon=False)
     a1.xaxis.set_major_formatter(mdates.DateFormatter("%d %b"))
-    a2.set_title(f"The last {ZOOM_DAYS} days, enlarged (shaded part on the left)", loc="left", fontsize=12.5, color=INK,
+    a2.set_title(f"The last {ZOOM_DAYS} day{'s' if ZOOM_DAYS > 1 else ''}, enlarged (shaded part on the left)", loc="left", fontsize=12.5, color=INK,
                  weight="bold")
     a2.set_xlim(z0, end + timedelta(hours=ZOOM_DAYS * 1.2))
     a2.set_ylim(zlo - (zhi - zlo) * 0.08, zhi + (zhi - zlo) * 0.08)
-    a2.xaxis.set_major_locator(mdates.DayLocator())
-    a2.xaxis.set_major_formatter(mdates.DateFormatter("%d %b"))
+    a2.xaxis.set_major_locator(mdates.DayLocator() if ZOOM_DAYS > 1 else mdates.HourLocator(interval=6))
+    a2.xaxis.set_major_formatter(mdates.DateFormatter("%d %b" if ZOOM_DAYS > 1 else "%d %b %H:%M"))
     for ax in (a1, a2):
         ax.grid(axis="y", color=GRID, lw=1)
         ax.set_facecolor(SURF)
