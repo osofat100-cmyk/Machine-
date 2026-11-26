@@ -540,7 +540,8 @@ def main():
                 allowed = "coins or stocks" if st["stock_market_open"] else "coins only (the stock market is closed)"
                 wait_ok = ("All money must stay invested; the only exception is while the whole market is falling. If you "
                            "are waiting for that reason, answer with one line: ACTIONS: NONE. Otherwise ")
-                for _ in range(2):                           # keep all money invested: remind about idle money
+                for _ in range(0 if TEAM else 2):            # old runs only: make it fill empty slots. The teams get
+                    # no follow-up question at all - what they answer the first time is what happens
                     sold = {a["symbol"] for a in acts if a["action"] == "SELL" and tradable(a) and a["symbol"] in held}
                     buys = [a for a in acts if a["action"] == "BUY" and tradable(a) and a["symbol"] not in held]
                     after = (set(held) - sold) | {a["symbol"] for a in buys}
