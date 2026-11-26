@@ -9,7 +9,8 @@ Two AIs working together on ONE practice account ($1,000) that may hold any of t
   recent notes, thinks freely, and gives the orders.
 
 Rules: the second golden-rule version - never sell below break-even (enforced), spread the risk over 10 holdings,
-keep all money invested, trade rarely; 0.05% cost per buy and per sell. Stock orders only while the US market is
+keep all money invested, trade rarely (RULES_V=3 picks the third version: also sell a winner that keeps sliding, hold
+cash only while the whole-market average is falling, and buy again when it turns up); 0.05% cost per buy and per sell. Stock orders only while the US market is
 open (14:30-21:00 UTC on weekdays). No fixed GOOD/BAD/NONE labels: both AIs answer in their own sentences; only the
 last lines (WAKE / NOTE / ACTIONS) have a fixed form so the program can read them.
 
@@ -64,6 +65,7 @@ def blocked(sym, t):
 AVG_LABEL = "24-hour" if AVG_DAYS == 1 else ("7-day (weekly)" if AVG_DAYS == 7 else f"{AVG_DAYS}-day")
 SLOTS = 10
 START_AT = os.environ.get("START_AT", "")        # e.g. "2026-11-22 00:00": the AIs see everything before, trade from then
+RULES_V = os.environ.get("RULES_V", "2")         # "2" = second golden-rule version (the finished runs); "3" = third version
 
 RULES = (
     "THE ACCOUNT: $1,000 practice money. It can hold coins (the 100 largest cryptocurrencies, symbols ending in -USD, "
@@ -71,6 +73,8 @@ RULES = (
     "market is open, 09:30-16:00 New York time, Monday to Friday: 13:30-20:00 UTC until 1 Nov, 14:30-21:00 UTC after). Up to 10 holdings in total, coins and stocks mixed as you "
     "like. Each BUY splits the remaining cash evenly over the empty slots; SELL sells the whole holding. Orders fill "
     f"at the next {U}'s opening price. Every buy costs 0.05% and every sell 0.05%.\n"
+    "")
+RULES_2 = (
     "THE RULES (second golden-rule version):\n"
     "1. GOLDEN RULE - BUY LOW, SELL ON A SPIKE, NEVER PANIC:\n"
     "   a. BUY LOW ONLY: buy a coin or stock only when it is in a dip - its price is BELOW its own " + AVG_LABEL + " average "
@@ -84,6 +88,34 @@ RULES = (
     "gain is clearly bigger than that.\n"
     "4. ALL MONEY INVESTED: hold 10 holdings at all times. If you sell one, buy a replacement in the same answer "
     "(a coin if the stock market is closed).\n")
+RULES_3 = (
+    "THE RULES (third golden-rule version):\n"
+    "1. GOLDEN RULE - BUY LOW, SELL ON A SPIKE, SELL A SLIDING WINNER, NEVER PANIC:\n"
+    "   a. BUY LOW ONLY: buy a coin or stock only when it is in a dip - its price is BELOW its own " + AVG_LABEL + " average "
+    "price (the bigger the dip, the better). Never buy something that is trading high or above its average; the "
+    "system refuses such buys.\n"
+    "   b. SELL ON A SPIKE: sell a holding when it spikes clearly above what you paid plus costs (its break-even).\n"
+    "   c. SELL A SLIDING WINNER: if a holding is above break-even, has passed its high since you bought it and keeps "
+    "going down for a while - slowly or quickly - without coming back up, sell it while it is still above break-even. "
+    "Do not wait for a new spike: something that keeps going down is going down. A small or flat move is not a "
+    "slide; leave it alone.\n"
+    "   d. NEVER PANIC: if a holding stays low or falls even lower after you bought it, hold it and wait for it to "
+    "recover. Never sell below break-even - the system refuses such sells.\n"
+    "2. SPREAD THE RISK: the money is split over 10 holdings, so one that never recovers only hurts its slice.\n"
+    "3. TRADE RARELY: keep all the money invested (rule 4); every sell plus buy costs 0.10%, so only take a profit "
+    "when the gain is clearly bigger than that.\n"
+    "4. ALL MONEY INVESTED - ONE EXCEPTION: hold 10 holdings at all times. If you sell one, buy a replacement in the "
+    "same answer (a coin if the stock market is closed). The ONLY exception is rule 5, while the whole market is "
+    "falling. There is no other reason to hold cash; the system makes you fill empty slots in every other case.\n"
+    "5. WHEN THE WHOLE MARKET IS FALLING, WAIT: the line WHOLE MARKET shows the average move of everything that is "
+    "trading now (the average coin, plus the average stock while the stock market is open). While that average is "
+    "falling and the fall is not over, do not buy: nobody knows the lowest point, so keep the cash from anything you "
+    "sell and wait. Judge it by the average of the whole market, not by a few coins or stocks. Holdings below "
+    "break-even are still held (rule 1d).\n"
+    "6. BUY AGAIN WHEN THE WHOLE MARKET TURNS UP: as soon as the whole-market average is going up again, that is the "
+    "signal to buy. Fill every empty slot at once with coins or stocks that are in a dip (rule 1a). Do not wait for "
+    "more proof and do not try to guess the exact lowest point.\n")
+RULES = RULES + (RULES_3 if RULES_V == "3" else RULES_2)
 
 W_SYSTEM = (
     f"You are the WATCHER in a two-AI trading team. Every {U} you see the markets, the account and any news "
@@ -99,6 +131,10 @@ W_SYSTEM = (
     "important has happened that it has not seen yet. Never wake it again for the same situation it already declined.\n"
     "End with one line: 'WAKE: YES - <short reason>' or 'WAKE: NO'.")
 
+if RULES_V == "3":
+    W_SYSTEM = W_SYSTEM.replace("End with one line:", "Under these rules two things are always worth a wake when they "
+                                "first appear: a holding above break-even that keeps sliding from its high (rule 1c), "
+                                "and empty slots while the whole-market average has turned up (rule 6). End with one line:")
 SKEPTIC = os.environ.get("SKEPTIC") == "1"
 if SKEPTIC:
     W_SYSTEM = W_SYSTEM.replace("End with one line:", "When you wake it, you are the PROPOSER: write 'PROPOSAL:' with the exact "
@@ -130,6 +166,10 @@ D_SYSTEM_SKEPTIC = (
     "ACTIONS: 'BUY SYMBOL' or 'SELL SYMBOL' items separated by ';' (use the symbols exactly as shown, e.g. "
     "BTC-USD or NVDA), or NONE")
 D_SYSTEM = D_SYSTEM_SKEPTIC if SKEPTIC else D_SYSTEM_PLAIN
+if RULES_V == "3":
+    D_SYSTEM = D_SYSTEM.replace("End with exactly these two lines:", "End with exactly these three lines:").replace(
+        "NOTE: a note to yourself", "MARKET: FALLING or NOT FALLING (rule 5: is the whole-market average falling, with "
+        "the fall not over yet?)\nNOTE: a note to yourself")
 
 
 class Server:
@@ -211,6 +251,7 @@ class View:
         self.kind, self.group, self.hist, self.prev_close = {}, {}, [], {}
         self.first_c, self.first_s, self.snaps = None, None, []   # start of the data and each UTC midnight
         self.first_t = None
+        self.market = [0.0, 0.0, 0.0]                             # whole-market average: last step, recent window, 24 hours
 
     def add(self, out):
         if out.get("universe"):
@@ -275,6 +316,18 @@ class View:
                 sh = sorted((pct(c[s], hr["close"][s]), s) for s in stocks if s in hr["close"] and s != "SPY")
                 L.append(f"Stocks moving most, {RECENT}: " + ", ".join(f"{s} {m:+.2f}%" for m, s in reversed(sh[-4:]))
                          + " | " + ", ".join(f"{s} {m:+.2f}%" for m, s in sh[:4]))
+        if RULES_V == "3":                               # one average for everything that is trading right now
+            def mean(xs):
+                xs = list(xs)
+                return sum(xs) / len(xs) if xs else None
+            parts = [[mean(pct(c[s], ref[s]) for s in coins if s in ref) for ref in (mins["close"], hr["close"], day["open"])]]
+            if open_:
+                parts.append([mean(pct(c[s], ref[s]) for s in stocks if s in ref and s != "SPY")
+                              for ref in (mins["close"], hr["close"], day["open"])])
+            self.market = [mean(p[k] for p in parts if p[k] is not None) or 0.0 for k in range(3)]
+            L.append(f"WHOLE MARKET (average of everything trading now: the average coin"
+                     + (" and the average stock, half each" if open_ else "; the stock market is closed") + f"): last {U} "
+                     f"{self.market[0]:+.2f}%, {RECENT} {self.market[1]:+.2f}%, 24 hours {self.market[2]:+.2f}%.")
         ago = self.hist[-HOUR - 1] if len(self.hist) > HOUR else self.hist[0]
         blocks = [self.hist[max(0, len(self.hist) - 1 - HOUR + BLOCK * k)] for k in range(7)]
 
@@ -431,7 +484,8 @@ def main():
                     L.append(f"YOUR LAST {NOTES_N} NOTES (oldest first):")
                     L += [f"- {t[6:] if STEP == 1 else t}: {x[:160]}" for t, x in w_notes[-NOTES_N:]]
                 if i_w == 0:
-                    L.append(f"This is the first {U} of the test: the account is all cash, so the decider must invest it."
+                    L.append(f"This is the first {U} of the test: the account is all cash, so the decider must invest it"
+                             + (" (unless the whole market is falling, rule 5)." if RULES_V == "3" else ".")
                              + (" Everything above (the days so far, 24-hour and since-start moves, headlines) is "
                                 "what happened before you started." if START_AT else ""))
                 w_prompt = "\n".join(L)
@@ -495,11 +549,24 @@ def main():
                 if dialog:
                     text = "[DIALOGUE]" + dialog + "\n[FINAL]\n" + text
                 acts = parse_actions(text, view.kind)
-                forced = ""
+                forced, waiting, why_fill = "", False, "All money must stay invested."
+                if RULES_V == "3":
+                    says = re.search(r"MARKET\s*:\s*(NOT\s+FALLING|FALLING)", text, re.I)
+                    says_falling = bool(says and says.group(1).upper() == "FALLING")
+                    waiting = says_falling and view.market[1] < 0     # the program checks the claim against the average
+                    if waiting:                                       # rule 5: no buying while the whole market falls
+                        acts = [a for a in acts if a["action"] == "SELL"]
+                        forced = "WAITING: whole market falling, cash kept | "
+                    elif says_falling:
+                        why_fill = (f"You said the whole market is falling, but its average over the {RECENT} is "
+                                    f"{view.market[1]:+.2f}%, which is not falling, so the exception in rule 5 does not "
+                                    f"apply and all money must be invested.")
+                    else:
+                        why_fill = "You said the whole market is not falling, so all money must be invested (rule 4)."
                 tradable = lambda a: (view.kind.get(a["symbol"]) == "crypto" or st["stock_market_open"]) and (
                     a["action"] == "SELL" or (view.avg24(a["symbol"]) and st["close"][a["symbol"]] < view.avg24(a["symbol"])
                                               and not blocked(a["symbol"], st["time"])))
-                for _ in range(2):                           # keep all money invested: fill empty slots
+                for _ in range(0 if waiting else 2):         # keep all money invested: fill empty slots
                     after = (set(held) - {a["symbol"] for a in acts if a["action"] == "SELL" and tradable(a)}) | \
                         {a["symbol"] for a in acts if a["action"] == "BUY" and tradable(a)}
                     empty = SLOTS - len(after)
@@ -507,7 +574,7 @@ def main():
                         break
                     allowed = "coins or stocks" if st["stock_market_open"] else "coins only (the stock market is closed)"
                     extra = chat(DECIDER, D_SYSTEM, prompt + f"\n\nYOUR ANSWER WAS:\n{text}\n\nThat leaves {empty} empty "
-                                 f"slot(s) and cash uninvested. All money must stay invested. You already own or are "
+                                 f"slot(s) and cash uninvested. {why_fill} You already own or are "
                                  f"buying: {', '.join(sorted(after)) or 'nothing'}. Name exactly {empty} other {allowed} "
                                  f"to BUY now from the symbols shown - only ones BELOW their {AVG_LABEL} average (in a dip). Answer with one line: "
                                  f"ACTIONS: BUY X; BUY Y; ...",
