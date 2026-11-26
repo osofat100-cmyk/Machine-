@@ -69,6 +69,7 @@ START_AT = os.environ.get("START_AT", "")        # e.g. "2026-11-22 00:00": the 
 TEAM = os.environ.get("TEAM", "")                # "" = second golden-rule version (the finished runs); "1"/"2"/"3" = the teams
 SELL_ALL = TEAM == "3"                           # team 3: a loss sale is allowed only in an answer that sells every holding
 MKT_SHORT, MKT_LONG = 3 * DAY, 14 * DAY          # team 3: the whole-market line shows a 3-day and a 2-week average
+MKT_AVGS = SELL_ALL or os.environ.get("MKT_AVGS") == "1"   # MKT_AVGS=1 gives another team that same line
 FREE = TEAM == "2"                               # team 2: any number of holdings, the AI chooses the dollars per buy
 
 RULES = (
@@ -254,7 +255,7 @@ class View:
         if st["time"].endswith("00:00"):
             self.snaps.append((st["time"][:10], {k: v for k, v in st["close"].items()}))
         self.hist.append(st)
-        if SELL_ALL and len(self.hist) >= 2:             # chain the whole market's step-to-step change into one level
+        if MKT_AVGS and len(self.hist) >= 2:             # chain the whole market's step-to-step change into one level
             prev, c = self.hist[-2]["close"], st["close"]
             def mean(xs):
                 xs = list(xs)
@@ -325,7 +326,7 @@ class View:
                 parts.append([mean(pct(c[s], ref[s]) for s in stocks if s in ref and s != "SPY")
                               for ref in (mins["close"], hr["close"], day["open"])])
             self.market = [mean(p[k] for p in parts if p[k] is not None) or 0.0 for k in range(3)]
-            if SELL_ALL:                                 # two averages: a few days and two weeks, each against the one before it
+            if MKT_AVGS:                                 # two averages: a few days and two weeks, each against the one before it
                 def avg_change(n, name, before):
                     k = min(n, len(self.idx) // 2)
                     if k < 1:
