@@ -1,0 +1,22 @@
+panel: 6,662 days, 2000-05-26 -> 2026-11-20, 13 symbols, no missing prices; T-bill rate filled forward on 6 days
+check closes SPY: 2514 common days, 1 above 0.05%, largest gap 0.2000%
+    2026-04-20: Yahoo 708.7200, Nasdaq 710.1400, 0.2000%
+check closes QQQ: 2514 common days, 0 above 0.05%, largest gap 0.0000%
+check closes XLE: 2514 common days, 2 above 0.05%, largest gap 0.0857%
+    2017-03-20: Yahoo 34.8500, Nasdaq 34.8730, 0.0660%
+    2019-08-12: Yahoo 29.2000, Nasdaq 29.1750, 0.0857%
+check closes XLU: 2514 common days, 0 above 0.05%, largest gap 0.0271%
+check dividend QQQ 2025-03-24: Yahoo 0.7160, Nasdaq 0.71571 OK
+check dividend QQQ 2025-06-23: Yahoo 0.5910, Nasdaq 0.59111 OK
+check dividend QQQ 2025-09-22: Yahoo 0.6940, Nasdaq 0.69395 OK
+check dividend QQQ 2025-12-22: Yahoo 0.7940, Nasdaq 0.79408 OK
+check dividend QQQ 2026-03-23: Yahoo 0.7330, Nasdaq 0.73282 OK
+check dividend QQQ 2026-06-22: Yahoo 0.8130, Nasdaq 0.81349 OK
+check dividend QQQ 2026-09-21: Yahoo 0.7510, Nasdaq 0.75143 OK
+check T-bill 2022: ^IRX converted to bond-equivalent yield, average 2.04%, FRED DGS3MO 2.09%
+check T-bill 2023: ^IRX converted to bond-equivalent yield, average 5.18%, FRED DGS3MO 5.28%
+check ex-date SPY 2016-03-18: adjusted overnight move 0.28980%, raw move with the dividend added back 0.28832%
+check ex-date SPY 2016-06-17: adjusted overnight move -0.05886%, raw move with the dividend added back -0.05855%
+check ex-date SPY 2016-09-16: adjusted overnight move -0.33519%, raw move with the dividend added back -0.33352%
+development file: 3,924 days 2000-05-26 -> 2015-12-31
+sealed test file: 2,738 days (contents not shown)

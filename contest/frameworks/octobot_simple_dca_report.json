@@ -1,0 +1,61 @@
+{
+  "symbol_report": [
+    {
+      "PEARL/USDT": -20.07870572802798
+    }
+  ],
+  "bot_report": {
+    "profitability": {
+      "bigone": 2.4300204679226485
+    },
+    "market_average_profitability": {
+      "bigone": 49.64794498116915
+    },
+    "reference_market": "USDT",
+    "end_portfolio": {
+      "bigone": {
+        "USDT": {
+          "available": 950.000000008074,
+          "total": 950.000000008074
+        },
+        "PEARL": {
+          "available": 40.65007367937,
+          "total": 40.65007367937
+        }
+      }
+    },
+    "starting_portfolio": {
+      "bigone": {
+        "USDT": {
+          "available": 1000.0,
+          "total": 1000.0
+        },
+        "PEARL": {
+          "available": 0.0,
+          "total": 0.0
+        }
+      }
+    },
+    "trading_mode": "DCATradingMode"
+  },
+  "chart_identifiers": [
+    {
+      "symbol": "PEARL/USDT",
+      "exchange_id": "edee3c35-e431-4d8c-875d-a13d01910619",
+      "exchange_name": "bigone",
+      "time_frames": [
+        "1m",
+        "1h"
+      ]
+    }
+  ],
+  "errors_count": 1,
+  "contest_trades": [
+    [
+      1790812860,
+      "buy",
+      40.93663009,
+      1.2214
+    ]
+  ]
+}

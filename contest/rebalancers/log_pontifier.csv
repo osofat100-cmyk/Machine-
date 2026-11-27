@@ -1,0 +1,11 @@
+decided_utc,side,qty,price_seen,note
+2026-10-01 00:00,BUY,162.6082,1.2214,"user's own first balancing buy (README), not the program"
+2026-10-02 06:58,BUY,10.0,1.14,limit 1 touched; buy 10.0 @ 1.14
+2026-10-02 07:03,BUY,10.0,1.14,limit 3 touched; buy 10.0 @ 1.14
+
+filled_utc,action,price,account_$,cash,coins,source
+2026-10-01 00:01,BUY,1.2232,997.22,799.71,162.6082,BigONE PEARL-USDT
+2026-10-02 06:59,BUY,1.1484,984.98,788.14,172.6082,BigONE PEARL-USDT
+2026-10-02 07:04,BUY,1.1503,985.14,776.56,182.6082,BigONE PEARL-USDT
+end 2026-11-20 23:59,,,1107.99
+just holding,,,1475.67

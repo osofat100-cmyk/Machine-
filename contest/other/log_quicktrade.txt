@@ -1,0 +1,18 @@
+strategy_2_sma                       51 trades  $1,000 -> $270.39  causal=True
+strategy_3_ema                      117 trades  $1,000 -> $57.57  causal=True
+strategy_3_sma                       69 trades  $1,000 -> $260.31  causal=True
+strategy_adaptive_price_channel      55 trades  $1,000 -> $543.62  causal=True
+strategy_bollinger                   51 trades  $1,000 -> $388.47  causal=True
+strategy_bollinger_breakout          51 trades  $1,000 -> $434.07  causal=True
+strategy_buy_hold                     0 trades  $1,000 -> $1,457.13  causal=True
+strategy_cci                       ERROR StopIteration: 
+strategy_ichimoku                  ERROR IndexError: index 1 is out of bounds for axis 0 with size 1
+strategy_idris                      917 trades  $1,000 -> $0.00  causal=True
+strategy_kst                        133 trades  $1,000 -> $97.27  causal=True
+strategy_macd                       106 trades  $1,000 -> $116.94  causal=True
+strategy_macd_histogram_diff        667 trades  $1,000 -> $0.00  causal=True
+strategy_parabolic_SAR              199 trades  $1,000 -> $28.69  causal=True
+strategy_price_channel               69 trades  $1,000 -> $342.91  causal=True
+strategy_pump_detector                0 trades  $1,000 -> $698.57  causal=True
+strategy_rsi                          1 trades  $1,000 -> $1,150.16  causal=True
+strategy_supertrend                  64 trades  $1,000 -> $404.58  causal=True

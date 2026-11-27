@@ -1,0 +1,61 @@
+ADXMomentum 56 580.0840000000001 
+ASDTSRockwellTrading 326 8.222999999999956 
+AdxSmas 23 1121.001 
+AlmgrenChrissStrategy None None ImportError: Short strategies cannot run in spot markets. Please make sure that this is the correct strategy and that your trading mode configuration 
+AverageStrategy 4 2366.0370000000003 
+AwesomeMacd 15 881.846 
+Bandtastic 78 867.8679999999999 
+BbandRsi 5 660.634 
+BinHV27 42 783.733 
+BinHV45 39 589.165 
+BreakEven 0 1000.0 
+CCIStrategy 13 893.739 
+CMCWinner 22 799.174 
+ClucMay72018 20 813.5889999999999 
+CofiBitStrategy 172 91.10900000000004 
+CombinedBinHAndCluc 43 584.5319999999999 
+CustomStoplossWithPSAR 2 1438.304 
+Diamond 35 652.8240000000001 
+DoesNothingStrategy 0 1000.0 
+EMASkipPump 170 61.69399999999996 
+FAdxSmaStrategy None None ImportError: Short strategies cannot run in spot markets. Please make sure that this is the correct strategy and that your trading mode configuration 
+FReinforcedStrategy None None ImportError: Short strategies cannot run in spot markets. Please make sure that this is the correct strategy and that your trading mode configuration 
+FSampleStrategy None None ImportError: Short strategies cannot run in spot markets. Please make sure that this is the correct strategy and that your trading mode configuration 
+FSupertrendStrategy 39 398.405 
+FixedRiskRewardLoss None None 2026-11-21 15:32:09,465 - freqtrade - ERROR - Timeframe needs to be set in either configuration or as cli argument `--timeframe 5m`
+Freqtrade_backtest_validation_freqtrade1 23 1012.903 
+HourBasedStrategy 56 639.2719999999999 
+InformativeSample 0 1000.0 
+Low_BB 4 889.483 
+MACDStrategy 37 561.995 
+MACDStrategy_crossed 24 609.447 
+MultiMa 6 765.357 
+MultiRSI 100 226.05399999999997 
+PatternRecognition 1 1265.47 
+PowerTower 7 895.0409999999999 
+Quickie 27 643.511 
+ReinforcedAverageStrategy 0 1000.0 
+ReinforcedQuickie 62 489.268 
+ReinforcedSmoothScalp 35 559.317 
+Scalp 402 4.2859999999999445 
+Simple 97 401.679 
+SmoothOperator 58 542.904 
+SmoothScalp 36 678.197 
+Strategy001 71 396.28499999999997 
+Strategy001_custom_exit 74 458.48299999999995 
+Strategy002 5 1072.345 
+Strategy003 15 699.4580000000001 
+Strategy004 30 983.385 
+Strategy005 14 754.607 
+Supertrend 24 1119.323 
+SwingHighToSky 14 733.581 
+TDSequentialStrategy 12 1343.147 
+TWAPStrategy None None ImportError: Short strategies cannot run in spot markets. Please make sure that this is the correct strategy and that your trading mode configuration 
+TechnicalExampleStrategy 507 2.169999999999959 
+TrendFollowingStrategy 24 882.082 
+TrendRiderStrategy 14 744.3199999999999 
+UniversalMACD 37 1509.603 
+VolatilitySystem None None ImportError: Short strategies cannot run in spot markets. Please make sure that this is the correct strategy and that your trading mode configuration 
+hlhb 2 1034.045 
+mabStra 18 1295.42 
+multi_tf None None 2026-11-21 15:33:36,800 - freqtrade - ERROR - Impossible to load Strategy 'multi_tf'. This class does not exist or contains Python code errors.

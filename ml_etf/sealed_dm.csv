@@ -1,0 +1,10 @@
+horizon,model_a,model_b,dm_stat,p_value,note
+1,ridge_h1,gbm_h1,-2.4534,0.0142,positive = model b forecasts better
+1,ridge_h1,mlp_h1,-2.7577,0.0058,positive = model b forecasts better
+1,gbm_h1,mlp_h1,1.6393,0.1011,positive = model b forecasts better
+5,ridge_h5,gbm_h5,-1.9132,0.0557,positive = model b forecasts better
+5,ridge_h5,mlp_h5,-1.4910,0.1360,positive = model b forecasts better
+5,gbm_h5,mlp_h5,0.6306,0.5283,positive = model b forecasts better
+21,ridge_h21,gbm_h21,-1.5523,0.1206,positive = model b forecasts better
+21,ridge_h21,mlp_h21,-1.9869,0.0469,positive = model b forecasts better
+21,gbm_h21,mlp_h21,0.6291,0.5293,positive = model b forecasts better

@@ -1,0 +1,10 @@
+THE RULES:
+1. Golden rule: buy low, sell on a spike, sell a sliding winner, never panic.
+   a. Buy low only: buy a coin or stock only when its price is below its own 24-hour average. The system refuses other buys.
+   b. Sell on a spike: sell a holding when it spikes clearly above what you paid plus costs.
+   c. Sell a sliding winner: if a holding is above what you paid, has passed its high and keeps going down for a while, slowly or quickly, without coming back up, sell it while it is still a winner. Don't wait for a new spike. A small or flat move is not a slide; leave it alone.
+   d. Never panic: if a holding falls below what you paid, hold it and wait for it to recover. The system refuses sales at a loss.
+2. Trade rarely: keep all the money invested. Every sell plus buy costs 0.10%, so only take a profit when the gain is clearly bigger than that.
+3. All money invested: keep all the money invested at all times. If you sell something, invest that money again in the same answer.
+4. When the whole market is falling, wait: this is the only exception to rule 3. While the average of the whole market is falling and the fall is not over, do not buy. Nobody knows the lowest point, so keep the cash from anything you sell and wait. Judge it by the average of the whole market, not by a few coins or stocks.
+5. Buy again when the whole market turns up: as soon as the whole-market average is going up again, that is the signal to buy. Put all the waiting cash to work at once in coins or stocks that are in a dip. Don't wait for more proof and don't try to guess the exact lowest point.

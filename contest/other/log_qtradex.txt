@@ -1,0 +1,64 @@
+aroon                      5 trades  $1,000 -> $949.00  (first tick 2026-10-01)
+aroon_mfi_vwap           skipped: needs 105 warm-up days, history before 1 Oct has 97
+blackhole                ERROR TypeError: 'numpy.bool_' object is not iterable
+Traceback (most recent call last):
+  File "/home/user/Machine-/contest/other/run_qtradex.py", line 77, in main
+    res, why = run_bot(classes[0], candles)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/Machine-/contest/other/run_qtradex.py", line 53, in run_bot
+    _, raw, _ = backtest(bot, data, wallet, plot=False, show=False, return_states=True)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: 'numpy.bool_' object is not iterable
+classic_crypto_bot         1 trades  $1,000 -> $1,563.45  (first tick 2026-10-01)
+confluence                 3 trades  $1,000 -> $1,327.11  (first tick 2026-10-01)
+cryptomasterbot            1 trades  $1,000 -> $1,563.45  (first tick 2026-10-01)
+/home/user/Machine-/contest/other/venv312/lib/python3.12/site-packages/qtradex/private/wallet.py:54: RuntimeWarning: invalid value encountered in scalar add
+  (self.balances[pair[0]] * price + self.balances[pair[1]]) ** 2 / price
+/home/user/Machine-/contest/other/venv312/lib/python3.12/site-packages/qtradex/core/backtest.py:117: RuntimeWarning: invalid value encountered in scalar add
+  wallet[asset] += (volume / execution) * (1-wallet.fee/100)
+/home/user/Machine-/contest/other/venv312/lib/python3.12/site-packages/qtradex/core/backtest.py:118: RuntimeWarning: invalid value encountered in scalar subtract
+  wallet[currency] -= volume
+cthulhu                    5 trades  wallet became NaN
+directional_movement       1 trades  $1,000 -> $1,563.45  (first tick 2026-10-01)
+ema_cross                  7 trades  $1,000 -> $939.52  (first tick 2026-10-01)
+extinction_event          13 trades  $1,000 -> $668.66  (first tick 2026-10-01)
+forty96                    1 trades  $1,000 -> $1,563.45  (first tick 2026-10-01)
+fosc_uo_msw               38 trades  $1,000 -> $684.92  (first tick 2026-10-01)
+frama                     14 trades  $1,000 -> $873.61  (first tick 2026-10-01)
+harmonica                  5 trades  $1,000 -> $1,207.85  (first tick 2026-10-01)
+heiken_ashi              skipped: needs 140 warm-up days, history before 1 Oct has 97
+ichimoku                   3 trades  $1,000 -> $922.30  (first tick 2026-10-01)
+iching                   skipped: needs 101 warm-up days, history before 1 Oct has 97
+kst                       11 trades  $1,000 -> $774.82  (first tick 2026-10-01)
+lava_hkbot                 0 trades  $1,000 -> $1,000.00  (first tick 2026-10-01)
+ma_sabres                  7 trades  $1,000 -> $939.06  (first tick 2026-10-01)
+mac_dr_si                  0 trades  $1,000 -> $1,000.00  (first tick 2026-10-01)
+masterbot                  9 trades  $1,000 -> $1,127.15  (first tick 2026-10-01)
+/home/user/Machine-/contest/other/venv312/lib/python3.12/site-packages/qtradex/private/wallet.py:54: RuntimeWarning: invalid value encountered in scalar add
+  (self.balances[pair[0]] * price + self.balances[pair[1]]) ** 2 / price
+/home/user/Machine-/contest/other/venv312/lib/python3.12/site-packages/qtradex/core/backtest.py:117: RuntimeWarning: invalid value encountered in scalar add
+  wallet[asset] += (volume / execution) * (1-wallet.fee/100)
+/home/user/Machine-/contest/other/venv312/lib/python3.12/site-packages/qtradex/core/backtest.py:118: RuntimeWarning: invalid value encountered in scalar subtract
+  wallet[currency] -= volume
+parabolic_ten              4 trades  wallet became NaN
+renko                      0 trades  $1,000 -> $1,000.00  (first tick 2026-10-01)
+smi_adaptive_ravi        ERROR TypeError: Argument 'hlocv' has incorrect type (expected dict, got Data)
+Traceback (most recent call last):
+  File "/home/user/Machine-/contest/other/run_qtradex.py", line 77, in main
+    res, why = run_bot(classes[0], candles)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/Machine-/contest/other/run_qtradex.py", line 53, in run_bot
+    _, raw, _ = backtest(bot, data, wallet, plot=False, show=False, return_states=True)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: Argument 'hlocv' has incorrect type (expected dict, got Data)
+tradfibot                skipped: needs 200 warm-up days, history before 1 Oct has 97
+trima_zlema_fischer        7 trades  $1,000 -> $1,348.24  (first tick 2026-10-01)
+vortex                   ERROR TypeError: vortex() takes exactly 4 positional arguments (3 given)
+Traceback (most recent call last):
+  File "/home/user/Machine-/contest/other/run_qtradex.py", line 77, in main
+    res, why = run_bot(classes[0], candles)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/Machine-/contest/other/run_qtradex.py", line 53, in run_bot
+    _, raw, _ = backtest(bot, data, wallet, plot=False, show=False, return_states=True)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: vortex() takes exactly 4 positional arguments (3 given)

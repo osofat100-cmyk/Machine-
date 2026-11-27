@@ -1,0 +1,132 @@
+{
+  "N_trials": 36,
+  "development": "2006-01-03 to 2015-12-31",
+  "pbo_all_36": 0.5992063492063492,
+  "pbo_splits": 252,
+  "pbo_within_each_model_horizon": {
+    "ridge_h1": 0.5952380952380952,
+    "ridge_h5": 0.3055555555555556,
+    "ridge_h21": 0.3968253968253968,
+    "gbm_h1": 0.7817460317460317,
+    "gbm_h5": 0.5198412698412699,
+    "gbm_h21": 0.5912698412698413,
+    "mlp_h1": 0.8928571428571429,
+    "mlp_h5": 0.8849206349206349,
+    "mlp_h21": 0.28174603174603174
+  },
+  "chosen": {
+    "ridge_h1": {
+      "kind": "ridge",
+      "h": 1,
+      "menu_index": 3,
+      "setting": {
+        "alpha": 1000.0
+      },
+      "label": "ridge(alpha=1000)",
+      "dev_end_$": 1341.88,
+      "dev_sharpe_above_cash": 0.193
+    },
+    "ridge_h5": {
+      "kind": "ridge",
+      "h": 5,
+      "menu_index": 3,
+      "setting": {
+        "alpha": 1000.0
+      },
+      "label": "ridge(alpha=1000)",
+      "dev_end_$": 1666.55,
+      "dev_sharpe_above_cash": 0.288
+    },
+    "ridge_h21": {
+      "kind": "ridge",
+      "h": 21,
+      "menu_index": 1,
+      "setting": {
+        "alpha": 10.0
+      },
+      "label": "ridge(alpha=10)",
+      "dev_end_$": 1876.24,
+      "dev_sharpe_above_cash": 0.35
+    },
+    "gbm_h1": {
+      "kind": "gbm",
+      "h": 1,
+      "menu_index": 3,
+      "setting": {
+        "max_leaf_nodes": 6,
+        "max_iter": 300
+      },
+      "label": "gbm(leaves=6,trees=300)",
+      "dev_end_$": 1031.56,
+      "dev_sharpe_above_cash": 0.08
+    },
+    "gbm_h5": {
+      "kind": "gbm",
+      "h": 5,
+      "menu_index": 1,
+      "setting": {
+        "max_leaf_nodes": 4,
+        "max_iter": 300
+      },
+      "label": "gbm(leaves=4,trees=300)",
+      "dev_end_$": 1411.57,
+      "dev_sharpe_above_cash": 0.218
+    },
+    "gbm_h21": {
+      "kind": "gbm",
+      "h": 21,
+      "menu_index": 0,
+      "setting": {
+        "max_leaf_nodes": 4,
+        "max_iter": 100
+      },
+      "label": "gbm(leaves=4,trees=100)",
+      "dev_end_$": 2329.18,
+      "dev_sharpe_above_cash": 0.441
+    },
+    "mlp_h1": {
+      "kind": "mlp",
+      "h": 1,
+      "menu_index": 1,
+      "setting": {
+        "hidden": [
+          16
+        ],
+        "alpha": 0.1
+      },
+      "label": "mlp(hidden=(16,),alpha=0.1)",
+      "dev_end_$": 1916.11,
+      "dev_sharpe_above_cash": 0.341
+    },
+    "mlp_h5": {
+      "kind": "mlp",
+      "h": 5,
+      "menu_index": 3,
+      "setting": {
+        "hidden": [
+          32,
+          16
+        ],
+        "alpha": 0.1
+      },
+      "label": "mlp(hidden=(32, 16),alpha=0.1)",
+      "dev_end_$": 1571.97,
+      "dev_sharpe_above_cash": 0.262
+    },
+    "mlp_h21": {
+      "kind": "mlp",
+      "h": 21,
+      "menu_index": 1,
+      "setting": {
+        "hidden": [
+          16
+        ],
+        "alpha": 0.1
+      },
+      "label": "mlp(hidden=(16,),alpha=0.1)",
+      "dev_end_$": 2697.48,
+      "dev_sharpe_above_cash": 0.494
+    }
+  },
+  "dev_hold_spy_end_$": 1997.37
+}

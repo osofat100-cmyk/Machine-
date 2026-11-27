@@ -1,0 +1,49 @@
+development run: decisions from 2005-12-30 (first fill 2006-01-03) to 2015-12-31, 2517 trading days
+   1/36  h= 1  mlp(hidden=(16,),alpha=0.1)        $ 1,916.11  Sharpe above cash +0.34  trades  668  invested 20%  (189.0s)
+   2/36  h= 1  mlp(hidden=(16,),alpha=0.001)      $ 1,813.08  Sharpe above cash +0.32  trades  708  invested 20%  (193.2s)
+   3/36  h= 1  mlp(hidden=(32, 16),alpha=0.1)     $ 1,866.81  Sharpe above cash +0.33  trades  887  invested 24%  (348.8s)
+   4/36  h= 1  mlp(hidden=(32, 16),alpha=0.001)   $ 1,640.41  Sharpe above cash +0.28  trades  941  invested 25%  (349.4s)
+   5/36  h= 5  mlp(hidden=(16,),alpha=0.001)      $ 1,432.74  Sharpe above cash +0.22  trades  335  invested 45%  (232.6s)
+   6/36  h= 5  mlp(hidden=(16,),alpha=0.1)        $ 1,389.61  Sharpe above cash +0.21  trades  339  invested 46%  (242.0s)
+   7/36  h=21  mlp(hidden=(16,),alpha=0.001)      $ 2,470.30  Sharpe above cash +0.46  trades  110  invested 55%  (306.1s)
+   8/36  h=21  mlp(hidden=(16,),alpha=0.1)        $ 2,697.48  Sharpe above cash +0.49  trades  116  invested 55%  (301.0s)
+   9/36  h= 5  mlp(hidden=(32, 16),alpha=0.1)     $ 1,571.97  Sharpe above cash +0.26  trades  359  invested 46%  (452.2s)
+  10/36  h= 5  mlp(hidden=(32, 16),alpha=0.001)   $ 1,448.29  Sharpe above cash +0.23  trades  355  invested 46%  (455.1s)
+  11/36  h= 1  gbm(leaves=4,trees=100)            $   673.25  Sharpe above cash -0.14  trades  312  invested 9%  (6.7s)
+  12/36  h= 1  gbm(leaves=6,trees=100)            $   795.88  Sharpe above cash -0.06  trades  426  invested 11%  (6.9s)
+  13/36  h= 1  gbm(leaves=4,trees=300)            $   922.04  Sharpe above cash +0.02  trades  586  invested 15%  (16.0s)
+  14/36  h= 5  gbm(leaves=4,trees=100)            $   922.52  Sharpe above cash +0.02  trades  376  invested 47%  (3.6s)
+  15/36  h= 5  gbm(leaves=4,trees=300)            $ 1,411.57  Sharpe above cash +0.22  trades  426  invested 52%  (8.6s)
+  16/36  h= 1  gbm(leaves=6,trees=300)            $ 1,031.56  Sharpe above cash +0.08  trades  800  invested 19%  (18.3s)
+  17/36  h= 5  gbm(leaves=6,trees=100)            $ 1,168.83  Sharpe above cash +0.14  trades  400  invested 50%  (3.7s)
+  18/36  h=21  gbm(leaves=4,trees=100)            $ 2,329.18  Sharpe above cash +0.44  trades  135  invested 68%  (2.7s)
+  19/36  h= 5  gbm(leaves=6,trees=300)            $ 1,279.12  Sharpe above cash +0.18  trades  426  invested 53%  (9.6s)
+  20/36  h=21  gbm(leaves=4,trees=300)            $ 1,838.01  Sharpe above cash +0.33  trades  121  invested 60%  (6.8s)
+  21/36  h=21  gbm(leaves=6,trees=100)            $ 2,130.54  Sharpe above cash +0.40  trades  131  invested 68%  (3.5s)
+  22/36  h= 1  ridge(alpha=1)                     $ 1,140.11  Sharpe above cash +0.12  trades  668  invested 21%  (1.0s)
+  23/36  h= 1  ridge(alpha=10)                    $ 1,179.33  Sharpe above cash +0.14  trades  654  invested 21%  (0.8s)
+  24/36  h= 1  ridge(alpha=100)                   $   999.02  Sharpe above cash +0.06  trades  608  invested 19%  (0.7s)
+  25/36  h= 1  ridge(alpha=1000)                  $ 1,341.88  Sharpe above cash +0.19  trades  400  invested 12%  (0.7s)
+  26/36  h= 5  ridge(alpha=1)                     $ 1,001.97  Sharpe above cash +0.08  trades  349  invested 45%  (0.3s)
+  27/36  h= 5  ridge(alpha=10)                    $ 1,015.93  Sharpe above cash +0.09  trades  349  invested 45%  (0.3s)
+  28/36  h= 5  ridge(alpha=100)                   $ 1,034.26  Sharpe above cash +0.10  trades  347  invested 45%  (0.3s)
+  29/36  h= 5  ridge(alpha=1000)                  $ 1,666.55  Sharpe above cash +0.29  trades  323  invested 41%  (0.2s)
+  30/36  h=21  ridge(alpha=1)                     $ 1,723.02  Sharpe above cash +0.31  trades  114  invested 53%  (0.2s)
+  31/36  h=21  ridge(alpha=10)                    $ 1,876.24  Sharpe above cash +0.35  trades  114  invested 53%  (0.2s)
+  32/36  h=21  ridge(alpha=100)                   $ 1,536.65  Sharpe above cash +0.26  trades  107  invested 51%  (0.2s)
+  33/36  h=21  ridge(alpha=1000)                  $ 1,593.92  Sharpe above cash +0.27  trades  109  invested 54%  (0.2s)
+  34/36  h=21  gbm(leaves=6,trees=300)            $ 1,091.69  Sharpe above cash +0.12  trades  123  invested 60%  (8.1s)
+  35/36  h=21  mlp(hidden=(32, 16),alpha=0.001)   $ 1,471.63  Sharpe above cash +0.24  trades  114  invested 53%  (330.4s)
+  36/36  h=21  mlp(hidden=(32, 16),alpha=0.1)     $ 1,783.93  Sharpe above cash +0.31  trades  116  invested 53%  (327.2s)
+
+hold SPY over the same development years: $1,000 -> $1,997.37
+PBO over all 36: 0.60 (252 splits); within each model/horizon: ridge_h1 0.60, ridge_h5 0.31, ridge_h21 0.40, gbm_h1 0.78, gbm_h5 0.52, gbm_h21 0.59, mlp_h1 0.89, mlp_h5 0.88, mlp_h21 0.28
+  locked ridge_h1  ridge(alpha=1000)                  dev $1,341.88  Sharpe above cash +0.19
+  locked ridge_h5  ridge(alpha=1000)                  dev $1,666.55  Sharpe above cash +0.29
+  locked ridge_h21 ridge(alpha=10)                    dev $1,876.24  Sharpe above cash +0.35
+  locked gbm_h1    gbm(leaves=6,trees=300)            dev $1,031.56  Sharpe above cash +0.08
+  locked gbm_h5    gbm(leaves=4,trees=300)            dev $1,411.57  Sharpe above cash +0.22
+  locked gbm_h21   gbm(leaves=4,trees=100)            dev $2,329.18  Sharpe above cash +0.44
+  locked mlp_h1    mlp(hidden=(16,),alpha=0.1)        dev $1,916.11  Sharpe above cash +0.34
+  locked mlp_h5    mlp(hidden=(32, 16),alpha=0.1)     dev $1,571.97  Sharpe above cash +0.26
+  locked mlp_h21   mlp(hidden=(16,),alpha=0.1)        dev $2,697.48  Sharpe above cash +0.49

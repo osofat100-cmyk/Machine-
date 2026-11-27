@@ -1,0 +1,7 @@
+decided_utc,side,qty,price_seen,note
+2026-10-01 00:00,BUY,818.7326,1.2214,"pos {'symbol': 'PEARL', 'size': np.float64(818.7326018271284), 'side': 'buy'}"
+
+filled_utc,action,price,account_$,cash,coins,source
+2026-10-01 00:01,BUY,1.2232,986.1,0.0,811.8449,BigONE PEARL-USDT
+end 2026-11-20 23:59,,,1473.5
+just holding,,,1475.67

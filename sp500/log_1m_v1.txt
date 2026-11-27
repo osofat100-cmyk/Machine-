@@ -1,0 +1,15 @@
+ready 8190 steps, 11832 headlines on port 51537
+2026-10-26 10:31 value $1,000.00 vs SPY $1,000.00 | holds cash | [{"action": "BUY", "symbol": "CRWV"}] | 0.74s [0 answers, 18s]
+ready 8190 steps, 11832 headlines on port 34099
+2026-10-26 12:11 value $1,000.08 vs SPY $1,000.56 | holds MDB,SNPS,OKTA,CIEN,LITE,INTC,VG,DELL | [] | 0.61s [100 answers, 86s]
+2026-10-26 13:51 value $1,003.46 vs SPY $999.96 | holds SNPS,LITE,INTC,WDC,VYLR,EQT,P,DDOG,COHR | [] | 0.74s [200 answers, 164s]
+2026-10-26 15:31 value $1,003.41 vs SPY $1,000.44 | holds FICO,LUV,NRG | [{"action": "BUY", "symbol": "RBLX"}] | 1.06s [300 answers, 238s]
+2026-10-27 10:41 value $999.79 vs SPY $1,003.28 | holds AVGO,WDC,AMD,NUE,CRDO,DELL,ALAB | [] | 0.68s [400 answers, 313s]
+2026-10-27 12:21 value $1,018.49 vs SPY $1,006.76 | holds AVGO,WDC,AMD,NUE,CRDO,DELL,ALAB,CDNS,RKLB,LITE | [] | 0.60s [500 answers, 379s]
+2026-10-27 14:01 value $1,018.61 vs SPY $1,005.76 | holds AVGO,WDC,AMD,NUE,DELL,RKLB,CBRS,CDNS,UI | [{"action": "BUY", "symbol": "UI"}] | 0.64s [600 answers, 473s]
+2026-10-27 15:41 value $1,018.98 vs SPY $1,007.47 | holds AVGO,WDC,AMD,NUE,DELL,RKLB,CBRS,UI,IFF | [] | 0.64s [700 answers, 545s]
+2026-10-28 10:51 value $1,005.88 vs SPY $1,006.89 | holds AVGO,WDC,AMD,DELL,UI | [] | 0.66s [800 answers, 612s]
+2026-10-28 12:31 value $1,009.15 vs SPY $1,008.14 | holds AVGO,WDC,AMD,DELL,BSX | [] | 0.67s [900 answers, 690s]
+2026-10-28 14:11 value $1,006.57 vs SPY $1,007.21 | holds AVGO,WDC,AMD,DELL | [] | 0.63s [1000 answers, 756s]
+2026-10-28 15:51 value $1,009.68 vs SPY $1,009.04 | holds AVGO,WDC,AMD,DELL | [] | 0.60s [1100 answers, 818s]
+2026-10-29 11:01 value $1,012.94 vs SPY $1,005.83 | holds WDC,INSM,FTAI,LLY,ATI,ARXS,VRT,CCZ | [{"action": "BUY", "symbol": "CCZ"}] | 0.79s [1200 answers, 888s]

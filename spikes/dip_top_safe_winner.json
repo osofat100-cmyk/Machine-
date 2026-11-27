@@ -1,0 +1,13 @@
+{
+  "x": 0.01,
+  "y": 2.92,
+  "level_%": 70,
+  "tied_levels": [
+    70
+  ],
+  "area_average_$": 4594.17,
+  "own_training_$": 3636.16,
+  "training_trades": 1,
+  "practice_A_$": 1000.0,
+  "practice_B_$": 2468.74
+}

@@ -1,0 +1,226 @@
+[15:48:54.526] INFO: [Grid] Bot strategy started on PEARL/USDT pair. Current price is 1.2214 USDT
+[15:48:55.870] INFO: [MarketSimulator] Limit BUY order was filled at 1.1406947368421052 on 2026-10-02T07:19:00
+[15:48:56.565] INFO: [MarketSimulator] Limit BUY order was filled at 1.0630315789473683 on 2026-10-03T00:13:00
+[15:48:56.851] INFO: [MarketSimulator] Limit SELL order was filled at 1.1406947368421052 on 2026-10-03T07:27:00
+[15:48:56.971] INFO: [MarketSimulator] Limit BUY order was filled at 1.0630315789473683 on 2026-10-03T10:03:00
+[15:48:57.985] INFO: [MarketSimulator] Limit BUY order was filled at 0.9853684210526316 on 2026-10-04T11:52:00
+[15:48:58.467] INFO: [MarketSimulator] Limit SELL order was filled at 1.0630315789473683 on 2026-10-05T00:27:00
+[15:48:58.966] INFO: [MarketSimulator] Limit SELL order was filled at 1.1406947368421052 on 2026-10-05T14:15:00
+[15:48:59.323] INFO: [MarketSimulator] Limit SELL order was filled at 1.218357894736842 on 2026-10-05T20:50:00
+[15:48:59.794] INFO: [MarketSimulator] Limit BUY order was filled at 1.1406947368421052 on 2026-10-06T05:53:00
+[15:49:00.370] INFO: [MarketSimulator] Limit SELL order was filled at 1.218357894736842 on 2026-10-07T07:05:00
+[15:49:00.419] INFO: [MarketSimulator] Limit SELL order was filled at 1.296021052631579 on 2026-10-07T09:50:00
+[15:49:00.514] INFO: [MarketSimulator] Limit SELL order was filled at 1.3736842105263158 on 2026-10-07T15:13:00
+[15:49:00.564] INFO: [MarketSimulator] Limit SELL order was filled at 1.4513473684210525 on 2026-10-07T18:02:00
+[15:49:00.762] INFO: [MarketSimulator] Limit BUY order was filled at 1.3736842105263158 on 2026-10-08T02:32:00
+[15:49:00.797] INFO: [MarketSimulator] Limit BUY order was filled at 1.296021052631579 on 2026-10-08T03:30:00
+[15:49:00.985] INFO: [MarketSimulator] Limit SELL order was filled at 1.3736842105263158 on 2026-10-08T09:59:00
+[15:49:01.000] INFO: [MarketSimulator] Limit SELL order was filled at 1.4513473684210525 on 2026-10-08T10:42:00
+[15:49:01.036] INFO: [MarketSimulator] Limit BUY order was filled at 1.3736842105263158 on 2026-10-08T12:07:00
+[15:49:01.062] INFO: [MarketSimulator] Limit SELL order was filled at 1.4513473684210525 on 2026-10-08T12:59:00
+[15:49:01.204] INFO: [MarketSimulator] Limit BUY order was filled at 1.3736842105263158 on 2026-10-08T17:15:00
+[15:49:01.503] INFO: [MarketSimulator] Limit BUY order was filled at 1.296021052631579 on 2026-10-09T03:16:00
+[15:49:01.594] INFO: [MarketSimulator] Limit SELL order was filled at 1.3736842105263158 on 2026-10-09T06:37:00
+[15:49:01.683] INFO: [MarketSimulator] Limit SELL order was filled at 1.4513473684210525 on 2026-10-09T09:51:00
+[15:49:01.746] INFO: [MarketSimulator] Limit BUY order was filled at 1.3736842105263158 on 2026-10-09T11:56:00
+[15:49:01.781] INFO: [MarketSimulator] Limit SELL order was filled at 1.4513473684210525 on 2026-10-09T13:11:00
+[15:49:01.913] INFO: [MarketSimulator] Limit BUY order was filled at 1.3736842105263158 on 2026-10-09T17:10:00
+[15:49:04.043] INFO: [MarketSimulator] Limit SELL order was filled at 1.4513473684210525 on 2026-10-12T12:45:00
+[15:49:04.178] INFO: [MarketSimulator] Limit SELL order was filled at 1.5290105263157894 on 2026-10-12T18:53:00
+[15:49:04.190] INFO: [MarketSimulator] Limit SELL order was filled at 1.6066736842105263 on 2026-10-12T19:33:00
+[15:49:04.271] INFO: [MarketSimulator] Limit BUY order was filled at 1.5290105263157894 on 2026-10-13T00:09:00
+[15:49:04.413] INFO: [MarketSimulator] Limit SELL order was filled at 1.6066736842105263 on 2026-10-13T07:36:00
+[15:49:04.498] INFO: [MarketSimulator] Limit SELL order was filled at 1.6843368421052631 on 2026-10-13T11:43:00
+[15:49:04.582] INFO: [MarketSimulator] Limit SELL order was filled at 1.762 on 2026-10-13T14:44:00
+[15:49:05.718] INFO: [MarketSimulator] Limit BUY order was filled at 1.6843368421052631 on 2026-10-15T06:42:00
+[15:49:05.772] INFO: [MarketSimulator] Limit SELL order was filled at 1.762 on 2026-10-15T09:44:00
+[15:49:06.646] INFO: [MarketSimulator] Limit BUY order was filled at 1.6843368421052631 on 2026-10-17T02:58:00
+[15:49:06.736] INFO: [MarketSimulator] Limit SELL order was filled at 1.762 on 2026-10-17T07:07:00
+[15:49:06.881] INFO: [MarketSimulator] Limit BUY order was filled at 1.6843368421052631 on 2026-10-17T13:13:00
+[15:49:06.937] INFO: [MarketSimulator] Limit SELL order was filled at 1.762 on 2026-10-17T16:08:00
+[15:49:13.286] INFO: [MarketSimulator] Limit BUY order was filled at 1.6843368421052631 on 2026-10-28T02:30:00
+[15:49:13.478] INFO: [MarketSimulator] Limit BUY order was filled at 1.6066736842105263 on 2026-10-28T08:34:00
+[15:49:13.539] INFO: [MarketSimulator] Limit SELL order was filled at 1.6843368421052631 on 2026-10-28T11:25:00
+[15:49:13.555] INFO: [MarketSimulator] Limit SELL order was filled at 1.762 on 2026-10-28T11:51:00
+[15:49:14.625] INFO: [MarketSimulator] Limit BUY order was filled at 1.6843368421052631 on 2026-10-29T20:49:00
+[15:49:14.697] INFO: [MarketSimulator] Limit BUY order was filled at 1.6066736842105263 on 2026-10-29T22:08:00
+[15:49:14.845] INFO: [MarketSimulator] Limit BUY order was filled at 1.5290105263157894 on 2026-10-30T00:59:00
+[15:49:15.020] INFO: [MarketSimulator] Limit SELL order was filled at 1.6066736842105263 on 2026-10-30T04:26:00
+[15:49:15.128] INFO: [MarketSimulator] Limit SELL order was filled at 1.6843368421052631 on 2026-10-30T06:30:00
+[15:49:15.281] INFO: [MarketSimulator] Limit BUY order was filled at 1.6066736842105263 on 2026-10-30T09:24:00
+[15:49:15.513] INFO: [MarketSimulator] Limit BUY order was filled at 1.5290105263157894 on 2026-10-30T14:00:00
+[15:49:15.626] INFO: [MarketSimulator] Limit SELL order was filled at 1.6066736842105263 on 2026-10-30T17:30:00
+[15:49:15.691] INFO: [MarketSimulator] Limit BUY order was filled at 1.5290105263157894 on 2026-10-30T20:15:00
+[15:49:16.187] INFO: [MarketSimulator] Limit BUY order was filled at 1.4513473684210525 on 2026-10-31T11:29:00
+[15:49:16.924] INFO: [MarketSimulator] Limit SELL order was filled at 1.5290105263157894 on 2026-11-01T12:12:00
+[15:49:17.763] INFO: [MarketSimulator] Limit BUY order was filled at 1.4513473684210525 on 2026-11-03T02:00:00
+[15:49:17.824] INFO: [MarketSimulator] Limit BUY order was filled at 1.3736842105263158 on 2026-11-03T05:13:00
+[15:49:18.055] INFO: [MarketSimulator] Limit SELL order was filled at 1.4513473684210525 on 2026-11-03T17:10:00
+[15:49:18.696] INFO: [MarketSimulator] Limit SELL order was filled at 1.5290105263157894 on 2026-11-04T18:38:00
+[15:49:18.977] INFO: [MarketSimulator] Limit SELL order was filled at 1.6066736842105263 on 2026-11-05T02:14:00
+[15:49:19.254] INFO: [MarketSimulator] Limit SELL order was filled at 1.6843368421052631 on 2026-11-05T09:59:00
+[15:49:19.422] INFO: [MarketSimulator] Limit BUY order was filled at 1.6066736842105263 on 2026-11-05T15:02:00
+[15:49:19.430] INFO: [MarketSimulator] Limit BUY order was filled at 1.5290105263157894 on 2026-11-05T15:17:00
+[15:49:19.525] INFO: [MarketSimulator] Limit SELL order was filled at 1.6066736842105263 on 2026-11-05T17:57:00
+[15:49:20.101] INFO: [MarketSimulator] Limit SELL order was filled at 1.6843368421052631 on 2026-11-06T16:51:00
+[15:49:20.110] INFO: [MarketSimulator] Limit SELL order was filled at 1.762 on 2026-11-06T17:19:00
+[15:49:21.398] INFO: [MarketSimulator] Limit BUY order was filled at 1.6843368421052631 on 2026-11-09T00:59:00
+[15:49:21.659] INFO: [MarketSimulator] Limit BUY order was filled at 1.6066736842105263 on 2026-11-09T07:10:00
+[15:49:21.952] INFO: [MarketSimulator] Limit BUY order was filled at 1.5290105263157894 on 2026-11-09T14:19:00
+[15:49:22.020] INFO: [MarketSimulator] Limit SELL order was filled at 1.6066736842105263 on 2026-11-09T15:53:00
+[15:49:22.102] INFO: [MarketSimulator] Limit BUY order was filled at 1.5290105263157894 on 2026-11-09T18:40:00
+[15:49:22.157] INFO: [MarketSimulator] Limit SELL order was filled at 1.6066736842105263 on 2026-11-09T20:59:00
+[15:49:22.346] INFO: [MarketSimulator] Limit SELL order was filled at 1.6843368421052631 on 2026-11-10T06:12:00
+[15:49:22.485] INFO: [MarketSimulator] Limit BUY order was filled at 1.6066736842105263 on 2026-11-10T11:30:00
+[15:49:22.586] INFO: [MarketSimulator] Limit BUY order was filled at 1.5290105263157894 on 2026-11-10T15:20:00
+[15:49:22.607] INFO: [MarketSimulator] Limit BUY order was filled at 1.4513473684210525 on 2026-11-10T16:01:00
+[15:49:22.653] INFO: [MarketSimulator] Limit BUY order was filled at 1.3736842105263158 on 2026-11-10T17:10:00
+[15:49:22.823] INFO: [MarketSimulator] Limit SELL order was filled at 1.4513473684210525 on 2026-11-10T21:19:00
+[15:49:22.949] INFO: [MarketSimulator] Limit SELL order was filled at 1.5290105263157894 on 2026-11-11T00:42:00
+[15:49:22.986] INFO: [MarketSimulator] Limit BUY order was filled at 1.4513473684210525 on 2026-11-11T02:00:00
+[15:49:23.004] INFO: [MarketSimulator] Limit SELL order was filled at 1.5290105263157894 on 2026-11-11T02:36:00
+[15:49:23.053] INFO: [MarketSimulator] Limit BUY order was filled at 1.4513473684210525 on 2026-11-11T04:05:00
+[15:49:23.104] INFO: [MarketSimulator] Limit BUY order was filled at 1.3736842105263158 on 2026-11-11T06:10:00
+[15:49:23.339] INFO: [MarketSimulator] Limit SELL order was filled at 1.4513473684210525 on 2026-11-11T16:29:00
+[15:49:23.437] INFO: [MarketSimulator] Limit SELL order was filled at 1.5290105263157894 on 2026-11-11T20:55:00
+[15:49:23.609] INFO: [MarketSimulator] Limit BUY order was filled at 1.4513473684210525 on 2026-11-12T04:05:00
+[15:49:23.825] INFO: [MarketSimulator] Limit BUY order was filled at 1.3736842105263158 on 2026-11-12T14:06:00
+[15:49:23.840] INFO: [MarketSimulator] Limit BUY order was filled at 1.296021052631579 on 2026-11-12T14:51:00
+[15:49:23.843] INFO: [MarketSimulator] Limit BUY order was filled at 1.218357894736842 on 2026-11-12T14:59:00
+[15:49:23.855] INFO: [MarketSimulator] Limit SELL order was filled at 1.296021052631579 on 2026-11-12T15:30:00
+[15:49:23.954] INFO: [MarketSimulator] Limit SELL order was filled at 1.3736842105263158 on 2026-11-12T20:18:00
+[15:49:24.127] INFO: [MarketSimulator] Limit BUY order was filled at 1.296021052631579 on 2026-11-13T04:51:00
+[15:49:24.217] INFO: [MarketSimulator] Limit SELL order was filled at 1.3736842105263158 on 2026-11-13T09:09:00
+[15:49:24.340] INFO: [MarketSimulator] Limit SELL order was filled at 1.4513473684210525 on 2026-11-13T14:44:00
+[15:49:24.410] INFO: [MarketSimulator] Limit SELL order was filled at 1.5290105263157894 on 2026-11-13T18:00:00
+[15:49:24.454] INFO: [MarketSimulator] Limit SELL order was filled at 1.6066736842105263 on 2026-11-13T20:05:00
+[15:49:24.468] INFO: [MarketSimulator] Limit BUY order was filled at 1.5290105263157894 on 2026-11-13T20:44:00
+[15:49:24.500] INFO: [MarketSimulator] Limit BUY order was filled at 1.4513473684210525 on 2026-11-13T22:10:00
+[15:49:24.506] INFO: [MarketSimulator] Limit SELL order was filled at 1.5290105263157894 on 2026-11-13T22:29:00
+[15:49:24.523] INFO: [MarketSimulator] Limit SELL order was filled at 1.6066736842105263 on 2026-11-13T23:10:00
+[15:49:24.537] INFO: [MarketSimulator] Limit BUY order was filled at 1.5290105263157894 on 2026-11-13T23:50:00
+[15:49:24.576] INFO: [MarketSimulator] Limit SELL order was filled at 1.6066736842105263 on 2026-11-14T01:29:00
+[15:49:24.793] INFO: [MarketSimulator] Limit BUY order was filled at 1.5290105263157894 on 2026-11-14T10:15:00
+[15:49:24.953] INFO: [MarketSimulator] Limit BUY order was filled at 1.4513473684210525 on 2026-11-14T16:24:00
+[15:49:25.157] INFO: [MarketSimulator] Limit SELL order was filled at 1.5290105263157894 on 2026-11-15T00:36:00
+[15:49:25.660] INFO: [MarketSimulator] Limit SELL order was filled at 1.6066736842105263 on 2026-11-15T21:07:00
+[15:49:25.685] INFO: [MarketSimulator] Limit SELL order was filled at 1.6843368421052631 on 2026-11-15T22:20:00
+[15:49:25.686] INFO: [MarketSimulator] Limit SELL order was filled at 1.762 on 2026-11-15T22:22:00
+[15:49:25.688] INFO: [MarketSimulator] Limit BUY order was filled at 1.6843368421052631 on 2026-11-15T22:28:00
+[15:49:25.719] INFO: [MarketSimulator] Limit SELL order was filled at 1.762 on 2026-11-15T23:59:00
+[15:49:25.751] INFO: [MarketSimulator] Limit BUY order was filled at 1.6843368421052631 on 2026-11-16T01:35:00
+[15:49:25.761] INFO: [MarketSimulator] Limit BUY order was filled at 1.6066736842105263 on 2026-11-16T02:06:00
+[15:49:26.213] INFO: [MarketSimulator] Limit SELL order was filled at 1.6843368421052631 on 2026-11-16T16:29:00
+[15:49:26.449] INFO: [MarketSimulator] Limit BUY order was filled at 1.6066736842105263 on 2026-11-16T22:32:00
+[15:49:26.742] INFO: [MarketSimulator] Limit SELL order was filled at 1.6843368421052631 on 2026-11-17T05:15:00
+[15:49:27.003] INFO: [MarketSimulator] Limit SELL order was filled at 1.762 on 2026-11-17T13:12:00
+{
+ "which": "grid",
+ "settings": {
+  "highPrice": 1.762,
+  "lowPrice": 0.2864,
+  "gridLevels": 20,
+  "quantityPerGrid": 40.93
+ },
+ "sent": 115,
+ "filled": 108,
+ "skipped": 7,
+ "value": 1145.4596780780012,
+ "cash": 1145.4596780780012,
+ "coins": 0,
+ "holding": 1475.6743730516482,
+ "first": [
+  {
+   "time": "2026-10-02 07:20",
+   "action": "BUY",
+   "price": 1.1451,
+   "value": 999.3438347980001,
+   "source": "BigONE PEARL-USDT",
+   "cash": 952.802974399,
+   "coins": 40.93
+  },
+  {
+   "time": "2026-10-03 00:14",
+   "action": "BUY",
+   "price": 1.0551,
+   "value": 995.0813272960002,
+   "source": "BigONE PEARL-USDT",
+   "cash": 909.3154346980001,
+   "coins": 81.86
+  },
+  {
+   "time": "2026-10-03 07:28",
+   "action": "SELL",
+   "price": 1.144,
+   "value": 1002.3077398180002,
+   "source": "BigONE PEARL-USDT",
+   "cash": 955.8115872580001,
+   "coins": 40.93
+  },
+  {
+   "time": "2026-10-03 10:04",
+   "action": "BUY",
+   "price": 1.0651,
+   "value": 998.4906448550001,
+   "source": "BigONE PEARL-USDT",
+   "cash": 911.9118824570002,
+   "coins": 81.86
+  },
+  {
+   "time": "2026-10-04 11:53",
+   "action": "BUY",
+   "price": 0.9873,
+   "value": 991.6007751650002,
+   "source": "BigONE PEARL-USDT",
+   "cash": 871.2188221340002,
+   "coins": 122.78999999999999
+  },
+  {
+   "time": "2026-10-05 00:28",
+   "action": "SELL",
+   "price": 1.05,
+   "value": 999.2458156340002,
+   "source": "BigONE PEARL-USDT",
+   "cash": 913.8944866340003,
+   "coins": 81.85999999999999
+  }
+ ],
+ "last": [
+  {
+   "time": "2026-11-16 16:30",
+   "action": "SELL",
+   "price": 1.6805,
+   "value": 1139.8773336100012,
+   "source": "Coinbase PEARL-USD",
+   "cash": 1071.5759486650013,
+   "coins": 40.93
+  },
+  {
+   "time": "2026-11-16 22:33",
+   "action": "BUY",
+   "price": 1.6066,
+   "value": 1135.9531657670013,
+   "source": "Coinbase PEARL-USD",
+   "cash": 1005.3575036990013,
+   "coins": 81.86
+  },
+  {
+   "time": "2026-11-17 05:16",
+   "action": "SELL",
+   "price": 1.6848,
+   "value": 1142.3098076030012,
+   "source": "Coinbase PEARL-USD",
+   "cash": 1073.8336556510012,
+   "coins": 40.93
+  },
+  {
+   "time": "2026-11-17 13:13",
+   "action": "SELL",
+   "price": 1.7623,
+   "value": 1145.4596780780012,
+   "source": "Coinbase PEARL-USD",
+   "cash": 1145.4596780780012,
+   "coins": 0
+  }
+ ]
+}

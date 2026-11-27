@@ -1,0 +1,959 @@
+[2026-11-21T16:01:02.103Z] PEARL: diff=-20.00%, valueDiff=$-200.00
+[2026-11-21T16:01:02.104Z] WETH: diff=20.00%, valueDiff=$200.00
+[2026-11-21T16:01:02.104Z] 🔄 Rebalancing needed: 2 trades
+[2026-11-21T16:01:02.104Z] 🔄 Processing SELL trade: WETH (20.0% overweight)
+[2026-11-21T16:01:02.104Z] 🔴 SELLING 200.000000 WETH → WETH (excess: $200.00)
+[2026-11-21T16:01:02.104Z] ❌ Sell failed, skipping balance update for WETH
+[2026-11-21T16:01:02.106Z] 🔄 Processing BUY trade: PEARL (20.0% underweight)
+[2026-11-21T16:01:02.106Z] 🟢 BUYING PEARL with 200.000000 WETH (needed: $200.00)
+[2026-11-21T16:01:02.106Z] ✅ Updated WETH balance: -200.000000 (remaining: 800.000000)
+[2026-11-21T16:01:02.107Z] ⚖️ Rebalanced portfolio
+[2026-11-21T16:01:02.259Z] PEARL: diff=-0.05%, valueDiff=$-0.54
+[2026-11-21T16:01:02.259Z] WETH: diff=0.05%, valueDiff=$0.54
+[2026-11-21T16:01:02.259Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:02.403Z] PEARL: diff=0.41%, valueDiff=$4.07
+[2026-11-21T16:01:02.403Z] WETH: diff=-0.41%, valueDiff=$-4.07
+[2026-11-21T16:01:02.403Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:02.516Z] PEARL: diff=0.14%, valueDiff=$1.39
+[2026-11-21T16:01:02.516Z] WETH: diff=-0.14%, valueDiff=$-1.39
+[2026-11-21T16:01:02.516Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:02.585Z] PEARL: diff=0.26%, valueDiff=$2.55
+[2026-11-21T16:01:02.586Z] WETH: diff=-0.26%, valueDiff=$-2.55
+[2026-11-21T16:01:02.586Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:02.638Z] PEARL: diff=-0.59%, valueDiff=$-5.80
+[2026-11-21T16:01:02.638Z] WETH: diff=0.59%, valueDiff=$5.80
+[2026-11-21T16:01:02.638Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:02.703Z] PEARL: diff=-0.78%, valueDiff=$-7.68
+[2026-11-21T16:01:02.703Z] WETH: diff=0.78%, valueDiff=$7.68
+[2026-11-21T16:01:02.703Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:02.778Z] PEARL: diff=-0.67%, valueDiff=$-6.64
+[2026-11-21T16:01:02.778Z] WETH: diff=0.67%, valueDiff=$6.64
+[2026-11-21T16:01:02.778Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:02.820Z] PEARL: diff=-0.84%, valueDiff=$-8.33
+[2026-11-21T16:01:02.820Z] WETH: diff=0.84%, valueDiff=$8.33
+[2026-11-21T16:01:02.820Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:02.864Z] PEARL: diff=-1.20%, valueDiff=$-11.78
+[2026-11-21T16:01:02.864Z] WETH: diff=1.20%, valueDiff=$11.78
+[2026-11-21T16:01:02.864Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:02.909Z] PEARL: diff=-1.31%, valueDiff=$-12.87
+[2026-11-21T16:01:02.909Z] WETH: diff=1.31%, valueDiff=$12.87
+[2026-11-21T16:01:02.909Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:02.956Z] PEARL: diff=-1.46%, valueDiff=$-14.33
+[2026-11-21T16:01:02.956Z] WETH: diff=1.46%, valueDiff=$14.33
+[2026-11-21T16:01:02.956Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:03.000Z] PEARL: diff=-2.00%, valueDiff=$-19.48
+[2026-11-21T16:01:03.000Z] WETH: diff=2.00%, valueDiff=$19.48
+[2026-11-21T16:01:03.000Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:03.085Z] PEARL: diff=-3.04%, valueDiff=$-29.23
+[2026-11-21T16:01:03.085Z] WETH: diff=3.04%, valueDiff=$29.23
+[2026-11-21T16:01:03.085Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:03.117Z] PEARL: diff=-1.29%, valueDiff=$-12.63
+[2026-11-21T16:01:03.117Z] WETH: diff=1.29%, valueDiff=$12.63
+[2026-11-21T16:01:03.117Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:03.153Z] PEARL: diff=-1.94%, valueDiff=$-18.86
+[2026-11-21T16:01:03.153Z] WETH: diff=1.94%, valueDiff=$18.86
+[2026-11-21T16:01:03.153Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:03.214Z] PEARL: diff=-2.14%, valueDiff=$-20.76
+[2026-11-21T16:01:03.214Z] WETH: diff=2.14%, valueDiff=$20.76
+[2026-11-21T16:01:03.214Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:03.246Z] PEARL: diff=-2.02%, valueDiff=$-19.64
+[2026-11-21T16:01:03.246Z] WETH: diff=2.02%, valueDiff=$19.64
+[2026-11-21T16:01:03.246Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:03.276Z] PEARL: diff=-1.90%, valueDiff=$-18.50
+[2026-11-21T16:01:03.277Z] WETH: diff=1.90%, valueDiff=$18.50
+[2026-11-21T16:01:03.277Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:03.307Z] PEARL: diff=-2.38%, valueDiff=$-23.11
+[2026-11-21T16:01:03.307Z] WETH: diff=2.38%, valueDiff=$23.11
+[2026-11-21T16:01:03.307Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:03.349Z] PEARL: diff=-2.46%, valueDiff=$-23.80
+[2026-11-21T16:01:03.349Z] WETH: diff=2.46%, valueDiff=$23.80
+[2026-11-21T16:01:03.349Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:03.378Z] PEARL: diff=-3.18%, valueDiff=$-30.48
+[2026-11-21T16:01:03.379Z] WETH: diff=3.18%, valueDiff=$30.48
+[2026-11-21T16:01:03.379Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:03.411Z] PEARL: diff=-2.80%, valueDiff=$-27.04
+[2026-11-21T16:01:03.411Z] WETH: diff=2.80%, valueDiff=$27.04
+[2026-11-21T16:01:03.411Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:03.445Z] PEARL: diff=-2.52%, valueDiff=$-24.35
+[2026-11-21T16:01:03.445Z] WETH: diff=2.52%, valueDiff=$24.35
+[2026-11-21T16:01:03.445Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:03.472Z] PEARL: diff=-2.35%, valueDiff=$-22.77
+[2026-11-21T16:01:03.473Z] WETH: diff=2.35%, valueDiff=$22.77
+[2026-11-21T16:01:03.473Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:03.501Z] PEARL: diff=-1.58%, valueDiff=$-15.49
+[2026-11-21T16:01:03.501Z] WETH: diff=1.58%, valueDiff=$15.49
+[2026-11-21T16:01:03.501Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:03.528Z] PEARL: diff=-1.49%, valueDiff=$-14.63
+[2026-11-21T16:01:03.528Z] WETH: diff=1.49%, valueDiff=$14.63
+[2026-11-21T16:01:03.528Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:03.557Z] PEARL: diff=-1.54%, valueDiff=$-15.09
+[2026-11-21T16:01:03.557Z] WETH: diff=1.54%, valueDiff=$15.09
+[2026-11-21T16:01:03.557Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:03.586Z] PEARL: diff=-0.29%, valueDiff=$-2.84
+[2026-11-21T16:01:03.587Z] WETH: diff=0.29%, valueDiff=$2.84
+[2026-11-21T16:01:03.587Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:03.619Z] PEARL: diff=-0.44%, valueDiff=$-4.36
+[2026-11-21T16:01:03.619Z] WETH: diff=0.44%, valueDiff=$4.36
+[2026-11-21T16:01:03.619Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:03.651Z] PEARL: diff=-0.67%, valueDiff=$-6.59
+[2026-11-21T16:01:03.652Z] WETH: diff=0.67%, valueDiff=$6.59
+[2026-11-21T16:01:03.652Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:03.686Z] PEARL: diff=-0.66%, valueDiff=$-6.55
+[2026-11-21T16:01:03.686Z] WETH: diff=0.66%, valueDiff=$6.55
+[2026-11-21T16:01:03.686Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:03.720Z] PEARL: diff=-1.05%, valueDiff=$-10.35
+[2026-11-21T16:01:03.721Z] WETH: diff=1.05%, valueDiff=$10.35
+[2026-11-21T16:01:03.721Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:03.751Z] PEARL: diff=-0.97%, valueDiff=$-9.58
+[2026-11-21T16:01:03.752Z] WETH: diff=0.97%, valueDiff=$9.58
+[2026-11-21T16:01:03.752Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:03.783Z] PEARL: diff=-1.02%, valueDiff=$-10.06
+[2026-11-21T16:01:03.783Z] WETH: diff=1.02%, valueDiff=$10.06
+[2026-11-21T16:01:03.783Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:03.812Z] PEARL: diff=-1.18%, valueDiff=$-11.58
+[2026-11-21T16:01:03.812Z] WETH: diff=1.18%, valueDiff=$11.58
+[2026-11-21T16:01:03.812Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:03.842Z] PEARL: diff=-1.18%, valueDiff=$-11.57
+[2026-11-21T16:01:03.842Z] WETH: diff=1.18%, valueDiff=$11.57
+[2026-11-21T16:01:03.842Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:03.869Z] PEARL: diff=-1.47%, valueDiff=$-14.40
+[2026-11-21T16:01:03.869Z] WETH: diff=1.47%, valueDiff=$14.40
+[2026-11-21T16:01:03.869Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:03.897Z] PEARL: diff=-0.49%, valueDiff=$-4.90
+[2026-11-21T16:01:03.897Z] WETH: diff=0.49%, valueDiff=$4.90
+[2026-11-21T16:01:03.897Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:03.924Z] PEARL: diff=1.17%, valueDiff=$11.89
+[2026-11-21T16:01:03.925Z] WETH: diff=-1.17%, valueDiff=$-11.89
+[2026-11-21T16:01:03.925Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:03.955Z] PEARL: diff=2.15%, valueDiff=$22.02
+[2026-11-21T16:01:03.955Z] WETH: diff=-2.15%, valueDiff=$-22.02
+[2026-11-21T16:01:03.955Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:03.985Z] PEARL: diff=2.06%, valueDiff=$21.12
+[2026-11-21T16:01:03.985Z] WETH: diff=-2.06%, valueDiff=$-21.12
+[2026-11-21T16:01:03.985Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:04.012Z] PEARL: diff=2.63%, valueDiff=$27.12
+[2026-11-21T16:01:04.012Z] WETH: diff=-2.63%, valueDiff=$-27.12
+[2026-11-21T16:01:04.012Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:04.042Z] PEARL: diff=1.43%, valueDiff=$14.53
+[2026-11-21T16:01:04.042Z] WETH: diff=-1.43%, valueDiff=$-14.53
+[2026-11-21T16:01:04.042Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:04.072Z] PEARL: diff=1.06%, valueDiff=$10.75
+[2026-11-21T16:01:04.072Z] WETH: diff=-1.06%, valueDiff=$-10.75
+[2026-11-21T16:01:04.072Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:04.102Z] PEARL: diff=2.41%, valueDiff=$24.78
+[2026-11-21T16:01:04.102Z] WETH: diff=-2.41%, valueDiff=$-24.78
+[2026-11-21T16:01:04.102Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:04.131Z] PEARL: diff=2.47%, valueDiff=$25.45
+[2026-11-21T16:01:04.132Z] WETH: diff=-2.47%, valueDiff=$-25.45
+[2026-11-21T16:01:04.132Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:04.159Z] PEARL: diff=1.79%, valueDiff=$18.30
+[2026-11-21T16:01:04.159Z] WETH: diff=-1.79%, valueDiff=$-18.30
+[2026-11-21T16:01:04.159Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:04.195Z] PEARL: diff=1.81%, valueDiff=$18.46
+[2026-11-21T16:01:04.195Z] WETH: diff=-1.81%, valueDiff=$-18.46
+[2026-11-21T16:01:04.195Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:04.225Z] PEARL: diff=0.81%, valueDiff=$8.16
+[2026-11-21T16:01:04.225Z] WETH: diff=-0.81%, valueDiff=$-8.16
+[2026-11-21T16:01:04.225Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:04.287Z] PEARL: diff=2.16%, valueDiff=$22.12
+[2026-11-21T16:01:04.288Z] WETH: diff=-2.16%, valueDiff=$-22.12
+[2026-11-21T16:01:04.288Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:04.319Z] PEARL: diff=2.15%, valueDiff=$22.02
+[2026-11-21T16:01:04.319Z] WETH: diff=-2.15%, valueDiff=$-22.02
+[2026-11-21T16:01:04.319Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:04.350Z] PEARL: diff=2.17%, valueDiff=$22.29
+[2026-11-21T16:01:04.350Z] WETH: diff=-2.17%, valueDiff=$-22.29
+[2026-11-21T16:01:04.351Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:04.383Z] PEARL: diff=1.67%, valueDiff=$17.04
+[2026-11-21T16:01:04.383Z] WETH: diff=-1.67%, valueDiff=$-17.04
+[2026-11-21T16:01:04.383Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:04.416Z] PEARL: diff=1.72%, valueDiff=$17.50
+[2026-11-21T16:01:04.416Z] WETH: diff=-1.72%, valueDiff=$-17.50
+[2026-11-21T16:01:04.416Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:04.449Z] PEARL: diff=1.33%, valueDiff=$13.47
+[2026-11-21T16:01:04.449Z] WETH: diff=-1.33%, valueDiff=$-13.47
+[2026-11-21T16:01:04.449Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:04.479Z] PEARL: diff=1.53%, valueDiff=$15.55
+[2026-11-21T16:01:04.479Z] WETH: diff=-1.53%, valueDiff=$-15.55
+[2026-11-21T16:01:04.479Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:04.514Z] PEARL: diff=1.95%, valueDiff=$19.98
+[2026-11-21T16:01:04.515Z] WETH: diff=-1.95%, valueDiff=$-19.98
+[2026-11-21T16:01:04.515Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:04.546Z] PEARL: diff=2.11%, valueDiff=$21.57
+[2026-11-21T16:01:04.546Z] WETH: diff=-2.11%, valueDiff=$-21.57
+[2026-11-21T16:01:04.546Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:04.575Z] PEARL: diff=2.18%, valueDiff=$22.32
+[2026-11-21T16:01:04.575Z] WETH: diff=-2.18%, valueDiff=$-22.32
+[2026-11-21T16:01:04.575Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:04.606Z] PEARL: diff=2.40%, valueDiff=$24.64
+[2026-11-21T16:01:04.606Z] WETH: diff=-2.40%, valueDiff=$-24.64
+[2026-11-21T16:01:04.606Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:04.636Z] PEARL: diff=2.07%, valueDiff=$21.22
+[2026-11-21T16:01:04.636Z] WETH: diff=-2.07%, valueDiff=$-21.22
+[2026-11-21T16:01:04.636Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:04.667Z] PEARL: diff=1.80%, valueDiff=$18.40
+[2026-11-21T16:01:04.667Z] WETH: diff=-1.80%, valueDiff=$-18.40
+[2026-11-21T16:01:04.667Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:04.697Z] PEARL: diff=1.69%, valueDiff=$17.19
+[2026-11-21T16:01:04.697Z] WETH: diff=-1.69%, valueDiff=$-17.19
+[2026-11-21T16:01:04.697Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:04.728Z] PEARL: diff=1.34%, valueDiff=$13.58
+[2026-11-21T16:01:04.728Z] WETH: diff=-1.34%, valueDiff=$-13.58
+[2026-11-21T16:01:04.728Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:04.759Z] PEARL: diff=1.87%, valueDiff=$19.12
+[2026-11-21T16:01:04.759Z] WETH: diff=-1.87%, valueDiff=$-19.12
+[2026-11-21T16:01:04.759Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:04.790Z] PEARL: diff=2.05%, valueDiff=$20.98
+[2026-11-21T16:01:04.790Z] WETH: diff=-2.05%, valueDiff=$-20.98
+[2026-11-21T16:01:04.790Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:04.819Z] PEARL: diff=1.98%, valueDiff=$20.21
+[2026-11-21T16:01:04.819Z] WETH: diff=-1.98%, valueDiff=$-20.21
+[2026-11-21T16:01:04.819Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:04.850Z] PEARL: diff=1.81%, valueDiff=$18.46
+[2026-11-21T16:01:04.850Z] WETH: diff=-1.81%, valueDiff=$-18.46
+[2026-11-21T16:01:04.850Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:04.880Z] PEARL: diff=2.81%, valueDiff=$29.09
+[2026-11-21T16:01:04.880Z] WETH: diff=-2.81%, valueDiff=$-29.09
+[2026-11-21T16:01:04.880Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:04.911Z] PEARL: diff=2.83%, valueDiff=$29.29
+[2026-11-21T16:01:04.911Z] WETH: diff=-2.83%, valueDiff=$-29.29
+[2026-11-21T16:01:04.911Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:04.942Z] PEARL: diff=5.21%, valueDiff=$55.61
+[2026-11-21T16:01:04.942Z] WETH: diff=-5.21%, valueDiff=$-55.61
+[2026-11-21T16:01:04.942Z] 🔄 Rebalancing needed: 2 trades
+[2026-11-21T16:01:04.942Z] 🔄 Processing SELL trade: PEARL (5.2% overweight)
+[2026-11-21T16:01:04.942Z] 🔴 SELLING 33.838651 PEARL → WETH (excess: $55.61)
+[2026-11-21T16:01:04.942Z] ✅ Updated balances: PEARL -33.838651, WETH +54.494914
+[2026-11-21T16:01:04.943Z] 🔄 Processing WETH underweight: 5.2% underweight
+[2026-11-21T16:01:04.944Z] 💡 Need 1.11 more WETH value. Selling overweight tokens...
+[2026-11-21T16:01:04.944Z] ⚠️ Skipping small excess in PEARL: $0.00
+[2026-11-21T16:01:04.944Z] 🔄 Processing BUY trade: WETH (5.2% underweight)
+[2026-11-21T16:01:04.944Z] ✅ WETH rebalancing handled by selling overweight tokens
+[2026-11-21T16:01:04.944Z] ⚖️ Rebalanced portfolio
+[2026-11-21T16:01:04.975Z] PEARL: diff=-1.01%, valueDiff=$-10.61
+[2026-11-21T16:01:04.975Z] WETH: diff=1.01%, valueDiff=$10.61
+[2026-11-21T16:01:04.975Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:05.007Z] PEARL: diff=-1.12%, valueDiff=$-11.75
+[2026-11-21T16:01:05.007Z] WETH: diff=1.12%, valueDiff=$11.75
+[2026-11-21T16:01:05.007Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:05.054Z] PEARL: diff=0.01%, valueDiff=$0.08
+[2026-11-21T16:01:05.054Z] WETH: diff=-0.01%, valueDiff=$-0.08
+[2026-11-21T16:01:05.054Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:05.085Z] PEARL: diff=0.44%, valueDiff=$4.73
+[2026-11-21T16:01:05.085Z] WETH: diff=-0.44%, valueDiff=$-4.73
+[2026-11-21T16:01:05.085Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:05.116Z] PEARL: diff=1.96%, valueDiff=$21.43
+[2026-11-21T16:01:05.117Z] WETH: diff=-1.96%, valueDiff=$-21.43
+[2026-11-21T16:01:05.117Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:05.151Z] PEARL: diff=1.78%, valueDiff=$19.45
+[2026-11-21T16:01:05.151Z] WETH: diff=-1.78%, valueDiff=$-19.45
+[2026-11-21T16:01:05.151Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:05.186Z] PEARL: diff=1.40%, valueDiff=$15.20
+[2026-11-21T16:01:05.186Z] WETH: diff=-1.40%, valueDiff=$-15.20
+[2026-11-21T16:01:05.186Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:05.217Z] PEARL: diff=2.10%, valueDiff=$22.99
+[2026-11-21T16:01:05.217Z] WETH: diff=-2.10%, valueDiff=$-22.99
+[2026-11-21T16:01:05.217Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:05.248Z] PEARL: diff=3.01%, valueDiff=$33.41
+[2026-11-21T16:01:05.248Z] WETH: diff=-3.01%, valueDiff=$-33.41
+[2026-11-21T16:01:05.249Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:05.280Z] PEARL: diff=2.45%, valueDiff=$26.97
+[2026-11-21T16:01:05.280Z] WETH: diff=-2.45%, valueDiff=$-26.97
+[2026-11-21T16:01:05.280Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:05.311Z] PEARL: diff=3.43%, valueDiff=$38.22
+[2026-11-21T16:01:05.311Z] WETH: diff=-3.43%, valueDiff=$-38.22
+[2026-11-21T16:01:05.311Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:05.342Z] PEARL: diff=3.38%, valueDiff=$37.71
+[2026-11-21T16:01:05.342Z] WETH: diff=-3.38%, valueDiff=$-37.71
+[2026-11-21T16:01:05.342Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:05.375Z] PEARL: diff=2.26%, valueDiff=$24.84
+[2026-11-21T16:01:05.376Z] WETH: diff=-2.26%, valueDiff=$-24.84
+[2026-11-21T16:01:05.376Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:05.405Z] PEARL: diff=1.13%, valueDiff=$12.28
+[2026-11-21T16:01:05.405Z] WETH: diff=-1.13%, valueDiff=$-12.28
+[2026-11-21T16:01:05.406Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:05.435Z] PEARL: diff=0.18%, valueDiff=$1.96
+[2026-11-21T16:01:05.435Z] WETH: diff=-0.18%, valueDiff=$-1.96
+[2026-11-21T16:01:05.435Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:05.466Z] PEARL: diff=0.97%, valueDiff=$10.47
+[2026-11-21T16:01:05.466Z] WETH: diff=-0.97%, valueDiff=$-10.47
+[2026-11-21T16:01:05.467Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:05.498Z] PEARL: diff=1.47%, valueDiff=$16.03
+[2026-11-21T16:01:05.498Z] WETH: diff=-1.47%, valueDiff=$-16.03
+[2026-11-21T16:01:05.498Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:05.526Z] PEARL: diff=2.19%, valueDiff=$24.07
+[2026-11-21T16:01:05.526Z] WETH: diff=-2.19%, valueDiff=$-24.07
+[2026-11-21T16:01:05.526Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:05.556Z] PEARL: diff=2.29%, valueDiff=$25.19
+[2026-11-21T16:01:05.557Z] WETH: diff=-2.29%, valueDiff=$-25.19
+[2026-11-21T16:01:05.557Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:05.588Z] PEARL: diff=2.22%, valueDiff=$24.35
+[2026-11-21T16:01:05.588Z] WETH: diff=-2.22%, valueDiff=$-24.35
+[2026-11-21T16:01:05.588Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:05.616Z] PEARL: diff=1.86%, valueDiff=$20.31
+[2026-11-21T16:01:05.617Z] WETH: diff=-1.86%, valueDiff=$-20.31
+[2026-11-21T16:01:05.617Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:05.645Z] PEARL: diff=1.98%, valueDiff=$21.67
+[2026-11-21T16:01:05.645Z] WETH: diff=-1.98%, valueDiff=$-21.67
+[2026-11-21T16:01:05.645Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:05.674Z] PEARL: diff=1.35%, valueDiff=$14.70
+[2026-11-21T16:01:05.674Z] WETH: diff=-1.35%, valueDiff=$-14.70
+[2026-11-21T16:01:05.674Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:05.704Z] PEARL: diff=0.81%, valueDiff=$8.77
+[2026-11-21T16:01:05.704Z] WETH: diff=-0.81%, valueDiff=$-8.77
+[2026-11-21T16:01:05.704Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:05.735Z] PEARL: diff=0.78%, valueDiff=$8.41
+[2026-11-21T16:01:05.735Z] WETH: diff=-0.78%, valueDiff=$-8.41
+[2026-11-21T16:01:05.735Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:05.763Z] PEARL: diff=0.34%, valueDiff=$3.67
+[2026-11-21T16:01:05.763Z] WETH: diff=-0.34%, valueDiff=$-3.67
+[2026-11-21T16:01:05.763Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:05.794Z] PEARL: diff=0.84%, valueDiff=$9.03
+[2026-11-21T16:01:05.794Z] WETH: diff=-0.84%, valueDiff=$-9.03
+[2026-11-21T16:01:05.794Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:05.827Z] PEARL: diff=0.46%, valueDiff=$4.91
+[2026-11-21T16:01:05.827Z] WETH: diff=-0.46%, valueDiff=$-4.91
+[2026-11-21T16:01:05.827Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:05.861Z] PEARL: diff=0.74%, valueDiff=$8.00
+[2026-11-21T16:01:05.862Z] WETH: diff=-0.74%, valueDiff=$-8.00
+[2026-11-21T16:01:05.862Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:05.896Z] PEARL: diff=2.15%, valueDiff=$23.54
+[2026-11-21T16:01:05.896Z] WETH: diff=-2.15%, valueDiff=$-23.54
+[2026-11-21T16:01:05.896Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:05.928Z] PEARL: diff=1.68%, valueDiff=$18.32
+[2026-11-21T16:01:05.928Z] WETH: diff=-1.68%, valueDiff=$-18.32
+[2026-11-21T16:01:05.928Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:05.966Z] PEARL: diff=1.58%, valueDiff=$17.17
+[2026-11-21T16:01:05.966Z] WETH: diff=-1.58%, valueDiff=$-17.17
+[2026-11-21T16:01:05.966Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:06.006Z] PEARL: diff=1.92%, valueDiff=$21.01
+[2026-11-21T16:01:06.006Z] WETH: diff=-1.92%, valueDiff=$-21.01
+[2026-11-21T16:01:06.006Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:06.035Z] PEARL: diff=2.58%, valueDiff=$28.40
+[2026-11-21T16:01:06.035Z] WETH: diff=-2.58%, valueDiff=$-28.40
+[2026-11-21T16:01:06.035Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:06.064Z] PEARL: diff=3.13%, valueDiff=$34.81
+[2026-11-21T16:01:06.064Z] WETH: diff=-3.13%, valueDiff=$-34.81
+[2026-11-21T16:01:06.064Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:06.110Z] PEARL: diff=3.15%, valueDiff=$34.98
+[2026-11-21T16:01:06.110Z] WETH: diff=-3.15%, valueDiff=$-34.98
+[2026-11-21T16:01:06.110Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:06.141Z] PEARL: diff=2.40%, valueDiff=$26.36
+[2026-11-21T16:01:06.141Z] WETH: diff=-2.40%, valueDiff=$-26.36
+[2026-11-21T16:01:06.141Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:06.173Z] PEARL: diff=2.58%, valueDiff=$28.42
+[2026-11-21T16:01:06.173Z] WETH: diff=-2.58%, valueDiff=$-28.42
+[2026-11-21T16:01:06.173Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:06.207Z] PEARL: diff=1.94%, valueDiff=$21.17
+[2026-11-21T16:01:06.208Z] WETH: diff=-1.94%, valueDiff=$-21.17
+[2026-11-21T16:01:06.208Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:06.241Z] PEARL: diff=1.64%, valueDiff=$17.85
+[2026-11-21T16:01:06.241Z] WETH: diff=-1.64%, valueDiff=$-17.85
+[2026-11-21T16:01:06.241Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:06.275Z] PEARL: diff=2.83%, valueDiff=$31.32
+[2026-11-21T16:01:06.275Z] WETH: diff=-2.83%, valueDiff=$-31.32
+[2026-11-21T16:01:06.275Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:06.308Z] PEARL: diff=3.59%, valueDiff=$40.16
+[2026-11-21T16:01:06.308Z] WETH: diff=-3.59%, valueDiff=$-40.16
+[2026-11-21T16:01:06.308Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:06.339Z] PEARL: diff=3.19%, valueDiff=$35.46
+[2026-11-21T16:01:06.339Z] WETH: diff=-3.19%, valueDiff=$-35.46
+[2026-11-21T16:01:06.339Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:06.370Z] PEARL: diff=2.74%, valueDiff=$30.28
+[2026-11-21T16:01:06.371Z] WETH: diff=-2.74%, valueDiff=$-30.28
+[2026-11-21T16:01:06.371Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:06.400Z] PEARL: diff=2.83%, valueDiff=$31.32
+[2026-11-21T16:01:06.400Z] WETH: diff=-2.83%, valueDiff=$-31.32
+[2026-11-21T16:01:06.400Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:06.431Z] PEARL: diff=2.92%, valueDiff=$32.35
+[2026-11-21T16:01:06.431Z] WETH: diff=-2.92%, valueDiff=$-32.35
+[2026-11-21T16:01:06.431Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:06.463Z] PEARL: diff=4.77%, valueDiff=$54.11
+[2026-11-21T16:01:06.464Z] WETH: diff=-4.77%, valueDiff=$-54.11
+[2026-11-21T16:01:06.464Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:06.505Z] PEARL: diff=4.34%, valueDiff=$48.98
+[2026-11-21T16:01:06.505Z] WETH: diff=-4.34%, valueDiff=$-48.98
+[2026-11-21T16:01:06.505Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:06.536Z] PEARL: diff=4.51%, valueDiff=$51.00
+[2026-11-21T16:01:06.536Z] WETH: diff=-4.51%, valueDiff=$-51.00
+[2026-11-21T16:01:06.536Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:06.569Z] PEARL: diff=4.68%, valueDiff=$53.08
+[2026-11-21T16:01:06.569Z] WETH: diff=-4.68%, valueDiff=$-53.08
+[2026-11-21T16:01:06.569Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:06.598Z] PEARL: diff=5.16%, valueDiff=$58.87
+[2026-11-21T16:01:06.598Z] WETH: diff=-5.16%, valueDiff=$-58.87
+[2026-11-21T16:01:06.598Z] 🔄 Rebalancing needed: 2 trades
+[2026-11-21T16:01:06.598Z] 🔄 Processing SELL trade: PEARL (5.2% overweight)
+[2026-11-21T16:01:06.598Z] 🔴 SELLING 26.645988 PEARL → WETH (excess: $58.87)
+[2026-11-21T16:01:06.598Z] ✅ Updated balances: PEARL -26.645988, WETH +57.688990
+[2026-11-21T16:01:06.599Z] 🔄 Processing WETH underweight: 5.2% underweight
+[2026-11-21T16:01:06.599Z] 💡 Need 1.18 more WETH value. Selling overweight tokens...
+[2026-11-21T16:01:06.599Z] ⚠️ Skipping small excess in PEARL: $0.00
+[2026-11-21T16:01:06.599Z] 🔄 Processing BUY trade: WETH (5.2% underweight)
+[2026-11-21T16:01:06.599Z] ✅ WETH rebalancing handled by selling overweight tokens
+[2026-11-21T16:01:06.599Z] ⚖️ Rebalanced portfolio
+[2026-11-21T16:01:06.633Z] PEARL: diff=1.10%, valueDiff=$12.72
+[2026-11-21T16:01:06.633Z] WETH: diff=-1.10%, valueDiff=$-12.72
+[2026-11-21T16:01:06.633Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:06.670Z] PEARL: diff=0.73%, valueDiff=$8.37
+[2026-11-21T16:01:06.670Z] WETH: diff=-0.73%, valueDiff=$-8.37
+[2026-11-21T16:01:06.670Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:06.699Z] PEARL: diff=0.81%, valueDiff=$9.36
+[2026-11-21T16:01:06.699Z] WETH: diff=-0.81%, valueDiff=$-9.36
+[2026-11-21T16:01:06.699Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:06.730Z] PEARL: diff=1.59%, valueDiff=$18.52
+[2026-11-21T16:01:06.730Z] WETH: diff=-1.59%, valueDiff=$-18.52
+[2026-11-21T16:01:06.730Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:06.759Z] PEARL: diff=1.57%, valueDiff=$18.32
+[2026-11-21T16:01:06.759Z] WETH: diff=-1.57%, valueDiff=$-18.32
+[2026-11-21T16:01:06.759Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:06.794Z] PEARL: diff=0.67%, valueDiff=$7.70
+[2026-11-21T16:01:06.794Z] WETH: diff=-0.67%, valueDiff=$-7.70
+[2026-11-21T16:01:06.794Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:06.829Z] PEARL: diff=0.40%, valueDiff=$4.55
+[2026-11-21T16:01:06.829Z] WETH: diff=-0.40%, valueDiff=$-4.55
+[2026-11-21T16:01:06.829Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:06.862Z] PEARL: diff=-0.80%, valueDiff=$-9.04
+[2026-11-21T16:01:06.862Z] WETH: diff=0.80%, valueDiff=$9.04
+[2026-11-21T16:01:06.862Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:06.893Z] PEARL: diff=-0.17%, valueDiff=$-1.90
+[2026-11-21T16:01:06.893Z] WETH: diff=0.17%, valueDiff=$1.90
+[2026-11-21T16:01:06.893Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:06.924Z] PEARL: diff=-0.17%, valueDiff=$-1.91
+[2026-11-21T16:01:06.924Z] WETH: diff=0.17%, valueDiff=$1.91
+[2026-11-21T16:01:06.924Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:06.955Z] PEARL: diff=-0.67%, valueDiff=$-7.62
+[2026-11-21T16:01:06.955Z] WETH: diff=0.67%, valueDiff=$7.62
+[2026-11-21T16:01:06.955Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:06.989Z] PEARL: diff=-1.23%, valueDiff=$-13.83
+[2026-11-21T16:01:06.989Z] WETH: diff=1.23%, valueDiff=$13.83
+[2026-11-21T16:01:06.989Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:07.019Z] PEARL: diff=-1.12%, valueDiff=$-12.64
+[2026-11-21T16:01:07.019Z] WETH: diff=1.12%, valueDiff=$12.64
+[2026-11-21T16:01:07.019Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:07.064Z] PEARL: diff=-1.57%, valueDiff=$-17.53
+[2026-11-21T16:01:07.064Z] WETH: diff=1.57%, valueDiff=$17.53
+[2026-11-21T16:01:07.064Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:07.091Z] PEARL: diff=-1.22%, valueDiff=$-13.67
+[2026-11-21T16:01:07.091Z] WETH: diff=1.22%, valueDiff=$13.67
+[2026-11-21T16:01:07.091Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:07.121Z] PEARL: diff=-1.27%, valueDiff=$-14.29
+[2026-11-21T16:01:07.121Z] WETH: diff=1.27%, valueDiff=$14.29
+[2026-11-21T16:01:07.121Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:07.150Z] PEARL: diff=-1.53%, valueDiff=$-17.11
+[2026-11-21T16:01:07.150Z] WETH: diff=1.53%, valueDiff=$17.11
+[2026-11-21T16:01:07.150Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:07.178Z] PEARL: diff=-1.65%, valueDiff=$-18.42
+[2026-11-21T16:01:07.178Z] WETH: diff=1.65%, valueDiff=$18.42
+[2026-11-21T16:01:07.178Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:07.205Z] PEARL: diff=-1.82%, valueDiff=$-20.26
+[2026-11-21T16:01:07.205Z] WETH: diff=1.82%, valueDiff=$20.26
+[2026-11-21T16:01:07.205Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:07.235Z] PEARL: diff=-2.59%, valueDiff=$-28.64
+[2026-11-21T16:01:07.236Z] WETH: diff=2.59%, valueDiff=$28.64
+[2026-11-21T16:01:07.236Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:07.263Z] PEARL: diff=-2.32%, valueDiff=$-25.71
+[2026-11-21T16:01:07.263Z] WETH: diff=2.32%, valueDiff=$25.71
+[2026-11-21T16:01:07.263Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:07.290Z] PEARL: diff=-2.15%, valueDiff=$-23.84
+[2026-11-21T16:01:07.290Z] WETH: diff=2.15%, valueDiff=$23.84
+[2026-11-21T16:01:07.290Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:07.339Z] PEARL: diff=-2.62%, valueDiff=$-28.94
+[2026-11-21T16:01:07.339Z] WETH: diff=2.62%, valueDiff=$28.94
+[2026-11-21T16:01:07.339Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:07.382Z] PEARL: diff=-3.08%, valueDiff=$-33.77
+[2026-11-21T16:01:07.382Z] WETH: diff=3.08%, valueDiff=$33.77
+[2026-11-21T16:01:07.382Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:07.409Z] PEARL: diff=-3.08%, valueDiff=$-33.78
+[2026-11-21T16:01:07.409Z] WETH: diff=3.08%, valueDiff=$33.78
+[2026-11-21T16:01:07.409Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:07.437Z] PEARL: diff=-2.44%, valueDiff=$-26.97
+[2026-11-21T16:01:07.437Z] WETH: diff=2.44%, valueDiff=$26.97
+[2026-11-21T16:01:07.437Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:07.467Z] PEARL: diff=-2.29%, valueDiff=$-25.42
+[2026-11-21T16:01:07.468Z] WETH: diff=2.29%, valueDiff=$25.42
+[2026-11-21T16:01:07.468Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:07.497Z] PEARL: diff=-2.40%, valueDiff=$-26.55
+[2026-11-21T16:01:07.497Z] WETH: diff=2.40%, valueDiff=$26.55
+[2026-11-21T16:01:07.497Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:07.531Z] PEARL: diff=-3.40%, valueDiff=$-37.23
+[2026-11-21T16:01:07.531Z] WETH: diff=3.40%, valueDiff=$37.23
+[2026-11-21T16:01:07.531Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:07.562Z] PEARL: diff=-3.42%, valueDiff=$-37.43
+[2026-11-21T16:01:07.562Z] WETH: diff=3.42%, valueDiff=$37.43
+[2026-11-21T16:01:07.562Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:07.590Z] PEARL: diff=-2.95%, valueDiff=$-32.44
+[2026-11-21T16:01:07.590Z] WETH: diff=2.95%, valueDiff=$32.44
+[2026-11-21T16:01:07.590Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:07.616Z] PEARL: diff=-2.84%, valueDiff=$-31.26
+[2026-11-21T16:01:07.616Z] WETH: diff=2.84%, valueDiff=$31.26
+[2026-11-21T16:01:07.616Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:07.644Z] PEARL: diff=-2.98%, valueDiff=$-32.80
+[2026-11-21T16:01:07.644Z] WETH: diff=2.98%, valueDiff=$32.80
+[2026-11-21T16:01:07.644Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:07.671Z] PEARL: diff=-2.96%, valueDiff=$-32.53
+[2026-11-21T16:01:07.671Z] WETH: diff=2.96%, valueDiff=$32.53
+[2026-11-21T16:01:07.671Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:07.697Z] PEARL: diff=-3.45%, valueDiff=$-37.69
+[2026-11-21T16:01:07.697Z] WETH: diff=3.45%, valueDiff=$37.69
+[2026-11-21T16:01:07.697Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:07.722Z] PEARL: diff=-3.34%, valueDiff=$-36.56
+[2026-11-21T16:01:07.722Z] WETH: diff=3.34%, valueDiff=$36.56
+[2026-11-21T16:01:07.722Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:07.751Z] PEARL: diff=-3.54%, valueDiff=$-38.69
+[2026-11-21T16:01:07.752Z] WETH: diff=3.54%, valueDiff=$38.69
+[2026-11-21T16:01:07.752Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:07.778Z] PEARL: diff=-3.63%, valueDiff=$-39.61
+[2026-11-21T16:01:07.779Z] WETH: diff=3.63%, valueDiff=$39.61
+[2026-11-21T16:01:07.779Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:07.805Z] PEARL: diff=-3.73%, valueDiff=$-40.68
+[2026-11-21T16:01:07.805Z] WETH: diff=3.73%, valueDiff=$40.68
+[2026-11-21T16:01:07.805Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:07.832Z] PEARL: diff=-3.78%, valueDiff=$-41.22
+[2026-11-21T16:01:07.833Z] WETH: diff=3.78%, valueDiff=$41.22
+[2026-11-21T16:01:07.833Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:07.861Z] PEARL: diff=-4.13%, valueDiff=$-44.78
+[2026-11-21T16:01:07.861Z] WETH: diff=4.13%, valueDiff=$44.78
+[2026-11-21T16:01:07.861Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:07.887Z] PEARL: diff=-4.49%, valueDiff=$-48.47
+[2026-11-21T16:01:07.888Z] WETH: diff=4.49%, valueDiff=$48.47
+[2026-11-21T16:01:07.888Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:07.916Z] PEARL: diff=-3.19%, valueDiff=$-35.01
+[2026-11-21T16:01:07.916Z] WETH: diff=3.19%, valueDiff=$35.01
+[2026-11-21T16:01:07.916Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:07.944Z] PEARL: diff=-3.69%, valueDiff=$-40.27
+[2026-11-21T16:01:07.945Z] WETH: diff=3.69%, valueDiff=$40.27
+[2026-11-21T16:01:07.945Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:07.976Z] PEARL: diff=-2.76%, valueDiff=$-30.44
+[2026-11-21T16:01:07.977Z] WETH: diff=2.76%, valueDiff=$30.44
+[2026-11-21T16:01:07.977Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:08.009Z] PEARL: diff=-2.60%, valueDiff=$-28.76
+[2026-11-21T16:01:08.009Z] WETH: diff=2.60%, valueDiff=$28.76
+[2026-11-21T16:01:08.009Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:08.045Z] PEARL: diff=-3.53%, valueDiff=$-38.51
+[2026-11-21T16:01:08.045Z] WETH: diff=3.53%, valueDiff=$38.51
+[2026-11-21T16:01:08.045Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:08.077Z] PEARL: diff=-3.22%, valueDiff=$-35.29
+[2026-11-21T16:01:08.077Z] WETH: diff=3.22%, valueDiff=$35.29
+[2026-11-21T16:01:08.077Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:08.106Z] PEARL: diff=-3.21%, valueDiff=$-35.21
+[2026-11-21T16:01:08.107Z] WETH: diff=3.21%, valueDiff=$35.21
+[2026-11-21T16:01:08.107Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:08.136Z] PEARL: diff=-2.95%, valueDiff=$-32.48
+[2026-11-21T16:01:08.136Z] WETH: diff=2.95%, valueDiff=$32.48
+[2026-11-21T16:01:08.136Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:08.164Z] PEARL: diff=-3.29%, valueDiff=$-36.04
+[2026-11-21T16:01:08.164Z] WETH: diff=3.29%, valueDiff=$36.04
+[2026-11-21T16:01:08.164Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:08.193Z] PEARL: diff=-5.02%, valueDiff=$-53.87
+[2026-11-21T16:01:08.193Z] WETH: diff=5.02%, valueDiff=$53.87
+[2026-11-21T16:01:08.193Z] 🔄 Rebalancing needed: 2 trades
+[2026-11-21T16:01:08.193Z] 🔄 Processing SELL trade: WETH (5.0% overweight)
+[2026-11-21T16:01:08.193Z] 🔴 SELLING 53.872753 WETH → WETH (excess: $53.87)
+[2026-11-21T16:01:08.193Z] ❌ Sell failed, skipping balance update for WETH
+[2026-11-21T16:01:08.194Z] 🔄 Processing BUY trade: PEARL (5.0% underweight)
+[2026-11-21T16:01:08.194Z] 🟢 BUYING PEARL with 53.872753 WETH (needed: $53.87)
+[2026-11-21T16:01:08.194Z] ✅ Updated WETH balance: -53.872753 (remaining: 858.524137)
+[2026-11-21T16:01:08.195Z] ⚖️ Rebalanced portfolio
+[2026-11-21T16:01:08.222Z] PEARL: diff=-0.16%, valueDiff=$-1.73
+[2026-11-21T16:01:08.222Z] WETH: diff=0.16%, valueDiff=$1.73
+[2026-11-21T16:01:08.222Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:08.254Z] PEARL: diff=1.60%, valueDiff=$17.56
+[2026-11-21T16:01:08.254Z] WETH: diff=-1.60%, valueDiff=$-17.56
+[2026-11-21T16:01:08.254Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:08.282Z] PEARL: diff=0.28%, valueDiff=$3.07
+[2026-11-21T16:01:08.282Z] WETH: diff=-0.28%, valueDiff=$-3.07
+[2026-11-21T16:01:08.282Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:08.310Z] PEARL: diff=0.14%, valueDiff=$1.54
+[2026-11-21T16:01:08.310Z] WETH: diff=-0.14%, valueDiff=$-1.54
+[2026-11-21T16:01:08.310Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:08.338Z] PEARL: diff=0.01%, valueDiff=$0.07
+[2026-11-21T16:01:08.338Z] WETH: diff=-0.01%, valueDiff=$-0.07
+[2026-11-21T16:01:08.338Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:08.370Z] PEARL: diff=-0.46%, valueDiff=$-4.94
+[2026-11-21T16:01:08.370Z] WETH: diff=0.46%, valueDiff=$4.94
+[2026-11-21T16:01:08.370Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:08.401Z] PEARL: diff=-0.25%, valueDiff=$-2.65
+[2026-11-21T16:01:08.401Z] WETH: diff=0.25%, valueDiff=$2.65
+[2026-11-21T16:01:08.401Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:08.429Z] PEARL: diff=-0.78%, valueDiff=$-8.31
+[2026-11-21T16:01:08.429Z] WETH: diff=0.78%, valueDiff=$8.31
+[2026-11-21T16:01:08.429Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:08.458Z] PEARL: diff=-1.09%, valueDiff=$-11.52
+[2026-11-21T16:01:08.458Z] WETH: diff=1.09%, valueDiff=$11.52
+[2026-11-21T16:01:08.458Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:08.490Z] PEARL: diff=-1.37%, valueDiff=$-14.39
+[2026-11-21T16:01:08.490Z] WETH: diff=1.37%, valueDiff=$14.39
+[2026-11-21T16:01:08.490Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:08.518Z] PEARL: diff=-1.23%, valueDiff=$-13.03
+[2026-11-21T16:01:08.518Z] WETH: diff=1.23%, valueDiff=$13.03
+[2026-11-21T16:01:08.518Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:08.548Z] PEARL: diff=-1.12%, valueDiff=$-11.84
+[2026-11-21T16:01:08.548Z] WETH: diff=1.12%, valueDiff=$11.84
+[2026-11-21T16:01:08.548Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:08.577Z] PEARL: diff=-1.12%, valueDiff=$-11.81
+[2026-11-21T16:01:08.577Z] WETH: diff=1.12%, valueDiff=$11.81
+[2026-11-21T16:01:08.577Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:08.608Z] PEARL: diff=-0.70%, valueDiff=$-7.39
+[2026-11-21T16:01:08.608Z] WETH: diff=0.70%, valueDiff=$7.39
+[2026-11-21T16:01:08.608Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:08.637Z] PEARL: diff=-0.33%, valueDiff=$-3.57
+[2026-11-21T16:01:08.637Z] WETH: diff=0.33%, valueDiff=$3.57
+[2026-11-21T16:01:08.638Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:08.668Z] PEARL: diff=-0.40%, valueDiff=$-4.24
+[2026-11-21T16:01:08.668Z] WETH: diff=0.40%, valueDiff=$4.24
+[2026-11-21T16:01:08.668Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:08.694Z] PEARL: diff=-0.29%, valueDiff=$-3.13
+[2026-11-21T16:01:08.694Z] WETH: diff=0.29%, valueDiff=$3.13
+[2026-11-21T16:01:08.694Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:08.721Z] PEARL: diff=-0.34%, valueDiff=$-3.59
+[2026-11-21T16:01:08.721Z] WETH: diff=0.34%, valueDiff=$3.59
+[2026-11-21T16:01:08.721Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:08.749Z] PEARL: diff=-0.43%, valueDiff=$-4.62
+[2026-11-21T16:01:08.749Z] WETH: diff=0.43%, valueDiff=$4.62
+[2026-11-21T16:01:08.749Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:08.777Z] PEARL: diff=-0.39%, valueDiff=$-4.17
+[2026-11-21T16:01:08.778Z] WETH: diff=0.39%, valueDiff=$4.17
+[2026-11-21T16:01:08.778Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:08.804Z] PEARL: diff=-0.20%, valueDiff=$-2.16
+[2026-11-21T16:01:08.805Z] WETH: diff=0.20%, valueDiff=$2.16
+[2026-11-21T16:01:08.805Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:08.839Z] PEARL: diff=-0.65%, valueDiff=$-6.93
+[2026-11-21T16:01:08.840Z] WETH: diff=0.65%, valueDiff=$6.93
+[2026-11-21T16:01:08.840Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:08.868Z] PEARL: diff=-0.81%, valueDiff=$-8.63
+[2026-11-21T16:01:08.868Z] WETH: diff=0.81%, valueDiff=$8.63
+[2026-11-21T16:01:08.868Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:08.896Z] PEARL: diff=-0.91%, valueDiff=$-9.65
+[2026-11-21T16:01:08.896Z] WETH: diff=0.91%, valueDiff=$9.65
+[2026-11-21T16:01:08.896Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:08.924Z] PEARL: diff=-1.34%, valueDiff=$-14.10
+[2026-11-21T16:01:08.924Z] WETH: diff=1.34%, valueDiff=$14.10
+[2026-11-21T16:01:08.924Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:08.950Z] PEARL: diff=-2.00%, valueDiff=$-20.88
+[2026-11-21T16:01:08.950Z] WETH: diff=2.00%, valueDiff=$20.88
+[2026-11-21T16:01:08.951Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:08.980Z] PEARL: diff=-1.87%, valueDiff=$-19.57
+[2026-11-21T16:01:08.980Z] WETH: diff=1.87%, valueDiff=$19.57
+[2026-11-21T16:01:08.980Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:09.006Z] PEARL: diff=-1.37%, valueDiff=$-14.39
+[2026-11-21T16:01:09.006Z] WETH: diff=1.37%, valueDiff=$14.39
+[2026-11-21T16:01:09.006Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:09.033Z] PEARL: diff=-1.20%, valueDiff=$-12.72
+[2026-11-21T16:01:09.033Z] WETH: diff=1.20%, valueDiff=$12.72
+[2026-11-21T16:01:09.033Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:09.060Z] PEARL: diff=-1.07%, valueDiff=$-11.33
+[2026-11-21T16:01:09.060Z] WETH: diff=1.07%, valueDiff=$11.33
+[2026-11-21T16:01:09.060Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:09.091Z] PEARL: diff=-1.14%, valueDiff=$-12.05
+[2026-11-21T16:01:09.091Z] WETH: diff=1.14%, valueDiff=$12.05
+[2026-11-21T16:01:09.091Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:09.118Z] PEARL: diff=-1.05%, valueDiff=$-11.14
+[2026-11-21T16:01:09.118Z] WETH: diff=1.05%, valueDiff=$11.14
+[2026-11-21T16:01:09.118Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:09.145Z] PEARL: diff=-0.91%, valueDiff=$-9.67
+[2026-11-21T16:01:09.145Z] WETH: diff=0.91%, valueDiff=$9.67
+[2026-11-21T16:01:09.145Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:09.171Z] PEARL: diff=-0.65%, valueDiff=$-6.88
+[2026-11-21T16:01:09.171Z] WETH: diff=0.65%, valueDiff=$6.88
+[2026-11-21T16:01:09.171Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:09.199Z] PEARL: diff=-0.19%, valueDiff=$-2.01
+[2026-11-21T16:01:09.199Z] WETH: diff=0.19%, valueDiff=$2.01
+[2026-11-21T16:01:09.199Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:09.227Z] PEARL: diff=0.22%, valueDiff=$2.37
+[2026-11-21T16:01:09.227Z] WETH: diff=-0.22%, valueDiff=$-2.37
+[2026-11-21T16:01:09.227Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:09.257Z] PEARL: diff=0.65%, valueDiff=$7.07
+[2026-11-21T16:01:09.257Z] WETH: diff=-0.65%, valueDiff=$-7.07
+[2026-11-21T16:01:09.257Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:09.283Z] PEARL: diff=1.13%, valueDiff=$12.27
+[2026-11-21T16:01:09.283Z] WETH: diff=-1.13%, valueDiff=$-12.27
+[2026-11-21T16:01:09.283Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:09.310Z] PEARL: diff=1.04%, valueDiff=$11.29
+[2026-11-21T16:01:09.310Z] WETH: diff=-1.04%, valueDiff=$-11.29
+[2026-11-21T16:01:09.310Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:09.338Z] PEARL: diff=-0.08%, valueDiff=$-0.91
+[2026-11-21T16:01:09.338Z] WETH: diff=0.08%, valueDiff=$0.91
+[2026-11-21T16:01:09.338Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:09.374Z] PEARL: diff=0.82%, valueDiff=$8.92
+[2026-11-21T16:01:09.375Z] WETH: diff=-0.82%, valueDiff=$-8.92
+[2026-11-21T16:01:09.375Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:09.404Z] PEARL: diff=0.31%, valueDiff=$3.33
+[2026-11-21T16:01:09.404Z] WETH: diff=-0.31%, valueDiff=$-3.33
+[2026-11-21T16:01:09.404Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:09.429Z] PEARL: diff=0.69%, valueDiff=$7.41
+[2026-11-21T16:01:09.429Z] WETH: diff=-0.69%, valueDiff=$-7.41
+[2026-11-21T16:01:09.429Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:09.458Z] PEARL: diff=0.83%, valueDiff=$9.00
+[2026-11-21T16:01:09.458Z] WETH: diff=-0.83%, valueDiff=$-9.00
+[2026-11-21T16:01:09.458Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:09.491Z] PEARL: diff=1.04%, valueDiff=$11.32
+[2026-11-21T16:01:09.491Z] WETH: diff=-1.04%, valueDiff=$-11.32
+[2026-11-21T16:01:09.491Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:09.519Z] PEARL: diff=0.93%, valueDiff=$10.13
+[2026-11-21T16:01:09.519Z] WETH: diff=-0.93%, valueDiff=$-10.13
+[2026-11-21T16:01:09.519Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:09.547Z] PEARL: diff=2.11%, valueDiff=$23.28
+[2026-11-21T16:01:09.547Z] WETH: diff=-2.11%, valueDiff=$-23.28
+[2026-11-21T16:01:09.547Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:09.576Z] PEARL: diff=2.44%, valueDiff=$27.00
+[2026-11-21T16:01:09.576Z] WETH: diff=-2.44%, valueDiff=$-27.00
+[2026-11-21T16:01:09.576Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:09.603Z] PEARL: diff=1.94%, valueDiff=$21.31
+[2026-11-21T16:01:09.603Z] WETH: diff=-1.94%, valueDiff=$-21.31
+[2026-11-21T16:01:09.603Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:09.629Z] PEARL: diff=2.07%, valueDiff=$22.73
+[2026-11-21T16:01:09.630Z] WETH: diff=-2.07%, valueDiff=$-22.73
+[2026-11-21T16:01:09.630Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:09.656Z] PEARL: diff=2.31%, valueDiff=$25.51
+[2026-11-21T16:01:09.657Z] WETH: diff=-2.31%, valueDiff=$-25.51
+[2026-11-21T16:01:09.657Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:09.685Z] PEARL: diff=1.43%, valueDiff=$15.58
+[2026-11-21T16:01:09.685Z] WETH: diff=-1.43%, valueDiff=$-15.58
+[2026-11-21T16:01:09.685Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:09.713Z] PEARL: diff=1.98%, valueDiff=$21.73
+[2026-11-21T16:01:09.713Z] WETH: diff=-1.98%, valueDiff=$-21.73
+[2026-11-21T16:01:09.713Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:09.741Z] PEARL: diff=2.02%, valueDiff=$22.18
+[2026-11-21T16:01:09.741Z] WETH: diff=-2.02%, valueDiff=$-22.18
+[2026-11-21T16:01:09.741Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:09.768Z] PEARL: diff=2.14%, valueDiff=$23.54
+[2026-11-21T16:01:09.768Z] WETH: diff=-2.14%, valueDiff=$-23.54
+[2026-11-21T16:01:09.768Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:09.795Z] PEARL: diff=2.17%, valueDiff=$23.97
+[2026-11-21T16:01:09.795Z] WETH: diff=-2.17%, valueDiff=$-23.97
+[2026-11-21T16:01:09.795Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:09.825Z] PEARL: diff=2.48%, valueDiff=$27.38
+[2026-11-21T16:01:09.825Z] WETH: diff=-2.48%, valueDiff=$-27.38
+[2026-11-21T16:01:09.825Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:09.852Z] PEARL: diff=2.13%, valueDiff=$23.45
+[2026-11-21T16:01:09.852Z] WETH: diff=-2.13%, valueDiff=$-23.45
+[2026-11-21T16:01:09.852Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:09.879Z] PEARL: diff=1.80%, valueDiff=$19.75
+[2026-11-21T16:01:09.879Z] WETH: diff=-1.80%, valueDiff=$-19.75
+[2026-11-21T16:01:09.879Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:09.906Z] PEARL: diff=1.55%, valueDiff=$16.97
+[2026-11-21T16:01:09.906Z] WETH: diff=-1.55%, valueDiff=$-16.97
+[2026-11-21T16:01:09.906Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:09.937Z] PEARL: diff=0.78%, valueDiff=$8.46
+[2026-11-21T16:01:09.937Z] WETH: diff=-0.78%, valueDiff=$-8.46
+[2026-11-21T16:01:09.937Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:09.963Z] PEARL: diff=0.43%, valueDiff=$4.60
+[2026-11-21T16:01:09.963Z] WETH: diff=-0.43%, valueDiff=$-4.60
+[2026-11-21T16:01:09.963Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:09.996Z] PEARL: diff=0.40%, valueDiff=$4.31
+[2026-11-21T16:01:09.996Z] WETH: diff=-0.40%, valueDiff=$-4.31
+[2026-11-21T16:01:09.996Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:10.045Z] PEARL: diff=0.63%, valueDiff=$6.83
+[2026-11-21T16:01:10.045Z] WETH: diff=-0.63%, valueDiff=$-6.83
+[2026-11-21T16:01:10.045Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:10.101Z] PEARL: diff=-0.09%, valueDiff=$-0.93
+[2026-11-21T16:01:10.101Z] WETH: diff=0.09%, valueDiff=$0.93
+[2026-11-21T16:01:10.101Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:10.200Z] PEARL: diff=0.71%, valueDiff=$7.65
+[2026-11-21T16:01:10.201Z] WETH: diff=-0.71%, valueDiff=$-7.65
+[2026-11-21T16:01:10.201Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:10.298Z] PEARL: diff=0.75%, valueDiff=$8.09
+[2026-11-21T16:01:10.298Z] WETH: diff=-0.75%, valueDiff=$-8.09
+[2026-11-21T16:01:10.298Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:10.364Z] PEARL: diff=1.19%, valueDiff=$12.97
+[2026-11-21T16:01:10.364Z] WETH: diff=-1.19%, valueDiff=$-12.97
+[2026-11-21T16:01:10.364Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:10.396Z] PEARL: diff=0.74%, valueDiff=$7.96
+[2026-11-21T16:01:10.396Z] WETH: diff=-0.74%, valueDiff=$-7.96
+[2026-11-21T16:01:10.396Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:10.428Z] PEARL: diff=-0.91%, valueDiff=$-9.70
+[2026-11-21T16:01:10.428Z] WETH: diff=0.91%, valueDiff=$9.70
+[2026-11-21T16:01:10.428Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:10.473Z] PEARL: diff=-1.73%, valueDiff=$-18.14
+[2026-11-21T16:01:10.473Z] WETH: diff=1.73%, valueDiff=$18.14
+[2026-11-21T16:01:10.473Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:10.515Z] PEARL: diff=-0.46%, valueDiff=$-4.86
+[2026-11-21T16:01:10.515Z] WETH: diff=0.46%, valueDiff=$4.86
+[2026-11-21T16:01:10.515Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:10.559Z] PEARL: diff=-1.00%, valueDiff=$-10.60
+[2026-11-21T16:01:10.559Z] WETH: diff=1.00%, valueDiff=$10.60
+[2026-11-21T16:01:10.559Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:10.599Z] PEARL: diff=-1.64%, valueDiff=$-17.26
+[2026-11-21T16:01:10.599Z] WETH: diff=1.64%, valueDiff=$17.26
+[2026-11-21T16:01:10.599Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:10.638Z] PEARL: diff=-1.49%, valueDiff=$-15.72
+[2026-11-21T16:01:10.638Z] WETH: diff=1.49%, valueDiff=$15.72
+[2026-11-21T16:01:10.638Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:10.676Z] PEARL: diff=-1.26%, valueDiff=$-13.28
+[2026-11-21T16:01:10.676Z] WETH: diff=1.26%, valueDiff=$13.28
+[2026-11-21T16:01:10.676Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:10.706Z] PEARL: diff=-0.89%, valueDiff=$-9.48
+[2026-11-21T16:01:10.706Z] WETH: diff=0.89%, valueDiff=$9.48
+[2026-11-21T16:01:10.706Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:10.738Z] PEARL: diff=-0.43%, valueDiff=$-4.55
+[2026-11-21T16:01:10.738Z] WETH: diff=0.43%, valueDiff=$4.55
+[2026-11-21T16:01:10.738Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:10.787Z] PEARL: diff=-0.98%, valueDiff=$-10.40
+[2026-11-21T16:01:10.787Z] WETH: diff=0.98%, valueDiff=$10.40
+[2026-11-21T16:01:10.787Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:10.831Z] PEARL: diff=-1.33%, valueDiff=$-14.06
+[2026-11-21T16:01:10.831Z] WETH: diff=1.33%, valueDiff=$14.06
+[2026-11-21T16:01:10.831Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:10.884Z] PEARL: diff=-1.39%, valueDiff=$-14.61
+[2026-11-21T16:01:10.884Z] WETH: diff=1.39%, valueDiff=$14.61
+[2026-11-21T16:01:10.884Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:10.930Z] PEARL: diff=-2.52%, valueDiff=$-26.23
+[2026-11-21T16:01:10.930Z] WETH: diff=2.52%, valueDiff=$26.23
+[2026-11-21T16:01:10.930Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:10.970Z] PEARL: diff=-2.24%, valueDiff=$-23.37
+[2026-11-21T16:01:10.970Z] WETH: diff=2.24%, valueDiff=$23.37
+[2026-11-21T16:01:10.970Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:11.011Z] PEARL: diff=-1.70%, valueDiff=$-17.85
+[2026-11-21T16:01:11.011Z] WETH: diff=1.70%, valueDiff=$17.85
+[2026-11-21T16:01:11.011Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:11.055Z] PEARL: diff=-2.22%, valueDiff=$-23.21
+[2026-11-21T16:01:11.055Z] WETH: diff=2.22%, valueDiff=$23.21
+[2026-11-21T16:01:11.055Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:11.100Z] PEARL: diff=-2.29%, valueDiff=$-23.86
+[2026-11-21T16:01:11.100Z] WETH: diff=2.29%, valueDiff=$23.86
+[2026-11-21T16:01:11.100Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:11.151Z] PEARL: diff=-1.33%, valueDiff=$-14.05
+[2026-11-21T16:01:11.151Z] WETH: diff=1.33%, valueDiff=$14.05
+[2026-11-21T16:01:11.151Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:11.192Z] PEARL: diff=-1.39%, valueDiff=$-14.61
+[2026-11-21T16:01:11.193Z] WETH: diff=1.39%, valueDiff=$14.61
+[2026-11-21T16:01:11.193Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:11.227Z] PEARL: diff=0.36%, valueDiff=$3.83
+[2026-11-21T16:01:11.227Z] WETH: diff=-0.36%, valueDiff=$-3.83
+[2026-11-21T16:01:11.227Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:11.262Z] PEARL: diff=-0.23%, valueDiff=$-2.49
+[2026-11-21T16:01:11.262Z] WETH: diff=0.23%, valueDiff=$2.49
+[2026-11-21T16:01:11.262Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:11.306Z] PEARL: diff=-0.14%, valueDiff=$-1.46
+[2026-11-21T16:01:11.306Z] WETH: diff=0.14%, valueDiff=$1.46
+[2026-11-21T16:01:11.306Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:11.350Z] PEARL: diff=0.30%, valueDiff=$3.27
+[2026-11-21T16:01:11.350Z] WETH: diff=-0.30%, valueDiff=$-3.27
+[2026-11-21T16:01:11.350Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:11.388Z] PEARL: diff=-0.19%, valueDiff=$-2.03
+[2026-11-21T16:01:11.388Z] WETH: diff=0.19%, valueDiff=$2.03
+[2026-11-21T16:01:11.388Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:11.423Z] PEARL: diff=-0.86%, valueDiff=$-9.12
+[2026-11-21T16:01:11.424Z] WETH: diff=0.86%, valueDiff=$9.12
+[2026-11-21T16:01:11.424Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:11.461Z] PEARL: diff=-0.70%, valueDiff=$-7.40
+[2026-11-21T16:01:11.461Z] WETH: diff=0.70%, valueDiff=$7.40
+[2026-11-21T16:01:11.461Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:11.493Z] PEARL: diff=-0.55%, valueDiff=$-5.87
+[2026-11-21T16:01:11.493Z] WETH: diff=0.55%, valueDiff=$5.87
+[2026-11-21T16:01:11.493Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:11.527Z] PEARL: diff=-0.10%, valueDiff=$-1.07
+[2026-11-21T16:01:11.527Z] WETH: diff=0.10%, valueDiff=$1.07
+[2026-11-21T16:01:11.527Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:11.563Z] PEARL: diff=-0.44%, valueDiff=$-4.74
+[2026-11-21T16:01:11.563Z] WETH: diff=0.44%, valueDiff=$4.74
+[2026-11-21T16:01:11.563Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:11.603Z] PEARL: diff=-0.29%, valueDiff=$-3.11
+[2026-11-21T16:01:11.603Z] WETH: diff=0.29%, valueDiff=$3.11
+[2026-11-21T16:01:11.603Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:11.633Z] PEARL: diff=-0.68%, valueDiff=$-7.19
+[2026-11-21T16:01:11.633Z] WETH: diff=0.68%, valueDiff=$7.19
+[2026-11-21T16:01:11.633Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:11.664Z] PEARL: diff=-0.26%, valueDiff=$-2.76
+[2026-11-21T16:01:11.664Z] WETH: diff=0.26%, valueDiff=$2.76
+[2026-11-21T16:01:11.664Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:11.697Z] PEARL: diff=2.48%, valueDiff=$27.48
+[2026-11-21T16:01:11.698Z] WETH: diff=-2.48%, valueDiff=$-27.48
+[2026-11-21T16:01:11.698Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:11.732Z] PEARL: diff=0.69%, valueDiff=$7.48
+[2026-11-21T16:01:11.732Z] WETH: diff=-0.69%, valueDiff=$-7.48
+[2026-11-21T16:01:11.732Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:11.763Z] PEARL: diff=1.09%, valueDiff=$11.89
+[2026-11-21T16:01:11.763Z] WETH: diff=-1.09%, valueDiff=$-11.89
+[2026-11-21T16:01:11.763Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:11.794Z] PEARL: diff=0.65%, valueDiff=$7.05
+[2026-11-21T16:01:11.794Z] WETH: diff=-0.65%, valueDiff=$-7.05
+[2026-11-21T16:01:11.794Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:11.825Z] PEARL: diff=0.97%, valueDiff=$10.50
+[2026-11-21T16:01:11.825Z] WETH: diff=-0.97%, valueDiff=$-10.50
+[2026-11-21T16:01:11.825Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:11.857Z] PEARL: diff=1.44%, valueDiff=$15.74
+[2026-11-21T16:01:11.857Z] WETH: diff=-1.44%, valueDiff=$-15.74
+[2026-11-21T16:01:11.857Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:11.890Z] PEARL: diff=0.46%, valueDiff=$4.93
+[2026-11-21T16:01:11.891Z] WETH: diff=-0.46%, valueDiff=$-4.93
+[2026-11-21T16:01:11.891Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:11.925Z] PEARL: diff=0.73%, valueDiff=$7.85
+[2026-11-21T16:01:11.925Z] WETH: diff=-0.73%, valueDiff=$-7.85
+[2026-11-21T16:01:11.925Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:11.956Z] PEARL: diff=1.17%, valueDiff=$12.76
+[2026-11-21T16:01:11.956Z] WETH: diff=-1.17%, valueDiff=$-12.76
+[2026-11-21T16:01:11.956Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:11.987Z] PEARL: diff=1.26%, valueDiff=$13.70
+[2026-11-21T16:01:11.987Z] WETH: diff=-1.26%, valueDiff=$-13.70
+[2026-11-21T16:01:11.987Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:12.021Z] PEARL: diff=1.95%, valueDiff=$21.47
+[2026-11-21T16:01:12.021Z] WETH: diff=-1.95%, valueDiff=$-21.47
+[2026-11-21T16:01:12.021Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:12.050Z] PEARL: diff=2.43%, valueDiff=$26.89
+[2026-11-21T16:01:12.051Z] WETH: diff=-2.43%, valueDiff=$-26.89
+[2026-11-21T16:01:12.051Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:12.082Z] PEARL: diff=2.60%, valueDiff=$28.83
+[2026-11-21T16:01:12.082Z] WETH: diff=-2.60%, valueDiff=$-28.83
+[2026-11-21T16:01:12.082Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:12.113Z] PEARL: diff=2.81%, valueDiff=$31.19
+[2026-11-21T16:01:12.113Z] WETH: diff=-2.81%, valueDiff=$-31.19
+[2026-11-21T16:01:12.113Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:12.146Z] PEARL: diff=3.44%, valueDiff=$38.59
+[2026-11-21T16:01:12.146Z] WETH: diff=-3.44%, valueDiff=$-38.59
+[2026-11-21T16:01:12.146Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:12.177Z] PEARL: diff=2.54%, valueDiff=$28.10
+[2026-11-21T16:01:12.177Z] WETH: diff=-2.54%, valueDiff=$-28.10
+[2026-11-21T16:01:12.177Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:12.207Z] PEARL: diff=5.49%, valueDiff=$63.14
+[2026-11-21T16:01:12.207Z] WETH: diff=-5.49%, valueDiff=$-63.14
+[2026-11-21T16:01:12.207Z] 🔄 Rebalancing needed: 2 trades
+[2026-11-21T16:01:12.207Z] 🔄 Processing SELL trade: PEARL (5.5% overweight)
+[2026-11-21T16:01:12.207Z] 🔴 SELLING 29.674773 PEARL → WETH (excess: $63.14)
+[2026-11-21T16:01:12.207Z] ✅ Updated balances: PEARL -29.674773, WETH +61.879143
+[2026-11-21T16:01:12.208Z] 🔄 Processing WETH underweight: 5.5% underweight
+[2026-11-21T16:01:12.209Z] 💡 Need 1.26 more WETH value. Selling overweight tokens...
+[2026-11-21T16:01:12.209Z] ⚠️ Skipping small excess in PEARL: $0.00
+[2026-11-21T16:01:12.209Z] 🔄 Processing BUY trade: WETH (5.5% underweight)
+[2026-11-21T16:01:12.209Z] ✅ WETH rebalancing handled by selling overweight tokens
+[2026-11-21T16:01:12.209Z] ⚖️ Rebalanced portfolio
+[2026-11-21T16:01:12.237Z] PEARL: diff=0.18%, valueDiff=$2.06
+[2026-11-21T16:01:12.237Z] WETH: diff=-0.18%, valueDiff=$-2.06
+[2026-11-21T16:01:12.237Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:12.266Z] PEARL: diff=1.53%, valueDiff=$17.98
+[2026-11-21T16:01:12.266Z] WETH: diff=-1.53%, valueDiff=$-17.98
+[2026-11-21T16:01:12.266Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:12.298Z] PEARL: diff=0.68%, valueDiff=$7.93
+[2026-11-21T16:01:12.298Z] WETH: diff=-0.68%, valueDiff=$-7.93
+[2026-11-21T16:01:12.298Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:12.333Z] PEARL: diff=1.65%, valueDiff=$19.39
+[2026-11-21T16:01:12.333Z] WETH: diff=-1.65%, valueDiff=$-19.39
+[2026-11-21T16:01:12.333Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:12.375Z] PEARL: diff=0.79%, valueDiff=$9.22
+[2026-11-21T16:01:12.375Z] WETH: diff=-0.79%, valueDiff=$-9.22
+[2026-11-21T16:01:12.375Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:12.410Z] PEARL: diff=1.06%, valueDiff=$12.33
+[2026-11-21T16:01:12.410Z] WETH: diff=-1.06%, valueDiff=$-12.33
+[2026-11-21T16:01:12.410Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:12.445Z] PEARL: diff=1.10%, valueDiff=$12.83
+[2026-11-21T16:01:12.446Z] WETH: diff=-1.10%, valueDiff=$-12.83
+[2026-11-21T16:01:12.446Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:12.480Z] PEARL: diff=0.51%, valueDiff=$5.92
+[2026-11-21T16:01:12.480Z] WETH: diff=-0.51%, valueDiff=$-5.92
+[2026-11-21T16:01:12.480Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:12.509Z] PEARL: diff=-0.92%, valueDiff=$-10.42
+[2026-11-21T16:01:12.510Z] WETH: diff=0.92%, valueDiff=$10.42
+[2026-11-21T16:01:12.510Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:12.541Z] PEARL: diff=-0.91%, valueDiff=$-10.40
+[2026-11-21T16:01:12.542Z] WETH: diff=0.91%, valueDiff=$10.40
+[2026-11-21T16:01:12.542Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:12.575Z] PEARL: diff=-0.50%, valueDiff=$-5.75
+[2026-11-21T16:01:12.575Z] WETH: diff=0.50%, valueDiff=$5.75
+[2026-11-21T16:01:12.575Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:12.608Z] PEARL: diff=-1.54%, valueDiff=$-17.38
+[2026-11-21T16:01:12.608Z] WETH: diff=1.54%, valueDiff=$17.38
+[2026-11-21T16:01:12.608Z] ✅ Check complete - no rebalance needed
+[2026-11-21T16:01:12.638Z] PEARL: diff=0.42%, valueDiff=$4.86
+[2026-11-21T16:01:12.638Z] WETH: diff=-0.42%, valueDiff=$-4.86
+[2026-11-21T16:01:12.638Z] ✅ Check complete - no rebalance needed

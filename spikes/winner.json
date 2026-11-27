@@ -1,0 +1,12 @@
+{
+  "theta": 0.15,
+  "p_buy": 0.35,
+  "p_sell": 0.2,
+  "x": 0.04,
+  "stop": 0.2,
+  "choose_$": 4487.74,
+  "check_$": 1982.7,
+  "score": 2.3606,
+  "all_training_$": 10507.0,
+  "all_training_trades": 7
+}

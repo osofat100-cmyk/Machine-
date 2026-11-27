@@ -1,0 +1,15 @@
+**/venv/
+**/.venv/
+**/node_modules/
+**/__pycache__/
+**/downloads/
+**/data/
+**/venv*/
+**/.venv*/
+**/*_env/
+**/env/
+**/logs/
+**/lookahead/
+**/*.feather
+**/*.json.gz
+freqtrade_community/runs/

@@ -1,0 +1,270 @@
+program,strategy,how,trades,end_value,status,note
+crypto_balancer 3.1.1,"PEARL 20 / USDT 80, threshold 15, hourly",A,1,1095.5,ran,"voted setting; live use needs 2 one-line fixes (BigONE None min, --valuebase ignored)"
+"CryptoTrade (Xtra-Computing, EMNLP 2024)",LLM reflection agent,none,,,cannot run here,needs paid OpenAI API key; backtest-only on BTC/ETH
+AI-Trader (HKUDS),LLM live benchmark,none,,,cannot run here,"needs paid OpenAI, Alpha Vantage and Jina keys"
+TradingAgents (TauricResearch),multi-agent LLM,none,,,cannot run here,needs paid LLM API key
+FS-ReasoningAgent (Persdre),LLM reasoning trader,none,,,cannot run here,needs paid LLM API key
+AgenticTrading (Open-Finance-Lab),LLM agent orchestration,none,,,cannot run here,needs paid LLM API key
+"TradingView Pine scripts (UT Bot, MACD+SMA200, Chandelier Exit, Heikin Ashi, SSL; Alorse 48, PineCryptoStrategies)",signals,none,,,cannot run here,run only inside TradingView; running elsewhere means rewriting them (a change the user must approve)
+"MQL5 EAs (Crypto Investor, Crypto Suite, BTC ANCHOR, Pac Man BTC)",expert advisors,none,,,cannot run here,"paid ($250-267), MetaTrader 5 only, BTC/ETH contracts, no PEARL"
+Cryptohopper / 3Commas / Stoic / Bitsgap / Pionex bots,hosted bots,none,,,cannot run here,"paid hosted services, closed code, need real exchange keys"
+"Telegram bots (Banana Gun, Maestro, Unibot, BonkBot, Trojan)",DEX sniping,none,,,cannot run here,DEX-only token sniping; PEARL test is CEX spot
+colachenkc/Dynamic-Grid-Trading (arXiv 2506.11921),"shipped config (sweeps 8 grid sizes x 5 level counts, no single default)",none,,,does not run as shipped,"src/dgt_backtest.py crashes at the first downward grid break: TypeError handle_down_break() takes 12 positional arguments but 13 were given (extra max_price, line 80); settle_last_grid_segment() is also passed max_price= which it does not accept (line 99). Smallest fix: delete max_price from both calls. It is an accounting simulation (profit formulas), not an order-placing bot, so it cannot be driven by the price server without rewriting its loop."
+jordantete/grid_trading_bot 0.2.0,"hedged_grid, geometric, 8 grids, range 0.2864-1.762",B,8,1159.24,ran,"way B: its own backtest engine on sealed.export_minutes data (open = previous close), fee 0.7%/side, min order 2 USDT, BigONE. Range = pre-written rule (30-day low/high to 30 Sep: 0.2864-1.762); 8 grids, geometric, TP/SL off = shipped example config. Its engine fills a resting limit at the limit price when a candle high/low crosses it (kinder than the server next-close rule). Ends 100% USDT: PEARL went above the 1.762 top. No look-ahead check in this program; grid is placed at a candle close and fills only from the next candle."
+jordantete/grid_trading_bot 0.2.0,"simple_grid, geometric, 8 grids, range 0.2864-1.762",B,3,1064.76,ran,"way B: its own backtest engine on sealed.export_minutes data (open = previous close), fee 0.7%/side, min order 2 USDT, BigONE. Range = pre-written rule (30-day low/high to 30 Sep: 0.2864-1.762); 8 grids, geometric, TP/SL off = shipped example config. Its engine fills a resting limit at the limit price when a candle high/low crosses it (kinder than the server next-close rule). Ends 100% USDT: PEARL went above the 1.762 top. No look-ahead check in this program; grid is placed at a candle close and fills only from the next candle."
+Cryptotrademate/cryptotrademate-trading-bot,"/grid PEARL/USDT 5 0.2864 1.762 (README example, pre-written range)",A,2,1001.22,ran,"way A: strategies.py unchanged, stand-in exchange on the price server. Telegram bot.py not used (hard-wired to Binance + Telegram token). GridBot only places 5 buy limits of 1 PEARL each (amount = 1 hard-coded, 'Adjust amount') and never sells; the rest stays in USDT."
+Cryptotrademate/cryptotrademate-trading-bot,/dca PEARL/USDT 10 1000 (README example),A,8,1469.81,ran,"way A: strategies.py unchanged, stand-in exchange on the price server. Telegram bot.py not used (hard-wired to Binance + Telegram token). DCABot sends all 10 market buys at once (no time between them) and passes total/intervals = 100 as a PEARL amount, not dollars; buys stop at the first one the account cannot pay (1 refused). Ends almost all in PEARL, so it is buy-and-hold."
+Jesse 3.6.1 example-strategies,Donchian (6h),B,3,1177.84,ran,Jesse engine fills at the deciding candle's close
+Jesse 3.6.1 example-strategies,IFR2 (1h),B,0,1000.0,ran,Jesse engine fills at the deciding candle's close
+Jesse 3.6.1 example-strategies,KDJstrategy (1D),B,,,does not run as shipped,"NotImplementedError: The alias ""self.capital"" has been removed. Please use ""self.balance"" instead."
+Jesse 3.6.1 example-strategies,MACD_EMA (1h),B,17,981.8,ran,Jesse engine fills at the deciding candle's close
+Jesse 3.6.1 example-strategies,RSI2 (3h),B,,,does not run as shipped,"InvalidStrategy: should_short cannot be True if the exchange type is ""spot""."
+Jesse 3.6.1 example-strategies,SMACrossover (3h),B,,,does not run as shipped,"InvalidStrategy: should_short cannot be True if the exchange type is ""spot""."
+Jesse 3.6.1 example-strategies,SimpleBollinger (1h),B,17,1304.11,ran,Jesse engine fills at the deciding candle's close
+Jesse 3.6.1 example-strategies,TradingView_RSI (1h),B,,,does not run as shipped,InvalidStrategy: Setting self.take_profit in the go_long() method is not supported for spot trading (it's only supported in futures trading). Try setting it in self.on_open_position() instead.
+Jesse 3.6.1 example-strategies,TurtleRules (1D),B,,,does not run as shipped,InvalidStrategy: Setting self.stop_loss in the go_long() method is not supported for spot trading (it's only supported in futures trading). Try setting it in self.on_open_position() instead.
+Jesse 3.6.1 example-strategies,MAGen (1h),B,,,does not run as shipped,"InvalidStrategy: should_short cannot be True if the exchange type is ""spot""."
+Jesse 3.6.1 example-strategies,"DUAL_THRUST (1h, 4h anchor data route)",B,,,does not run as shipped,InvalidStrategy: Setting self.stop_loss in go_long() is not supported for spot (futures only); also shorts. Fix: set stop in on_open_position() and return False from should_short
+cryptobots 0.5.3,emac,A,16,1007.84,ran,"EMA 10/40 cross, 200 trend filter, 10% of NAV per trade, ATR*3 stop, 1h; long-only spot"
+DCAStack/DCAStackCefi,$19 every 1 Days (first form choice; 1000/51 days),A,51,1143.12,ran,"way A: its place_market_order unchanged with a BigONE stand-in (ccxt 1.95 flags); app imported with SET_DEBUG (no Sentry/email), Celery eager, no Redis/web/beat. Only installs on Python 3.9 (celery==4.4.7 etc.). Schedule = dcaService rule (next run += interval). Buys only, never sells."
+garagesteve1155/PowerTrader_AI,kNN predictor + tiered DCA (shipped),none,,,cannot run here,"Market data only from KuCoin (pt_thinker/pt_trainer: kucoin Market.get_kline + api.kucoin.com/candles) and orders only on Robinhood (pt_trader). KuCoin has no PEARL-USDT (level1 API returns data null) and PEARL is not on Robinhood. No backtest or paper mode; three processes (hub/thinker/trader) run real-time while-True loops with time.sleep and talk through text files, so it cannot be stepped one minute at a time without rewriting its loops. 15,847 lines; not run."
+cryptobots 0.5.3,grid,A,5560,0.0,ran,"1% spacing, 15% stop, max investment 3000 (shipped; account has 1000), long-only spot"
+crypto-reflex 1.0.2,"PEARL 20 / USDT 80, threshold 2, every 5 min, mode mid",A,32,1123.93,ran,"threshold from README example; every 5 min from README cron; limit-at-mid orders filled at next close; live use crashes on BigONE (None min amount, same as 3.1.1)"
+hammertoe/crypto_balancer master cc5ed85,"PEARL 20 / USDT 80, threshold 2, every 5 min, mode mid",A,32,1123.93,ran,"threshold from README example; every 5 min from README cron; limit-at-mid orders filled at next close; live use crashes on BigONE (None min amount, same as 3.1.1)"
+Freqtrade 2026.10,ADXMomentum,B,56,580.08,ran,
+Freqtrade 2026.10,AdxSmas,B,23,1121.0,ran,look-ahead check: no bias
+Freqtrade 2026.10,AlmgrenChrissStrategy,none,,,cannot run here,needs shorting/futures (Freqtrade: 'Short strategies cannot run in spot markets'); spot-only test
+Freqtrade 2026.10,ASDTSRockwellTrading,B,326,8.22,ran,
+Freqtrade 2026.10,AverageStrategy,B,4,2366.04,ran,"look-ahead check: no bias (4 trades, two +50% ROI exits)"
+Freqtrade 2026.10,AwesomeMacd,B,15,881.85,ran,
+Freqtrade 2026.10,Bandtastic,B,78,867.87,ran,
+Freqtrade 2026.10,BbandRsi,B,5,660.63,ran,
+Freqtrade 2026.10,BinHV27,B,42,783.73,ran,
+Freqtrade 2026.10,BinHV45,B,39,589.16,ran,
+Freqtrade 2026.10,BreakEven,B,0,1000.0,ran,0 trades
+Freqtrade 2026.10,CCIStrategy,B,13,893.74,ran,
+Freqtrade 2026.10,ClucMay72018,B,20,813.59,ran,
+Freqtrade 2026.10,CMCWinner,B,22,799.17,ran,
+Freqtrade 2026.10,CofiBitStrategy,B,172,91.11,ran,
+Freqtrade 2026.10,CombinedBinHAndCluc,B,43,584.53,ran,
+Freqtrade 2026.10,CustomStoplossWithPSAR,B,2,1438.3,ran,look-ahead check: no bias
+Freqtrade 2026.10,Diamond,B,35,652.82,ran,
+Freqtrade 2026.10,DoesNothingStrategy,B,0,1000.0,ran,0 trades
+Freqtrade 2026.10,EMASkipPump,B,170,61.69,ran,
+Freqtrade 2026.10,FAdxSmaStrategy,none,,,cannot run here,needs shorting/futures (Freqtrade: 'Short strategies cannot run in spot markets'); spot-only test
+Freqtrade 2026.10,FReinforcedStrategy,none,,,cannot run here,needs shorting/futures (Freqtrade: 'Short strategies cannot run in spot markets'); spot-only test
+Freqtrade 2026.10,Freqtrade_backtest_validation_freqtrade1,B,23,1012.9,ran,
+Freqtrade 2026.10,FSampleStrategy,none,,,cannot run here,needs shorting/futures (Freqtrade: 'Short strategies cannot run in spot markets'); spot-only test
+Freqtrade 2026.10,FSupertrendStrategy,B,39,398.4,ran,
+Freqtrade 2026.10,Heracles,B,,,does not run as shipped,"ERROR 'Dataframe returned from strategy has mismatching length' (strategy code); needs ta package, installed"
+Freqtrade 2026.10,hlhb,B,2,1034.05,ran,
+Freqtrade 2026.10,HourBasedStrategy,B,56,639.27,ran,
+Freqtrade 2026.10,InformativeSample,B,0,,cannot run here,needs BTC/USDT 15m data (informative pair); 0 trades without it
+Freqtrade 2026.10,Low_BB,B,4,889.48,ran,
+Freqtrade 2026.10,mabStra,B,18,1295.42,ran,look-ahead check: no bias
+Freqtrade 2026.10,MACDStrategy,B,37,562.0,ran,
+Freqtrade 2026.10,MACDStrategy_crossed,B,24,609.45,ran,
+Freqtrade 2026.10,multi_tf,none,,,does not run as shipped,Freqtrade loader skips 'class multi_tf (IStrategy)' (space before bracket); fix: remove the space. File says NOT TO BE USED FOR LIVE
+Freqtrade 2026.10,MultiMa,B,6,765.36,ran,
+Freqtrade 2026.10,MultiRSI,B,100,226.05,ran,
+Freqtrade 2026.10,PatternRecognition,B,1,1265.47,ran,look-ahead check: no bias (1 trade)
+Freqtrade 2026.10,PowerTower,B,7,895.04,ran,
+Freqtrade 2026.10,Quickie,B,27,643.51,ran,
+Freqtrade 2026.10,ReinforcedAverageStrategy,B,0,1000.0,ran,0 trades
+Freqtrade 2026.10,ReinforcedQuickie,B,62,489.27,ran,
+Freqtrade 2026.10,ReinforcedSmoothScalp,B,35,559.32,ran,
+Freqtrade 2026.10,Scalp,B,402,4.29,ran,
+Freqtrade 2026.10,Simple,B,97,401.68,ran,
+Freqtrade 2026.10,SmoothOperator,B,58,542.9,ran,
+Freqtrade 2026.10,SmoothScalp,B,36,678.2,ran,
+Freqtrade 2026.10,Strategy001,B,71,396.28,ran,
+Freqtrade 2026.10,Strategy001_custom_exit,B,74,458.48,ran,
+Freqtrade 2026.10,Strategy002,B,5,1072.35,ran,
+Freqtrade 2026.10,Strategy003,B,15,699.46,ran,
+Freqtrade 2026.10,Strategy004,B,30,983.38,ran,
+Freqtrade 2026.10,Strategy005,B,14,754.61,ran,
+Freqtrade 2026.10,Supertrend,B,24,1119.32,ran,LOOK-AHEAD BIAS FOUND by Freqtrade (2 of 20 signals) - result not valid
+Freqtrade 2026.10,SwingHighToSky,B,14,733.58,ran,
+Freqtrade 2026.10,TDSequentialStrategy,B,12,1343.15,ran,LOOK-AHEAD BIAS FOUND by Freqtrade (1 of 12 signals) - result not valid
+Freqtrade 2026.10,TechnicalExampleStrategy,B,507,2.17,ran,
+Freqtrade 2026.10,TrendFollowingStrategy,B,24,882.08,ran,
+Freqtrade 2026.10,TrendRiderStrategy,B,14,744.32,ran,
+Freqtrade 2026.10,TWAPStrategy,none,,,cannot run here,needs shorting/futures (Freqtrade: 'Short strategies cannot run in spot markets'); spot-only test
+Freqtrade 2026.10,UniversalMACD,B,37,1509.6,ran,LOOK-AHEAD BIAS FOUND by Freqtrade (4 of 20 signals) - result not valid
+Freqtrade 2026.10,VolatilitySystem,none,,,cannot run here,needs shorting/futures (Freqtrade: 'Short strategies cannot run in spot markets'); spot-only test
+Freqtrade 2026.10,wtc,B,0,1000.0,ran,0 trades; repo puts it in lookahead_bias/ (known-biased example)
+Freqtrade 2026.10,FixedRiskRewardLoss,B,1,1481.53,ran,ships with no timeframe; run at 5m (Freqtrade sample config value); 1 trade = bought and held; look-ahead check: too few trades to test
+Freqtrade 2026.10,FOttStrategy,none,,,does not run as shipped,'from numpy.lib import math' fails on numpy 2 (needed by current Freqtrade); older Freqtrade+numpy 1 can't install (pandas-ta gone from PyPI); fix: 'import math'; also a futures strategy
+Freqtrade 2026.10,GodStra,none,,,does not run as shipped,'from numpy.lib import math' fails on numpy 2 (needed by current Freqtrade); older Freqtrade+numpy 1 can't install (pandas-ta gone from PyPI); fix: 'import math'
+Freqtrade 2026.10,GodStraNew,none,,,does not run as shipped,'from numpy.lib import math' fails on numpy 2 (needed by current Freqtrade); older Freqtrade+numpy 1 can't install (pandas-ta gone from PyPI); fix: 'import math'; repo marks it as a known look-ahead-biased example
+Freqtrade 2026.10,DevilStra,none,,,does not run as shipped,'from numpy.lib import math' fails on numpy 2 (needed by current Freqtrade); older Freqtrade+numpy 1 can't install (pandas-ta gone from PyPI); fix: 'import math'; repo marks it as a known look-ahead-biased example
+Freqtrade 2026.10,Zeus,none,,,does not run as shipped,'from numpy.lib import math' fails on numpy 2 (needed by current Freqtrade); older Freqtrade+numpy 1 can't install (pandas-ta gone from PyPI); fix: 'import math'; repo marks it as a known look-ahead-biased example
+crypto-reflex 1.0.2,"PEARL 20 / USDT 80, threshold 0.2, every 5 min, mode mid",A,1612,1095.0,ran,"threshold from config.ini.example; every 5 min from README cron; limit-at-mid orders filled at next close; live use crashes on BigONE (None min amount, same as 3.1.1)"
+hammertoe/crypto_balancer master cc5ed85,"PEARL 20 / USDT 80, threshold 0.2, every 5 min, mode mid",A,1612,1095.0,ran,"threshold from config.ini.example; every 5 min from README cron; limit-at-mid orders filled at next close; live use crashes on BigONE (None min amount, same as 3.1.1)"
+royaurko/coinbase-trading (CPPI),"CPPI multiplier 3, floor $933.33, every 60 min",A,938,897.66,ran,floor/interval have no default (asked by input()); floor set so the first target is 20% PEARL; 120 orders under 2 USDT refused
+556isback/anotherRebalancer,"min_volatility weights over PEARL (+USDT), threshold 0.005, daily 00:00",A,1,1473.5,ran,"weights it chose for PEARL: [1.0]; with one coin, min_volatility puts 100% in it (weights sum to 1 among coins, USDT gets 1 - sum = 0), so it buys and holds. Live: no dry-run mode (api.pos sends real market orders); logbot needs a Discord URL"
+ohheycrypto 0.2.0,"RSI + trend + dynamic thresholds, limit orders (shipped defaults)",A,4,1007.27,ran,Binance-only; stand-in python-binance Client; loop once a minute
+Hummingbot 20261118 V2 controller,pmm_mister (backtest script config),B,2233,1366.52,ran,"engine fills; 7445 executors, 0 sells rejected (no PEARL held, spot); close types {'EARLY_STOP': 5212, 'POSITION_HOLD': 1545, 'TAKE_PROFIT': 688}"
+Hummingbot 20261118 V2 controller,grid_strike (backtest script config),B,74,0.0,ran,"engine fills; 74 executors, 0 sells rejected (no PEARL held, spot); close types {'STOP_LOSS': 12, 'TAKE_PROFIT': 62}; engine total -1,077.36 (losses larger than the account: wiped out, recorded as 0)"
+Hummingbot 20261118 V2 controller,bollinger_v2 (backtest script config),B,428,0.0,ran,"engine fills; 428 executors, 5757 sells rejected (no PEARL held, spot); close types {'STOP_LOSS': 55, 'TAKE_PROFIT': 35, 'TIME_LIMIT': 338}; engine total -2,210.16 (losses larger than the account: wiped out, recorded as 0)"
+CryptoTradeBot 0.2.0 (rainzhang05),rule engine (regime + momentum layers),none,,,does not run as shipped,"config validator rejects any universe other than its fixed V1 list (BTC, ETH, ...); PEARL needs a code change in tradebot/config.py validate_fixed_universe; Kraken only"
+"OpenTrader (Open-Trader/opentrader, npm opentrader)","grid: 20 levels (config.sample), range 0.2864-1.762, 40.93 PEARL per grid (1000/20 at start price), 1m",A,108,1145.46,ran,"way A: its grid template + createStrategyRunner + MarketSimulator/MemoryStore/MemoryExchange unchanged, Backtesting.run loop copied, candles one at a time from the price server, each simulator fill sent to the server (limit fill -> filled at next close). 115 orders sent, 108 filled; 7 sells skipped because the account held no PEARL (its grid assumes the coins for lines above the price are already held; its backtester has no balance or fees). Ends 100% USDT above the range."
+GeneBot 1.1.42 (pip genebot),moving_average / rsi strategies,none,,,does not run as shipped,"90 of its 104 .py files fail to compile (IndentationError, stray pass lines), so it cannot even be imported"
+"OpenTrader (Open-Trader/opentrader, npm opentrader)",dca template,none,,,does not run as shipped,"Its own backtester refuses DCA: packages/backtesting/src/store/memory-store.ts createSmartTrade throws ""Trade with type DCA is not supported in backtesting"". Live/paper DCA needs its full app (DB, exchange account; BigONE not in its exchange list). No example DCA config in the repo either. Not run."
+Gunbot,any,none,,,cannot run here,Paid closed-source licence (USD 59-249); rules forbid paid services. Not run.
+Pionex grid/DCA bots,any,none,,,cannot run here,Hosted service that only trades on the Pionex exchange with a Pionex account; no downloadable program. Not run.
+QTradeX-AI-Agents,"aroon (Aroon, default tune)",B,5,949.0,ran,"QTradeX own engine, daily candles, fee 0.7%/side"
+QTradeX-AI-Agents,aroon_mfi_vwap,B,,,cannot run here,"needs 105 warm-up days, history before 1 Oct has 97"
+QTradeX-AI-Agents,blackhole,B,,,does not run as shipped,TypeError: 'numpy.bool_' object is not iterable
+QTradeX-AI-Agents,"classic_crypto_bot (ClassicalCryptoBot, default tune)",B,1,1563.45,ran,"QTradeX own engine, daily candles, fee 0.7%/side"
+QTradeX-AI-Agents,"confluence (Confluence, default tune)",B,3,1327.11,ran,"QTradeX own engine, daily candles, fee 0.7%/side"
+QTradeX-AI-Agents,"cryptomasterbot (CryptoMasterBot, default tune)",B,1,1563.45,ran,"QTradeX own engine, daily candles, fee 0.7%/side"
+QTradeX-AI-Agents,"cthulhu (Cthulhu, default tune)",B,5,,does not run as shipped,wallet balance became NaN inside the engine
+QTradeX-AI-Agents,"directional_movement (DirectionalMovement, default tune)",B,1,1563.45,ran,"QTradeX own engine, daily candles, fee 0.7%/side"
+QTradeX-AI-Agents,"ema_cross (EmaCross, default tune)",B,7,939.52,ran,"QTradeX own engine, daily candles, fee 0.7%/side"
+QTradeX-AI-Agents,"extinction_event (ExtinctionEvent, default tune)",B,13,668.66,ran,"QTradeX own engine, daily candles, fee 0.7%/side"
+QTradeX-AI-Agents,"forty96 (Forty96, default tune)",B,1,1563.45,ran,"QTradeX own engine, daily candles, fee 0.7%/side"
+QTradeX-AI-Agents,"fosc_uo_msw (UltimateForecastMesa, default tune)",B,38,684.92,ran,"QTradeX own engine, daily candles, fee 0.7%/side"
+QTradeX-AI-Agents,"frama (FRAMABot, default tune)",B,14,873.61,ran,"QTradeX own engine, daily candles, fee 0.7%/side"
+QTradeX-AI-Agents,"harmonica (ParabolicSARBot, default tune)",B,5,1207.85,ran,"QTradeX own engine, daily candles, fee 0.7%/side"
+QTradeX-AI-Agents,heiken_ashi,B,,,cannot run here,"needs 140 warm-up days, history before 1 Oct has 97"
+QTradeX-AI-Agents,"ichimoku (IchimokuBot, default tune)",B,3,922.3,ran,"QTradeX own engine, daily candles, fee 0.7%/side"
+QTradeX-AI-Agents,iching,B,,,cannot run here,"needs 101 warm-up days, history before 1 Oct has 97"
+QTradeX-AI-Agents,"kst (KSTIndicatorBot, default tune)",B,11,774.82,ran,"QTradeX own engine, daily candles, fee 0.7%/side"
+QTradeX-AI-Agents,"lava_hkbot (LavaHK, default tune)",B,0,1000.0,ran,"QTradeX own engine, daily candles, fee 0.7%/side"
+QTradeX-AI-Agents,"ma_sabres (MASabres, default tune)",B,7,939.06,ran,"QTradeX own engine, daily candles, fee 0.7%/side"
+QTradeX-AI-Agents,"mac_dr_si (BBadXMacDrSi, default tune)",B,0,1000.0,ran,"QTradeX own engine, daily candles, fee 0.7%/side"
+QTradeX-AI-Agents,"masterbot (MasterBot, default tune)",B,9,1127.15,ran,"QTradeX own engine, daily candles, fee 0.7%/side"
+QTradeX-AI-Agents,"parabolic_ten (ParabolicSARBot, default tune)",B,4,,does not run as shipped,wallet balance became NaN inside the engine
+QTradeX-AI-Agents,"renko (Renko, default tune)",B,0,1000.0,ran,"QTradeX own engine, daily candles, fee 0.7%/side"
+QTradeX-AI-Agents,smi_adaptive_ravi,B,,,does not run as shipped,"TypeError: Argument 'hlocv' has incorrect type (expected dict, got Data)"
+QTradeX-AI-Agents,tradfibot,B,,,cannot run here,"needs 200 warm-up days, history before 1 Oct has 97"
+QTradeX-AI-Agents,"trima_zlema_fischer (TrimaZlemaFisher, default tune)",B,7,1348.24,ran,"QTradeX own engine, daily candles, fee 0.7%/side"
+QTradeX-AI-Agents,vortex,B,,,does not run as shipped,TypeError: vortex() takes exactly 4 positional arguments (3 given)
+sandybradley/Coinbase-Balancer,"PEARL 0.2 / hub 0.8 (hub BTC = USDT), hourly, limit orders 0.7% away",A,399,1121.48,ran,"hub BTC relabelled as USDT; its threshold 0.001 is in hub units (0.001 USDT here) so it re-quotes every hour; 587 orders under 2 USDT refused. Live: written for the retired Coinbase Pro API (cbpro), BTC-hub only"
+pegahcarter/rebalance,"equal weight PEARL 50 / USDT 50 (fixed by code), hourly, trade if > $10",A,212,1282.37,ran,"simulator only (live order code commented out; Exchange.create_order missing self); weights are 1/number of coins, not settable; INTERVAL = 1 h from variables.py"
+DeepAlpha bot 1.1.0 (pip deepalpha-bot),LSTM + LightGBM ensemble,none,,,cannot run here,"needs a DeepAlpha license key (trial needs an email sent to deepalphabot.com, then paid); perpetual futures on Bybit/Bitget/Hyperliquid only, no spot; models not shipped"
+"PGPortfolio (ZhengyaoJiang, arXiv 1706.10059)",EIIE policy network,none,,,cannot run here,portfolio of 11 coins (coin_number 11) from Poloniex; needs TensorFlow 1.x + tflearn (Python <=3.7); a single-coin PEARL test does not fit
+"pair-trading-with-rl (damianlebiedz, arXiv 2606.04574)",PPO + LSTM pairs trading,none,,,cannot run here,"trades spreads between PAIRS of Binance futures coins (long one, short the other); PEARL spot alone has no pair and shorting is not allowed"
+"short-horizon-reversion (nadav2, arXiv 2608.21888)",measurement study,none,,,cannot run here,"replication package of a statistics paper (183-pair universe); it measures reversal, it has no trading program to run"
+PLUTUS (algotrade-plutus) ProtoSmartBeta / ProtoMarketMaker,smart-beta stock picker / VN30F market maker,none,,,cannot run here,"built for the Vietnamese stock and VN30 index-futures market (stock universe, futures tick data); nothing for a crypto spot pair"
+"Kaggle notebooks (PPO agent, DQN Bitcoin, momentum, rebalancing, ML BTC backtest)",notebooks,none,,,cannot run here,kaggle.com pages/API return 404 without a Kaggle account and API key; the agents' own findings: BTC-only educational backtests with no exchange or live hook
+Bitfox (GitHub),"Phoenix (StrategyBenchmark settings, long only, 1h)",B,35,653.8,ran,"end value = its trades, each with the whole account, 0.7%/side; engine itself keeps a fixed 921 PEARL per trade (can exceed the cash) and reports $303"
+Bitfox (GitHub),"SuperTrend (StrategyBenchmark settings, long only, 1h)",B,143,172.73,ran,"end value = its trades, each with the whole account, 0.7%/side; engine itself keeps a fixed 921 PEARL per trade (can exceed the cash) and reports $-1,791"
+Bitfox (GitHub),"RSITrend (StrategyBenchmark settings, long only, 1h)",B,21,842.92,ran,"end value = its trades, each with the whole account, 0.7%/side; engine itself keeps a fixed 921 PEARL per trade (can exceed the cash) and reports $786"
+Bitfox (GitHub),"EmaTrend (StrategyBenchmark settings, long only, 1h)",B,109,261.96,ran,"end value = its trades, each with the whole account, 0.7%/side; engine itself keeps a fixed 921 PEARL per trade (can exceed the cash) and reports $-1,086"
+Bitfox (GitHub),"Bollinger (StrategyBenchmark settings, long only, 1h)",B,9,942.69,ran,"end value = its trades, each with the whole account, 0.7%/side; engine itself keeps a fixed 921 PEARL per trade (can exceed the cash) and reports $947"
+Bitfox (GitHub),"MfiMacd (StrategyBenchmark settings, long only, 1h)",B,36,629.01,ran,"end value = its trades, each with the whole account, 0.7%/side; engine itself keeps a fixed 921 PEARL per trade (can exceed the cash) and reports $-479"
+Bitfox (GitHub),"SmartAccumulate (StrategyBenchmark settings, long only, 1h)",B,146,90.17,ran,"end value = its trades, each with the whole account, 0.7%/side; engine itself keeps a fixed 921 PEARL per trade (can exceed the cash) and reports $-2,189"
+Bitfox (GitHub),"ZemaCrossOver (StrategyBenchmark settings, long only, 1h)",B,22,775.03,ran,"end value = its trades, each with the whole account, 0.7%/side; engine itself keeps a fixed 921 PEARL per trade (can exceed the cash) and reports $600"
+Bitfox (GitHub),"ThorsHammer (StrategyBenchmark settings, long only, 1h)",B,4,963.4,ran,"end value = its trades, each with the whole account, 0.7%/side; engine itself keeps a fixed 921 PEARL per trade (can exceed the cash) and reports $924"
+Bitfox (GitHub),"DonchianTrend (StrategyBenchmark settings, long only, 1h)",B,31,677.69,ran,"end value = its trades, each with the whole account, 0.7%/side; engine itself keeps a fixed 921 PEARL per trade (can exceed the cash) and reports $957"
+Bitfox (GitHub),"DynamicGrid (StrategyBenchmark settings, long only, 1h)",B,135,238.67,ran,"end value = its trades, each with the whole account, 0.7%/side; engine itself keeps a fixed 921 PEARL per trade (can exceed the cash) and reports $-777"
+Bitfox (GitHub),MarketMaker,B,,,does not run as shipped,TypeError: Cannot read properties of undefined (reading 'getIndicator')
+Bitfox (GitHub),"MultiDivergence (StrategyBenchmark settings, long only, 1h)",B,11,796.96,ran,"end value = its trades, each with the whole account, 0.7%/side; engine itself keeps a fixed 921 PEARL per trade (can exceed the cash) and reports $755"
+Bitfox (GitHub),"Regime (StrategyBenchmark settings, long only, 1h)",B,17,929.69,ran,"end value = its trades, each with the whole account, 0.7%/side; engine itself keeps a fixed 921 PEARL per trade (can exceed the cash) and reports $865"
+Bitfox (GitHub),"SuperTrendFull (StrategyBenchmark settings, long only, 1h)",B,143,156.78,ran,"end value = its trades, each with the whole account, 0.7%/side; engine itself keeps a fixed 921 PEARL per trade (can exceed the cash) and reports $-1,964"
+"SockTrader (GitHub, npm unpublished 2022)",demo SMA 12/24 cross (localMovingAverageStrategy),none,,,does not run as shipped,"demo strategy hard-codes its data file (data/coinbase_btcusd_1h.json, BTC) and a fixed 0.1-coin order size; on PEARL 0.1 coin = $0.15 per trade. Needs code changes; npm package unpublished; last commit Aug 2023"
+Hummingbot 20261118 scripts/simple_pmm.py,"shipped defaults, 82 PEARL per quote",A,1341,147.64,ran,"own on_tick/proposal/BudgetChecker; quote fills if next minute's high/low reaches it, executed at the minute after that's close via the server"
+Clawtrade 0.12.0 (npm),LLM trading agent,none,,,cannot run here,"decisions come from an LLM chat agent (Anthropic/OpenAI/... API key, or a local Ollama model); no fixed strategy to replay"
+"OpenTrader (Open-Trader/opentrader, npm opentrader)","rsi: schema defaults 70/30, 14 periods, persistence 1, 1h (README example), quantity 818 PEARL (1000/start price)",A,8,881.66,ran,"way A, same harness as the grid: its rsi template unchanged on 1h candles built from the minutes it has been handed (warm-up: 200 hours before Oct 1 only); market orders placed at an hour close go to the server with the next minute and fill at that minute close. Buys are capped at the cash the account has. 4 round trips, ends 100% USDT."
+pantelis98765/crypto-bot (Docker Hub image),grid / DCA (shipped),none,,,cannot run here,"Only a Docker Hub image (0 stars, registered Jul 2026); no public source (its README says raw.githubusercontent.com/<your-repo>). Trades only Binance and Crypto.com, needs Postgres + 3 containers. No docker daemon in this machine; the registry API refused the image 3 times with TOOMANYREQUESTS (unauthenticated pull limit), so its code could not even be read. Not run."
+Hummingbot 20261118 V2 controller,pmm_simple (default config),B,52902,0.0,ran,"engine fills; 85574 executors, 9019 sells rejected (no PEARL held, spot); close types {'EARLY_STOP': 32669, 'POSITION_HOLD': 51458, 'STOP_LOSS': 254, 'TAKE_PROFIT': 158, 'TIME_LIMIT': 1035}; engine total -2,796.54 (losses larger than the account: wiped out, recorded as 0); position went short up to 945.33 USDT"
+"FinRL_Crypto (AI4Finance, arXiv 2209.05559)",DRL agents (PPO/A2C/DDPG/TD3/SAC) with CPCV tuning,none,,,cannot run here,"shipped pipeline = 50 Optuna trials x 10 CPCV splits = ~500 deep-RL trainings on 5m data (hours-days on the 2 cores allowed); its data step downloads from Binance, which does not list PEARL; no pre-trained agent ships"
+FinRL (AI4Finance),DRL framework,none,,,cannot run here,framework only: no trained crypto agent ships; you must train your own (same compute problem as FinRL_Crypto); README points production users to FinRL-X
+TensorTrade,RL trading framework,none,,,cannot run here,"framework only: examples train PPO with Ray RLlib from scratch, no shipped trained agent; its own docs/tests report every configuration lost money after commission"
+quick-trade 8.0.0,strategy_2_sma,B,51,270.39,ran,"quick-trade own backtest, 15m, long only (convert_signal), commission 0.7%"
+quick-trade 8.0.0,strategy_3_ema,B,117,57.57,ran,"quick-trade own backtest, 15m, long only (convert_signal), commission 0.7%"
+quick-trade 8.0.0,strategy_3_sma,B,69,260.31,ran,"quick-trade own backtest, 15m, long only (convert_signal), commission 0.7%"
+quick-trade 8.0.0,strategy_adaptive_price_channel,B,55,543.62,ran,"quick-trade own backtest, 15m, long only (convert_signal), commission 0.7%"
+quick-trade 8.0.0,strategy_bollinger,B,51,388.47,ran,"quick-trade own backtest, 15m, long only (convert_signal), commission 0.7%"
+quick-trade 8.0.0,strategy_bollinger_breakout,B,51,434.07,ran,"quick-trade own backtest, 15m, long only (convert_signal), commission 0.7%"
+quick-trade 8.0.0,strategy_buy_hold,B,0,1457.13,ran,"quick-trade own backtest, 15m, long only (convert_signal), commission 0.7%"
+quick-trade 8.0.0,strategy_idris,B,917,0.0,ran,"quick-trade own backtest, 15m, long only (convert_signal), commission 0.7%"
+quick-trade 8.0.0,strategy_kst,B,133,97.27,ran,"quick-trade own backtest, 15m, long only (convert_signal), commission 0.7%"
+quick-trade 8.0.0,strategy_macd,B,106,116.94,ran,"quick-trade own backtest, 15m, long only (convert_signal), commission 0.7%"
+quick-trade 8.0.0,strategy_macd_histogram_diff,B,667,0.0,ran,"quick-trade own backtest, 15m, long only (convert_signal), commission 0.7%"
+quick-trade 8.0.0,strategy_parabolic_SAR,B,199,28.69,ran,"quick-trade own backtest, 15m, long only (convert_signal), commission 0.7%"
+quick-trade 8.0.0,strategy_price_channel,B,69,342.91,ran,"quick-trade own backtest, 15m, long only (convert_signal), commission 0.7%"
+quick-trade 8.0.0,strategy_pump_detector,B,0,698.57,ran,"quick-trade own backtest, 15m, long only (convert_signal), commission 0.7%"
+quick-trade 8.0.0,strategy_rsi,B,1,1150.16,ran,"quick-trade own backtest, 15m, long only (convert_signal), commission 0.7%"
+quick-trade 8.0.0,strategy_supertrend,B,64,404.58,ran,"quick-trade own backtest, 15m, long only (convert_signal), commission 0.7%"
+ztomsy/rebalancer,"efficient_return(0.05) on 200 x 1h, bounds 0-0.95, precision 0.01, every minute",A,0,1000.0,ran,"shipped settings, white list PEARL+USDT, DRY_RUN off; PyPortfolioOpt 0.5.5. BUG: every order fails - RestClient.check_order_limits adds 'cost' to the order dict and create_order passes it to ccxt create_order(**order_dict), which raises TypeError (checked with real ccxt 4.5.93); also cancel_processed_orders never cancels (only re-fetches); PROGRAM STOPPED: ValueError: Optimisation was not succesful. Please reduce target_return at 2026-10-01 03:00"
+cryptobots 0.5.3,breakout,none,,,cannot run here,martingale breakout that reverses into shorts on perpetuals (needs positions/shorting); shipped config says BACKTEST_READY: False
+cryptobots 0.5.3,cc (cash and carry),none,,,cannot run here,needs a perpetual future + spot pair and funding rates; PEARL has no perpetual in the test
+cryptobots 0.5.3,range,none,,,cannot run here,range grid whose shipped bounds are AVAX $50-60; BACKTEST_READY: False
+cryptobots 0.5.3,twap,none,,,cannot run here,"order-execution helper (buy a target amount over 20 min), not a trading strategy"
+AutoTrader 1.1.2 backtest engine (used by cryptobots),engine check,none,,,does not run as shipped,its virtual broker's get_candles returns the LAST candles of the whole data file at every step (look-ahead); cryptobots spot mode also crashes there (get_balance(instrument=)); so cryptobots was run way A instead
+kraken-rebalance-bot 1.0.0,"hold $200 of PEARL +-3.5%, keep $80 USDT, checks 06:00 and 18:00",A,3,1112.94,ran,"README example config scaled to 20% of $1,000; Kraken only in real life (PEARL not checked there); PROGRAM STOPPED: TypeError: float() argument must be a string or a real number, not 'list' at 2026-10-05 18:00 - the sell branch reads ticker[symbol][""c""[0]] (= [""c""], a list), so float() fails on the first sell"
+quick-trade 8.0.0,strategy_ichimoku,B,,,does not run as shipped,IndexError: index 1 is out of bounds for axis 0 with size 1
+quick-trade 8.0.0,strategy_cci,B,0,1497.63,ran,"signal list is shorter than the candles (1,423 of 4,896) and every signal is BUY, so it acts as buy-and-hold from its first signal; causality check could not run on 70% of the candles; quick-trade own backtest, 15m, long only (convert_signal), commission 0.7%"
+portfolio-balancer 0.1.18,"balance_ratio 0.2, trigger_ratio 0.05, hourly, ledger start = cash",A,0,1000.0,ran,"ledger only (never reads the account; after a trade it books exactly the target, no fees); its trigger abs_diff = |value gap| x coins held / total value mixes units, so with 0 coins it can never trigger"
+portfolio-balancer 0.1.18,"balance_ratio 0.2, trigger_ratio 0.05, hourly, ledger start = split",A,575,1113.71,ran,"ledger only (never reads the account; after a trade it books exactly the target, no fees); its trigger abs_diff = |value gap| x coins held / total value mixes units, so with 0 coins it can never trigger; the first 20% buy was done by hand (counted in fills), the program only rebalanced after"
+pontifier/rebalancer (coinbase.py),"ratio 0.8 (= 20% PEARL), trade size 10 PEARL, two resting limits, poll 30 s",A,3,1107.99,ran,"Python 2 program (ConfigParser, str written to binary file) run with shims; first 20% buy done by hand as its README says (counted in fills); 0 orders rejected for funds/min size. Other versions: btce.py/mtgox.py target dead exchanges; binance_trade.py crashes at once (ratio/size/sell_order_id undefined, ['tatus'] typo); PROGRAM STOPPED: NameError: name 'price_b' is not defined at 2026-10-02 07:03"
+Saga-Labs/rebalancer,"PEARL 0.2 / WETH-hub 0.8 (WETH = USDT), deviation 0.05, min $5, every 4 h",A,5,1116.33,ran,"Node; calculateWeights + rebalance unchanged on an object built from its prototype (constructor needs a wallet key + Base RPC); getBalances/getPrices/swap stand-ins; 4 h loop is hard-coded (CHECK_INTERVAL in .env.example is ignored); on-chain CoW swaps in real life, PEARL has no deep Base pool"
+OctoBot 2.1.1 (official tentacles),simple_dca profile,B,1,1023.78,ran,"OctoBot engine; end 950.00 USDT + 40.6501 PEARL, valued at the last close 1.8278 less 0.7% exit cost like the price server (OctoBot's own mark-to-market: 1024.30); first trade 2026-10-01 00:01 UTC; errors 1; OctoBot logs: Time based trigger is not supporting backtesting (only the first buy happens)"
+OctoBot 2.1.1 (official tentacles),smart_dca profile,B,993,929.7,ran,"OctoBot engine; end 929.70 USDT + 0.0000 PEARL, valued at the last close 1.8278 less 0.7% exit cost like the price server (OctoBot's own mark-to-market: 929.70); first trade 2026-10-02 16:24 UTC; errors 0"
+OctoBot 2.1.1 (official tentacles),daily_trading profile,B,64,1438.86,ran,"OctoBot engine; end 832.36 USDT + 334.1594 PEARL, valued at the last close 1.8278 less 0.7% exit cost like the price server (OctoBot's own mark-to-market: 1443.13); first trade 2026-10-02 06:54 UTC; errors 0"
+OctoBot 2.1.1 (official tentacles),dip_analyser profile,B,58,1022.96,ran,"OctoBot engine; end 709.50 USDT + 172.7028 PEARL, valued at the last close 1.8278 less 0.7% exit cost like the price server (OctoBot's own mark-to-market: 1025.17); first trade 2026-10-09 08:10 UTC; errors 7"
+OctoBot 2.1.1 (official tentacles),index_trading profile,B,1,1475.6,ran,"OctoBot engine; end 0.00 USDT + 813.0015 PEARL, valued at the last close 1.8278 less 0.7% exit cost like the price server (OctoBot's own mark-to-market: 1486.00); first trade 2026-10-01 00:01 UTC; errors 0; index of the one configured coin = 100% PEARL"
+OctoBot 2.1.1 (official tentacles),grid_trading profile,B,38,1014.16,ran,"OctoBot engine; end 1014.16 USDT + 0.0000 PEARL, valued at the last close 1.8278 less 0.7% exit cost like the price server (OctoBot's own mark-to-market: 1014.16); first trade 2026-10-01 16:58 UTC; errors 0"
+OctoBot 2.1.1 (official tentacles),trailing_grid_trading profile,B,153,1094.15,ran,"OctoBot engine; end 889.70 USDT + 112.6465 PEARL, valued at the last close 1.8278 less 0.7% exit cost like the price server (OctoBot's own mark-to-market: 1095.60); first trade 2026-10-01 16:58 UTC; errors 0"
+OctoBot 2.1.1 (official tentacles),staggered_orders_trading profile,B,38,1047.75,ran,"OctoBot engine; end 1047.75 USDT + 0.0000 PEARL, valued at the last close 1.8278 less 0.7% exit cost like the price server (OctoBot's own mark-to-market: 1047.75); first trade 2026-10-01 16:58 UTC; errors 0"
+OctoBot 2.1.1 (official tentacles),market_making profile,B,3197,180.26,ran,"OctoBot engine; end 55.18 USDT + 68.9131 PEARL, valued at the last close 1.8278 less 0.7% exit cost like the price server (OctoBot's own mark-to-market: 181.14); first trade 2026-10-21 19:46 UTC; errors 2"
+0xRozier/rebalancing-bot,"PEARL 20 / USDC 80, bands +-0.5 pt, every 2 h + 20-min emergency check, start all cash",A,0,1000.0,ran,"Node; index.js, rebalance.js, breaker.js, pnl.js, utils.js unchanged; connection modules (balances, swap/1inch, prices/CoinGecko, Aave, Telegram, RPC, node-cron) are stand-ins via a module-loader hook; config = its config.js with PEARL/USDC (band 0.195-0.205 like its USDC band), yield farming off; Date.now = test clock; from all cash it refuses to trade (any target coin with 0 balance -> ""Balances manquantes"" error) and exits itself after 3 errors: process.exit(1) at 2026-10-01 04:00"
+0xRozier/rebalancing-bot,"PEARL 20 / USDC 80, bands +-0.5 pt, every 2 h + 20-min emergency check, 20% bought by hand first",A,19,1112.36,ran,"Node; index.js, rebalance.js, breaker.js, pnl.js, utils.js unchanged; connection modules (balances, swap/1inch, prices/CoinGecko, Aave, Telegram, RPC, node-cron) are stand-ins via a module-loader hook; config = its config.js with PEARL/USDC (band 0.195-0.205 like its USDC band), yield farming off; Date.now = test clock; first 20% buy done by hand (counted in fills)"
+Hummingbot 20261118 V2 controller,pmm_dynamic (default config),B,52645,0.0,ran,"engine fills; 91619 executors, 13853 sells rejected (no PEARL held, spot); close types {'EARLY_STOP': 38967, 'POSITION_HOLD': 48933, 'STOP_LOSS': 327, 'TAKE_PROFIT': 310, 'TIME_LIMIT': 3082}; engine total -6,212.98 (losses larger than the account: wiped out, recorded as 0); peak PEARL held 2,136.65 USDT (MORE than the 1,000 account: the engine checks no balance, so this result is not reachable on spot); position went short up to 1143.92 USDT"
+Hummingbot 20261118 V2 controller,dman_maker_v2 (default config),B,,,does not run as shipped,ValueError: Must have equal len keys and value when setting with an iterable
+koyadovic/binance-rebalancing,"PEARL x exposure 0.2 (20%), fiat USDT, fiat_untouched 5, hourly, trades to exact target",A,550,1112.32,ran,README example settings with PEARL and exposure 0.2; README crontab hourly; no drift threshold - it trades back to target every hour when the gap is at least the 2 USDT minimum; BinanceExchange subclassed with only client calls replaced (README's extension point); Binance only in real life
+miguelvazsilva/binance-portfolio-rebalancing-bot,not run,none,,,cannot run here,skipped on purpose: its code contains hardcoded email credentials (flagged in the research); Binance only
+timdoubleg/crypto-index-bot,top-10 market-cap index (CoinGecko) on Binance,none,,,cannot run here,"its strategy is the top-10 coins by market cap (BTC, ETH ...), so PEARL target is always 0% and the other coins are not in this test; one-shot script that waits for input(y/n); uses DataFrame.append (removed in pandas 2) so it crashes on current pandas (fix: pd.concat); config.py in the repo contains committed Binance API keys"
+ctubio/Krypto-trading-bot (K),"market maker, any shipped mode",none,,,cannot run here,"no backtest or replay mode: it only quotes against a live exchange connection (Coinbase/Binance/BitMEX gateways, REST+WebSocket); needs a real exchange API key, and is non-free (locked unless 0.00121 BTC is paid per API key) - paid service + real keys are not allowed in the contest"
+Superalgos,shipped trading systems (Binance BTC/USDT examples),none,,,cannot run here,"GUI platform: backtests are started from its browser UI on candles its own sensor bots mine from a live exchange (tutorial uses Binance, which answers 451 here); setup needs a GitHub fork + personal access token; there is no shipped way to feed it the price server minutes without changing its code, and mining Oct-Nov from the exchange would bypass the sealed server"
+QuantConnect LEAN (commit 32a302a),"Algorithm.Python crypto templates (BasicTemplateCryptoAlgorithm, Bybit*/Binance* regression algos)",none,,,does not run as shipped,"they are order-type demos/regression tests with symbols and dates written in the code (BasicTemplateCrypto: BTCUSD/ETHUSD/LTCUSD on GDAX, 4 Apr 2018, one day); trading PEARL needs editing the algorithm (symbols, dates, cash) plus a custom data class - user must approve; no premade crypto strategy in LEAN"
+iloveitaly/crypto-index-fund-bot,"market-cap index of what its exchange offers (= 100% PEARL), buys $10-25 per hourly run, never sells",A,40,1516.72,ran,"its defaults (purchase 10-25 USD per run, market buys) + livemode on; Binance US only in real life and needs a CoinMarketCap key - here the listing is a stand-in with PEARL only; it never sells, so once the cash is spent it is buy-and-hold"
+Zenbot 4.1.0,bollinger (defaults),B,59,1533.43,ran,"Zenbot sim; 59 trades (29 sells, 7 losing); end 318.24 USDT + 1223.75 USDT of PEARL (less 0.7% exit cost); Zenbot's own buy&hold 1550.56"
+Zenbot 4.1.0,cci_srsi (defaults),B,3,1468.0,ran,"Zenbot sim; 3 trades (1 sells, 0 losing); end 9.49 USDT + 1468.79 USDT of PEARL (less 0.7% exit cost); Zenbot's own buy&hold 1481.44"
+Zenbot 4.1.0,crossover_vwap (defaults),B,5,1350.17,ran,"Zenbot sim; 5 trades (3 sells, 0 losing); end 1335.88 USDT + 14.39 USDT of PEARL (less 0.7% exit cost); Zenbot's own buy&hold 1354.53"
+Zenbot 4.1.0,dema (defaults),B,42,1566.49,ran,"Zenbot sim; 42 trades (22 sells, 13 losing); end 1556.62 USDT + 9.94 USDT of PEARL (less 0.7% exit cost); Zenbot's own buy&hold 1659.37"
+Zenbot 4.1.0,ehlers_ft (defaults),B,678,1056.81,ran,"Zenbot sim; 678 trades (357 sells, 234 losing); end 1056.50 USDT + 0.31 USDT of PEARL (less 0.7% exit cost); Zenbot's own buy&hold 1496.48"
+Zenbot 4.1.0,ehlers_mama (defaults),B,,,does not run as shipped,"Error: Cannot find module './conf', falling back to conf-sample"
+Zenbot 4.1.0,ehlers_trend (defaults),B,0,1000.0,ran,"Zenbot sim; 0 trades (0 sells, 0 losing); end 1000.00 USDT + 0.00 USDT of PEARL (less 0.7% exit cost); Zenbot's own buy&hold 0.00"
+Zenbot 4.1.0,ichimoku (defaults),B,40,964.42,ran,"Zenbot sim; 40 trades (20 sells, 15 losing); end 317.52 USDT + 651.46 USDT of PEARL (less 0.7% exit cost); Zenbot's own buy&hold 1496.48"
+Zenbot 4.1.0,ichimoku_score (defaults),B,,,does not run as shipped,"Error: Cannot find module './conf', falling back to conf-sample"
+Zenbot 4.1.0,kc (defaults),B,96,1614.44,ran,"Zenbot sim; 96 trades (47 sells, 11 losing); end 520.22 USDT + 1101.93 USDT of PEARL (less 0.7% exit cost); Zenbot's own buy&hold 1535.97"
+Zenbot 4.1.0,macd (defaults),B,103,1053.09,ran,"Zenbot sim; 103 trades (57 sells, 33 losing); end 1048.92 USDT + 4.19 USDT of PEARL (less 0.7% exit cost); Zenbot's own buy&hold 1487.59"
+Zenbot 4.1.0,momentum (defaults),B,398,1271.25,ran,"Zenbot sim; 398 trades (199 sells, 156 losing); end 1271.23 USDT + 0.02 USDT of PEARL (less 0.7% exit cost); Zenbot's own buy&hold 1487.59"
+Zenbot 4.1.0,multi (defaults),B,630,1111.24,ran,"Zenbot sim; 630 trades (333 sells, 222 losing); end 1110.64 USDT + 0.61 USDT of PEARL (less 0.7% exit cost); Zenbot's own buy&hold 1496.48"
+Hummingbot 20261118 V2 controller,pmm_v1 (default config),B,965,796.18,ran,"engine fills; 73925 executors, 0 sells rejected (no PEARL held, spot); close types {'EARLY_STOP': 72957, 'EXPIRED': 3, 'POSITION_HOLD': 965}; peak PEARL held 101.95 USDT; position went short up to 20980.71 USDT"
+Hummingbot 20261118 V2 controller,bollinger_v1 (default config),B,428,0.0,ran,"engine fills; 428 executors, 5757 sells rejected (no PEARL held, spot); close types {'STOP_LOSS': 55, 'TAKE_PROFIT': 35, 'TIME_LIMIT': 338}; engine total -2,210.16 (losses larger than the account: wiped out, recorded as 0); peak PEARL held 0.00 USDT"
+Hummingbot 20261118 V2 controller,supertrend_v1 (default config),B,,,does not run as shipped,IndexError: index -1 is out of bounds for axis 0 with size 0
+Hummingbot 20261118 V2 controller,macd_bb_v1 (default config),B,28,791.7,ran,"engine fills; 28 executors, 123 sells rejected (no PEARL held, spot); close types {'STOP_LOSS': 5, 'TAKE_PROFIT': 2, 'TIME_LIMIT': 21}; peak PEARL held 0.00 USDT"
+Hummingbot 20261118 V2 controller,dman_v3 (default config),B,,,does not run as shipped,ValueError: Must have equal len keys and value when setting with an iterable
+Hummingbot 20261118 V2 controller,bollingrid (default config),B,,,does not run as shipped,KeyError: 'BBP_100_2.0'
+Zenbot 4.1.0,neural (defaults),B,,,cannot run here,sim did not finish within 20 minutes
+Zenbot 4.1.0,noop (defaults),B,0,1000.0,ran,"Zenbot sim; 0 trades (0 sells, 0 losing); end 1000.00 USDT + 0.00 USDT of PEARL (less 0.7% exit cost); Zenbot's own buy&hold 0.00"
+Zenbot 4.1.0,pivot (defaults),B,177,1124.09,ran,"Zenbot sim; 177 trades (93 sells, 60 losing); end 1121.74 USDT + 2.37 USDT of PEARL (less 0.7% exit cost); Zenbot's own buy&hold 1499.55"
+Zenbot 4.1.0,renko (defaults),B,0,1000.0,ran,"Zenbot sim; 0 trades (0 sells, 0 losing); end 1000.00 USDT + 0.00 USDT of PEARL (less 0.7% exit cost); Zenbot's own buy&hold 0.00"
+Zenbot 4.1.0,rsi (defaults),B,287,1450.62,ran,"Zenbot sim; 287 trades (119 sells, 41 losing); end 1083.32 USDT + 369.89 USDT of PEARL (less 0.7% exit cost); Zenbot's own buy&hold 1522.53"
+Zenbot 4.1.0,sar (defaults),B,692,949.99,ran,"Zenbot sim; 692 trades (347 sells, 304 losing); end 949.97 USDT + 0.01 USDT of PEARL (less 0.7% exit cost); Zenbot's own buy&hold 1496.48"
+Zenbot 4.1.0,speed (defaults),B,625,1020.67,ran,"Zenbot sim; 625 trades (313 sells, 294 losing); end 1020.65 USDT + 0.02 USDT of PEARL (less 0.7% exit cost); Zenbot's own buy&hold 1496.48"
+Zenbot 4.1.0,srsi_macd (defaults),B,0,1000.0,ran,"Zenbot sim; 0 trades (0 sells, 0 losing); end 1000.00 USDT + 0.00 USDT of PEARL (less 0.7% exit cost); Zenbot's own buy&hold 0.00"
+Zenbot 4.1.0,stddev (defaults),B,932,773.25,ran,"Zenbot sim; 932 trades (515 sells, 384 losing); end 773.24 USDT + 0.02 USDT of PEARL (less 0.7% exit cost); Zenbot's own buy&hold 1511.20"
+Zenbot 4.1.0,ta_ema (defaults),B,2,1747.97,ran,"Zenbot sim; 2 trades (1 sells, 0 losing); end 24.50 USDT + 1735.62 USDT of PEARL (less 0.7% exit cost); Zenbot's own buy&hold 1790.56"
+Zenbot 4.1.0,ta_macd (defaults),B,90,966.15,ran,"Zenbot sim; 90 trades (45 sells, 31 losing); end 962.11 USDT + 4.07 USDT of PEARL (less 0.7% exit cost); Zenbot's own buy&hold 1487.59"
+Zenbot 4.1.0,ta_macd_ext (defaults),B,,,does not run as shipped,"Error: Cannot find module './conf', falling back to conf-sample"
+Zenbot 4.1.0,ta_ppo (defaults),B,,,does not run as shipped,"Error: Cannot find module './conf', falling back to conf-sample"
+Zenbot 4.1.0,ta_srsi_bollinger (defaults),B,414,1174.07,ran,"Zenbot sim; 414 trades (201 sells, 80 losing); end 1172.89 USDT + 1.18 USDT of PEARL (less 0.7% exit cost); Zenbot's own buy&hold 1499.30"
+Zenbot 4.1.0,ta_stoch_bollinger (defaults),B,391,1055.53,ran,"Zenbot sim; 391 trades (203 sells, 75 losing); end 992.00 USDT + 63.98 USDT of PEARL (less 0.7% exit cost); Zenbot's own buy&hold 1429.87"
+Zenbot 4.1.0,ta_trix (defaults),B,,,does not run as shipped,"Error: Cannot find module './conf', falling back to conf-sample"
+Zenbot 4.1.0,ta_ultosc (defaults),B,,,does not run as shipped,"Error: Cannot find module './conf', falling back to conf-sample"
+Zenbot 4.1.0,ti_bollinger (defaults),B,534,1084.67,ran,"Zenbot sim; 534 trades (275 sells, 118 losing); end 1061.99 USDT + 22.84 USDT of PEARL (less 0.7% exit cost); Zenbot's own buy&hold 1479.64"
+Zenbot 4.1.0,ti_hma (defaults),B,,,does not run as shipped,"Error: Cannot find module './conf', falling back to conf-sample"
+Zenbot 4.1.0,ti_stoch (defaults),B,342,1252.94,ran,"Zenbot sim; 342 trades (181 sells, 50 losing); end 945.80 USDT + 309.30 USDT of PEARL (less 0.7% exit cost); Zenbot's own buy&hold 1504.49"
+Zenbot 4.1.0,ti_stoch_bollinger (defaults),B,36,1119.01,ran,"Zenbot sim; 36 trades (21 sells, 3 losing); end 1118.92 USDT + 0.10 USDT of PEARL (less 0.7% exit cost); Zenbot's own buy&hold 1455.02"
+Zenbot 4.1.0,trend_bollinger (defaults),B,47,1262.54,ran,"Zenbot sim; 47 trades (25 sells, 7 losing); end 1253.37 USDT + 9.24 USDT of PEARL (less 0.7% exit cost); Zenbot's own buy&hold 1462.59"
+Zenbot 4.1.0,trend_ema (defaults),B,749,931.77,ran,"Zenbot sim; 749 trades (375 sells, 316 losing); end 931.77 USDT + 0.01 USDT of PEARL (less 0.7% exit cost); Zenbot's own buy&hold 1496.48"
+Zenbot 4.1.0,trendline (defaults),B,3,1486.83,ran,"Zenbot sim; 3 trades (1 sells, 0 losing); end 10.52 USDT + 1486.71 USDT of PEARL (less 0.7% exit cost); Zenbot's own buy&hold 1499.55"
+Zenbot 4.1.0,trust_distrust (defaults),B,42,1559.15,ran,"Zenbot sim; 42 trades (20 sells, 4 losing); end 312.72 USDT + 1255.22 USDT of PEARL (less 0.7% exit cost); Zenbot's own buy&hold 1496.48"
+Zenbot 4.1.0,vpt (defaults),B,0,1000.0,ran,"Zenbot sim; 0 trades (0 sells, 0 losing); end 1000.00 USDT + 0.00 USDT of PEARL (less 0.7% exit cost); Zenbot's own buy&hold 0.00"
+Zenbot 4.1.0,wavetrend (defaults),B,7,1066.44,ran,"Zenbot sim; 7 trades (5 sells, 0 losing); end 1066.33 USDT + 0.12 USDT of PEARL (less 0.7% exit cost); Zenbot's own buy&hold 1563.02"

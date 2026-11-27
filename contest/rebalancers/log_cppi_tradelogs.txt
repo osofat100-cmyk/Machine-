@@ -1,0 +1,1224 @@
+, Value of portfolio: 1000.0 USD
+, Value of portfolio: 1003.2258064516129 USD
+, Value of portfolio: 998.1743562552471 USD
+, Value of portfolio: 1002.8800414557393 USD
+, Value of portfolio: 998.5407305257318 USD
+, Value of portfolio: 999.378168079203 USD
+10.01.26 06:00 Target investment of 197.40979866248892 matches current investment , Value of portfolio: 999.136599554163 USD
+, Value of portfolio: 999.8290959926107 USD
+, Value of portfolio: 1001.63280764624 USD
+, Value of portfolio: 1004.5835809984258 USD
+, Value of portfolio: 1001.4310146335613 USD
+, Value of portfolio: 1000.0082244623029 USD
+, Value of portfolio: 998.2184027173657 USD
+10.01.26 13:00 Target investment of 195.7477093203496 matches current investment , Value of portfolio: 998.5825697734499 USD
+, Value of portfolio: 1001.0684057649805 USD
+, Value of portfolio: 997.5626288531828 USD
+, Value of portfolio: 998.7998153809953 USD
+, Value of portfolio: 990.7903087749864 USD
+, Value of portfolio: 989.5132721091676 USD
+10.01.26 19:00 Target investment of 169.14021261976336 matches current investment , Value of portfolio: 989.7134042065878 USD
+, Value of portfolio: 988.4697261726191 USD
+, Value of portfolio: 986.8642220133142 USD
+, Value of portfolio: 989.8465980656423 USD
+, Value of portfolio: 986.4692543135975 USD
+10.02.26 00:00 Target investment of 159.03707914099903 matches current investment , Value of portfolio: 986.3456930469997 USD
+, Value of portfolio: 986.9497703503667 USD
+, Value of portfolio: 985.3983900030833 USD
+10.02.26 03:00 Target investment of 155.67016685227634 matches current investment , Value of portfolio: 985.2233889507588 USD
+, Value of portfolio: 986.7983984216786 USD
+10.02.26 05:00 Target investment of 159.7360933582878 matches current investment , Value of portfolio: 986.578697786096 USD
+, Value of portfolio: 987.3339187209112 USD
+, Value of portfolio: 982.9948311681545 USD
+, Value of portfolio: 983.9031149641232 USD
+, Value of portfolio: 980.1272494694533 USD
+10.02.26 10:00 Target investment of 141.0466562597809 matches current investment , Value of portfolio: 980.348885419927 USD
+, Value of portfolio: 979.5731595932691 USD
+10.02.26 12:00 Target investment of 139.569083256623 matches current investment , Value of portfolio: 979.856361085541 USD
+, Value of portfolio: 979.3022712093568 USD
+, Value of portfolio: 978.7235551164533 USD
+, Value of portfolio: 981.6663880144094 USD
+, Value of portfolio: 980.4856548676598 USD
+, Value of portfolio: 979.0718426210478 USD
+, Value of portfolio: 987.6184380558263 USD
+, Value of portfolio: 980.7090059740495 USD
+, Value of portfolio: 978.3034888785129 USD
+, Value of portfolio: 979.1182537301968 USD
+, Value of portfolio: 975.7862303068925 USD
+10.02.26 23:00 Target investment of 126.69999884350852 matches current investment , Value of portfolio: 975.5666662811695 USD
+, Value of portfolio: 972.5274379251096 USD
+, Value of portfolio: 969.3409253566724 USD
+, Value of portfolio: 967.3487658133583 USD
+, Value of portfolio: 965.411493897968 USD
+, Value of portfolio: 964.7587313288722 USD
+, Value of portfolio: 965.6802784852426 USD
+, Value of portfolio: 970.115224175276 USD
+, Value of portfolio: 974.0401104556385 USD
+, Value of portfolio: 977.1302111031798 USD
+, Value of portfolio: 975.9712951465116 USD
+, Value of portfolio: 970.5787906727011 USD
+10.03.26 11:00 Target investment of 112.30260363305956 matches current investment , Value of portfolio: 970.7675345443532 USD
+10.03.26 12:00 Target investment of 113.49798148685716 matches current investment , Value of portfolio: 971.1659938289524 USD
+, Value of portfolio: 968.7962096626524 USD
+10.03.26 14:00 Target investment of 106.38862898795696 matches current investment , Value of portfolio: 968.7962096626524 USD
+, Value of portfolio: 967.8224696162443 USD
+, Value of portfolio: 970.7938825413657 USD
+, Value of portfolio: 970.2745294588815 USD
+10.03.26 18:00 Target investment of 110.50561710165368 matches current investment , Value of portfolio: 970.1685390338846 USD
+, Value of portfolio: 971.5570136013428 USD
+, Value of portfolio: 972.9908089396142 USD
+, Value of portfolio: 974.103845021744 USD
+, Value of portfolio: 977.5728717832567 USD
+10.03.26 23:00 Target investment of 131.9650080701814 matches current investment , Value of portfolio: 977.3216693567272 USD
+, Value of portfolio: 974.259392157129 USD
+, Value of portfolio: 973.2339619527467 USD
+, Value of portfolio: 971.5873049041634 USD
+, Value of portfolio: 970.4439325685706 USD
+10.04.26 04:00 Target investment of 111.01169477958842 matches current investment , Value of portfolio: 970.3372315931962 USD
+, Value of portfolio: 971.7990349558263 USD
+, Value of portfolio: 970.1569169660604 USD
+, Value of portfolio: 971.1987929729916 USD
+, Value of portfolio: 969.9208472477137 USD
+, Value of portfolio: 966.7457664914759 USD
+, Value of portfolio: 967.7908381273428 USD
+, Value of portfolio: 965.6067686902225 USD
+, Value of portfolio: 964.6347748535527 USD
+, Value of portfolio: 965.9178067179569 USD
+, Value of portfolio: 968.5231005666407 USD
+10.04.26 15:00 Target investment of 106.70332642476694 matches current investment , Value of portfolio: 968.9011088082557 USD
+10.04.26 16:00 Target investment of 105.5063003263192 matches current investment , Value of portfolio: 968.5021001087731 USD
+, Value of portfolio: 967.9455879752845 USD
+, Value of portfolio: 973.3112049604304 USD
+, Value of portfolio: 975.0756129485878 USD
+, Value of portfolio: 972.417524073249 USD
+10.04.26 21:00 Target investment of 117.320682921007 matches current investment , Value of portfolio: 972.4402276403357 USD
+, Value of portfolio: 971.6115474416679 USD
+, Value of portfolio: 973.6094613453054 USD
+, Value of portfolio: 975.4643860127825 USD
+, Value of portfolio: 981.3909551456811 USD
+10.05.26 02:00 Target investment of 145.31939553695372 matches current investment , Value of portfolio: 981.7731318456513 USD
+, Value of portfolio: 982.6297347938606 USD
+, Value of portfolio: 979.7831773044268 USD
+, Value of portfolio: 978.4537478249706 USD
+10.05.26 06:00 Target investment of 135.13773165190935 matches current investment , Value of portfolio: 978.3792438839698 USD
+, Value of portfolio: 981.1358897009986 USD
+10.05.26 08:00 Target investment of 142.0904622368538 matches current investment , Value of portfolio: 980.696820745618 USD
+, Value of portfolio: 981.8203207196802 USD
+10.05.26 10:00 Target investment of 144.24113623651658 matches current investment , Value of portfolio: 981.4137120788389 USD
+10.05.26 11:00 Target investment of 144.5559300229744 matches current investment , Value of portfolio: 981.5186433409915 USD
+10.05.26 12:00 Target investment of 145.1461683725828 matches current investment , Value of portfolio: 981.7153894575276 USD
+, Value of portfolio: 980.9415213991522 USD
+, Value of portfolio: 982.3187442149051 USD
+, Value of portfolio: 989.2294566287052 USD
+, Value of portfolio: 995.930581652388 USD
+, Value of portfolio: 994.8167888287343 USD
+, Value of portfolio: 991.8562829464768 USD
+, Value of portfolio: 994.5102829673649 USD
+10.05.26 20:00 Target investment of 182.09484276479907 matches current investment , Value of portfolio: 994.0316142549331 USD
+, Value of portfolio: 1004.8711444525832 USD
+, Value of portfolio: 999.5122495980319 USD
+, Value of portfolio: 996.3833769255812 USD
+, Value of portfolio: 991.5564283793645 USD
+, Value of portfolio: 990.8837610425041 USD
+, Value of portfolio: 994.5610091506744 USD
+, Value of portfolio: 993.4087080289848 USD
+, Value of portfolio: 992.8859569439348 USD
+, Value of portfolio: 992.2863306993186 USD
+, Value of portfolio: 990.8872027952142 USD
+, Value of portfolio: 992.233757574948 USD
+, Value of portfolio: 990.6512663923847 USD
+, Value of portfolio: 992.4465376770032 USD
+, Value of portfolio: 991.8306147351573 USD
+, Value of portfolio: 991.1992937197649 USD
+, Value of portfolio: 994.0171411787109 USD
+, Value of portfolio: 992.3328040141103 USD
+, Value of portfolio: 995.981612790245 USD
+, Value of portfolio: 994.5864245209413 USD
+, Value of portfolio: 993.3239684281103 USD
+, Value of portfolio: 992.0789788906793 USD
+, Value of portfolio: 993.9592953828155 USD
+10.06.26 19:00 Target investment of 182.92516764258323 matches current investment , Value of portfolio: 994.3083892141944 USD
+, Value of portfolio: 990.7539792946995 USD
+10.06.26 21:00 Target investment of 173.22199645510852 matches current investment , Value of portfolio: 991.0739988183695 USD
+10.06.26 22:00 Target investment of 172.17050373447898 matches current investment , Value of portfolio: 990.7235012448264 USD
+, Value of portfolio: 992.0950134891261 USD
+, Value of portfolio: 990.8101822317682 USD
+10.07.26 01:00 Target investment of 172.52206224419172 matches current investment , Value of portfolio: 990.8406874147306 USD
+, Value of portfolio: 986.219152195918 USD
+, Value of portfolio: 988.8711300313238 USD
+, Value of portfolio: 987.337786645005 USD
+, Value of portfolio: 988.8572554368927 USD
+, Value of portfolio: 993.3069077309062 USD
+, Value of portfolio: 999.2719090828402 USD
+, Value of portfolio: 998.2889117015834 USD
+, Value of portfolio: 1010.1515241669204 USD
+, Value of portfolio: 1026.031493500266 USD
+, Value of portfolio: 1025.4234304727063 USD
+, Value of portfolio: 1023.7460152242661 USD
+, Value of portfolio: 1012.5203722222307 USD
+, Value of portfolio: 1022.625329709885 USD
+, Value of portfolio: 1030.914585180355 USD
+, Value of portfolio: 1039.0722708013022 USD
+, Value of portfolio: 1044.4244039112968 USD
+, Value of portfolio: 1051.4429208144356 USD
+, Value of portfolio: 1060.547201516104 USD
+, Value of portfolio: 1035.4833994570747 USD
+, Value of portfolio: 1042.3896321884843 USD
+, Value of portfolio: 1040.256577232491 USD
+, Value of portfolio: 1039.6845504622195 USD
+, Value of portfolio: 1046.8692066968301 USD
+, Value of portfolio: 1043.1425417554558 USD
+, Value of portfolio: 1041.0634707975273 USD
+, Value of portfolio: 1033.7061781725909 USD
+, Value of portfolio: 1024.976511296327 USD
+, Value of portfolio: 1019.0838349664511 USD
+, Value of portfolio: 1016.6916253066893 USD
+, Value of portfolio: 1013.859344499589 USD
+, Value of portfolio: 1018.8633932123136 USD
+, Value of portfolio: 1020.9935907217908 USD
+, Value of portfolio: 1035.4889096419374 USD
+, Value of portfolio: 1055.2188124940255 USD
+, Value of portfolio: 1039.0595333683157 USD
+, Value of portfolio: 1046.0879228024594 USD
+, Value of portfolio: 1041.105160232812 USD
+, Value of portfolio: 1053.4403982481756 USD
+, Value of portfolio: 1038.9991575105034 USD
+, Value of portfolio: 1041.5116277478205 USD
+, Value of portfolio: 1023.7160970440964 USD
+, Value of portfolio: 1024.8641770169488 USD
+, Value of portfolio: 1026.2047426689464 USD
+10.08.26 21:00 Target investment of 279.2910237024024 matches current investment , Value of portfolio: 1026.4303412341342 USD
+10.08.26 22:00 Target investment of 278.24506671835036 matches current investment , Value of portfolio: 1026.0816889061168 USD
+10.08.26 23:00 Target investment of 279.7217118723057 matches current investment , Value of portfolio: 1026.5739039574353 USD
+, Value of portfolio: 1025.712527617628 USD
+, Value of portfolio: 1022.1029505746237 USD
+, Value of portfolio: 1017.1110323823041 USD
+10.09.26 03:00 Target investment of 252.65822771183434 matches current investment , Value of portfolio: 1017.5527425706115 USD
+, Value of portfolio: 1010.9270897460004 USD
+, Value of portfolio: 1012.635109362609 USD
+, Value of portfolio: 1011.547436804904 USD
+, Value of portfolio: 1032.461763865845 USD
+, Value of portfolio: 1030.0386401976211 USD
+, Value of portfolio: 1034.428951023052 USD
+, Value of portfolio: 1044.7416082687482 USD
+, Value of portfolio: 1034.1637115067217 USD
+, Value of portfolio: 1029.1025340698725 USD
+, Value of portfolio: 1038.693955212208 USD
+, Value of portfolio: 1032.9377895039217 USD
+, Value of portfolio: 1033.68105351486 USD
+, Value of portfolio: 1027.6075247397648 USD
+10.09.26 17:00 Target investment of 283.67776126876936 matches current investment , Value of portfolio: 1027.8925870895898 USD
+, Value of portfolio: 1022.2320632859208 USD
+, Value of portfolio: 1019.9858305457976 USD
+, Value of portfolio: 1019.0257984472771 USD
+, Value of portfolio: 1028.5685175065712 USD
+, Value of portfolio: 1033.1156100535147 USD
+, Value of portfolio: 1031.2482731956336 USD
+, Value of portfolio: 1020.8763717978509 USD
+, Value of portfolio: 1014.0989715263077 USD
+, Value of portfolio: 1016.9679141201834 USD
+10.10.26 03:00 Target investment of 250.22618368340818 matches current investment , Value of portfolio: 1016.7420612278028 USD
+, Value of portfolio: 1015.2551963529634 USD
+, Value of portfolio: 1015.7572900957441 USD
+, Value of portfolio: 1018.8070446815232 USD
+, Value of portfolio: 1015.5115349727563 USD
+, Value of portfolio: 1017.1256612993584 USD
+, Value of portfolio: 1027.1431515735771 USD
+, Value of portfolio: 1033.0315590601845 USD
+, Value of portfolio: 1035.1801369228801 USD
+, Value of portfolio: 1022.6175355990595 USD
+10.10.26 13:00 Target investment of 267.7940085458555 matches current investment , Value of portfolio: 1022.5980028486185 USD
+, Value of portfolio: 1023.3011818644937 USD
+10.10.26 15:00 Target investment of 269.2589648289294 matches current investment , Value of portfolio: 1023.0863216096432 USD
+, Value of portfolio: 1024.0629591316917 USD
+, Value of portfolio: 1018.4179942542492 USD
+, Value of portfolio: 1026.6296678899553 USD
+, Value of portfolio: 1025.5764824306366 USD
+, Value of portfolio: 1022.815498777496 USD
+, Value of portfolio: 1025.0377379855465 USD
+, Value of portfolio: 1025.7644595473653 USD
+, Value of portfolio: 1019.9899692994 USD
+, Value of portfolio: 1024.597364223811 USD
+, Value of portfolio: 1023.4491850022873 USD
+, Value of portfolio: 1020.8055293965813 USD
+, Value of portfolio: 1019.3301099574694 USD
+10.11.26 04:00 Target investment of 258.7196972421091 matches current investment , Value of portfolio: 1019.5732324140364 USD
+, Value of portfolio: 1018.395023586058 USD
+, Value of portfolio: 1019.9515950727828 USD
+, Value of portfolio: 1026.4221761554481 USD
+, Value of portfolio: 1014.4845153963586 USD
+, Value of portfolio: 1013.1412493061517 USD
+, Value of portfolio: 1015.1957806538763 USD
+, Value of portfolio: 1016.4566808986551 USD
+, Value of portfolio: 1012.7445173909218 USD
+, Value of portfolio: 1013.5033353719166 USD
+, Value of portfolio: 1008.0504340666288 USD
+, Value of portfolio: 1009.4640008372587 USD
+, Value of portfolio: 1006.414003191063 USD
+10.11.26 17:00 Target investment of 218.34680590461028 matches current investment , Value of portfolio: 1006.1156019682035 USD
+, Value of portfolio: 1007.4749853167857 USD
+, Value of portfolio: 1013.4329464850025 USD
+, Value of portfolio: 1014.1392922799907 USD
+, Value of portfolio: 1011.2962504551631 USD
+, Value of portfolio: 1009.3999017671551 USD
+, Value of portfolio: 1011.2482905520151 USD
+, Value of portfolio: 1015.1078549962841 USD
+, Value of portfolio: 1010.9805839971968 USD
+, Value of portfolio: 1009.7435426825933 USD
+, Value of portfolio: 1013.6020146214073 USD
+10.12.26 04:00 Target investment of 241.75430656156516 matches current investment , Value of portfolio: 1013.9181021871884 USD
+10.12.26 05:00 Target investment of 242.2284379102365 matches current investment , Value of portfolio: 1014.0761459700789 USD
+, Value of portfolio: 1012.2498622566773 USD
+10.12.26 07:00 Target investment of 236.54206339229324 matches current investment , Value of portfolio: 1012.1806877974311 USD
+, Value of portfolio: 1010.7799049976959 USD
+, Value of portfolio: 1014.1119815163141 USD
+, Value of portfolio: 1022.8446500517567 USD
+10.12.26 11:00 Target investment of 268.4211918306196 matches current investment , Value of portfolio: 1022.8070639435399 USD
+, Value of portfolio: 1025.1749887612013 USD
+, Value of portfolio: 1027.0106745661305 USD
+, Value of portfolio: 1030.691893766592 USD
+, Value of portfolio: 1026.5378401843088 USD
+, Value of portfolio: 1025.3410958605286 USD
+, Value of portfolio: 1036.0957469712366 USD
+10.12.26 18:00 Target investment of 308.65753120708007 matches current investment , Value of portfolio: 1036.2191770690267 USD
+, Value of portfolio: 1042.0203916651608 USD
+, Value of portfolio: 1066.4867116782327 USD
+, Value of portfolio: 1065.344216312406 USD
+, Value of portfolio: 1057.2234443092993 USD
+, Value of portfolio: 1056.019278744673 USD
+, Value of portfolio: 1042.4224428142877 USD
+10.13.26 01:00 Target investment of 327.33105285289287 matches current investment , Value of portfolio: 1042.4436842842977 USD
+, Value of portfolio: 1045.332524205647 USD
+, Value of portfolio: 1035.8875905099308 USD
+, Value of portfolio: 1039.715812169048 USD
+, Value of portfolio: 1040.7798455914094 USD
+, Value of portfolio: 1043.636125041585 USD
+, Value of portfolio: 1054.5994417839643 USD
+, Value of portfolio: 1064.5602885992503 USD
+, Value of portfolio: 1065.7579790945279 USD
+, Value of portfolio: 1068.167890755332 USD
+, Value of portfolio: 1073.2409545980408 USD
+, Value of portfolio: 1075.4904072117174 USD
+, Value of portfolio: 1072.8128055121779 USD
+, Value of portfolio: 1070.0692741407158 USD
+, Value of portfolio: 1100.4158419121509 USD
+, Value of portfolio: 1116.9374084029055 USD
+, Value of portfolio: 1129.002251626785 USD
+, Value of portfolio: 1110.9213873060457 USD
+, Value of portfolio: 1083.4875094767003 USD
+, Value of portfolio: 1107.579604405403 USD
+, Value of portfolio: 1113.2643425785286 USD
+10.13.26 22:00 Target investment of 540.4058320161802 matches current investment , Value of portfolio: 1113.46861067206 USD
+, Value of portfolio: 1104.0722783696033 USD
+, Value of portfolio: 1095.430712816028 USD
+, Value of portfolio: 1101.003093385165 USD
+, Value of portfolio: 1095.9438124242197 USD
+, Value of portfolio: 1114.6259073256347 USD
+, Value of portfolio: 1115.8248420318582 USD
+, Value of portfolio: 1123.4612892842642 USD
+, Value of portfolio: 1130.6439009535216 USD
+, Value of portfolio: 1128.5406845362095 USD
+, Value of portfolio: 1146.136984311655 USD
+, Value of portfolio: 1134.566740497327 USD
+, Value of portfolio: 1139.5748825328283 USD
+, Value of portfolio: 1163.532287769711 USD
+, Value of portfolio: 1123.2930546947186 USD
+, Value of portfolio: 1124.3715202315439 USD
+, Value of portfolio: 1117.0343066941343 USD
+, Value of portfolio: 1149.3711455870907 USD
+, Value of portfolio: 1155.423111008929 USD
+, Value of portfolio: 1141.4051091253014 USD
+, Value of portfolio: 1138.4238957946777 USD
+, Value of portfolio: 1161.8562359411187 USD
+, Value of portfolio: 1152.4833579645822 USD
+, Value of portfolio: 1128.553434054409 USD
+, Value of portfolio: 1117.6742014932688 USD
+, Value of portfolio: 1111.667840101228 USD
+, Value of portfolio: 1113.2932972014523 USD
+, Value of portfolio: 1109.5349665711956 USD
+, Value of portfolio: 1093.0717540901496 USD
+, Value of portfolio: 1089.9484510828083 USD
+, Value of portfolio: 1080.0745675264675 USD
+, Value of portfolio: 1071.4745928721818 USD
+, Value of portfolio: 1069.1942419327916 USD
+, Value of portfolio: 1062.4288909221605 USD
+, Value of portfolio: 1056.2589107637841 USD
+, Value of portfolio: 1068.4656514209967 USD
+, Value of portfolio: 1073.0944410653835 USD
+, Value of portfolio: 1066.260137386976 USD
+, Value of portfolio: 1074.5724406090203 USD
+, Value of portfolio: 1102.7878584834807 USD
+, Value of portfolio: 1087.2329609554477 USD
+, Value of portfolio: 1086.131665567238 USD
+10.15.26 16:00 Target investment of 457.3244567850396 matches current investment , Value of portfolio: 1085.7748189283466 USD
+, Value of portfolio: 1086.845358845021 USD
+, Value of portfolio: 1084.9503594197768 USD
+, Value of portfolio: 1097.9025676784177 USD
+, Value of portfolio: 1106.586677112914 USD
+, Value of portfolio: 1111.411594177198 USD
+, Value of portfolio: 1132.8453715290048 USD
+, Value of portfolio: 1120.8910749882366 USD
+, Value of portfolio: 1108.286074304522 USD
+10.16.26 01:00 Target investment of 524.440608159497 matches current investment , Value of portfolio: 1108.146869386499 USD
+, Value of portfolio: 1106.615615288247 USD
+, Value of portfolio: 1109.798577021526 USD
+, Value of portfolio: 1106.2687118517035 USD
+10.16.26 05:00 Target investment of 518.8061355551098 matches current investment , Value of portfolio: 1106.2687118517033 USD
+, Value of portfolio: 1096.7609972583973 USD
+, Value of portfolio: 1095.5902992805327 USD
+10.16.26 08:00 Target investment of 486.69145962729533 matches current investment , Value of portfolio: 1095.5638198757651 USD
+, Value of portfolio: 1108.5916870213923 USD
+10.16.26 10:00 Target investment of 525.6914808827868 matches current investment , Value of portfolio: 1108.563826960929 USD
+, Value of portfolio: 1101.0973307567535 USD
+, Value of portfolio: 1098.7162923545288 USD
+, Value of portfolio: 1088.2106822530366 USD
+, Value of portfolio: 1086.9542962759274 USD
+, Value of portfolio: 1082.5425388740236 USD
+, Value of portfolio: 1081.1170528609805 USD
+, Value of portfolio: 1077.712775945508 USD
+, Value of portfolio: 1076.685280335842 USD
+, Value of portfolio: 1069.6731033438152 USD
+, Value of portfolio: 1067.2484133332691 USD
+, Value of portfolio: 1065.038721473613 USD
+, Value of portfolio: 1065.820810871663 USD
+, Value of portfolio: 1067.9830580309786 USD
+, Value of portfolio: 1064.8208472627382 USD
+, Value of portfolio: 1062.280652209162 USD
+, Value of portfolio: 1056.9047100348457 USD
+, Value of portfolio: 1054.7095766258894 USD
+10.17.26 04:00 Target investment of 363.67324361799285 matches current investment , Value of portfolio: 1054.5577478726643 USD
+10.17.26 05:00 Target investment of 363.60817415232475 matches current investment , Value of portfolio: 1054.536058050775 USD
+, Value of portfolio: 1064.036200038291 USD
+, Value of portfolio: 1065.700188400597 USD
+, Value of portfolio: 1066.2059025791464 USD
+, Value of portfolio: 1062.9417474266913 USD
+, Value of portfolio: 1061.540086573074 USD
+10.17.26 11:00 Target investment of 383.812281114455 matches current investment , Value of portfolio: 1061.270760371485 USD
+, Value of portfolio: 1056.759546494869 USD
+, Value of portfolio: 1058.7314445749646 USD
+, Value of portfolio: 1056.0079658787809 USD
+, Value of portfolio: 1055.1133800127056 USD
+, Value of portfolio: 1065.0192820419284 USD
+, Value of portfolio: 1094.3534412175668 USD
+, Value of portfolio: 1104.4722149796016 USD
+, Value of portfolio: 1099.545462104301 USD
+10.17.26 20:00 Target investment of 499.5973043530108 matches current investment , Value of portfolio: 1099.8657681176703 USD
+, Value of portfolio: 1095.8085586149905 USD
+, Value of portfolio: 1085.280269037084 USD
+, Value of portfolio: 1093.7124707101395 USD
+, Value of portfolio: 1085.6761755561774 USD
+, Value of portfolio: 1093.7911892505283 USD
+, Value of portfolio: 1088.4870838264533 USD
+, Value of portfolio: 1082.4368501917133 USD
+10.18.26 04:00 Target investment of 447.90458849091044 matches current investment , Value of portfolio: 1082.6348628303035 USD
+, Value of portfolio: 1077.362776327841 USD
+, Value of portfolio: 1105.1490302187458 USD
+, Value of portfolio: 1095.372515758235 USD
+, Value of portfolio: 1089.566805976623 USD
+, Value of portfolio: 1098.6872705024416 USD
+, Value of portfolio: 1092.3045100608863 USD
+, Value of portfolio: 1086.062455346118 USD
+, Value of portfolio: 1106.9925882596203 USD
+, Value of portfolio: 1119.2556870025883 USD
+, Value of portfolio: 1120.2511409384033 USD
+, Value of portfolio: 1115.387637423421 USD
+, Value of portfolio: 1121.8706149443574 USD
+, Value of portfolio: 1122.671400283657 USD
+, Value of portfolio: 1123.3863871937456 USD
+, Value of portfolio: 1119.3252615444414 USD
+10.18.26 20:00 Target investment of 557.9757846333242 matches current investment , Value of portfolio: 1119.3252615444414 USD
+, Value of portfolio: 1092.3200679666538 USD
+, Value of portfolio: 1090.598189974235 USD
+, Value of portfolio: 1098.365907477758 USD
+, Value of portfolio: 1095.4332638422304 USD
+, Value of portfolio: 1104.2545635830647 USD
+, Value of portfolio: 1090.3386647870952 USD
+, Value of portfolio: 1104.4310300357665 USD
+, Value of portfolio: 1099.5490943084976 USD
+, Value of portfolio: 1093.5378469253546 USD
+, Value of portfolio: 1091.481447537955 USD
+, Value of portfolio: 1083.2762032041555 USD
+, Value of portfolio: 1081.8434733419695 USD
+, Value of portfolio: 1083.5565878733444 USD
+10.19.26 10:00 Target investment of 450.669763620033 matches current investment , Value of portfolio: 1083.5565878733444 USD
+, Value of portfolio: 1080.2013641260655 USD
+, Value of portfolio: 1074.142399272729 USD
+, Value of portfolio: 1085.5964737464988 USD
+, Value of portfolio: 1080.8660794609796 USD
+, Value of portfolio: 1104.7909571267674 USD
+10.19.26 16:00 Target investment of 514.372871380302 matches current investment , Value of portfolio: 1104.7909571267674 USD
+, Value of portfolio: 1094.2341557440843 USD
+, Value of portfolio: 1089.1896335836382 USD
+, Value of portfolio: 1094.1276058412104 USD
+, Value of portfolio: 1125.7933196267654 USD
+, Value of portfolio: 1121.4399225388152 USD
+, Value of portfolio: 1110.2594474765497 USD
+10.19.26 23:00 Target investment of 530.7783424296489 matches current investment , Value of portfolio: 1110.2594474765497 USD
+, Value of portfolio: 1112.9482941960514 USD
+, Value of portfolio: 1110.2323421668773 USD
+, Value of portfolio: 1112.9207769515815 USD
+, Value of portfolio: 1098.121106068727 USD
+, Value of portfolio: 1099.299686666679 USD
+, Value of portfolio: 1108.5414922889331 USD
+, Value of portfolio: 1098.9628533450152 USD
+, Value of portfolio: 1101.5319478077372 USD
+10.20.26 08:00 Target investment of 504.5958434232115 matches current investment , Value of portfolio: 1101.5319478077372 USD
+10.20.26 09:00 Target investment of 504.5958434232115 matches current investment , Value of portfolio: 1101.5319478077372 USD
+, Value of portfolio: 1100.3380067143023 USD
+, Value of portfolio: 1101.526284359395 USD
+, Value of portfolio: 1104.1217210811592 USD
+, Value of portfolio: 1098.877719615078 USD
+, Value of portfolio: 1101.4454935608162 USD
+, Value of portfolio: 1135.4034408481639 USD
+, Value of portfolio: 1161.2294613363244 USD
+, Value of portfolio: 1172.3219371977993 USD
+, Value of portfolio: 1154.3855625616216 USD
+, Value of portfolio: 1145.2897815408915 USD
+10.20.26 20:00 Target investment of 635.8693446226742 matches current investment , Value of portfolio: 1145.2897815408915 USD
+, Value of portfolio: 1139.1539626911194 USD
+, Value of portfolio: 1136.2048205596136 USD
+, Value of portfolio: 1139.1256559086507 USD
+, Value of portfolio: 1150.8616273064122 USD
+, Value of portfolio: 1147.8334621641575 USD
+, Value of portfolio: 1150.8333933311737 USD
+, Value of portfolio: 1154.2587516700196 USD
+, Value of portfolio: 1156.9782140862496 USD
+, Value of portfolio: 1164.9851889207282 USD
+, Value of portfolio: 1168.0785575870245 USD
+, Value of portfolio: 1166.7272899066388 USD
+, Value of portfolio: 1174.5793775196466 USD
+, Value of portfolio: 1176.3484278165045 USD
+, Value of portfolio: 1193.9606027756613 USD
+, Value of portfolio: 1213.4033671994707 USD
+, Value of portfolio: 1227.2833705986443 USD
+, Value of portfolio: 1249.7877346179828 USD
+, Value of portfolio: 1241.638694241554 USD
+, Value of portfolio: 1239.6752110489567 USD
+, Value of portfolio: 1206.323010621902 USD
+, Value of portfolio: 1168.641147622584 USD
+, Value of portfolio: 1166.7514251575567 USD
+, Value of portfolio: 1190.8992228377479 USD
+, Value of portfolio: 1207.3461057948 USD
+, Value of portfolio: 1222.8148542207996 USD
+, Value of portfolio: 1219.0342206639853 USD
+, Value of portfolio: 1248.2871196002477 USD
+, Value of portfolio: 1247.1235450029806 USD
+, Value of portfolio: 1230.6028405046527 USD
+, Value of portfolio: 1226.7601247367504 USD
+, Value of portfolio: 1229.866866110376 USD
+, Value of portfolio: 1245.5843227775617 USD
+, Value of portfolio: 1243.8500946303216 USD
+, Value of portfolio: 1244.7715853076515 USD
+, Value of portfolio: 1211.0603846953254 USD
+, Value of portfolio: 1195.6442599991576 USD
+, Value of portfolio: 1188.0217246008674 USD
+, Value of portfolio: 1182.8942202545454 USD
+, Value of portfolio: 1177.6045785640845 USD
+, Value of portfolio: 1182.6234042910526 USD
+, Value of portfolio: 1191.013820990248 USD
+, Value of portfolio: 1170.3827240270643 USD
+, Value of portfolio: 1145.3937629922139 USD
+, Value of portfolio: 1130.4509001581114 USD
+, Value of portfolio: 1158.814423348283 USD
+, Value of portfolio: 1149.3450784171944 USD
+, Value of portfolio: 1152.571214925315 USD
+, Value of portfolio: 1154.2907671568637 USD
+, Value of portfolio: 1139.3405844117701 USD
+, Value of portfolio: 1154.4107582129307 USD
+, Value of portfolio: 1149.5623475608447 USD
+, Value of portfolio: 1153.4735181132178 USD
+10.23.26 01:00 Target investment of 660.4205543396532 matches current investment , Value of portfolio: 1153.4735181132178 USD
+, Value of portfolio: 1167.2209493614812 USD
+, Value of portfolio: 1152.8499583887483 USD
+, Value of portfolio: 1132.0894869397391 USD
+, Value of portfolio: 1131.3570742227128 USD
+, Value of portfolio: 1130.4556431863723 USD
+, Value of portfolio: 1121.1314659042278 USD
+, Value of portfolio: 1114.3964733461485 USD
+, Value of portfolio: 1133.8464594371649 USD
+, Value of portfolio: 1120.4479421201918 USD
+, Value of portfolio: 1123.0544237323134 USD
+, Value of portfolio: 1117.2452371985041 USD
+, Value of portfolio: 1122.5857404626468 USD
+, Value of portfolio: 1099.4739352755955 USD
+, Value of portfolio: 1102.8029213738712 USD
+, Value of portfolio: 1100.7993150501354 USD
+10.23.26 17:00 Target investment of 503.1527875581045 matches current investment , Value of portfolio: 1101.0509291860349 USD
+, Value of portfolio: 1108.9012902260974 USD
+, Value of portfolio: 1119.223223385286 USD
+, Value of portfolio: 1111.8709357553757 USD
+, Value of portfolio: 1109.2235395757791 USD
+, Value of portfolio: 1115.944962398303 USD
+, Value of portfolio: 1111.5818640348625 USD
+, Value of portfolio: 1109.8018219229027 USD
+, Value of portfolio: 1107.3056075459972 USD
+, Value of portfolio: 1102.9528665755165 USD
+, Value of portfolio: 1107.9667507629192 USD
+, Value of portfolio: 1100.8671317130297 USD
+, Value of portfolio: 1098.3312769368758 USD
+, Value of portfolio: 1096.9395184127309 USD
+, Value of portfolio: 1094.4435376424244 USD
+, Value of portfolio: 1096.8895427685745 USD
+10.24.26 09:00 Target investment of 491.5580578434377 matches current investment , Value of portfolio: 1097.186019281146 USD
+, Value of portfolio: 1096.4448279997173 USD
+10.24.26 11:00 Target investment of 490.0756752805813 matches current investment , Value of portfolio: 1096.6918917601938 USD
+, Value of portfolio: 1091.7753229267169 USD
+, Value of portfolio: 1078.776899275704 USD
+, Value of portfolio: 1069.8446844667824 USD
+, Value of portfolio: 1059.2938579266697 USD
+, Value of portfolio: 1067.5037171035437 USD
+, Value of portfolio: 1061.5167338616898 USD
+, Value of portfolio: 1066.9037065972923 USD
+, Value of portfolio: 1063.9311680534402 USD
+, Value of portfolio: 1074.7948709578586 USD
+, Value of portfolio: 1076.1590202641391 USD
+, Value of portfolio: 1077.7344690641953 USD
+, Value of portfolio: 1078.9360485377774 USD
+, Value of portfolio: 1079.9163079324528 USD
+, Value of portfolio: 1064.5285151090613 USD
+, Value of portfolio: 1062.3930254459915 USD
+, Value of portfolio: 1064.254262228647 USD
+10.25.26 04:00 Target investment of 391.6860301347939 matches current investment , Value of portfolio: 1063.8953433782647 USD
+, Value of portfolio: 1065.1410029178264 USD
+, Value of portfolio: 1061.2103567075533 USD
+, Value of portfolio: 1053.0280593799616 USD
+, Value of portfolio: 1052.3908557144332 USD
+, Value of portfolio: 1050.0411671977963 USD
+, Value of portfolio: 1048.0959274729103 USD
+, Value of portfolio: 1047.2993248160724 USD
+, Value of portfolio: 1055.1293460527963 USD
+, Value of portfolio: 1060.2853772579201 USD
+, Value of portfolio: 1054.8398064026035 USD
+, Value of portfolio: 1072.7689836381346 USD
+, Value of portfolio: 1071.5945865410658 USD
+, Value of portfolio: 1066.6810790565519 USD
+, Value of portfolio: 1068.4875316918733 USD
+, Value of portfolio: 1075.040550193042 USD
+, Value of portfolio: 1075.5778853317559 USD
+, Value of portfolio: 1072.6001531047166 USD
+, Value of portfolio: 1073.6817942790385 USD
+, Value of portfolio: 1078.1860213403756 USD
+, Value of portfolio: 1071.2979848701518 USD
+, Value of portfolio: 1057.1543239046555 USD
+, Value of portfolio: 1049.5335256917633 USD
+, Value of portfolio: 1042.134353496897 USD
+, Value of portfolio: 1044.1140253176907 USD
+, Value of portfolio: 1038.6704424322625 USD
+, Value of portfolio: 1041.7949256336358 USD
+, Value of portfolio: 1044.1236269454766 USD
+, Value of portfolio: 1043.500112701397 USD
+, Value of portfolio: 1048.0347617492482 USD
+, Value of portfolio: 1052.9250324396628 USD
+10.26.26 11:00 Target investment of 359.1940406599409 matches current investment , Value of portfolio: 1053.0646802199803 USD
+, Value of portfolio: 1056.2167301185796 USD
+, Value of portfolio: 1058.3478907191054 USD
+, Value of portfolio: 1056.2743516952446 USD
+, Value of portfolio: 1059.725660076627 USD
+, Value of portfolio: 1059.0639562337217 USD
+, Value of portfolio: 1055.5486545682866 USD
+, Value of portfolio: 1043.3751401959266 USD
+, Value of portfolio: 1048.3068976667876 USD
+, Value of portfolio: 1055.8347742848307 USD
+, Value of portfolio: 1064.3332737205628 USD
+10.26.26 22:00 Target investment of 391.8550379950726 matches current investment , Value of portfolio: 1063.951679331691 USD
+, Value of portfolio: 1062.0225076990596 USD
+, Value of portfolio: 1056.9429480519375 USD
+, Value of portfolio: 1050.1805466737449 USD
+, Value of portfolio: 1049.3543542561865 USD
+10.27.26 03:00 Target investment of 347.82700779211325 matches current investment , Value of portfolio: 1049.2756692640378 USD
+, Value of portfolio: 1046.2266258182867 USD
+, Value of portfolio: 1044.7387299682255 USD
+, Value of portfolio: 1045.5814527393318 USD
+, Value of portfolio: 1044.6621188072158 USD
+, Value of portfolio: 1048.9906494042618 USD
+, Value of portfolio: 1049.874579299505 USD
+, Value of portfolio: 1044.944214772704 USD
+, Value of portfolio: 1045.6692911622692 USD
+, Value of portfolio: 1040.7845660115147 USD
+, Value of portfolio: 1039.2289121774975 USD
+, Value of portfolio: 1038.49530927591 USD
+10.27.26 15:00 Target investment of 315.9811097863011 matches current investment , Value of portfolio: 1038.660369928767 USD
+, Value of portfolio: 1039.852474643847 USD
+, Value of portfolio: 1042.217650442577 USD
+, Value of portfolio: 1040.1364612796006 USD
+10.27.26 19:00 Target investment of 321.13123502993506 matches current investment , Value of portfolio: 1040.3770783433117 USD
+, Value of portfolio: 1036.9529124366525 USD
+, Value of portfolio: 1042.7300133514136 USD
+, Value of portfolio: 1041.8853238179863 USD
+, Value of portfolio: 1038.4314821701955 USD
+, Value of portfolio: 1037.2375329116353 USD
+, Value of portfolio: 1036.6542110894413 USD
+10.28.26 02:00 Target investment of 309.52514190167824 matches current investment , Value of portfolio: 1036.5083806338928 USD
+, Value of portfolio: 1033.6464579437538 USD
+, Value of portfolio: 1030.8916185233168 USD
+, Value of portfolio: 1027.4502440142455 USD
+10.28.26 06:00 Target investment of 282.81351779913473 matches current investment , Value of portfolio: 1027.604505933045 USD
+, Value of portfolio: 1025.753362907451 USD
+, Value of portfolio: 1022.8779227486663 USD
+, Value of portfolio: 1017.628452613419 USD
+10.28.26 10:00 Target investment of 252.4083656531957 matches current investment , Value of portfolio: 1017.4694552177319 USD
+, Value of portfolio: 1025.944016407852 USD
+, Value of portfolio: 1050.3779295617762 USD
+, Value of portfolio: 1056.4560395110097 USD
+, Value of portfolio: 1053.0796569297056 USD
+, Value of portfolio: 1045.9124461642675 USD
+, Value of portfolio: 1037.8688010172884 USD
+, Value of portfolio: 1042.9331390973591 USD
+, Value of portfolio: 1049.3050022690286 USD
+, Value of portfolio: 1044.4273244032945 USD
+, Value of portfolio: 1060.0090433191474 USD
+, Value of portfolio: 1065.191982333455 USD
+, Value of portfolio: 1068.584753789904 USD
+, Value of portfolio: 1061.0584058112684 USD
+, Value of portfolio: 1064.0049497772384 USD
+, Value of portfolio: 1052.6498334944679 USD
+, Value of portfolio: 1044.725775705251 USD
+, Value of portfolio: 1043.9503345138 USD
+, Value of portfolio: 1041.7185769384048 USD
+, Value of portfolio: 1039.2371842256193 USD
+, Value of portfolio: 1040.5598342280903 USD
+, Value of portfolio: 1042.2824226860644 USD
+, Value of portfolio: 1048.9841020654935 USD
+, Value of portfolio: 1044.2329311870594 USD
+, Value of portfolio: 1048.0002613292395 USD
+, Value of portfolio: 1047.05185428398 USD
+, Value of portfolio: 1050.9422586941262 USD
+10.29.26 13:00 Target investment of 352.8267760823784 matches current investment , Value of portfolio: 1050.9422586941262 USD
+10.29.26 14:00 Target investment of 351.99552435211206 matches current investment , Value of portfolio: 1050.6651747840374 USD
+, Value of portfolio: 1046.9245419978383 USD
+, Value of portfolio: 1057.8085370994725 USD
+10.29.26 17:00 Target investment of 374.47444410909145 matches current investment , Value of portfolio: 1058.1581480363639 USD
+, Value of portfolio: 1056.3689626534492 USD
+, Value of portfolio: 1049.8512381116045 USD
+, Value of portfolio: 1048.3785648965102 USD
+, Value of portfolio: 1028.3444570477186 USD
+, Value of portfolio: 1023.5819519244139 USD
+, Value of portfolio: 1010.9672628649993 USD
+, Value of portfolio: 1009.6877462034961 USD
+, Value of portfolio: 1001.6246260365801 USD
+, Value of portfolio: 1004.311720176901 USD
+, Value of portfolio: 1006.7745307343961 USD
+10.30.26 04:00 Target investment of 220.45241129822034 matches current investment , Value of portfolio: 1006.8174704327402 USD
+, Value of portfolio: 1018.5543213134399 USD
+, Value of portfolio: 1017.8608698023208 USD
+, Value of portfolio: 1032.0923860418786 USD
+, Value of portfolio: 1034.7425436382475 USD
+, Value of portfolio: 1025.8880911549313 USD
+, Value of portfolio: 1017.9815150632388 USD
+, Value of portfolio: 1016.3955393605329 USD
+, Value of portfolio: 1012.6742532962194 USD
+, Value of portfolio: 1009.6070659412017 USD
+, Value of portfolio: 1002.7835759440301 USD
+, Value of portfolio: 1000.6534814374688 USD
+, Value of portfolio: 1009.8995713510117 USD
+, Value of portfolio: 1006.152494896696 USD
+, Value of portfolio: 1010.5253239936213 USD
+, Value of portfolio: 1008.378106166287 USD
+, Value of portfolio: 1007.7864069958733 USD
+10.30.26 21:00 Target investment of 223.57569629386887 matches current investment , Value of portfolio: 1007.8585654312897 USD
+, Value of portfolio: 1003.2837206258961 USD
+, Value of portfolio: 1005.4410043987408 USD
+, Value of portfolio: 1002.2521060240525 USD
+, Value of portfolio: 1006.6596223709068 USD
+, Value of portfolio: 1003.0947869020418 USD
+, Value of portfolio: 1001.7571982489158 USD
+, Value of portfolio: 1004.9288349581991 USD
+10.31.26 05:00 Target investment of 213.8607614329644 matches current investment , Value of portfolio: 1004.6202538109882 USD
+10.31.26 06:00 Target investment of 212.97709723867843 matches current investment , Value of portfolio: 1004.3256990795595 USD
+, Value of portfolio: 1000.6648045603752 USD
+, Value of portfolio: 998.9999038780205 USD
+, Value of portfolio: 999.9449700622109 USD
+, Value of portfolio: 996.9899743877 USD
+, Value of portfolio: 995.80214172385 USD
+, Value of portfolio: 993.3797170158703 USD
+10.31.26 13:00 Target investment of 179.87842169534633 matches current investment , Value of portfolio: 993.2928072317821 USD
+, Value of portfolio: 989.7543374510553 USD
+, Value of portfolio: 988.6221832460599 USD
+, Value of portfolio: 990.2681512757838 USD
+, Value of portfolio: 990.903513154844 USD
+, Value of portfolio: 988.4699572784438 USD
+, Value of portfolio: 994.583740910769 USD
+, Value of portfolio: 990.1299975123419 USD
+, Value of portfolio: 991.8016499579111 USD
+, Value of portfolio: 993.1552883776628 USD
+, Value of portfolio: 990.210207513942 USD
+, Value of portfolio: 991.3370694632971 USD
+11.01.26 01:00 Target investment of 172.67728269021734 matches current investment , Value of portfolio: 990.8924275634058 USD
+, Value of portfolio: 991.6615378767312 USD
+, Value of portfolio: 988.2846629072867 USD
+, Value of portfolio: 990.6166310950889 USD
+, Value of portfolio: 996.0277311736749 USD
+, Value of portfolio: 996.7454137302888 USD
+, Value of portfolio: 996.0529130177665 USD
+, Value of portfolio: 995.2848667729693 USD
+, Value of portfolio: 992.9807280385771 USD
+, Value of portfolio: 995.9266825033717 USD
+, Value of portfolio: 997.6121155117969 USD
+, Value of portfolio: 1001.1977288043418 USD
+, Value of portfolio: 997.7619517403095 USD
+11.01.26 14:00 Target investment of 192.51126589997898 matches current investment , Value of portfolio: 997.503755299993 USD
+, Value of portfolio: 998.5107214172274 USD
+, Value of portfolio: 1000.8456285153628 USD
+11.01.26 17:00 Target investment of 202.53688554608834 matches current investment , Value of portfolio: 1000.8456285153628 USD
+, Value of portfolio: 1001.499877799545 USD
+, Value of portfolio: 999.109865108349 USD
+, Value of portfolio: 1000.8306490538406 USD
+, Value of portfolio: 1002.9525110975792 USD
+, Value of portfolio: 1001.3416454250251 USD
+11.01.26 23:00 Target investment of 203.10542480525316 matches current investment , Value of portfolio: 1001.0351416017511 USD
+11.02.26 00:00 Target investment of 202.58570093100536 matches current investment , Value of portfolio: 1000.8619003103352 USD
+11.02.26 01:00 Target investment of 202.5057434118911 matches current investment , Value of portfolio: 1000.8352478039637 USD
+, Value of portfolio: 1001.6348229951132 USD
+, Value of portfolio: 997.5969682798072 USD
+, Value of portfolio: 998.3771875589955 USD
+, Value of portfolio: 996.9318633204992 USD
+, Value of portfolio: 998.6958059074774 USD
+, Value of portfolio: 997.3999327680436 USD
+11.02.26 08:00 Target investment of 191.93394428197382 matches current investment , Value of portfolio: 997.311314760658 USD
+, Value of portfolio: 999.7040009600705 USD
+, Value of portfolio: 998.6533122152302 USD
+11.02.26 11:00 Target investment of 195.95993664569062 matches current investment , Value of portfolio: 998.6533122152302 USD
+, Value of portfolio: 999.7826903293715 USD
+11.02.26 13:00 Target investment of 199.85432707774987 matches current investment , Value of portfolio: 999.95144235925 USD
+, Value of portfolio: 999.1466249859831 USD
+, Value of portfolio: 998.4845977918436 USD
+, Value of portfolio: 996.7711156423079 USD
+, Value of portfolio: 998.6455586572665 USD
+, Value of portfolio: 997.3195540826166 USD
+, Value of portfolio: 994.9473194456191 USD
+11.02.26 20:00 Target investment of 184.31687465406048 matches current investment , Value of portfolio: 994.7722915513535 USD
+, Value of portfolio: 998.8604430816987 USD
+11.02.26 22:00 Target investment of 196.7769974560233 matches current investment , Value of portfolio: 998.9256658186745 USD
+, Value of portfolio: 996.6950482141018 USD
+, Value of portfolio: 993.6871298732419 USD
+11.03.26 01:00 Target investment of 181.06138961972567 matches current investment , Value of portfolio: 993.6871298732419 USD
+, Value of portfolio: 985.4593095382946 USD
+, Value of portfolio: 989.4772992821643 USD
+, Value of portfolio: 988.3521540456975 USD
+, Value of portfolio: 985.8893150659986 USD
+, Value of portfolio: 983.8038195598951 USD
+, Value of portfolio: 984.7749654104639 USD
+, Value of portfolio: 979.5045896146808 USD
+11.03.26 09:00 Target investment of 137.60115982530385 matches current investment , Value of portfolio: 979.2003866084347 USD
+, Value of portfolio: 981.4920492554884 USD
+, Value of portfolio: 980.2563153154737 USD
+, Value of portfolio: 981.295770172952 USD
+11.03.26 13:00 Target investment of 142.602882099245 matches current investment , Value of portfolio: 980.867627366415 USD
+11.03.26 14:00 Target investment of 143.10412245811688 matches current investment , Value of portfolio: 981.034707486039 USD
+, Value of portfolio: 985.0550728644965 USD
+, Value of portfolio: 986.8061744158035 USD
+, Value of portfolio: 989.3169359742099 USD
+, Value of portfolio: 991.4988689359577 USD
+, Value of portfolio: 986.9516485388906 USD
+, Value of portfolio: 988.3374549625686 USD
+, Value of portfolio: 990.4803238677075 USD
+, Value of portfolio: 986.7781297184662 USD
+, Value of portfolio: 990.137153145979 USD
+, Value of portfolio: 989.6108669834159 USD
+, Value of portfolio: 990.3593628590612 USD
+, Value of portfolio: 989.1430570611376 USD
+11.04.26 03:00 Target investment of 167.42917118341268 matches current investment , Value of portfolio: 989.1430570611376 USD
+, Value of portfolio: 988.4168082464478 USD
+, Value of portfolio: 991.9558302481903 USD
+, Value of portfolio: 991.1390709686772 USD
+, Value of portfolio: 991.8957744188144 USD
+, Value of portfolio: 990.886836485298 USD
+11.04.26 09:00 Target investment of 172.8742128988015 matches current investment , Value of portfolio: 990.9580709662672 USD
+11.04.26 10:00 Target investment of 173.08791634170916 matches current investment , Value of portfolio: 991.0293054472364 USD
+11.04.26 11:00 Target investment of 171.87693016523235 matches current investment , Value of portfolio: 990.6256433884108 USD
+, Value of portfolio: 992.98825367389 USD
+, Value of portfolio: 991.1956794118169 USD
+, Value of portfolio: 997.9938778257456 USD
+11.04.26 15:00 Target investment of 193.48055494328435 matches current investment , Value of portfolio: 997.8268516477615 USD
+, Value of portfolio: 996.1565898679203 USD
+, Value of portfolio: 998.1638705543023 USD
+11.04.26 18:00 Target investment of 194.60762601238753 matches current investment , Value of portfolio: 998.2025420041292 USD
+, Value of portfolio: 1000.8322005923606 USD
+, Value of portfolio: 1001.7585950845112 USD
+, Value of portfolio: 1005.3582993968674 USD
+11.04.26 22:00 Target investment of 215.62311642285908 matches current investment , Value of portfolio: 1005.2077054742864 USD
+, Value of portfolio: 1007.8773250109504 USD
+, Value of portfolio: 1005.3948628233796 USD
+, Value of portfolio: 1003.3246019875735 USD
+, Value of portfolio: 1007.5060615287406 USD
+, Value of portfolio: 1010.9706841918108 USD
+11.05.26 04:00 Target investment of 233.68957797349583 matches current investment , Value of portfolio: 1011.2298593244986 USD
+, Value of portfolio: 1013.6344286111021 USD
+, Value of portfolio: 1016.3818162094938 USD
+, Value of portfolio: 1018.5000933595551 USD
+, Value of portfolio: 1017.5987769754211 USD
+, Value of portfolio: 1015.796144207153 USD
+, Value of portfolio: 1020.9456782276362 USD
+, Value of portfolio: 1024.3149819753603 USD
+, Value of portfolio: 1017.7271543524903 USD
+, Value of portfolio: 1016.2609408968881 USD
+, Value of portfolio: 1015.0231403107201 USD
+, Value of portfolio: 1010.211118020327 USD
+, Value of portfolio: 1001.517716728982 USD
+, Value of portfolio: 999.2832469221438 USD
+, Value of portfolio: 1009.9760802520248 USD
+, Value of portfolio: 1010.6318369061744 USD
+, Value of portfolio: 1011.9861169527878 USD
+11.05.26 21:00 Target investment of 236.91014471954497 matches current investment , Value of portfolio: 1012.3033815731817 USD
+, Value of portfolio: 1004.342923825118 USD
+11.05.26 23:00 Target investment of 213.43132017428672 matches current investment , Value of portfolio: 1004.4771067247623 USD
+, Value of portfolio: 1003.7927739365762 USD
+, Value of portfolio: 1008.2342279148038 USD
+, Value of portfolio: 1005.9290834968837 USD
+, Value of portfolio: 1009.062024030985 USD
+, Value of portfolio: 1010.1453363638533 USD
+, Value of portfolio: 1011.7360194466424 USD
+, Value of portfolio: 1011.2321153001102 USD
+, Value of portfolio: 1013.5068825901701 USD
+11.06.26 08:00 Target investment of 239.59613277297876 matches current investment , Value of portfolio: 1013.1987109243263 USD
+, Value of portfolio: 1016.3244521064566 USD
+, Value of portfolio: 1013.8557924670143 USD
+, Value of portfolio: 1015.212912564773 USD
+, Value of portfolio: 1016.8686023804196 USD
+, Value of portfolio: 1015.8709557629322 USD
+, Value of portfolio: 1019.0604017673236 USD
+11.06.26 15:00 Target investment of 256.8091977726044 matches current investment , Value of portfolio: 1018.9363992575348 USD
+, Value of portfolio: 1017.4483691400691 USD
+, Value of portfolio: 1025.5218193349724 USD
+, Value of portfolio: 1035.1371017445792 USD
+, Value of portfolio: 1038.6964717032442 USD
+, Value of portfolio: 1036.3695420387667 USD
+, Value of portfolio: 1052.6964412782654 USD
+, Value of portfolio: 1050.809429731467 USD
+, Value of portfolio: 1046.3704983631608 USD
+, Value of portfolio: 1041.4507268642715 USD
+11.07.26 01:00 Target investment of 324.24406920547165 matches current investment , Value of portfolio: 1041.4146897351573 USD
+, Value of portfolio: 1037.6127726136037 USD
+, Value of portfolio: 1035.5018527901166 USD
+, Value of portfolio: 1032.3958465090764 USD
+, Value of portfolio: 1033.7725803210126 USD
+, Value of portfolio: 1035.4536197502725 USD
+, Value of portfolio: 1033.7192398858544 USD
+, Value of portfolio: 1034.5765551889106 USD
+, Value of portfolio: 1033.7192398858544 USD
+, Value of portfolio: 1036.6684045283675 USD
+, Value of portfolio: 1037.3675592725829 USD
+11.07.26 12:00 Target investment of 312.6270438759103 matches current investment , Value of portfolio: 1037.5423479586368 USD
+, Value of portfolio: 1035.4274048573852 USD
+, Value of portfolio: 1033.6860874539634 USD
+, Value of portfolio: 1029.2206625932968 USD
+, Value of portfolio: 1022.0134090206021 USD
+, Value of portfolio: 1035.937947605471 USD
+, Value of portfolio: 1031.9036449719413 USD
+, Value of portfolio: 1030.9805972182312 USD
+, Value of portfolio: 1032.1218198955455 USD
+, Value of portfolio: 1035.5720597960235 USD
+11.07.26 22:00 Target investment of 307.8062182723396 matches current investment , Value of portfolio: 1035.93540609078 USD
+, Value of portfolio: 1032.4576629838248 USD
+11.08.26 00:00 Target investment of 296.10498200557856 matches current investment , Value of portfolio: 1032.0349940018596 USD
+, Value of portfolio: 1037.0224879890495 USD
+, Value of portfolio: 1034.8565962752011 USD
+, Value of portfolio: 1038.3182037139313 USD
+, Value of portfolio: 1034.814012300691 USD
+11.08.26 05:00 Target investment of 304.1838455438136 matches current investment , Value of portfolio: 1034.7279485146046 USD
+, Value of portfolio: 1032.8689707351382 USD
+, Value of portfolio: 1031.2028652126985 USD
+, Value of portfolio: 1035.5735416621378 USD
+, Value of portfolio: 1033.2721852860127 USD
+, Value of portfolio: 1036.186334723387 USD
+11.08.26 11:00 Target investment of 309.6533082268328 matches current investment , Value of portfolio: 1036.5511027422776 USD
+, Value of portfolio: 1040.181413025523 USD
+, Value of portfolio: 1037.266728216887 USD
+, Value of portfolio: 1035.5220987145892 USD
+, Value of portfolio: 1033.7971026750677 USD
+11.08.26 16:00 Target investment of 301.74945749716574 matches current investment , Value of portfolio: 1033.9164858323886 USD
+, Value of portfolio: 1032.2792311034152 USD
+, Value of portfolio: 1031.267111901357 USD
+, Value of portfolio: 1031.803215154053 USD
+, Value of portfolio: 1026.9615326531423 USD
+, Value of portfolio: 1025.7307191473237 USD
+, Value of portfolio: 1023.0018178984742 USD
+11.08.26 23:00 Target investment of 269.14705207437066 matches current investment , Value of portfolio: 1023.0490173581236 USD
+11.09.26 00:00 Target investment of 268.4390601796298 matches current investment , Value of portfolio: 1022.8130200598766 USD
+, Value of portfolio: 1018.8954649089717 USD
+, Value of portfolio: 1013.6741036411072 USD
+, Value of portfolio: 1012.5766187695604 USD
+, Value of portfolio: 1011.4746750589321 USD
+, Value of portfolio: 1016.444694220156 USD
+, Value of portfolio: 1010.4753975093959 USD
+, Value of portfolio: 1007.9714932931936 USD
+, Value of portfolio: 1006.2877165195046 USD
+, Value of portfolio: 1007.6444761817646 USD
+, Value of portfolio: 1010.0445933725255 USD
+, Value of portfolio: 1006.4173154689361 USD
+, Value of portfolio: 1005.8412750742729 USD
+, Value of portfolio: 1008.8997752649847 USD
+, Value of portfolio: 1002.6695258089522 USD
+, Value of portfolio: 999.7304620910738 USD
+, Value of portfolio: 1009.4445945474592 USD
+, Value of portfolio: 1005.1806319788222 USD
+, Value of portfolio: 1002.7630858240213 USD
+, Value of portfolio: 999.0066583536802 USD
+, Value of portfolio: 999.7738203047259 USD
+, Value of portfolio: 1005.1695260270803 USD
+, Value of portfolio: 1006.9731703630298 USD
+, Value of portfolio: 1008.3141497428211 USD
+11.10.26 00:00 Target investment of 225.10863216208008 matches current investment , Value of portfolio: 1008.3695440540267 USD
+11.10.26 01:00 Target investment of 223.94535162676118 matches current investment , Value of portfolio: 1007.9817838755871 USD
+11.10.26 02:00 Target investment of 223.11443695867513 matches current investment , Value of portfolio: 1007.7048123195584 USD
+, Value of portfolio: 1009.0204272106939 USD
+, Value of portfolio: 1010.1553132906765 USD
+11.10.26 05:00 Target investment of 230.3810380706401 matches current investment , Value of portfolio: 1010.1270126902134 USD
+, Value of portfolio: 1014.4994554617768 USD
+, Value of portfolio: 1015.614939237864 USD
+, Value of portfolio: 1016.5480499732507 USD
+, Value of portfolio: 1011.6307045105775 USD
+, Value of portfolio: 1010.3228261322613 USD
+, Value of portfolio: 1008.4251482925945 USD
+11.10.26 12:00 Target investment of 224.40453465274038 matches current investment , Value of portfolio: 1008.1348448842468 USD
+, Value of portfolio: 1006.8630394762475 USD
+, Value of portfolio: 1003.1321164026432 USD
+, Value of portfolio: 1000.7040266462618 USD
+, Value of portfolio: 987.6886478692807 USD
+, Value of portfolio: 979.1986396291013 USD
+, Value of portfolio: 983.768683807817 USD
+11.10.26 19:00 Target investment of 152.12722259037434 matches current investment , Value of portfolio: 984.0424075301248 USD
+, Value of portfolio: 978.3363207035518 USD
+, Value of portfolio: 978.9575871383433 USD
+, Value of portfolio: 983.1899647253615 USD
+, Value of portfolio: 986.1225059911969 USD
+, Value of portfolio: 989.2319417735541 USD
+, Value of portfolio: 988.3996768914042 USD
+, Value of portfolio: 984.1162869646059 USD
+, Value of portfolio: 990.5460161465256 USD
+, Value of portfolio: 984.629029232146 USD
+, Value of portfolio: 979.6407759097491 USD
+, Value of portfolio: 976.5807260532581 USD
+, Value of portfolio: 977.5579266998844 USD
+, Value of portfolio: 976.3176335714741 USD
+, Value of portfolio: 977.1842029643219 USD
+, Value of portfolio: 974.6859018423881 USD
+, Value of portfolio: 976.032910288715 USD
+11.11.26 12:00 Target investment of 127.47412395286938 matches current investment , Value of portfolio: 975.8247079842898 USD
+, Value of portfolio: 975.1457874263814 USD
+, Value of portfolio: 978.1149333329674 USD
+11.11.26 15:00 Target investment of 134.48686358719863 matches current investment , Value of portfolio: 978.1622878623996 USD
+, Value of portfolio: 979.5734528394764 USD
+, Value of portfolio: 980.8495757277915 USD
+, Value of portfolio: 982.335996403483 USD
+, Value of portfolio: 984.184647990055 USD
+, Value of portfolio: 982.9284667559594 USD
+, Value of portfolio: 988.9936943835937 USD
+, Value of portfolio: 992.094631257642 USD
+, Value of portfolio: 995.2407391390616 USD
+, Value of portfolio: 986.8770896129897 USD
+, Value of portfolio: 990.0916246145225 USD
+, Value of portfolio: 988.6693597397608 USD
+, Value of portfolio: 986.328011707677 USD
+, Value of portfolio: 981.1791148817175 USD
+, Value of portfolio: 977.0233108581104 USD
+, Value of portfolio: 974.4826587499874 USD
+, Value of portfolio: 976.3549648877636 USD
+, Value of portfolio: 977.7714527920905 USD
+, Value of portfolio: 978.6491352187168 USD
+, Value of portfolio: 976.5296255288852 USD
+11.12.26 11:00 Target investment of 128.2055585012747 matches current investment , Value of portfolio: 976.0685195004249 USD
+11.12.26 12:00 Target investment of 129.50750493457474 matches current investment , Value of portfolio: 976.5025016448583 USD
+, Value of portfolio: 974.3958799854221 USD
+, Value of portfolio: 971.9655227426542 USD
+, Value of portfolio: 955.570684958144 USD
+, Value of portfolio: 962.9737597717668 USD
+, Value of portfolio: 961.5766664269269 USD
+, Value of portfolio: 963.4779950659388 USD
+, Value of portfolio: 961.854698552093 USD
+, Value of portfolio: 964.5686200255623 USD
+, Value of portfolio: 967.058793618489 USD
+, Value of portfolio: 964.1902587106151 USD
+, Value of portfolio: 966.6219686507949 USD
+, Value of portfolio: 967.9508997727617 USD
+11.13.26 01:00 Target investment of 104.16571068329154 matches current investment , Value of portfolio: 968.0552368944305 USD
+, Value of portfolio: 967.2503505272706 USD
+11.13.26 03:00 Target investment of 102.17585272003441 matches current investment , Value of portfolio: 967.3919509066782 USD
+, Value of portfolio: 965.4468088527086 USD
+, Value of portfolio: 958.6487521344648 USD
+, Value of portfolio: 961.5286341772814 USD
+, Value of portfolio: 963.3671746824441 USD
+, Value of portfolio: 964.2779776563685 USD
+11.13.26 09:00 Target investment of 92.3649374079057 matches current investment , Value of portfolio: 964.1216458026353 USD
+, Value of portfolio: 966.7249110191506 USD
+, Value of portfolio: 968.1803555375203 USD
+, Value of portfolio: 968.9473587775701 USD
+, Value of portfolio: 967.6862284501806 USD
+, Value of portfolio: 966.0376926199715 USD
+, Value of portfolio: 969.8474359002564 USD
+, Value of portfolio: 966.8083367526199 USD
+, Value of portfolio: 968.6717190064908 USD
+, Value of portfolio: 974.8752004550495 USD
+, Value of portfolio: 975.6957471133206 USD
+, Value of portfolio: 977.7836727685257 USD
+, Value of portfolio: 971.4935303956211 USD
+, Value of portfolio: 969.6421941025002 USD
+, Value of portfolio: 977.6445159828567 USD
+, Value of portfolio: 972.0529986222699 USD
+11.14.26 01:00 Target investment of 115.27228597469662 matches current investment , Value of portfolio: 971.7574286582322 USD
+, Value of portfolio: 979.904549461835 USD
+, Value of portfolio: 974.8685094494131 USD
+, Value of portfolio: 972.6697751295976 USD
+11.14.26 05:00 Target investment of 118.78988120162307 matches current investment , Value of portfolio: 972.9299604005411 USD
+, Value of portfolio: 976.4271565423398 USD
+, Value of portfolio: 975.3673397387641 USD
+11.14.26 08:00 Target investment of 126.1258886123203 matches current investment , Value of portfolio: 975.3752962041068 USD
+, Value of portfolio: 972.1449712749748 USD
+, Value of portfolio: 970.9991660890762 USD
+, Value of portfolio: 971.5163509248749 USD
+, Value of portfolio: 970.5189230272631 USD
+, Value of portfolio: 971.7380015687886 USD
+, Value of portfolio: 973.7533408806728 USD
+, Value of portfolio: 972.1840108600015 USD
+, Value of portfolio: 967.591875982094 USD
+, Value of portfolio: 965.4562422627159 USD
+, Value of portfolio: 964.5406725283209 USD
+, Value of portfolio: 969.3390598954422 USD
+, Value of portfolio: 970.4759284261261 USD
+11.14.26 21:00 Target investment of 112.05672856311014 matches current investment , Value of portfolio: 970.6855761877034 USD
+, Value of portfolio: 967.8852810866342 USD
+, Value of portfolio: 969.6398721834815 USD
+, Value of portfolio: 970.9757688215421 USD
+, Value of portfolio: 971.832816483946 USD
+, Value of portfolio: 969.5172842030654 USD
+, Value of portfolio: 970.8223579541291 USD
+, Value of portfolio: 972.446324628435 USD
+, Value of portfolio: 971.732694740675 USD
+, Value of portfolio: 974.4733371819661 USD
+, Value of portfolio: 973.0591909280125 USD
+, Value of portfolio: 971.2432404147961 USD
+11.15.26 09:00 Target investment of 112.69191779720688 matches current investment , Value of portfolio: 970.8973059324023 USD
+, Value of portfolio: 973.1759613273007 USD
+, Value of portfolio: 971.9484706296844 USD
+, Value of portfolio: 973.0203335379169 USD
+, Value of portfolio: 970.8061154661269 USD
+11.15.26 14:00 Target investment of 111.67574172143122 matches current investment , Value of portfolio: 970.5585805738104 USD
+11.15.26 15:00 Target investment of 110.82062118433839 matches current investment , Value of portfolio: 970.2735403947795 USD
+, Value of portfolio: 971.2261746773304 USD
+, Value of portfolio: 972.3138279920547 USD
+11.15.26 18:00 Target investment of 116.32238200217262 matches current investment , Value of portfolio: 972.1074606673909 USD
+11.15.26 19:00 Target investment of 116.48288992135554 matches current investment , Value of portfolio: 972.1609633071185 USD
+11.15.26 20:00 Target investment of 117.92746119400215 matches current investment , Value of portfolio: 972.6424870646674 USD
+, Value of portfolio: 973.1927999304378 USD
+, Value of portfolio: 975.9061480880542 USD
+, Value of portfolio: 982.3000527040289 USD
+, Value of portfolio: 993.1770122118817 USD
+, Value of portfolio: 997.7535861577057 USD
+, Value of portfolio: 973.931495367261 USD
+, Value of portfolio: 975.9884288726782 USD
+, Value of portfolio: 973.9174668453406 USD
+11.16.26 05:00 Target investment of 121.39234168408859 matches current investment , Value of portfolio: 973.7974472280296 USD
+11.16.26 06:00 Target investment of 121.99994099672585 matches current investment , Value of portfolio: 973.999980332242 USD
+, Value of portfolio: 975.5227292268765 USD
+, Value of portfolio: 976.7832613687132 USD
+, Value of portfolio: 977.802170149532 USD
+, Value of portfolio: 976.592350354282 USD
+, Value of portfolio: 975.0765006398987 USD
+, Value of portfolio: 973.3752408818668 USD
+11.16.26 13:00 Target investment of 120.10346615054516 matches current investment , Value of portfolio: 973.3678220501818 USD
+11.16.26 14:00 Target investment of 121.2385473983694 matches current investment , Value of portfolio: 973.7461824661232 USD
+, Value of portfolio: 974.8590072188927 USD
+11.16.26 16:00 Target investment of 124.87161927034572 matches current investment , Value of portfolio: 974.9572064234486 USD
+, Value of portfolio: 977.0269435040896 USD
+, Value of portfolio: 977.7367534164142 USD
+, Value of portfolio: 975.6073236794402 USD
+, Value of portfolio: 976.9279928214638 USD
+, Value of portfolio: 976.3195161254281 USD
+, Value of portfolio: 975.4491633829971 USD
+, Value of portfolio: 972.3374597728906 USD
+11.17.26 00:00 Target investment of 117.01237931867172 matches current investment , Value of portfolio: 972.3374597728906 USD
+11.17.26 01:00 Target investment of 117.05625896091635 matches current investment , Value of portfolio: 972.3520863203055 USD
+11.17.26 02:00 Target investment of 117.47311556223883 matches current investment , Value of portfolio: 972.4910385207463 USD
+, Value of portfolio: 971.8547837082012 USD
+, Value of portfolio: 975.2408294347349 USD
+, Value of portfolio: 979.0592683663228 USD
+, Value of portfolio: 980.761815264144 USD
+, Value of portfolio: 978.4975923394104 USD
+11.17.26 08:00 Target investment of 135.8092541281137 matches current investment , Value of portfolio: 978.6030847093713 USD
+11.17.26 09:00 Target investment of 135.90663170038567 matches current investment , Value of portfolio: 978.6355439001286 USD
+, Value of portfolio: 977.2235691021901 USD
+11.17.26 11:00 Target investment of 130.38371233953387 matches current investment , Value of portfolio: 976.7945707798447 USD
+, Value of portfolio: 979.837281103147 USD
+, Value of portfolio: 984.8628640267679 USD
+11.17.26 14:00 Target investment of 154.6152452858346 matches current investment , Value of portfolio: 984.8717484286116 USD
+11.17.26 15:00 Target investment of 155.22826901304927 matches current investment , Value of portfolio: 985.0760896710165 USD
+11.17.26 16:00 Target investment of 155.97455876792037 matches current investment , Value of portfolio: 985.3248529226402 USD
+, Value of portfolio: 985.8579170332615 USD
+, Value of portfolio: 984.2853779069281 USD
+, Value of portfolio: 989.1429280302949 USD
+, Value of portfolio: 987.9784953540543 USD
+, Value of portfolio: 989.3999803090705 USD
+, Value of portfolio: 993.4133475004236 USD
+11.17.26 23:00 Target investment of 180.82208784842226 matches current investment , Value of portfolio: 993.6073626161408 USD
+, Value of portfolio: 989.0189051294292 USD
+, Value of portfolio: 986.2602209979552 USD
+, Value of portfolio: 987.1844494051508 USD
+11.18.26 03:00 Target investment of 161.73997125921244 matches current investment , Value of portfolio: 987.2466570864042 USD
+, Value of portfolio: 988.855169987389 USD
+, Value of portfolio: 989.8882186863545 USD
+11.18.26 06:00 Target investment of 169.25184667692463 matches current investment , Value of portfolio: 989.7506155589749 USD
+, Value of portfolio: 997.1353167283476 USD
+, Value of portfolio: 995.1173781208397 USD
+, Value of portfolio: 980.028087736824 USD
+11.18.26 10:00 Target investment of 140.13228935636437 matches current investment , Value of portfolio: 980.0440964521215 USD
+11.18.26 11:00 Target investment of 141.33294300367368 matches current investment , Value of portfolio: 980.4443143345579 USD
+, Value of portfolio: 983.9982491305957 USD
+11.18.26 13:00 Target investment of 151.13824972679822 matches current investment , Value of portfolio: 983.7127499089328 USD
+, Value of portfolio: 986.8112561675687 USD
+, Value of portfolio: 993.5629603842821 USD
+, Value of portfolio: 1013.7359993594471 USD
+, Value of portfolio: 1016.3659577932367 USD
+, Value of portfolio: 1017.338724941721 USD
+, Value of portfolio: 1023.5690669165365 USD
+, Value of portfolio: 1013.8090404859228 USD
+, Value of portfolio: 1028.4546008869709 USD
+, Value of portfolio: 1029.330717824965 USD
+, Value of portfolio: 1024.199175759571 USD
+, Value of portfolio: 1033.0646263148742 USD
+, Value of portfolio: 1031.923496885859 USD
+, Value of portfolio: 1016.1718033715306 USD
+, Value of portfolio: 1012.4680113632796 USD
+, Value of portfolio: 1017.8774944278728 USD
+, Value of portfolio: 1033.742392701273 USD
+, Value of portfolio: 1019.79396728167 USD
+, Value of portfolio: 1031.4759648191489 USD
+11.19.26 08:00 Target investment of 295.0297400810715 matches current investment , Value of portfolio: 1031.6765800270239 USD
+11.19.26 09:00 Target investment of 293.93889488825096 matches current investment , Value of portfolio: 1031.3129649627504 USD
+, Value of portfolio: 1033.444501546422 USD
+, Value of portfolio: 1027.0595686988843 USD
+, Value of portfolio: 1017.4724101854421 USD
+, Value of portfolio: 1028.384143710813 USD
+, Value of portfolio: 1018.9557955498727 USD
+, Value of portfolio: 1029.4276074756365 USD
+, Value of portfolio: 1020.1527632995874 USD
+, Value of portfolio: 1011.0581964360031 USD
+, Value of portfolio: 998.5206682671804 USD
+, Value of portfolio: 1011.3988884452958 USD
+, Value of portfolio: 1018.4321080456806 USD
+, Value of portfolio: 1017.1073513944857 USD
+, Value of portfolio: 1024.050870263934 USD
+, Value of portfolio: 1018.8295486132633 USD
+, Value of portfolio: 1009.1554011889302 USD
+11.20.26 01:00 Target investment of 228.24374174953084 matches current investment , Value of portfolio: 1009.414580583177 USD
+, Value of portfolio: 997.8344452482287 USD
+, Value of portfolio: 992.0290674066134 USD
+, Value of portfolio: 990.1354698294663 USD
+, Value of portfolio: 984.051347500071 USD
+, Value of portfolio: 982.8553906038029 USD
+, Value of portfolio: 981.4615664129318 USD
+, Value of portfolio: 989.4382019070249 USD
+, Value of portfolio: 988.6241553994987 USD
+, Value of portfolio: 990.5795454639689 USD
+, Value of portfolio: 996.8056936479938 USD
+, Value of portfolio: 995.6111648383275 USD
+, Value of portfolio: 976.9214645177883 USD
+, Value of portfolio: 985.7764428758239 USD
+, Value of portfolio: 988.9169868826893 USD
+, Value of portfolio: 981.2085864325755 USD
+, Value of portfolio: 984.8122873022276 USD
+, Value of portfolio: 986.111457173839 USD
+, Value of portfolio: 991.8563396422311 USD
+, Value of portfolio: 1002.0562176633832 USD
+, Value of portfolio: 981.1832833192226 USD
+, Value of portfolio: 978.2259075220325 USD
+, Value of portfolio: 971.5993091764653 USD

@@ -1,0 +1,146 @@
+[
+ {
+  "label": "freqle#01 NotAnotherSMAOffsetStrategyHO (davidzr/freqtrade-strategies)",
+  "repo": "davidzr/freqtrade-strategies",
+  "file": "downloads/freqle_src/01_NotAnotherSMAOffsetStrategyHO/NotAnotherSMAOffsetStrategyHO.py",
+  "class": "NotAnotherSMAOffsetStrategyHO"
+ },
+ {
+  "label": "freqle#02 DS_BNC_EV1E_5m (Danson77/Freqtrade_AIO_UI)",
+  "repo": "Danson77/Freqtrade_AIO_UI",
+  "file": "downloads/freqle_src/02_DS_BNC_EV1E_5m/DS_BNC_EV1E_5m.py",
+  "class": "DS_BNC_EV1E_5m"
+ },
+ {
+  "label": "freqle#03 E0V1E (TheoBrigitte/freqtrade)",
+  "repo": "TheoBrigitte/freqtrade",
+  "file": "downloads/freqle_src/03_E0V1E/E0V1E.py",
+  "class": "E0V1E"
+ },
+ {
+  "label": "freqle#05 E0V1E (cyberjunky/willemstijn_user_data)",
+  "repo": "cyberjunky/willemstijn_user_data",
+  "file": "downloads/freqle_src/05_E0V1E/E0V1E.py",
+  "class": "E0V1E"
+ },
+ {
+  "label": "freqle#06 heisenberg (Elmata2/freqtrade-TenKate-old)",
+  "repo": "Elmata2/freqtrade-TenKate-old",
+  "file": "downloads/freqle_src/06_heisenberg/heisenberg.py",
+  "class": "heisenberg"
+ },
+ {
+  "label": "freqle#07 DS_SOS_5m (Danson77/Freqtrade_AIO_UI)",
+  "repo": "Danson77/Freqtrade_AIO_UI",
+  "file": "downloads/freqle_src/07_DS_SOS_5m/DS_SOS_5m.py",
+  "class": "DS_SOS_5m"
+ },
+ {
+  "label": "freqle#08 NASOSv4_SMA (remiotore/ccxt-freqtrade)",
+  "repo": "remiotore/ccxt-freqtrade",
+  "file": "downloads/freqle_src/08_NASOSv4_SMA/NASOSv4_SMA.py",
+  "class": "NASOSv4_SMA"
+ },
+ {
+  "label": "freqle#09 E0V1E (vaskosmihaylov/nfi-custom-strategies)",
+  "repo": "vaskosmihaylov/nfi-custom-strategies",
+  "file": "downloads/freqle_src/09_E0V1E/E0V1E.py",
+  "class": "E0V1E"
+ },
+ {
+  "label": "freqle#10 BinClucMadSMA (remiotore/ccxt-freqtrade)",
+  "repo": "remiotore/ccxt-freqtrade",
+  "file": "downloads/freqle_src/10_BinClucMadSMA/BinClucMadSMA.py",
+  "class": "BinClucMadSMA"
+ },
+ {
+  "label": "freqle#11 BinClucMadV1 (neozhou2009/freqtrade-strategies)",
+  "repo": "neozhou2009/freqtrade-strategies",
+  "file": "downloads/freqle_src/11_BinClucMadV1/BinClucMadV1.py",
+  "class": "BinClucMadV1"
+ },
+ {
+  "label": "freqle#12 NASOSv6 (remiotore/ccxt-freqtrade)",
+  "repo": "remiotore/ccxt-freqtrade",
+  "file": "downloads/freqle_src/12_NASOSv6/NASOSv6.py",
+  "class": "NASOSv6"
+ },
+ {
+  "label": "freqle#13 BinClucMadV1 (davidzr/freqtrade-strategies)",
+  "repo": "davidzr/freqtrade-strategies",
+  "file": "downloads/freqle_src/13_BinClucMadV1/BinClucMadV1.py",
+  "class": "BinClucMadV1"
+ },
+ {
+  "label": "freqle#14 akiva6 (remiotore/ccxt-freqtrade)",
+  "repo": "remiotore/ccxt-freqtrade",
+  "file": "downloads/freqle_src/14_akiva6/akiva6.py",
+  "class": "akiva6"
+ },
+ {
+  "label": "freqle#15 NASOSv4 (Foxel05/freqtrade-stuff)",
+  "repo": "Foxel05/freqtrade-stuff",
+  "file": "downloads/freqle_src/15_NASOSv4/NASOSv4.py",
+  "class": "NASOSv4"
+ },
+ {
+  "label": "freqle#16 NASOSv7 (wentixiaogege/binance_trade)",
+  "repo": "wentixiaogege/binance_trade",
+  "file": "downloads/freqle_src/16_NASOSv7/NASOSv7.py",
+  "class": "NASOSv7"
+ },
+ {
+  "label": "freqle#17 ElliotV5_SMA (TheoBrigitte/freqtrade)",
+  "repo": "TheoBrigitte/freqtrade",
+  "file": "downloads/freqle_src/17_ElliotV5_SMA/ElliotV5_SMA.py",
+  "class": "ElliotV5_SMA"
+ },
+ {
+  "label": "freqle#18 E0V1E (XinuxC/Ft-things)",
+  "repo": "XinuxC/Ft-things",
+  "file": "downloads/freqle_src/18_E0V1E/e0v1e.py",
+  "class": "E0V1E"
+ },
+ {
+  "label": "freqle#19 binance (vaskosmihaylov/nfi-custom-strategies)",
+  "repo": "vaskosmihaylov/nfi-custom-strategies",
+  "file": "downloads/freqle_src/19_binance/binance.py",
+  "class": "binance"
+ },
+ {
+  "label": "freqle#20 NASOSv4 (neozhou2009/freqtrade-strategies)",
+  "repo": "neozhou2009/freqtrade-strategies",
+  "file": "downloads/freqle_src/20_NASOSv4/NASOSv4.py",
+  "class": "NASOSv4"
+ },
+ {
+  "label": "freqle#21 NotAnotherSMAOffsetStrategyHO (Danson77/Freqtrade_AIO_UI)",
+  "repo": "Danson77/Freqtrade_AIO_UI",
+  "file": "downloads/freqle_src/21_NotAnotherSMAOffsetStrategyHO/DS_NASMAHO_5m.py",
+  "class": "NotAnotherSMAOffsetStrategyHO"
+ },
+ {
+  "label": "freqle#23 Zeus (freqtrade/freqtrade-strategies)",
+  "repo": "freqtrade/freqtrade-strategies",
+  "file": "downloads/freqle_src/23_Zeus/Zeus.py",
+  "class": "Zeus"
+ },
+ {
+  "label": "freqle#24 NotAnotherSMAOffsetStrategy (davidzr/freqtrade-strategies)",
+  "repo": "davidzr/freqtrade-strategies",
+  "file": "downloads/freqle_src/24_NotAnotherSMAOffsetStrategy/NotAnotherSMAOffsetStrategy.py",
+  "class": "NotAnotherSMAOffsetStrategy"
+ },
+ {
+  "label": "freqle#xx Risk_Lev3 (linhuang1212-coder/crypto-quant-trading)",
+  "repo": "linhuang1212-coder/crypto-quant-trading",
+  "file": "downloads/freqle_src/xx_Risk_Lev3/Risk_Lev3.py",
+  "class": "Risk_Lev3"
+ },
+ {
+  "label": "SimpleRSIStrategy (remiotore/freqtrade)",
+  "repo": "remiotore/freqtrade",
+  "file": "downloads/remiotore_freqtrade/strategies/SimpleRSIStrategy.py",
+  "class": "SimpleRSIStrategy"
+ }
+]

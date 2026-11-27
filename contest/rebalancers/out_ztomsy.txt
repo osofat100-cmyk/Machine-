@@ -1,0 +1,26 @@
+/home/user/Machine-/contest/rebalancers/downloads/ztomsy_rebalancer/payload/orderbook.py:76: SyntaxWarning: "is" with 'int' literal. Did you mean "=="?
+  self._spreads[-1] >= 0 is True
+Traceback (most recent call last):
+  File "/home/user/Machine-/contest/rebalancers/venv_ztomsy/lib/python3.13/site-packages/pypfopt/risk_models.py", line 198, in CovarianceShrinkage
+    import sklearn.covariance
+ModuleNotFoundError: No module named 'sklearn'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/user/Machine-/contest/rebalancers/run_ztomsy.py", line 185, in <module>
+    main()
+    ~~~~^^
+  File "/home/user/Machine-/contest/rebalancers/run_ztomsy.py", line 100, in main
+    from payload.runner import Runner
+  File "/home/user/Machine-/contest/rebalancers/downloads/ztomsy_rebalancer/payload/runner.py", line 15, in <module>
+    from payload.portfolioOpt import PortfolioOpt
+  File "/home/user/Machine-/contest/rebalancers/downloads/ztomsy_rebalancer/payload/portfolioOpt.py", line 7, in <module>
+    from pypfopt import risk_models
+  File "/home/user/Machine-/contest/rebalancers/venv_ztomsy/lib/python3.13/site-packages/pypfopt/risk_models.py", line 182, in <module>
+    class CovarianceShrinkage:
+    ...<211 lines>...
+            return self.format_and_annualise(shrunk_cov)
+  File "/home/user/Machine-/contest/rebalancers/venv_ztomsy/lib/python3.13/site-packages/pypfopt/risk_models.py", line 200, in CovarianceShrinkage
+    raise ImportError("Please install scikit-learn via pip or poetry")
+ImportError: Please install scikit-learn via pip or poetry

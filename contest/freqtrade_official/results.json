@@ -1,0 +1,380 @@
+{
+ "ADXMomentum": {
+  "trades": 56,
+  "profit": -419.916,
+  "end": 580.0840000000001,
+  "error": null
+ },
+ "ASDTSRockwellTrading": {
+  "trades": 326,
+  "profit": -991.777,
+  "end": 8.222999999999956,
+  "error": null
+ },
+ "AdxSmas": {
+  "trades": 23,
+  "profit": 121.001,
+  "end": 1121.001,
+  "error": null
+ },
+ "AlmgrenChrissStrategy": {
+  "trades": null,
+  "profit": null,
+  "end": null,
+  "error": "ImportError: Short strategies cannot run in spot markets. Please make sure that this is the correct strategy and that your trading mode configuration is correct. You can run this strategy in spot "
+ },
+ "AverageStrategy": {
+  "trades": 4,
+  "profit": 1366.037,
+  "end": 2366.0370000000003,
+  "error": null
+ },
+ "AwesomeMacd": {
+  "trades": 15,
+  "profit": -118.154,
+  "end": 881.846,
+  "error": null
+ },
+ "Bandtastic": {
+  "trades": 78,
+  "profit": -132.132,
+  "end": 867.8679999999999,
+  "error": null
+ },
+ "BbandRsi": {
+  "trades": 5,
+  "profit": -339.366,
+  "end": 660.634,
+  "error": null
+ },
+ "BinHV27": {
+  "trades": 42,
+  "profit": -216.267,
+  "end": 783.733,
+  "error": null
+ },
+ "BinHV45": {
+  "trades": 39,
+  "profit": -410.835,
+  "end": 589.165,
+  "error": null
+ },
+ "BreakEven": {
+  "trades": 0,
+  "profit": 0.0,
+  "end": 1000.0,
+  "error": null
+ },
+ "CCIStrategy": {
+  "trades": 13,
+  "profit": -106.261,
+  "end": 893.739,
+  "error": null
+ },
+ "CMCWinner": {
+  "trades": 22,
+  "profit": -200.826,
+  "end": 799.174,
+  "error": null
+ },
+ "ClucMay72018": {
+  "trades": 20,
+  "profit": -186.411,
+  "end": 813.5889999999999,
+  "error": null
+ },
+ "CofiBitStrategy": {
+  "trades": 172,
+  "profit": -908.891,
+  "end": 91.10900000000004,
+  "error": null
+ },
+ "CombinedBinHAndCluc": {
+  "trades": 43,
+  "profit": -415.468,
+  "end": 584.5319999999999,
+  "error": null
+ },
+ "CustomStoplossWithPSAR": {
+  "trades": 2,
+  "profit": 438.304,
+  "end": 1438.304,
+  "error": null
+ },
+ "Diamond": {
+  "trades": 35,
+  "profit": -347.176,
+  "end": 652.8240000000001,
+  "error": null
+ },
+ "DoesNothingStrategy": {
+  "trades": 0,
+  "profit": 0.0,
+  "end": 1000.0,
+  "error": null
+ },
+ "EMASkipPump": {
+  "trades": 170,
+  "profit": -938.306,
+  "end": 61.69399999999996,
+  "error": null
+ },
+ "FAdxSmaStrategy": {
+  "trades": null,
+  "profit": null,
+  "end": null,
+  "error": "ImportError: Short strategies cannot run in spot markets. Please make sure that this is the correct strategy and that your trading mode configuration is correct. You can run this strategy in spot "
+ },
+ "FReinforcedStrategy": {
+  "trades": null,
+  "profit": null,
+  "end": null,
+  "error": "ImportError: Short strategies cannot run in spot markets. Please make sure that this is the correct strategy and that your trading mode configuration is correct. You can run this strategy in spot "
+ },
+ "FSampleStrategy": {
+  "trades": null,
+  "profit": null,
+  "end": null,
+  "error": "ImportError: Short strategies cannot run in spot markets. Please make sure that this is the correct strategy and that your trading mode configuration is correct. You can run this strategy in spot "
+ },
+ "FSupertrendStrategy": {
+  "trades": 39,
+  "profit": -601.595,
+  "end": 398.405,
+  "error": null
+ },
+ "FixedRiskRewardLoss": {
+  "trades": null,
+  "profit": null,
+  "end": null,
+  "error": "2026-11-21 15:32:09,465 - freqtrade - ERROR - Timeframe needs to be set in either configuration or as cli argument `--timeframe 5m`"
+ },
+ "Freqtrade_backtest_validation_freqtrade1": {
+  "trades": 23,
+  "profit": 12.903,
+  "end": 1012.903,
+  "error": null
+ },
+ "HourBasedStrategy": {
+  "trades": 56,
+  "profit": -360.728,
+  "end": 639.2719999999999,
+  "error": null
+ },
+ "InformativeSample": {
+  "trades": 0,
+  "profit": 0.0,
+  "end": 1000.0,
+  "error": null
+ },
+ "Low_BB": {
+  "trades": 4,
+  "profit": -110.517,
+  "end": 889.483,
+  "error": null
+ },
+ "MACDStrategy": {
+  "trades": 37,
+  "profit": -438.005,
+  "end": 561.995,
+  "error": null
+ },
+ "MACDStrategy_crossed": {
+  "trades": 24,
+  "profit": -390.553,
+  "end": 609.447,
+  "error": null
+ },
+ "MultiMa": {
+  "trades": 6,
+  "profit": -234.643,
+  "end": 765.357,
+  "error": null
+ },
+ "MultiRSI": {
+  "trades": 100,
+  "profit": -773.946,
+  "end": 226.05399999999997,
+  "error": null
+ },
+ "PatternRecognition": {
+  "trades": 1,
+  "profit": 265.47,
+  "end": 1265.47,
+  "error": null
+ },
+ "PowerTower": {
+  "trades": 7,
+  "profit": -104.959,
+  "end": 895.0409999999999,
+  "error": null
+ },
+ "Quickie": {
+  "trades": 27,
+  "profit": -356.489,
+  "end": 643.511,
+  "error": null
+ },
+ "ReinforcedAverageStrategy": {
+  "trades": 0,
+  "profit": 0.0,
+  "end": 1000.0,
+  "error": null
+ },
+ "ReinforcedQuickie": {
+  "trades": 62,
+  "profit": -510.732,
+  "end": 489.268,
+  "error": null
+ },
+ "ReinforcedSmoothScalp": {
+  "trades": 35,
+  "profit": -440.683,
+  "end": 559.317,
+  "error": null
+ },
+ "Scalp": {
+  "trades": 402,
+  "profit": -995.714,
+  "end": 4.2859999999999445,
+  "error": null
+ },
+ "Simple": {
+  "trades": 97,
+  "profit": -598.321,
+  "end": 401.679,
+  "error": null
+ },
+ "SmoothOperator": {
+  "trades": 58,
+  "profit": -457.096,
+  "end": 542.904,
+  "error": null
+ },
+ "SmoothScalp": {
+  "trades": 36,
+  "profit": -321.803,
+  "end": 678.197,
+  "error": null
+ },
+ "Strategy001": {
+  "trades": 71,
+  "profit": -603.715,
+  "end": 396.28499999999997,
+  "error": null
+ },
+ "Strategy001_custom_exit": {
+  "trades": 74,
+  "profit": -541.517,
+  "end": 458.48299999999995,
+  "error": null
+ },
+ "Strategy002": {
+  "trades": 5,
+  "profit": 72.345,
+  "end": 1072.345,
+  "error": null
+ },
+ "Strategy003": {
+  "trades": 15,
+  "profit": -300.542,
+  "end": 699.4580000000001,
+  "error": null
+ },
+ "Strategy004": {
+  "trades": 30,
+  "profit": -16.615,
+  "end": 983.385,
+  "error": null
+ },
+ "Strategy005": {
+  "trades": 14,
+  "profit": -245.393,
+  "end": 754.607,
+  "error": null
+ },
+ "Supertrend": {
+  "trades": 24,
+  "profit": 119.323,
+  "end": 1119.323,
+  "error": null
+ },
+ "SwingHighToSky": {
+  "trades": 14,
+  "profit": -266.419,
+  "end": 733.581,
+  "error": null
+ },
+ "TDSequentialStrategy": {
+  "trades": 12,
+  "profit": 343.147,
+  "end": 1343.147,
+  "error": null
+ },
+ "TWAPStrategy": {
+  "trades": null,
+  "profit": null,
+  "end": null,
+  "error": "ImportError: Short strategies cannot run in spot markets. Please make sure that this is the correct strategy and that your trading mode configuration is correct. You can run this strategy in spot "
+ },
+ "TechnicalExampleStrategy": {
+  "trades": 507,
+  "profit": -997.83,
+  "end": 2.169999999999959,
+  "error": null
+ },
+ "TrendFollowingStrategy": {
+  "trades": 24,
+  "profit": -117.918,
+  "end": 882.082,
+  "error": null
+ },
+ "TrendRiderStrategy": {
+  "trades": 14,
+  "profit": -255.68,
+  "end": 744.3199999999999,
+  "error": null
+ },
+ "UniversalMACD": {
+  "trades": 37,
+  "profit": 509.603,
+  "end": 1509.603,
+  "error": null
+ },
+ "VolatilitySystem": {
+  "trades": null,
+  "profit": null,
+  "end": null,
+  "error": "ImportError: Short strategies cannot run in spot markets. Please make sure that this is the correct strategy and that your trading mode configuration is correct. You can run this strategy in spot "
+ },
+ "hlhb": {
+  "trades": 2,
+  "profit": 34.045,
+  "end": 1034.045,
+  "error": null
+ },
+ "mabStra": {
+  "trades": 18,
+  "profit": 295.42,
+  "end": 1295.42,
+  "error": null
+ },
+ "multi_tf": {
+  "trades": null,
+  "profit": null,
+  "end": null,
+  "error": "2026-11-21 15:33:36,800 - freqtrade - ERROR - Impossible to load Strategy 'multi_tf'. This class does not exist or contains Python code errors."
+ },
+ "wtc": {
+  "trades": 0,
+  "profit": 0.0,
+  "end": 1000.0,
+  "error": null
+ },
+ "Heracles": {
+  "trades": null,
+  "profit": null,
+  "end": null,
+  "error": "2026-11-21 15:34:20,145 - freqtrade - ERROR - Dataframe returned from strategy has mismatching length."
+ }
+}

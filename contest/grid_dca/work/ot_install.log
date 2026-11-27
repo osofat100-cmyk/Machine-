@@ -1,0 +1,18 @@
+.                                        |  WARN  Unsupported engine: wanted: {"node":"~22.12"} (current: {"node":"v22.23.5","pnpm":"10.12.1"})
+Scope: 11 of 16 workspace projects
+.                                        |  WARN  A pnpm-lock.yaml file exists. The current configuration prohibits to read or write a lockfile
+Progress: resolved 1, reused 0, downloaded 0, added 0
+Progress: resolved 11, reused 0, downloaded 8, added 0
+Progress: resolved 20, reused 0, downloaded 15, added 0
+Progress: resolved 30, reused 0, downloaded 28, added 0
+Progress: resolved 31, reused 0, downloaded 30, added 0
+Progress: resolved 91, reused 0, downloaded 78, added 0
+Progress: resolved 145, reused 0, downloaded 133, added 0
+Progress: resolved 214, reused 0, downloaded 157, added 0
+Progress: resolved 363, reused 0, downloaded 232, added 0
+Progress: resolved 444, reused 0, downloaded 337, added 0
+Progress: resolved 448, reused 0, downloaded 351, added 0
+.                                        | +354 ++++++++++++++++++++++++++++++++
+Progress: resolved 451, reused 0, downloaded 354, added 196
+Progress: resolved 451, reused 0, downloaded 354, added 354, done
+Done in 13.3s using pnpm v10.12.1

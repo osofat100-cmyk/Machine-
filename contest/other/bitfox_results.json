@@ -1,0 +1,160 @@
+[
+ {
+  "name": "Phoenix",
+  "trades": 35,
+  "completed": 35,
+  "open": 0,
+  "value": 303.05896107406807,
+  "spot": 653.7981683376083,
+  "warm": 199,
+  "firstEntry": "2026-10-05T07:00:00.000Z",
+  "returnPct": -69.69410389259319
+ },
+ {
+  "name": "SuperTrend",
+  "trades": 143,
+  "completed": 143,
+  "open": 0,
+  "value": -1791.3095964249535,
+  "spot": 172.72669273545628,
+  "warm": 14,
+  "firstEntry": "2026-10-03T06:00:00.000Z",
+  "returnPct": -279.1309596424953
+ },
+ {
+  "name": "RSITrend",
+  "trades": 21,
+  "completed": 21,
+  "open": 0,
+  "value": 786.3946760007182,
+  "spot": 842.9184608242061,
+  "warm": 29,
+  "firstEntry": "2026-10-02T13:00:00.000Z",
+  "returnPct": -21.360532399928182
+ },
+ {
+  "name": "EmaTrend",
+  "trades": 109,
+  "completed": 109,
+  "open": 0,
+  "value": -1086.1133799364509,
+  "spot": 261.95892451449464,
+  "warm": 19,
+  "firstEntry": "2026-10-03T22:00:00.000Z",
+  "returnPct": -208.6113379936451
+ },
+ {
+  "name": "Bollinger",
+  "trades": 9,
+  "completed": 9,
+  "open": 0,
+  "value": 947.0572847228175,
+  "spot": 942.6889746762484,
+  "warm": 19,
+  "firstEntry": "2026-10-02T03:00:00.000Z",
+  "returnPct": -5.2942715277182515
+ },
+ {
+  "name": "MfiMacd",
+  "trades": 36,
+  "completed": 36,
+  "open": 0,
+  "value": -479.3868982450431,
+  "spot": 629.0133378818045,
+  "warm": 15,
+  "firstEntry": "2026-10-03T10:00:00.000Z",
+  "returnPct": -147.9386898245043
+ },
+ {
+  "name": "SmartAccumulate",
+  "trades": 146,
+  "completed": 146,
+  "open": 0,
+  "value": -2188.9571756071773,
+  "spot": 90.17255580288078,
+  "warm": 0,
+  "firstEntry": "2026-10-07T10:00:00.000Z",
+  "returnPct": -318.89571756071774
+ },
+ {
+  "name": "ZemaCrossOver",
+  "trades": 22,
+  "completed": 22,
+  "open": 0,
+  "value": 600.2710785292793,
+  "spot": 775.0331346083619,
+  "warm": 38,
+  "firstEntry": "2026-10-03T22:00:00.000Z",
+  "returnPct": -39.97289214707207
+ },
+ {
+  "name": "ThorsHammer",
+  "trades": 4,
+  "completed": 4,
+  "open": 0,
+  "value": 923.5803117117118,
+  "spot": 963.3979382688917,
+  "warm": 19,
+  "firstEntry": "2026-10-07T03:00:00.000Z",
+  "returnPct": -7.6419688288288175
+ },
+ {
+  "name": "DonchianTrend",
+  "trades": 31,
+  "completed": 31,
+  "open": 0,
+  "value": 957.1569241665189,
+  "spot": 677.6908032445497,
+  "warm": 199,
+  "firstEntry": "2026-10-05T15:00:00.000Z",
+  "returnPct": -4.284307583348106
+ },
+ {
+  "name": "DynamicGrid",
+  "trades": 135,
+  "completed": 135,
+  "open": 0,
+  "value": -776.5920714285708,
+  "spot": 238.67326677360077,
+  "warm": 0,
+  "firstEntry": "2026-10-01T01:00:00.000Z",
+  "returnPct": -177.65920714285707
+ },
+ {
+  "name": "MarketMaker",
+  "error": "TypeError: Cannot read properties of undefined (reading 'getIndicator')"
+ },
+ {
+  "name": "MultiDivergence",
+  "trades": 11,
+  "completed": 11,
+  "open": 0,
+  "value": 754.8712173396672,
+  "spot": 796.9624087629243,
+  "warm": 25,
+  "firstEntry": "2026-10-01T19:00:00.000Z",
+  "returnPct": -24.512878266033283
+ },
+ {
+  "name": "Regime",
+  "trades": 17,
+  "completed": 17,
+  "open": 0,
+  "value": 864.7986815652489,
+  "spot": 929.6876554659217,
+  "warm": 27,
+  "firstEntry": "2026-10-02T13:00:00.000Z",
+  "returnPct": -13.520131843475111
+ },
+ {
+  "name": "SuperTrendFull",
+  "trades": 143,
+  "completed": 143,
+  "open": 0,
+  "value": -1963.6009978807713,
+  "spot": 156.7803505137285,
+  "warm": 14,
+  "firstEntry": "2026-10-03T06:00:00.000Z",
+  "returnPct": -296.36009978807715
+ }
+]

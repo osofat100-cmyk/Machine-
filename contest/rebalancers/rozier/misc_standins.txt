@@ -1,0 +1,3 @@
+notifier.mjs, yield.mjs, telegram.mjs, rpc_manager.mjs, prices.mjs, cron.mjs: no-op or price-server stand-ins
+for the matching 0xRozier modules (Telegram, Aave, RPC failover, CoinGecko, node-cron). config.mjs is the user's
+config: config.js with TOKENS/TARGET_RATIOS/COINGECKO_IDS for PEARL+USDC and ENABLE_YIELD_FARMING false.

@@ -1,0 +1,5 @@
+decided_utc,side,qty,price_seen,note
+
+filled_utc,action,price,account_$,cash,coins,source
+end 2026-11-20 23:59,,,1000.0
+just holding,,,1475.67
